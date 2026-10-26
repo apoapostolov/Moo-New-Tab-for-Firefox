@@ -42,7 +42,7 @@ const BARE_FLAG = 'scratchNotesBare';
 const TOP_Z = 'scratchTopZ';
 const ARM_TIMEOUT = 4000;
 const NOT_BACKGROUND =
-  '.scratchNote, .scratchImage, #widgets, #navbar, .navbar, .modal, dialog, .ReactModal__Overlay, label, button, a, input, textarea, select, [contenteditable="true"], [role="button"], .Toastify, .reminder-info';
+  '.scratchNote, .scratchImage, .scratchSaveError, #widgets, #navbar, .navbar, .modal, dialog, .ReactModal__Overlay, label, button, a, input, textarea, select, [contenteditable="true"], [role="button"], .Toastify, .reminder-info';
 
 const TYPING = 'input, textarea, [contenteditable="true"], [contenteditable=""], [role="textbox"]';
 
@@ -180,7 +180,7 @@ const Scratch = () => {
   });
   const [notes, setNotesState] = useState(readNotes);
   const [images, setImages] = useState([]);
-  const [saveState, setSaveState] = useState('Saved');
+  const [saveError, setSaveError] = useState('');
   const [imageError, setImageError] = useState('');
   const imagesRef = useRef([]);
   const imageWrites = useRef(Promise.resolve());
@@ -202,12 +202,15 @@ const Scratch = () => {
   }, []);
   const [noteWriter] = useState(() => {
     const revision = localStorage.getItem('profileRevision');
-    return durableWriter((notes) => {
-      if (notesProblem) throw new Error(notesProblem);
-      if (revision !== localStorage.getItem('profileRevision'))
-        throw new Error('The profile changed in another tab. Reload to continue.');
-      saveNotes(notes);
-    }, setSaveState);
+    return durableWriter(
+      (notes) => {
+        if (notesProblem) throw new Error(notesProblem);
+        if (revision !== localStorage.getItem('profileRevision'))
+          throw new Error('The profile changed in another tab. Reload to continue.');
+        saveNotes(notes);
+      },
+      (status) => setSaveError(status === 'Saved' || status === 'Saving…' ? '' : status),
+    );
   });
   const setNotes = useCallback(
     (update) => {
@@ -365,7 +368,7 @@ const Scratch = () => {
   );
 
   useEffect(() => {
-    if (!notesOn) return undefined;
+    if (!notesOn || notesProblem) return undefined;
 
     const onDoubleClick = (event) => {
       if (event.target.closest?.(NOT_BACKGROUND)) return;
@@ -377,7 +380,7 @@ const Scratch = () => {
     document.addEventListener('dblclick', onDoubleClick);
 
     return () => document.removeEventListener('dblclick', onDoubleClick);
-  }, [createNote, notesOn]);
+  }, [createNote, notesOn, notesProblem]);
 
   const startDrag = (event, note) => {
     if (event.button !== 0) return;
@@ -788,36 +791,27 @@ const Scratch = () => {
 
   if (!notesOn && !imagesOn) return null;
 
+  const error = notesProblem || imageError || saveError;
+
   return (
     <div className="scratchLayer">
-      {(notesOn || imagesOn) && (
-        <span className="scratchSaveState" role="status">
-          {notesProblem || imageError || saveState}
-        </span>
-      )}
-      {notesOn && (
-        <button
-          type="button"
-          className="scratchCreate"
-          disabled={Boolean(notesProblem)}
-          onClick={() => createNote(window.innerWidth / 2, 100)}
-        >
-          {uiText('new_note_2b7b05')}
-        </button>
-      )}
-      {notesProblem && (
-        <button
-          type="button"
-          className="scratchRecovery"
-          onClick={() =>
-            saveFile(
-              { scratchNotesData: localStorage.getItem(NOTES_STORE) },
-              'moo-notes-recovery.json',
-            )
-          }
-        >
-          Save original notes
-        </button>
+      {error && (
+        <div className="scratchSaveError" role="alert">
+          <span>{error}</span>
+          {notesProblem && (
+            <button
+              type="button"
+              onClick={() =>
+                saveFile(
+                  { scratchNotesData: localStorage.getItem(NOTES_STORE) },
+                  'moo-notes-recovery.json',
+                )
+              }
+            >
+              Save original notes
+            </button>
+          )}
+        </div>
       )}
       {notesOn &&
         notes.map((note, index) => {

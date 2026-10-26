@@ -428,16 +428,6 @@ body.hardTextShadow {
   flex: 1;
 }
 
-.scratchCreate {
-  position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 20;
-  pointer-events: auto;
-  border-radius: 12px;
-  padding: 0.6rem 1rem;
-}
-
 .scratchNote:focus-within .scratchNoteClose,
 .scratchImage:focus-within .scratchImageButton,
 .scratchImage:focus-within .scratchImageResize {
@@ -474,12 +464,16 @@ body.hardTextShadow {
   background: rgb(0 0 0 / 7%);
 }
 
-.scratchSaveState {
+.scratchSaveError {
   position: fixed;
-  left: 1rem;
-  bottom: 0.5rem;
+  left: 50%;
+  top: 1rem;
+  transform: translateX(-50%);
   z-index: 20;
-  max-width: calc(100vw - 10rem);
+  max-width: calc(100vw - 8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   font-size: 0.75rem;
   color: white;
   background: rgb(0 0 0 / 70%);
@@ -519,12 +513,4 @@ body.hardTextShadow {
   .widgetRail > * {
     flex-shrink: 0;
   }
-}
-
-.scratchRecovery {
-  position: fixed;
-  left: 1rem;
-  bottom: 3rem;
-  z-index: 20;
-  pointer-events: auto;
 }

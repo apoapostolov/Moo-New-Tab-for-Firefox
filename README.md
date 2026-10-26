@@ -29,7 +29,7 @@ Moo opens directly in English with the time, Search/Ask Bar, basic weather in th
 - Google widgets: read mail, check upcoming events and manage tasks beside the clock. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use.
 - Search/Ask Bar: enter a question and choose a search engine, AI service or reference site from the service menu. Open a web search, find documentation or continue the question in a conversation.
 - RSS reader: enable RSS under Settings → Overview and add feeds under Settings → RSS. Headlines from several sites appear in one list; hover to read an article when available, or open the original site.
-- Notes and pictures: leave reminders and place pictures on the page. Use New note to start a note; notes and uploaded pictures are stored in your browser.
+- Notes and pictures: double-click an empty part of the page to create a note, or place pictures on the page. Notes and uploaded pictures are stored in your browser.
 - Quick links: add regular destinations under Settings → Quick Links so the sites you use for a project are available on a new tab.
 - Clock and weather: choose a clock, set Progress around your working hours and see current conditions and a five-day forecast for your location.
 - Widget layout: show, hide and arrange widgets in the left, centre or right column under Settings → Overview. Narrow and short windows use a scrollable layout.
