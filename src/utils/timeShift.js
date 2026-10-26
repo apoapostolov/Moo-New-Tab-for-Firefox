@@ -51,14 +51,42 @@ export function shiftWindow(startRaw, endRaw) {
 }
 
 /**
- * Fraction of the shift elapsed, clamped to 0–1. When the window runs past
- * midnight, the morning hours count toward the previous night's shift.
+ * Where `now` falls in the window, before clamping. When the window runs past
+ * midnight the morning hours are lifted into it, and the shift is dated to the
+ * day it began rather than the day the clock happens to be reading.
  */
-export function shiftFraction(now, startRaw, endRaw) {
+function positionInWindow(now, startRaw, endRaw) {
   const { from, to } = shiftWindow(startRaw, endRaw);
   let minutes = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
+  let shiftDay = now.getDay();
 
-  if (to > MINUTES_IN_DAY && minutes < to - MINUTES_IN_DAY) minutes += MINUTES_IN_DAY;
+  if (to > MINUTES_IN_DAY && minutes < to - MINUTES_IN_DAY) {
+    minutes += MINUTES_IN_DAY;
+    shiftDay = (shiftDay + 6) % 7;
+  }
 
-  return Math.min(1, Math.max(0, (minutes - from) / (to - from)));
+  return { from, to, minutes, shiftDay, fraction: (minutes - from) / (to - from) };
+}
+
+/**
+ * Fraction of the shift elapsed, clamped to 0–1. A window outside the shift still
+ * answers 0 or 1 here; `shiftPosition` is the one that says whether the shift is
+ * running at all.
+ */
+export function shiftFraction(now, startRaw, endRaw) {
+  const { fraction } = positionInWindow(now, startRaw, endRaw);
+
+  return Math.min(1, Math.max(0, fraction));
+}
+
+/**
+ * `{ fraction, shiftDay }` while the shift is running, or null before the start and
+ * after the end. `shiftDay` is the weekday the shift belongs to.
+ */
+export function shiftPosition(now, startRaw, endRaw) {
+  const { from, to, minutes, shiftDay, fraction } = positionInWindow(now, startRaw, endRaw);
+
+  if (minutes < from || minutes > to) return null;
+
+  return { fraction: Math.min(1, Math.max(0, fraction)), shiftDay };
 }

@@ -44,6 +44,8 @@ export function readPercentageFallback() {
   return localStorage.getItem('percentageFallback') !== 'false';
 }
 
+import { shiftPosition } from 'utils/timeShift';
+
 /**
  * The clock used on days Progress does not cover. Progress is never returned:
  * it is the clock being replaced.
@@ -57,10 +59,36 @@ export function offClockType() {
 /**
  * The clock type to render, after the day restriction is applied.
  */
-export function resolveTimeType() {
+/**
+ * Where Progress stands at `now`, or null when it has nothing to report and the page
+ * should draw `percentageOffType` instead: a day it is not set for, or a time outside
+ * the shift. Before the start of the shift and after its end the day has no progress
+ * to show, and a bar held at 0% or at full said otherwise.
+ */
+export function progressPosition(now = new Date()) {
+  const position = shiftPosition(
+    now,
+    localStorage.getItem('percentageStart'),
+    localStorage.getItem('percentageEnd'),
+  );
+
+  if (!position) return null;
+
+  if (readPercentageFallback() && !readPercentageDays().includes(position.shiftDay)) {
+    return null;
+  }
+
+  return position;
+}
+
+/**
+ * The clock type to render at `now`, after the day rule and the shift window have
+ * both been applied.
+ */
+export function resolveTimeType(now = new Date()) {
   const stored = localStorage.getItem('timeType');
 
-  if (stored === 'percentageComplete' && readPercentageFallback() && !isPercentageDay()) {
+  if (stored === 'percentageComplete' && !progressPosition(now)) {
     return offClockType();
   }
 

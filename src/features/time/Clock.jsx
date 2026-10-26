@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { convertTimezone } from 'utils/date';
-import { shiftFraction } from 'utils/timeShift';
-import { resolveTimeType } from 'utils/clockDays';
+import { progressPosition, resolveTimeType } from 'utils/clockDays';
 import { formatPercentage, formatDigits } from 'utils/formatNumber';
 import { AnalogClock } from './components/AnalogClock';
 import { VerticalClock } from './components/VerticalClock';
@@ -28,8 +27,17 @@ const Clock = () => {
   const [fraction, setFraction] = useState(0);
   const timerRef = useRef(undefined);
 
-  // The Progress clock only applies on its chosen days; the rest keep their own type.
-  const type = resolveTimeType();
+  // The clock can be pinned to a zone, so the day and the shift are read from the same
+  // clock the time is drawn with.
+  const nowInZone = () => {
+    const now = new Date();
+    const timezone = localStorage.getItem('timezone');
+
+    return timezone && timezone !== 'auto' ? convertTimezone(now, timezone) : now;
+  };
+
+  // Progress steps aside on days it is not set for and outside its shift window.
+  const type = resolveTimeType(nowInZone());
 
   const startTime = (
     time = localStorage.getItem('seconds') === 'true' || type === 'analogue'
@@ -37,20 +45,14 @@ const Clock = () => {
       : 60000 - (Date.now() % 60000),
   ) => {
     timerRef.current = setTimeout(() => {
-      let now = new Date();
-      const timezone = localStorage.getItem('timezone');
-      if (timezone && timezone !== 'auto') {
-        now = convertTimezone(now, timezone);
-      }
+      const now = nowInZone();
 
-      switch (resolveTimeType()) {
+      switch (resolveTimeType(now)) {
         case 'percentageComplete': {
-          // Of the shift when one is set, otherwise of the full 24 hours.
-          const elapsed = shiftFraction(
-            now,
-            localStorage.getItem('percentageStart'),
-            localStorage.getItem('percentageEnd'),
-          );
+          // Of the shift when one is set, otherwise of the full 24 hours. The window
+          // decides the type, so a position is always there to read.
+          const position = progressPosition(now);
+          const elapsed = position ? position.fraction : 0;
 
           setFraction(elapsed);
           setTime(formatPercentage(elapsed));
@@ -138,7 +140,7 @@ const Clock = () => {
       }
     };
 
-    if (resolveTimeType() !== 'analogue') {
+    if (resolveTimeType(nowInZone()) !== 'analogue') {
       setFontSize(`${4 * Number((localStorage.getItem('zoomClock') || 100) / 100)}em`);
     }
 
