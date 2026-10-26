@@ -2,14 +2,14 @@ import { Suspense, lazy } from 'react';
 
 const Analog = lazy(() => import('react-clock'));
 
-function AnalogClock({ time }) {
+function AnalogClock({ time, onDoubleClick }) {
   const enabled = (setting) => {
     return localStorage.getItem(setting) === 'true';
   };
 
   return (
     <Suspense fallback={<></>}>
-      <div className="clockBackground">
+      <div className="clockBackground" onDoubleClick={onDoubleClick}>
         <Analog
           className="analogclock clock-container"
           value={time}

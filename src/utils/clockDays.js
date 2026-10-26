@@ -38,6 +38,13 @@ export function isPercentageDay(date = new Date()) {
 }
 
 /**
+ * Whether double-clicking the clock hands it to the fallback and back. Defaults to on.
+ */
+export function readPercentageDoubleClick() {
+  return localStorage.getItem('percentageDoubleClick') !== 'false';
+}
+
+/**
  * Whether `percentageDays` restricts Progress at all. Defaults to on.
  */
 export function readPercentageFallback() {

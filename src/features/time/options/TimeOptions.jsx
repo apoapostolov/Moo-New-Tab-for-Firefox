@@ -187,6 +187,23 @@ const TimeOptions = () => {
           />
         </Action>
       </Row>
+
+      {/* A glance at the other clock without leaving the page. It only applies while
+          Progress is the clock being replaced; outside its days and shift the fallback
+          is already showing. */}
+      <Row final>
+        <Content
+          title={variables.getMessage(`${TIME_SECTION}.percentage.doubleclick_title`)}
+          subtitle={variables.getMessage(`${TIME_SECTION}.percentage.doubleclick_subtitle`)}
+        />
+        <Action>
+          <Checkbox
+            name="percentageDoubleClick"
+            text={variables.getMessage(`${TIME_SECTION}.percentage.doubleclick_switch`)}
+            category="clock"
+          />
+        </Action>
+      </Row>
     </>
   );
 

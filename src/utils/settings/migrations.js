@@ -34,6 +34,16 @@ const seedPercentageFallback = () => {
 };
 
 /**
+ * Double-clicking the clock is on unless it is turned off, so the stored value has
+ * to exist for the switch to read as on.
+ */
+const seedPercentageDoubleClick = () => {
+  if (localStorage.getItem('percentageDoubleClick') === null) {
+    localStorage.setItem('percentageDoubleClick', 'true');
+  }
+};
+
+/**
  * Same trap as the Progress switch: Image Info refuses to draw without a known
  * location, so a profile that predates the control needs the answer stored.
  */
@@ -46,6 +56,7 @@ const seedPhotoInfoLocation = () => {
 const runMigrations = () => {
   retireMueLibrary();
   seedPercentageFallback();
+  seedPercentageDoubleClick();
   seedPhotoInfoLocation();
 
   if (!localStorage.getItem(HOVER_MARK)) {

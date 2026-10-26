@@ -1,10 +1,10 @@
-function VerticalClock({ finalHour, finalMinute, finalSeconds }) {
+function VerticalClock({ finalHour, finalMinute, finalSeconds, onDoubleClick }) {
   const hourColour = localStorage.getItem('hourColour') || '#fff';
   const minuteColour = localStorage.getItem('minuteColour') || '#fff';
   const secondColour = localStorage.getItem('secondColour') || '#fff';
 
   return (
-    <span className="vertical-clock clock-container">
+    <span className="vertical-clock clock-container" onDoubleClick={onDoubleClick}>
       <div className="hour" style={{ color: hourColour }}>
         {finalHour}
       </div>
