@@ -118,21 +118,10 @@
   }
 }
 
-/* The service menu opens upwards — the widget sits at the bottom of the middle column, so
-   downwards would leave the window — and it opens sideways: seventeen services stacked in one
-   column would be a ribbon down the page, so Search, Answers and Reference stand beside each
-   other, each under its own heading. Three columns of about 156px come out near the width of
-   the query line above them. The panel is capped to the window, so it can never drift off the
-   edge on a small screen.
-
-   The height matters as much as the placement: notes and pictures float on a layer of their
-   own at 40, and the widget they belong to carries no height of its own, so a menu at 3 opened
-   underneath a note. It now sits above that layer and still below a dialog (the overlay at
-   100, the dialog itself at 300), which is the only thing allowed to cover it. */
+/* The portal stays above widgets and below dialogs, outside scrolling containers. */
 .aiAskMenu {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 8px);
+  position: fixed;
+  visibility: hidden;
   z-index: 90;
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -145,6 +134,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
+  color: #fff;
   background: rgb(20 20 24 / 74%);
   backdrop-filter: blur(18px) saturate(1.4);
   border: 1px solid rgb(255 255 255 / 12%);
@@ -152,7 +142,7 @@
   box-shadow: 0 16px 34px rgb(0 0 0 / 34%);
 }
 
-/* Two columns need room for two; below that the list is one column again. */
+/* Stack the groups on narrow screens. */
 @media (width <= 560px) {
   .aiAskMenu {
     grid-template-columns: 1fr;

@@ -1,6 +1,7 @@
 import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { MdMenuBook, MdTerminal } from 'react-icons/md';
 import {
   SiBrave,
@@ -180,25 +181,39 @@ const AIAsk = () => {
     return () => window.removeEventListener('focus', claim);
   }, []);
 
-  /**
-   * The menu opens upwards, so the room above the line is all it has: a list long enough to
-   * be worth two columns is also long enough to open past the top of a short window. The cap
-   * is measured from the widget each time it opens, and the menu scrolls past it.
-   */
-  useEffect(() => {
+  // Position the portal against the bar, outside any scrolling widget container.
+  useLayoutEffect(() => {
     if (!picking) return undefined;
 
-    const cap = () => {
-      const above = box.current?.getBoundingClientRect().top ?? 0;
-      const room = Math.min(460, window.innerHeight * 0.62, above - 24);
+    const position = () => {
+      if (!box.current || !menu.current) return;
+      const bar = box.current.getBoundingClientRect();
+      const width = menu.current.getBoundingClientRect().width;
+      const above = Math.max(0, bar.top - 24);
+      const below = Math.max(0, window.innerHeight - bar.bottom - 24);
+      const upwards = above >= 100 || above >= below;
+      const room = upwards ? above : below;
 
-      menu.current?.style.setProperty('max-height', `${Math.max(140, Math.round(room))}px`);
+      Object.assign(menu.current.style, {
+        left: `${Math.max(16, Math.min(bar.right - width, window.innerWidth - width - 16))}px`,
+        top: upwards ? 'auto' : `${bar.bottom + 8}px`,
+        bottom: upwards ? `${window.innerHeight - bar.top + 8}px` : 'auto',
+        maxHeight: `${Math.min(460, window.innerHeight * 0.62, room)}px`,
+        visibility: 'visible',
+      });
     };
 
-    cap();
-    window.addEventListener('resize', cap);
+    position();
+    window.addEventListener('resize', position);
+    window.addEventListener('scroll', position, true);
+    const observer = new ResizeObserver(position);
+    if (box.current) observer.observe(box.current);
 
-    return () => window.removeEventListener('resize', cap);
+    return () => {
+      window.removeEventListener('resize', position);
+      window.removeEventListener('scroll', position, true);
+      observer.disconnect();
+    };
   }, [picking]);
 
   // Closes on a click outside the menu, or on Escape.
@@ -207,7 +222,11 @@ const AIAsk = () => {
 
     const close = (event) => {
       if (event.type === 'keydown' && event.key !== 'Escape') return;
-      if (event.type === 'pointerdown' && box.current?.contains(event.target)) return;
+      if (
+        event.type === 'pointerdown' &&
+        (box.current?.contains(event.target) || menu.current?.contains(event.target))
+      )
+        return;
 
       setPicking(false);
     };
@@ -279,39 +298,42 @@ const AIAsk = () => {
         onClick={() => setPicking((open) => !open)}
         aria-haspopup="menu"
         aria-expanded={picking}
+        aria-controls={picking ? 'ask-service-menu' : undefined}
         aria-label={name}
         title={name}
       >
         <Icon />
       </button>
-      {picking && (
-        <div className="aiAskMenu" role="menu" ref={menu}>
-          {GROUPS.map(([id, label]) => {
-            const entries = Object.entries(SERVICES).filter(([, item]) => item.group === id);
+      {picking &&
+        createPortal(
+          <div className="aiAskMenu" id="ask-service-menu" role="menu" ref={menu}>
+            {GROUPS.map(([id, label]) => {
+              const entries = Object.entries(SERVICES).filter(([, item]) => item.group === id);
 
-            if (!entries.length) return null;
+              if (!entries.length) return null;
 
-            return (
-              <div className="aiAskMenuGroup" role="group" aria-label={label} key={id}>
-                <span className="aiAskMenuLabel">{label}</span>
-                {entries.map(([key, item]) => (
-                  <button
-                    key={key}
-                    type="button"
-                    role="menuitemradio"
-                    aria-checked={key === service}
-                    className={key === service ? 'aiAskOption aiAskOptionOn' : 'aiAskOption'}
-                    onClick={() => choose(key)}
-                  >
-                    <item.Icon />
-                    <span>{item.name}</span>
-                  </button>
-                ))}
-              </div>
-            );
-          })}
-        </div>
-      )}
+              return (
+                <div className="aiAskMenuGroup" role="group" aria-label={label} key={id}>
+                  <span className="aiAskMenuLabel">{label}</span>
+                  {entries.map(([key, item]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={key === service}
+                      className={key === service ? 'aiAskOption aiAskOptionOn' : 'aiAskOption'}
+                      onClick={() => choose(key)}
+                    >
+                      <item.Icon />
+                      <span>{item.name}</span>
+                    </button>
+                  ))}
+                </div>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
     </form>
   );
 };

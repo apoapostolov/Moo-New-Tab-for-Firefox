@@ -5,7 +5,7 @@ The 1.0.0 archive was rebuilt on 27 October 2026 to include this startup preset 
 ### Added
 
 - **Google widgets.** Read mail, check appointments and manage tasks without opening three separate apps. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use.
-- **Search/Ask Bar.** Type a question and choose a search engine, AI service or reference site from the menu. Use it for a quick fact, documentation or a question you want to talk through.
+- **Search/Ask Bar.** Type a question and choose a search engine, AI service or reference site for a quick fact, documentation or a longer conversation. The menu stays visible in smaller windows.
 - **Picture, video and live backgrounds.** Choose a source under Settings → Background, use your own pictures or add a live stream. Triple-click a playing video to watch it with the widgets hidden; Escape brings them back.
 - **Widget layout.** Show, hide and move widgets under Settings → Overview, placing them on either side or in the centre. Keep mail beside your plans on a wide window, with a scrollable layout for narrow splits.
 - **Clock and weather.** Choose a clock and set Progress around your working days and hours under Settings → Time. Add your location under Weather to see current conditions and a five-day forecast before making plans outside.
