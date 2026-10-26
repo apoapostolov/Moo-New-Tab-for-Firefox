@@ -36,7 +36,8 @@
       "icon": "Ikon (opsional)",
       "add": "Tambah",
       "name_error": "Harap cantumkan nama",
-      "url_error": "Harap cantumkan URL"
+      "url_error": "Harap cantumkan URL",
+      "icon_hint": "Terisi otomatis untuk situs yang dikenal. Jika kosong, favicon situs itu sendiri yang dipakai."
     },
     "date": {
       "week": "Pekan"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Ubah warna teks jam",
               "change_minute_colour": "Ubah warna teks menit",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Shift kerja",
+              "shift_subtitle": "Dihitung dari awal hari Anda sampai akhir shift. Biarkan keduanya kosong untuk menghitung 24 jam penuh. 9, 9:30, 9am, dan 17:00 semuanya bisa.",
+              "shift_start": "Awal hari",
+              "shift_end": "Akhir hari",
+              "days_title": "Hari kerja",
+              "days_subtitle": "Jam Progres tampil pada hari kerja yang ditandai di sini. Sisa pekan menampilkan jam di bawah ini.",
+              "fallback_title": "Beralih ke jam cadangan",
+              "fallback_subtitle": "Tampilkan jam itu di luar hari-hari di atas. Jika tidak ditandai, jam Progres adalah jam setiap hari.",
+              "fallback_switch": "Alihkan di luar hari tersebut",
+              "other_title": "Di luar kerja",
+              "other_subtitle": "Jam untuk hari-hari di luar kerja."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Setrip",
               "gaps": "Spasi",
               "slashes": "Garis Miring"
-            }
+            },
+            "show": "Tampilkan tanggal",
+            "show_subtitle": "Letakkan tanggal di bawah jam."
           },
           "quote": {
             "title": "Kutipan",
@@ -234,13 +250,23 @@
               "custom_image": "Gambar kustom",
               "custom_colour": "Warna/gradasi kustom",
               "random_colour": "Warna acak",
-              "random_gradient": "Gradasi acak"
+              "random_gradient": "Gradasi acak",
+              "unsplash": "Unsplash",
+              "mue_library": "Pustaka Mue",
+              "coverr": "Coverr (Video)",
+              "live": "Kanal langsung",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Pilih topik, atau sebutkan nama koleksi.",
+              "topics": "Topik",
+              "categories": "Kategori"
             },
             "source": {
               "title": "Sumber",
@@ -290,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Pustaka Mue",
+              "subtitle": "Gambar pilihan, tersusun per kategori"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Klip berulang gratis, diputar tanpa suara.",
+              "search": "Cari",
+              "search_subtitle": "Biarkan kosong untuk klip apa saja, atau persempit ke satu subjek."
+            },
+            "live": {
+              "title": "Kanal langsung",
+              "subtitle": "Kanal ambient 24/7, diputar tanpa suara. Siaran langsung terus mengunduh selama tab terbuka, jadi data yang dipakai jauh lebih banyak daripada klip berulang.",
+              "channel": "Kanal",
+              "channel_any": "Kanal apa saja"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Klip gratis. Memerlukan kunci API dari akun Pixabay Anda sendiri.",
+              "key": "Kunci API",
+              "key_subtitle": "Buat gratis di pixabay.com/api/docs.",
+              "key_placeholder": "Kunci API Pixabay",
+              "search": "Cari",
+              "search_subtitle": "Biarkan kosong untuk klip apa saja, atau persempit ke satu subjek"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Klip gratis. Memerlukan kunci API dari akun Pexels Anda sendiri.",
+              "key": "Kunci API",
+              "key_subtitle": "Buat gratis di pexels.com/api.",
+              "key_placeholder": "Kunci API Pexels",
+              "search": "Cari",
+              "search_subtitle": "Biarkan kosong untuk klip apa saja, atau persempit ke satu subjek"
+            },
+            "information": {
+              "title": "Informasi latar belakang",
+              "subtitle": "Apa yang halaman katakan tentang gambar di belakangnya."
+            }
           },
           "search": {
             "title": "Cari",
@@ -531,6 +595,39 @@
             "no_supporters": "Moo belum punya suporter saat ini.",
             "photographers": "Fotografer",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Lainnya",
+            "scratch": {
+              "title": "Coretan",
+              "subtitle": "Apa yang Anda letakkan di halaman itu sendiri, di luar widget mana pun."
+            },
+            "scratch_notes": {
+              "title": "Catatan coretan",
+              "subtitle": "Klik dua kali bagian kosong halaman untuk meletakkan catatan. Seret untuk memindahkannya, klik untuk menulis di dalamnya, dan klik × dua kali untuk membuangnya. Markdown didukung."
+            },
+            "scratch_images": {
+              "title": "Gambar coretan",
+              "subtitle": "Tempel gambar di mana saja pada halaman dan gambar itu muncul di posisi kursor, seukuran catatan. Seret sudutnya untuk mengubah ukuran, dan tombol di atasnya menyalin, menyimpan, atau menghapusnya."
+            },
+            "signature": {
+              "title": "Warna khas",
+              "subtitle": "Warna pada tautan, centang, sakelar, dan cincin di sekeliling tombol.",
+              "colour": {
+                "title": "Warna",
+                "subtitle": "Pilih satu, atau ambil warna yang sudah dipakai wallpaper."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Matikan kemiringan",
+              "subtitle": "Catatan dan gambar berdiri tegak, dan menyeretnya tidak lagi membuatnya miring."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Gaya panel",
+          "subtitle": "Klasik adalah panel gelap yang membuat wallpaper terlihat di belakangnya. Kaca lebih terang dan memburamkannya dengan kuat.",
+          "classic": "Klasik",
+          "glass": "Kaca"
         }
       },
       "marketplace": {

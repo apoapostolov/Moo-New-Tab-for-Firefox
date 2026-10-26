@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "既知のサイトでは自動で入力されます。空欄の場合はサイト自身のファビコンを使います。"
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "勤務時間",
+              "shift_subtitle": "一日の始まりから勤務終了までを数えます。両方空欄にすると24時間すべてを数えます。9、9:30、9am、17:00 のいずれも使えます。",
+              "shift_start": "始業時刻",
+              "shift_end": "終業時刻",
+              "days_title": "勤務日",
+              "days_subtitle": "ここにチェックした勤務日にプログレス時計を表示します。それ以外の日は下の時計を表示します。",
+              "fallback_title": "代替の時計に切り替える",
+              "fallback_subtitle": "上の日以外ではその時計を表示します。チェックを外すと、プログレス時計が毎日の時計になります。",
+              "fallback_switch": "勤務日以外で切り替え",
+              "other_title": "勤務時間外",
+              "other_subtitle": "勤務日以外の日の時計です。"
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "日付を表示",
+            "show_subtitle": "時計の下に日付を表示します。"
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "イベント",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue ライブラリ",
+              "coverr": "Coverr (動画)",
+              "live": "ライブチャンネル",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "トピックを選ぶか、コレクション名を指定します。",
+              "topics": "トピック",
+              "categories": "カテゴリー"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Mue ライブラリ",
+              "subtitle": "カテゴリー別に整理された厳選画像"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "無料のループ動画をミュートで再生します。",
+              "search": "検索",
+              "search_subtitle": "空欄にするとすべてのクリップ、入力すると特定のテーマに絞り込みます。"
+            },
+            "live": {
+              "title": "ライブチャンネル",
+              "subtitle": "24時間いつでも流れる環境チャンネルをミュートで再生します。ライブ配信はタブを開いている間ずっとダウンロードを続けるため、ループ動画よりはるかに通信量が多くなります。",
+              "channel": "チャンネル",
+              "channel_any": "すべてのチャンネル"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "無料のクリップ。ご自身の Pixabay アカウントの APIキーが必要です。",
+              "key": "APIキー",
+              "key_subtitle": "pixabay.com/api/docs で無料で取得できます。",
+              "key_placeholder": "Pixabay APIキー",
+              "search": "検索",
+              "search_subtitle": "空欄にするとすべてのクリップ、入力すると特定のテーマに絞り込みます"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "無料のクリップ。ご自身の Pexels アカウントの APIキーが必要です。",
+              "key": "APIキー",
+              "key_subtitle": "pexels.com/api で無料で取得できます。",
+              "key_placeholder": "Pexels APIキー",
+              "search": "検索",
+              "search_subtitle": "空欄にするとすべてのクリップ、入力すると特定のテーマに絞り込みます"
+            },
+            "information": {
+              "title": "背景情報",
+              "subtitle": "背景の画像についてページが表示する情報です。"
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "その他",
+            "scratch": {
+              "title": "スクラッチ",
+              "subtitle": "ウィジェットの外、ページ自体に置いたもの。"
+            },
+            "scratch_notes": {
+              "title": "スクラッチ付箋",
+              "subtitle": "ページの何もない場所をダブルクリックすると付箋を置けます。ドラッグで移動、クリックで書き込み、× を2回クリックで破棄します。Markdown が使えます。"
+            },
+            "scratch_images": {
+              "title": "スクラッチ画像",
+              "subtitle": "ページのどこにでも画像を貼り付けると、ポインタの位置に付箋ほどの大きさで置かれます。角をドラッグするとサイズを変更でき、画像上のボタンでコピー、保存、削除ができます。"
+            },
+            "signature": {
+              "title": "シグネチャーカラー",
+              "subtitle": "リンク、チェック、スイッチ、ボタンの縁に付く色合いです。",
+              "colour": {
+                "title": "色",
+                "subtitle": "好きな色を選ぶか、壁紙にすでに使われている色を使います。"
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "傾きをオフにする",
+              "subtitle": "付箋や画像がまっすぐに表示され、ドラッグしても傾かなくなります。"
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "パネルのスタイル",
+          "subtitle": "クラシックは壁紙が透けて見える暗いパネルです。グラスはより明るく、壁紙を強くぼかします。",
+          "classic": "クラシック",
+          "glass": "グラス"
         }
       },
       "marketplace": {

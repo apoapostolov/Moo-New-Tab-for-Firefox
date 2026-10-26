@@ -36,7 +36,8 @@
       "icon": "Icône (facultatif)",
       "add": "Ajouter",
       "name_error": "Le nom est obligatoire",
-      "url_error": "L'URL est obligatoire"
+      "url_error": "L'URL est obligatoire",
+      "icon_hint": "Rempli pour les sites connus. Vide signifie la favicon du site."
     },
     "date": {
       "week": "Semaine"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Changer la couleur du texte de l'heure",
               "change_minute_colour": "Changer la couleur du texte des minutes",
               "change_second_colour": "Changer la couleur du texte des secondes"
+            },
+            "percentage": {
+              "shift_title": "Horaires de travail",
+              "shift_subtitle": "Compte du début de votre journée à la fin de votre service. Laissez les deux champs vides pour compter les 24 heures. 9, 9:30, 9am et 17:00 fonctionnent tous.",
+              "shift_start": "Début de journée",
+              "shift_end": "Fin de journée",
+              "days_title": "Jours travaillés",
+              "days_subtitle": "L'horloge de progression s'affiche les jours travaillés cochés ici. Le reste de la semaine affiche l'horloge ci-dessous.",
+              "fallback_title": "Passer à l'horloge de remplacement",
+              "fallback_subtitle": "Afficher cette horloge en dehors des jours ci-dessus. Décoché, l'horloge de progression reste l'horloge tous les jours.",
+              "fallback_switch": "Basculer en dehors des jours",
+              "other_title": "Hors travail",
+              "other_subtitle": "L'horloge des jours hors travail."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Tiret",
               "gaps": "Espaces",
               "slashes": "Barres obliques"
-            }
+            },
+            "show": "Afficher la date",
+            "show_subtitle": "Placer la date sous l'horloge."
           },
           "quote": {
             "title": "Citation",
@@ -234,13 +250,23 @@
               "custom_image": "Image personnalisée",
               "custom_colour": "Couleur/dégradé personnalisé",
               "random_colour": "Couleur aléatoire",
-              "random_gradient": "Dégradé aléatoire"
+              "random_gradient": "Dégradé aléatoire",
+              "unsplash": "Unsplash",
+              "mue_library": "Bibliothèque Mue",
+              "coverr": "Coverr (Vidéo)",
+              "live": "Chaînes en direct",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Collection(s) Unsplash",
               "subtitle": "Sélectionnez la(les) collection(s) que vous souhaitez utiliser pour votre fond d'écran",
               "id": "ID(s) de collection",
-              "id_subtitle": "Entrez une liste d'IDs Unsplash séparés par des virgules"
+              "id_subtitle": "Entrez une liste d'IDs Unsplash séparés par des virgules",
+              "section_title": "Unsplash",
+              "section_subtitle": "Choisissez des thèmes, ou nommez une collection.",
+              "topics": "Thèmes",
+              "categories": "Catégories"
             },
             "source": {
               "title": "Source",
@@ -290,7 +316,45 @@
             "display": "Afficher",
             "display_subtitle": "Modifier la façon dont le fond d'écran et les informations photo sont chargés",
             "api": "Paramètres de l'API",
-            "api_subtitle": "Options pour obtenir une image à partir d'un service externe (API)"
+            "api_subtitle": "Options pour obtenir une image à partir d'un service externe (API)",
+            "mue_library": {
+              "title": "Bibliothèque Mue",
+              "subtitle": "Images sélectionnées, classées par catégorie"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Clips en boucle gratuits, lus en sourdine.",
+              "search": "Rechercher",
+              "search_subtitle": "Laissez vide pour n'importe quel clip, ou précisez un sujet."
+            },
+            "live": {
+              "title": "Chaînes en direct",
+              "subtitle": "Chaînes d'ambiance 24 h/24, lues en sourdine. Un direct continue de se télécharger tant que l'onglet est ouvert : il consomme donc bien plus de données qu'un clip en boucle.",
+              "channel": "Chaîne",
+              "channel_any": "Toutes les chaînes"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Clips gratuits. Nécessite une clé API de votre propre compte Pixabay.",
+              "key": "Clé API",
+              "key_subtitle": "Créez-en une gratuitement sur pixabay.com/api/docs.",
+              "key_placeholder": "Clé API Pixabay",
+              "search": "Rechercher",
+              "search_subtitle": "Laissez vide pour n'importe quel clip, ou précisez un sujet"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Clips gratuits. Nécessite une clé API de votre propre compte Pexels.",
+              "key": "Clé API",
+              "key_subtitle": "Créez-en une gratuitement sur pexels.com/api.",
+              "key_placeholder": "Clé API Pexels",
+              "search": "Rechercher",
+              "search_subtitle": "Laissez vide pour n'importe quel clip, ou précisez un sujet"
+            },
+            "information": {
+              "title": "Informations sur le fond d'écran",
+              "subtitle": "Ce que la page indique sur l'image qui se trouve derrière."
+            }
           },
           "search": {
             "title": "Recherche",
@@ -531,6 +595,39 @@
             "no_supporters": "Il n'y a actuellement aucun supporter de Moo",
             "photographers": "Photographes",
             "curators": "Créateurs d'add-ons"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Divers",
+            "scratch": {
+              "title": "Brouillon",
+              "subtitle": "Ce que vous déposez sur la page elle-même, en dehors de tout widget."
+            },
+            "scratch_notes": {
+              "title": "Notes brouillon",
+              "subtitle": "Double-cliquez sur n'importe quelle zone vide de la page pour déposer une note. Faites-la glisser pour la déplacer, cliquez dessus pour écrire dedans, et cliquez deux fois sur le × pour la jeter. Le Markdown fonctionne."
+            },
+            "scratch_images": {
+              "title": "Images brouillon",
+              "subtitle": "Collez une image n'importe où sur la page : elle apparaît à l'endroit du pointeur, à la taille d'une note. Faites glisser un coin pour la redimensionner, et ses boutons permettent de la copier, de l'enregistrer ou de la supprimer."
+            },
+            "signature": {
+              "title": "Couleur de signature",
+              "subtitle": "La teinte des liens, des coches, des interrupteurs et de l'anneau autour des boutons.",
+              "colour": {
+                "title": "Couleur",
+                "subtitle": "Choisissez-en une, ou reprenez la couleur que porte déjà votre fond d'écran."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Désactiver l'inclinaison",
+              "subtitle": "Les notes et les images restent droites, et les faire glisser ne les incline plus."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Style du panneau",
+          "subtitle": "Classique est un panneau sombre à travers lequel on voit le fond d'écran. Verre est plus clair et le floute fortement.",
+          "classic": "Classique",
+          "glass": "Verre"
         }
       },
       "marketplace": {

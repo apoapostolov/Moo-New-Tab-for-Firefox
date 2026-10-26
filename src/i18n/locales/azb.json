@@ -36,7 +36,8 @@
       "icon": "İkon (istəyə bağlı)",
       "add": "Əlavə et",
       "name_error": "Ad göstərilməlidir",
-      "url_error": "URL göstərilməlidir"
+      "url_error": "URL göstərilməlidir",
+      "icon_hint": "Tanınmış saytlar üçün doldurulur. Boş, saytın öz faviconu deməkdir."
     },
     "date": {
       "week": "Həftə"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Saat mətn rəngini dəyişdir",
               "change_minute_colour": "Dəqiqə mətn rəngini dəyişdir",
               "change_second_colour": "Saniyə mətn rəngini dəyişdir"
+            },
+            "percentage": {
+              "shift_title": "İş növbəsi",
+              "shift_subtitle": "Gününüzün başlanğıcından növbənizin sonuna qədər sayır. Bütün 24 saatı saymaq üçün hər ikisini boş buraxın. 9, 9:30, 9am və 17:00 hamısı işləyir.",
+              "shift_start": "Günün başlanğıcı",
+              "shift_end": "Günün sonu",
+              "days_title": "İş günləri",
+              "days_subtitle": "Tərəqqi saatı burada işarələnmiş iş günlərində görünür. Həftənin qalanı aşağıdakı saatı göstərir.",
+              "fallback_title": "Ehtiyat saata keç",
+              "fallback_subtitle": "Həmin saatı yuxarıdakı günlərdən kənarda göstər. İşarələnməyibsə, hər gün Tərəqqi saatı göstərilir.",
+              "fallback_switch": "Günlərdən kənarda keçid",
+              "other_title": "İşdən kənar",
+              "other_subtitle": "İşdən kənar günlər üçün saat."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Tire",
               "gaps": "Boşluqlar",
               "slashes": "Slash-lar"
-            }
+            },
+            "show": "Tarixi göstər",
+            "show_subtitle": "Tarixi saatın altına qoyun."
           },
           "quote": {
             "title": "Sitat",
@@ -234,13 +250,23 @@
               "custom_image": "Xüsusi şəkil",
               "custom_colour": "Xüsusi rəng/qradiyent",
               "random_colour": "Təsadüfi rəng",
-              "random_gradient": "Təsadüfi qradiyent"
+              "random_gradient": "Təsadüfi qradiyent",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue Kitabxanası",
+              "coverr": "Coverr (Video)",
+              "live": "Canlı kanallar",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Kolleksiyası",
               "subtitle": "Arxa fonunuz üçün istifadə etmək istədiyiniz kolleksiyanı seçin",
               "id": "Kolleksiya ID-ləri",
-              "id_subtitle": "Vergüllə ayrılmış Unsplash ID-lər siyahısını daxil edin"
+              "id_subtitle": "Vergüllə ayrılmış Unsplash ID-lər siyahısını daxil edin",
+              "section_title": "Unsplash",
+              "section_subtitle": "Mövzular seçin, ya da kolleksiyanın adını yazın.",
+              "topics": "Mövzular",
+              "categories": "Kateqoriyalar"
             },
             "source": {
               "title": "Mənbə",
@@ -290,7 +316,45 @@
             "display": "Göstərmə",
             "display_subtitle": "Arxa fon və foto məlumatının necə yükləndiyini dəyişdirin",
             "api": "API Parametrləri",
-            "api_subtitle": "Xarici xidmətdən (API) şəkil əldə etmək üçün seçimlər"
+            "api_subtitle": "Xarici xidmətdən (API) şəkil əldə etmək üçün seçimlər",
+            "mue_library": {
+              "title": "Mue Kitabxanası",
+              "subtitle": "Seçilmiş şəkillər, kateqoriyaya görə təşkil edilib"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Pulsuz dövr edən kliplər, səssiz oynadılır.",
+              "search": "Axtarış",
+              "search_subtitle": "İstənilən klip üçün boş buraxın, ya da bir mövzuya daraldın."
+            },
+            "live": {
+              "title": "Canlı kanallar",
+              "subtitle": "24/7 fon kanalları, səssiz oynadılır. Canlı yayım tab açıq olduqca yüklənməyə davam edir, ona görə dövr edən klipdən qat-qat çox data istifadə edir.",
+              "channel": "Kanal",
+              "channel_any": "İstənilən kanal"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Pulsuz kliplər. Öz Pixabay hesabınızdan API açarı tələb edir.",
+              "key": "API açarı",
+              "key_subtitle": "pixabay.com/api/docs ünvanında pulsuz bir açar yaradın.",
+              "key_placeholder": "Pixabay API açarı",
+              "search": "Axtarış",
+              "search_subtitle": "İstənilən klip üçün boş buraxın, ya da bir mövzuya daraldın"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Pulsuz kliplər. Öz Pexels hesabınızdan API açarı tələb edir.",
+              "key": "API açarı",
+              "key_subtitle": "pexels.com/api ünvanında pulsuz bir açar yaradın.",
+              "key_placeholder": "Pexels API açarı",
+              "search": "Axtarış",
+              "search_subtitle": "İstənilən klip üçün boş buraxın, ya da bir mövzuya daraldın"
+            },
+            "information": {
+              "title": "Arxa fon məlumatı",
+              "subtitle": "Səhifənin arxasındakı şəkil haqqında dedikləri."
+            }
           },
           "search": {
             "title": "Axtarış",
@@ -531,6 +595,39 @@
             "no_supporters": "Hazırda Moo dəstəkçisi yoxdur",
             "photographers": "Fotoqraflar",
             "curators": "Əlavə yaradıcıları"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Müxtəlif",
+            "scratch": {
+              "title": "Qaralama",
+              "subtitle": "Səhifənin özünə, hər hansı vidjetdən kənara atdıqlarınız."
+            },
+            "scratch_notes": {
+              "title": "Qaralama qeydləri",
+              "subtitle": "Qeyd atmaq üçün səhifənin istənilən boş yerinə iki dəfə klikləyin. Yerini dəyişmək üçün dartın, yazmaq üçün üzərinə klikləyin, atmaq üçün isə × işarəsinə iki dəfə klikləyin. Markdown işləyir."
+            },
+            "scratch_images": {
+              "title": "Qaralama şəkilləri",
+              "subtitle": "Şəkli səhifənin istənilən yerinə yapışdırın — göstəricinin olduğu yerə, qeyd ölçüsündə düşəcək. Ölçünü dəyişmək üçün küncdən dartın, üzərindəki düymələr isə onu kopyalayır, saxlayır və ya silir."
+            },
+            "signature": {
+              "title": "İmza rəngi",
+              "subtitle": "Keçidlərdə, işarələrdə, açarlarda və düymələrin ətrafındakı halqada olan çalar.",
+              "colour": {
+                "title": "Rəng",
+                "subtitle": "Birini seçin, ya da arxa fonun artıq daşıdığı rəngi götürün."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Əyilməni söndür",
+              "subtitle": "Qeydlər və şəkillər düz durur, dartanda artıq əyilmir."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Panel üslubu",
+          "subtitle": "Klassik arxa fonu arasından gördüyünüz tünd paneldir. Şüşə daha açıqdır və onu güclü bulanıqlaşdırır.",
+          "classic": "Klassik",
+          "glass": "Şüşə"
         }
       },
       "marketplace": {

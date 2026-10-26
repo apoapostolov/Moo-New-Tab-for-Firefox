@@ -36,7 +36,8 @@
       "icon": "圖示（選擇性）",
       "add": "增加",
       "name_error": "必須提供名稱",
-      "url_error": "必須提供網址"
+      "url_error": "必須提供網址",
+      "icon_hint": "已知網站會自動填入。留空則使用網站自己的圖示。"
     },
     "date": {
       "week": "週"
@@ -135,6 +136,19 @@
               "change_hour_colour": "變更小時文字顏色",
               "change_minute_colour": "變更分鐘文字顏色",
               "change_second_colour": "變更秒文字顏色"
+            },
+            "percentage": {
+              "shift_title": "上班時段",
+              "shift_subtitle": "從一天的開始算到你的下班時間。兩項都留空則計算全部 24 小時。9、9:30、9am 和 17:00 都可以。",
+              "shift_start": "上班時間",
+              "shift_end": "下班時間",
+              "days_title": "上班日",
+              "days_subtitle": "勾選的上班日顯示進度時鐘。一週裡其他日子顯示下方的時鐘。",
+              "fallback_title": "切換至備用時鐘",
+              "fallback_subtitle": "在上述日子之外顯示那個時鐘。不勾選時，每天的時鐘都是進度時鐘。",
+              "fallback_switch": "在非上班日切換",
+              "other_title": "非上班日",
+              "other_subtitle": "非上班日使用的時鐘。"
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "顯示日期",
+            "show_subtitle": "在時鐘下方顯示日期。"
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "事件",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue 圖庫",
+              "coverr": "Coverr (影片)",
+              "live": "直播頻道",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "選擇主題，或指定一個合集。",
+              "topics": "主題",
+              "categories": "類別"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Mue 圖庫",
+              "subtitle": "依類別整理的精選圖片"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "免費循環片段，靜音播放。",
+              "search": "搜尋",
+              "search_subtitle": "留空則顯示任何片段，也可以縮小至某個主題。"
+            },
+            "live": {
+              "title": "直播頻道",
+              "subtitle": "全天候環境頻道，靜音播放。只要分頁開著，直播就會一直下載，所以流量遠高於循環片段。",
+              "channel": "頻道",
+              "channel_any": "任何頻道"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "免費片段。需要你自己 Pixabay 帳戶的 API 金鑰。",
+              "key": "API 金鑰",
+              "key_subtitle": "可在 pixabay.com/api/docs 免費建立。",
+              "key_placeholder": "Pixabay API 金鑰",
+              "search": "搜尋",
+              "search_subtitle": "留空則顯示任何片段，也可以縮小至某個主題"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "免費片段。需要你自己 Pexels 帳戶的 API 金鑰。",
+              "key": "API 金鑰",
+              "key_subtitle": "可在 pexels.com/api 免費建立。",
+              "key_placeholder": "Pexels API 金鑰",
+              "search": "搜尋",
+              "search_subtitle": "留空則顯示任何片段，也可以縮小至某個主題"
+            },
+            "information": {
+              "title": "背景資訊",
+              "subtitle": "頁面顯示的有關背景圖片的資訊。"
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "其他",
+            "scratch": {
+              "title": "隨手記",
+              "subtitle": "放在小工具之外、頁面本身的內容。"
+            },
+            "scratch_notes": {
+              "title": "隨手記便條",
+              "subtitle": "在頁面空白處連按兩下即可放置便條。拖曳可移動，點擊可書寫，連續點擊兩次 × 即可丟棄。支援 Markdown。"
+            },
+            "scratch_images": {
+              "title": "隨手記圖片",
+              "subtitle": "在頁面任意位置貼上圖片，它會以便條大小落在指標所在處。拖曳邊角可以調整大小，圖上的按鈕可以複製、儲存或移除它。"
+            },
+            "signature": {
+              "title": "標誌色",
+              "subtitle": "用在連結、勾選、開關和按鈕外圈上的色調。",
+              "colour": {
+                "title": "顏色",
+                "subtitle": "選擇一種顏色，或採用背景圖片既有的顏色。"
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "關閉傾斜",
+              "subtitle": "便條和圖片保持端正擺放，拖曳時也不再傾斜。"
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "面板樣式",
+          "subtitle": "經典是能透出背景圖片的深色面板。玻璃更亮，並大幅模糊背景圖片。",
+          "classic": "經典",
+          "glass": "玻璃"
         }
       },
       "marketplace": {

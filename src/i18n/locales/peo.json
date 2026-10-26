@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "Filled in for known sites. Empty means the site's own favicon."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Work shift",
+              "shift_subtitle": "Counts from the start of your day to the end of your shift. Leave both empty to count all 24 hours. 9, 9:30, 9am and 17:00 all work.",
+              "shift_start": "Start of day",
+              "shift_end": "End of day",
+              "days_title": "Work Days",
+              "days_subtitle": "The Progress clock shows on the work days ticked here. The rest of the week shows the clock below.",
+              "fallback_title": "Switch to fallback clock",
+              "fallback_subtitle": "Show that clock outside the days above. Unticked, the Progress clock is the clock every day.",
+              "fallback_switch": "Switch outside the days",
+              "other_title": "Outside Work",
+              "other_subtitle": "The clock for the days outside work."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "Show date",
+            "show_subtitle": "Put the date under the clock."
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "Events",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue Library",
+              "coverr": "Coverr (Video)",
+              "live": "Live channels",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Pick topics, or name a collection.",
+              "topics": "Topics",
+              "categories": "Categories"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Mue Library",
+              "subtitle": "Curated images, organised by category"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Free looping clips, played muted.",
+              "search": "Search",
+              "search_subtitle": "Leave empty for any clip, or narrow it to one subject."
+            },
+            "live": {
+              "title": "Live channels",
+              "subtitle": "24/7 ambient channels, played muted. A live stream keeps downloading while the tab is open, so it uses far more data than a looping clip.",
+              "channel": "Channel",
+              "channel_any": "Any channel"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Free clips. Needs an API key from your own Pixabay account.",
+              "key": "API key",
+              "key_subtitle": "Make one free at pixabay.com/api/docs.",
+              "key_placeholder": "Pixabay API key",
+              "search": "Search",
+              "search_subtitle": "Leave empty for any clip, or narrow it to a subject"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Free clips. Needs an API key from your own Pexels account.",
+              "key": "API key",
+              "key_subtitle": "Make one free at pexels.com/api.",
+              "key_placeholder": "Pexels API key",
+              "search": "Search",
+              "search_subtitle": "Leave empty for any clip, or narrow it to a subject"
+            },
+            "information": {
+              "title": "Background Information",
+              "subtitle": "What the page says about the picture behind it."
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Misc",
+            "scratch": {
+              "title": "Scratch",
+              "subtitle": "What you drop on the page itself, outside any widget."
+            },
+            "scratch_notes": {
+              "title": "Scratch notes",
+              "subtitle": "Double-click any empty part of the page to drop a note. Drag it to move it, click it to write in it, and click the × twice to throw it away. Markdown works."
+            },
+            "scratch_images": {
+              "title": "Scratch images",
+              "subtitle": "Paste a picture anywhere on the page and it lands where the pointer is, at the size of a note. Drag a corner to resize it, and the buttons on it copy it, save it or remove it."
+            },
+            "signature": {
+              "title": "Signature colour",
+              "subtitle": "The tint on links, ticks, switches and the ring around the buttons.",
+              "colour": {
+                "title": "Colour",
+                "subtitle": "Pick one, or take the colour the wallpaper is already wearing."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Turn off tilting",
+              "subtitle": "Notes and pictures sit straight, and dragging one no longer gives it a lean."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Panel style",
+          "subtitle": "Classic is a dark panel you see the wallpaper through. Glass is lighter and blurs it hard.",
+          "classic": "Classic",
+          "glass": "Glass"
         }
       },
       "marketplace": {

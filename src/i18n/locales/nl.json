@@ -36,7 +36,8 @@
       "icon": "Icoon (optioneel)",
       "add": "Toevoegen",
       "name_error": "Naam moet worden opgegeven",
-      "url_error": "URL moet worden opgegeven"
+      "url_error": "URL moet worden opgegeven",
+      "icon_hint": "Ingevuld voor bekende sites. Leeg betekent de favicon van de site zelf."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Wijzig de kleur van de uurtekst",
               "change_minute_colour": "Wijzig de kleur van de minuuttekst",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Werktijd",
+              "shift_subtitle": "Telt van het begin van je dag tot het einde van je dienst. Laat beide leeg om alle 24 uur te tellen. 9, 9:30, 9am en 17:00 werken allemaal.",
+              "shift_start": "Begin van de dag",
+              "shift_end": "Einde van de dag",
+              "days_title": "Werkdagen",
+              "days_subtitle": "De voortgangsklok verschijnt op de hier aangevinkte werkdagen. Op de rest van de week geldt de klok hieronder.",
+              "fallback_title": "Overschakelen naar reserveklok",
+              "fallback_subtitle": "Toon die klok buiten de dagen hierboven. Zonder vinkje is de voortgangsklok elke dag de klok.",
+              "fallback_switch": "Omschakelen buiten de dagen",
+              "other_title": "Buiten werktijd",
+              "other_subtitle": "De klok voor de dagen buiten het werk."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "Datum tonen",
+            "show_subtitle": "Zet de datum onder de klok."
           },
           "quote": {
             "title": "Citaat",
@@ -234,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue-bibliotheek",
+              "coverr": "Coverr (Video)",
+              "live": "Livekanalen",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Kies onderwerpen of geef een collectie een naam.",
+              "topics": "Onderwerpen",
+              "categories": "Categorieën"
             },
             "source": {
               "title": "Source",
@@ -290,7 +316,45 @@
             "display": "Weergave",
             "display_subtitle": "Verander hoe achtergrond- en foto informatie geladen wordt",
             "api": "API Instellingen",
-            "api_subtitle": "Opties voor het verkrijgen van afbeeldingen van externe bronnen (API)"
+            "api_subtitle": "Opties voor het verkrijgen van afbeeldingen van externe bronnen (API)",
+            "mue_library": {
+              "title": "Mue-bibliotheek",
+              "subtitle": "Gecureerde afbeeldingen, per categorie geordend"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Gratis loopclips, zonder geluid afgespeeld.",
+              "search": "Zoeken",
+              "search_subtitle": "Laat leeg voor elke clip, of beperk het tot één onderwerp."
+            },
+            "live": {
+              "title": "Livekanalen",
+              "subtitle": "24/7-ambientkanalen, zonder geluid afgespeeld. Een livestream blijft downloaden zolang het tabblad open is en gebruikt daardoor veel meer data dan een loopclip.",
+              "channel": "Kanaal",
+              "channel_any": "Alle kanalen"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Gratis clips. Vereist een API-sleutel van je eigen Pixabay-account.",
+              "key": "API-sleutel",
+              "key_subtitle": "Maak er gratis een aan op pixabay.com/api/docs.",
+              "key_placeholder": "Pixabay API-sleutel",
+              "search": "Zoeken",
+              "search_subtitle": "Laat leeg voor elke clip, of beperk het tot één onderwerp"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Gratis clips. Vereist een API-sleutel van je eigen Pexels-account.",
+              "key": "API-sleutel",
+              "key_subtitle": "Maak er gratis een aan op pexels.com/api.",
+              "key_placeholder": "Pexels API-sleutel",
+              "search": "Zoeken",
+              "search_subtitle": "Laat leeg voor elke clip, of beperk het tot één onderwerp"
+            },
+            "information": {
+              "title": "Achtergrondinformatie",
+              "subtitle": "Wat de pagina over de afbeelding erachter zegt."
+            }
           },
           "search": {
             "title": "Zoekbalk",
@@ -531,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Overig",
+            "scratch": {
+              "title": "Kladblok",
+              "subtitle": "Wat je op de pagina zelf neerzet, buiten elk widget."
+            },
+            "scratch_notes": {
+              "title": "Kladnotities",
+              "subtitle": "Dubbelklik op een leeg deel van de pagina om een notitie neer te zetten. Sleep hem om te verplaatsen, klik erin om te schrijven en klik twee keer op de × om hem weg te gooien. Markdown werkt."
+            },
+            "scratch_images": {
+              "title": "Kladafbeeldingen",
+              "subtitle": "Plak een afbeelding ergens op de pagina en hij komt terecht waar de cursor staat, op de grootte van een notitie. Sleep aan een hoek om hem te vergroten of te verkleinen; met de knoppen erop kopieer, bewaar of verwijder je hem."
+            },
+            "signature": {
+              "title": "Accentkleur",
+              "subtitle": "De tint van links, vinkjes, schakelaars en de ring rond de knoppen.",
+              "colour": {
+                "title": "Kleur",
+                "subtitle": "Kies er een, of neem de kleur die het achtergrondbeeld al draagt."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Kantelen uitschakelen",
+              "subtitle": "Notities en afbeeldingen staan recht, en als je er een sleept krijgt hij geen scheefstand meer."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Paneelstijl",
+          "subtitle": "Klassiek is een donker paneel waar je het achtergrondbeeld doorheen ziet. Glas is lichter en vervaagt het sterk.",
+          "classic": "Klassiek",
+          "glass": "Glas"
         }
       },
       "marketplace": {

@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "Forhåndsutfylt for kjente nettsteder. Tomt betyr nettstedets egen favicon."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Arbeidsskift",
+              "shift_subtitle": "Teller fra starten av dagen din til slutten av skiftet ditt. La begge stå tomme for å telle alle 24 timene. 9, 9:30, 9am og 17:00 fungerer alle.",
+              "shift_start": "Starten av dagen",
+              "shift_end": "Slutten av dagen",
+              "days_title": "Arbeidsdager",
+              "days_subtitle": "Fremdriftsklokken vises på arbeidsdagene som er haket av her. Resten av uken vises klokken nedenfor.",
+              "fallback_title": "Bytt til reserveklokke",
+              "fallback_subtitle": "Vis den klokken utenfor dagene ovenfor. Uten hake er fremdriftsklokken klokken hver dag.",
+              "fallback_switch": "Bytt utenfor dagene",
+              "other_title": "Utenfor arbeid",
+              "other_subtitle": "Klokken for dagene utenfor arbeid."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "Vis dato",
+            "show_subtitle": "Setter datoen under klokken."
           },
           "quote": {
             "title": "Sitat",
@@ -234,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue-bibliotek",
+              "coverr": "Coverr (Video)",
+              "live": "Direktekanaler",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Velg emner, eller gi en samling et navn.",
+              "topics": "Emner",
+              "categories": "Kategorier"
             },
             "source": {
               "title": "Source",
@@ -290,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Mue-bibliotek",
+              "subtitle": "Utvalgte bilder, ordnet etter kategori"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Gratis løkkeklipp, spilt av uten lyd.",
+              "search": "Søk",
+              "search_subtitle": "La stå tomt for et hvilket som helst klipp, eller begrens det til ett emne."
+            },
+            "live": {
+              "title": "Direktekanaler",
+              "subtitle": "24/7-ambientkanaler, spilt av uten lyd. En direktestrøm fortsetter å lastes ned så lenge fanen er åpen, og bruker derfor langt mer data enn et løkkeklipp.",
+              "channel": "Kanal",
+              "channel_any": "Alle kanaler"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Gratis klipp. Krever en API-nøkkel fra din egen Pixabay-konto.",
+              "key": "API-nøkkel",
+              "key_subtitle": "Lag en gratis på pixabay.com/api/docs.",
+              "key_placeholder": "Pixabay API-nøkkel",
+              "search": "Søk",
+              "search_subtitle": "La stå tomt for et hvilket som helst klipp, eller begrens det til ett emne"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Gratis klipp. Krever en API-nøkkel fra din egen Pexels-konto.",
+              "key": "API-nøkkel",
+              "key_subtitle": "Lag en gratis på pexels.com/api.",
+              "key_placeholder": "Pexels API-nøkkel",
+              "search": "Søk",
+              "search_subtitle": "La stå tomt for et hvilket som helst klipp, eller begrens det til ett emne"
+            },
+            "information": {
+              "title": "Bakgrunnsinformasjon",
+              "subtitle": "Hva siden sier om bildet bak."
+            }
           },
           "search": {
             "title": "Søkebar",
@@ -531,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Diverse",
+            "scratch": {
+              "title": "Kladd",
+              "subtitle": "Det du legger rett på siden, utenfor alle widgeter."
+            },
+            "scratch_notes": {
+              "title": "Kladdnotater",
+              "subtitle": "Dobbeltklikk på en tom del av siden for å legge inn et notat. Dra i det for å flytte det, klikk på det for å skrive, og klikk to ganger på × for å kaste det. Markdown fungerer."
+            },
+            "scratch_images": {
+              "title": "Kladdbilder",
+              "subtitle": "Lim inn et bilde hvor som helst på siden, så lander det der pekeren er, i størrelse som et notat. Dra i et hjørne for å endre størrelsen, og knappene på det kopierer, lagrer eller fjerner det."
+            },
+            "signature": {
+              "title": "Aksentfarge",
+              "subtitle": "Fargetonen på lenker, haker, brytere og ringen rundt knappene.",
+              "colour": {
+                "title": "Farge",
+                "subtitle": "Velg en, eller ta fargen som bakgrunnsbildet allerede har."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Slå av helning",
+              "subtitle": "Notater og bilder står rett, og når du drar i et lener det seg ikke lenger."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Panelstil",
+          "subtitle": "Klassisk er et mørkt panel du ser bakgrunnsbildet gjennom. Glass er lysere og slører det kraftig.",
+          "classic": "Klassisk",
+          "glass": "Glass"
         }
       },
       "marketplace": {

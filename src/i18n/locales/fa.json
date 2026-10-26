@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "برای سایت‌های شناخته‌شده پر می‌شود. خالی یعنی فاوآیکون خود سایت."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "شیفت کاری",
+              "shift_subtitle": "از شروع روزتان تا پایان شیفت کاری‌تان می‌شمارد. برای شمارش تمام 24 ساعت هر دو را خالی بگذارید. 9، 9:30، 9am و 17:00 همه کار می‌کنند.",
+              "shift_start": "شروع روز",
+              "shift_end": "پایان روز",
+              "days_title": "روزهای کاری",
+              "days_subtitle": "ساعت پیشرفت در روزهای کاری تیک‌خوردهٔ اینجا نمایش داده می‌شود. بقیهٔ هفته ساعت پایین را نشان می‌دهد.",
+              "fallback_title": "تغییر به ساعت جایگزین",
+              "fallback_subtitle": "آن ساعت را بیرون از روزهای بالا نشان بده. اگر تیک نخورده باشد، ساعت پیشرفت هر روز همان ساعت است.",
+              "fallback_switch": "تغییر در بیرون روزها",
+              "other_title": "بیرون از کار",
+              "other_subtitle": "ساعت روزهای بیرون از کار."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "نمایش تاریخ",
+            "show_subtitle": "تاریخ را زیر ساعت بگذارید."
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "رویدادها",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "کتابخانهٔ Mue",
+              "coverr": "Coverr (ویدیو)",
+              "live": "کانال‌های زنده",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "موضوع‌ها را انتخاب کنید، یا نام یک مجموعه را بنویسید.",
+              "topics": "موضوع‌ها",
+              "categories": "دسته‌ها"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "کتابخانهٔ Mue",
+              "subtitle": "تصاویر گزیده‌شده، دسته‌بندی‌شده بر اساس موضوع"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "کلیپ‌های حلقه‌ای رایگان، بی‌صدا پخش می‌شوند.",
+              "search": "جستجو",
+              "search_subtitle": "برای هر کلیپی خالی بگذارید، یا آن را به یک موضوع محدود کنید."
+            },
+            "live": {
+              "title": "کانال‌های زنده",
+              "subtitle": "کانال‌های محیطی شبانه‌روزی، بی‌صدا پخش می‌شوند. پخش زنده تا وقتی زبانه باز است دانلود می‌شود، پس بسیار بیشتر از یک کلیپ حلقه‌ای داده مصرف می‌کند.",
+              "channel": "کانال",
+              "channel_any": "هر کانالی"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "کلیپ‌های رایگان. به کلید API از حساب Pixabay خودتان نیاز دارد.",
+              "key": "کلید API",
+              "key_subtitle": "یکی به‌صورت رایگان در pixabay.com/api/docs بسازید.",
+              "key_placeholder": "کلید API برای Pixabay",
+              "search": "جستجو",
+              "search_subtitle": "برای هر کلیپی خالی بگذارید، یا آن را به یک موضوع محدود کنید"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "کلیپ‌های رایگان. به کلید API از حساب Pexels خودتان نیاز دارد.",
+              "key": "کلید API",
+              "key_subtitle": "یکی به‌صورت رایگان در pexels.com/api بسازید.",
+              "key_placeholder": "کلید API برای Pexels",
+              "search": "جستجو",
+              "search_subtitle": "برای هر کلیپی خالی بگذارید، یا آن را به یک موضوع محدود کنید"
+            },
+            "information": {
+              "title": "اطلاعات پس‌زمینه",
+              "subtitle": "چیزی که صفحه دربارهٔ تصویر پشت خودش می‌گوید."
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "متفرقه",
+            "scratch": {
+              "title": "یادداشت آزاد",
+              "subtitle": "چیزی که روی خود صفحه و بیرون از هر ابزارکی می‌ریزید."
+            },
+            "scratch_notes": {
+              "title": "یادداشت‌های آزاد",
+              "subtitle": "برای انداختن یک یادداشت، دوبار روی هر جای خالی صفحه کلیک کنید. برای جابه‌جایی آن را بکشید، برای نوشتن روی آن کلیک کنید، و برای دور انداختنش دو بار روی × کلیک کنید. Markdown کار می‌کند."
+            },
+            "scratch_images": {
+              "title": "تصاویر یادداشت آزاد",
+              "subtitle": "تصویری را هر جای صفحه بچسبانید؛ همان‌جا که نشانگر است و به اندازهٔ یک یادداشت فرود می‌آید. برای تغییر اندازه گوشه‌اش را بکشید، و دکمه‌های روی آن تصویر را کپی، ذخیره یا حذف می‌کنند."
+            },
+            "signature": {
+              "title": "رنگ امضا",
+              "subtitle": "رنگ‌مایهٔ پیوندها، تیک‌ها، کلیدها و حلقهٔ دور دکمه‌ها.",
+              "colour": {
+                "title": "رنگ",
+                "subtitle": "یکی را انتخاب کنید، یا رنگی را بردارید که تصویر پس‌زمینه از قبل دارد."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "خاموش کردن کج‌شدن",
+              "subtitle": "یادداشت‌ها و تصاویر صاف می‌مانند و کشیدنشان دیگر کجشان نمی‌کند."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "سبک پنل",
+          "subtitle": "کلاسیک یک پنل تیره است که تصویر پس‌زمینه را از پشت آن می‌بینید. شیشه‌ای روشن‌تر است و آن را محکم محو می‌کند.",
+          "classic": "کلاسیک",
+          "glass": "شیشه‌ای"
         }
       },
       "marketplace": {

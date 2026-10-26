@@ -36,7 +36,8 @@
       "icon": "Ícone (opcional)",
       "add": "Adicionar",
       "name_error": "Deve fornecer o nome",
-      "url_error": "Forneça uma URL"
+      "url_error": "Forneça uma URL",
+      "icon_hint": "Preenchido para sites conhecidos. Vazio significa o favicon do próprio site."
     },
     "date": {
       "week": "Semana"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Alterar a cor das horas",
               "change_minute_colour": "Alterar a cor dos minutos",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Turno de trabalho",
+              "shift_subtitle": "Conta desde o início do seu dia até ao fim do seu turno. Deixe ambos vazios para contar as 24 horas. 9, 9:30, 9am e 17:00 funcionam todos.",
+              "shift_start": "Início do dia",
+              "shift_end": "Fim do dia",
+              "days_title": "Dias de trabalho",
+              "days_subtitle": "O relógio de progresso aparece nos dias de trabalho assinalados aqui. O resto da semana mostra o relógio abaixo.",
+              "fallback_title": "Mudar para o relógio alternativo",
+              "fallback_subtitle": "Mostra esse relógio fora dos dias acima. Sem marcar, o relógio de progresso é o relógio todos os dias.",
+              "fallback_switch": "Alternar fora dos dias",
+              "other_title": "Fora do trabalho",
+              "other_subtitle": "O relógio para os dias fora do trabalho."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Traço",
               "gaps": "Traço espaçado",
               "slashes": "Barras"
-            }
+            },
+            "show": "Mostrar a data",
+            "show_subtitle": "Coloque a data por baixo do relógio."
           },
           "quote": {
             "title": "Citações",
@@ -234,13 +250,23 @@
               "custom_image": "Imagem personalizada",
               "custom_colour": "Cor/gradiente personalizados",
               "random_colour": "cor aleatória",
-              "random_gradient": "Gradiente aleatório"
+              "random_gradient": "Gradiente aleatório",
+              "unsplash": "Unsplash",
+              "mue_library": "Biblioteca Mue",
+              "coverr": "Coverr (Vídeo)",
+              "live": "Canais em direto",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Escolha temas ou indique o nome de uma coleção.",
+              "topics": "Temas",
+              "categories": "Categorias"
             },
             "source": {
               "title": "Fonte",
@@ -290,7 +316,45 @@
             "display": "Ecrã",
             "display_subtitle": "Alterar como as informações de plano de fundo e foto são carregadas",
             "api": "Configurações da API",
-            "api_subtitle": "Opções para obter uma imagem de um serviço externo (API)"
+            "api_subtitle": "Opções para obter uma imagem de um serviço externo (API)",
+            "mue_library": {
+              "title": "Biblioteca Mue",
+              "subtitle": "Imagens selecionadas, organizadas por categoria"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Clips em loop gratuitos, reproduzidos sem som.",
+              "search": "Pesquisar",
+              "search_subtitle": "Deixe em branco para qualquer clip, ou restrinja a um tema."
+            },
+            "live": {
+              "title": "Canais em direto",
+              "subtitle": "Canais ambiente 24/7, reproduzidos sem som. Uma transmissão em direto continua a descarregar enquanto a guia está aberta, por isso gasta muito mais dados do que um clip em loop.",
+              "channel": "Canal",
+              "channel_any": "Qualquer canal"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Clips gratuitos. Requer uma chave de API da sua própria conta Pixabay.",
+              "key": "Chave de API",
+              "key_subtitle": "Crie uma gratuitamente em pixabay.com/api/docs.",
+              "key_placeholder": "Chave de API do Pixabay",
+              "search": "Pesquisar",
+              "search_subtitle": "Deixe em branco para qualquer clip, ou restrinja a um tema"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Clips gratuitos. Requer uma chave de API da sua própria conta Pexels.",
+              "key": "Chave de API",
+              "key_subtitle": "Crie uma gratuitamente em pexels.com/api.",
+              "key_placeholder": "Chave de API do Pexels",
+              "search": "Pesquisar",
+              "search_subtitle": "Deixe em branco para qualquer clip, ou restrinja a um tema"
+            },
+            "information": {
+              "title": "Informações do plano de fundo",
+              "subtitle": "O que a página diz sobre a imagem que está por trás."
+            }
           },
           "search": {
             "title": "Pesquisar",
@@ -531,6 +595,39 @@
             "no_supporters": "Atualmente não há apoiadores do Moo",
             "photographers": "Fotógrafos",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Diversos",
+            "scratch": {
+              "title": "Rascunho",
+              "subtitle": "O que larga na própria página, fora de qualquer widget."
+            },
+            "scratch_notes": {
+              "title": "Notas de rascunho",
+              "subtitle": "Faça duplo clique em qualquer zona vazia da página para largar uma nota. Arraste-a para a mover, clique nela para escrever e clique duas vezes no × para a deitar fora. O Markdown funciona."
+            },
+            "scratch_images": {
+              "title": "Imagens de rascunho",
+              "subtitle": "Cole uma imagem em qualquer parte da página e ela aparece onde está o ponteiro, com o tamanho de uma nota. Arraste um canto para a redimensionar, e os botões permitem copiá-la, guardá-la ou removê-la."
+            },
+            "signature": {
+              "title": "Cor de assinatura",
+              "subtitle": "O tom das ligações, das marcas, dos interruptores e do anel à volta dos botões.",
+              "colour": {
+                "title": "Cor",
+                "subtitle": "Escolha uma, ou use a cor que o seu plano de fundo já tem."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Desativar a inclinação",
+              "subtitle": "As notas e as imagens ficam direitas, e arrastá-las já não as inclina."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Estilo do painel",
+          "subtitle": "Clássico é um painel escuro através do qual se vê o plano de fundo. Vidro é mais claro e desfoca-o bastante.",
+          "classic": "Clássico",
+          "glass": "Vidro"
         }
       },
       "marketplace": {

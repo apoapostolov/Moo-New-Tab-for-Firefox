@@ -36,7 +36,8 @@
       "icon": "图标 (可选)",
       "add": "添加",
       "name_error": "请输入名称",
-      "url_error": "请输入链接"
+      "url_error": "请输入链接",
+      "icon_hint": "已知网站会自动填入。留空则使用网站自己的图标。"
     },
     "date": {
       "week": "周"
@@ -135,6 +136,19 @@
               "change_hour_colour": "选择小时数颜色",
               "change_minute_colour": "选择分钟数颜色",
               "change_second_colour": "选择秒钟数颜色"
+            },
+            "percentage": {
+              "shift_title": "上班时段",
+              "shift_subtitle": "从一天的开始算到你的下班时间。两项都留空则计算全部 24 小时。9、9:30、9am 和 17:00 都可以。",
+              "shift_start": "上班时间",
+              "shift_end": "下班时间",
+              "days_title": "上班日",
+              "days_subtitle": "勾选的上班日显示进度时钟。一周里其他日子显示下方的时钟。",
+              "fallback_title": "切换到备用时钟",
+              "fallback_subtitle": "在上述日子之外显示那个时钟。不勾选时，每天的时钟都是进度时钟。",
+              "fallback_switch": "在非上班日切换",
+              "other_title": "非上班日",
+              "other_subtitle": "非上班日使用的时钟。"
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "横杠",
               "gaps": "空格",
               "slashes": "斜杠"
-            }
+            },
+            "show": "显示日期",
+            "show_subtitle": "在时钟下方显示日期。"
           },
           "quote": {
             "title": "名言警句",
@@ -234,13 +250,23 @@
               "custom_image": "自定义图像/视频",
               "custom_colour": "自定义纯色背景",
               "random_colour": "随机纯色背景",
-              "random_gradient": "随机渐变色背景"
+              "random_gradient": "随机渐变色背景",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue 图库",
+              "coverr": "Coverr (视频)",
+              "live": "直播频道",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash 分类(s)",
               "subtitle": "选择背景的分类",
               "id": "分类 ID",
-              "id_subtitle": "输入 Unsplash 分类 ID，以英文逗号分隔"
+              "id_subtitle": "输入 Unsplash 分类 ID，以英文逗号分隔",
+              "section_title": "Unsplash",
+              "section_subtitle": "选择主题，或指定一个合集。",
+              "topics": "主题",
+              "categories": "分类"
             },
             "source": {
               "title": "来源",
@@ -290,7 +316,45 @@
             "display": "显示",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Mue 图库",
+              "subtitle": "按分类整理的精选图片"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "免费循环片段，静音播放。",
+              "search": "搜索",
+              "search_subtitle": "留空则显示任意片段，也可以缩小到某个主题。"
+            },
+            "live": {
+              "title": "直播频道",
+              "subtitle": "全天候环境频道，静音播放。只要标签页开着，直播就会一直下载，所以流量远高于循环片段。",
+              "channel": "频道",
+              "channel_any": "任意频道"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "免费片段。需要你自己 Pixabay 账户的 API 密钥。",
+              "key": "API 密钥",
+              "key_subtitle": "可在 pixabay.com/api/docs 免费创建。",
+              "key_placeholder": "Pixabay API 密钥",
+              "search": "搜索",
+              "search_subtitle": "留空则显示任意片段，也可以缩小到某个主题"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "免费片段。需要你自己 Pexels 账户的 API 密钥。",
+              "key": "API 密钥",
+              "key_subtitle": "可在 pexels.com/api 免费创建。",
+              "key_placeholder": "Pexels API 密钥",
+              "search": "搜索",
+              "search_subtitle": "留空则显示任意片段，也可以缩小到某个主题"
+            },
+            "information": {
+              "title": "背景信息",
+              "subtitle": "页面显示的有关背景图片的信息。"
+            }
           },
           "search": {
             "title": "搜索栏",
@@ -531,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "背景摄影者",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "其他",
+            "scratch": {
+              "title": "随手记",
+              "subtitle": "放在小部件之外、页面本身上的内容。"
+            },
+            "scratch_notes": {
+              "title": "随手记便签",
+              "subtitle": "双击页面空白处即可放置便签。拖动可移动，点击可写入，连续点击两次 × 即可丢弃。支持 Markdown。"
+            },
+            "scratch_images": {
+              "title": "随手记图片",
+              "subtitle": "在页面任意位置粘贴图片，它会以便签大小落在指针所在处。拖动边角可以调整大小，图上的按钮可以复制、保存或移除它。"
+            },
+            "signature": {
+              "title": "标志色",
+              "subtitle": "用在链接、勾选、开关和按钮外圈上的色调。",
+              "colour": {
+                "title": "颜色",
+                "subtitle": "选择一种颜色，或采用背景图已有的颜色。"
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "关闭倾斜",
+              "subtitle": "便签和图片保持水平摆放，拖动时也不再倾斜。"
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "面板样式",
+          "subtitle": "经典是能透出背景图的深色面板。玻璃更亮，并大幅模糊背景图。",
+          "classic": "经典",
+          "glass": "玻璃"
         }
       },
       "marketplace": {

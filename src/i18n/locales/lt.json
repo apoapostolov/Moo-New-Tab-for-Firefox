@@ -36,7 +36,8 @@
       "icon": "Piktograma (neprivaloma)",
       "add": "Pridėti",
       "name_error": "Būtina įvesti pavadinimą",
-      "url_error": "Būtina įvesti URL"
+      "url_error": "Būtina įvesti URL",
+      "icon_hint": "Užpildoma žinomiems puslapiams. Tuščia reiškia paties puslapio favicon."
     },
     "date": {
       "week": "Savaitė"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Keisti valandų teksto spalvą",
               "change_minute_colour": "Keisti minučių teksto spalvą",
               "change_second_colour": "Keisti sekundžių teksto spalvą"
+            },
+            "percentage": {
+              "shift_title": "Darbo pamaina",
+              "shift_subtitle": "Skaičiuoja nuo jūsų dienos pradžios iki pamainos pabaigos. Palikite abu laukus tuščius, kad būtų skaičiuojamos visos 24 valandos. Tinka 9, 9:30, 9am ir 17:00.",
+              "shift_start": "Dienos pradžia",
+              "shift_end": "Dienos pabaiga",
+              "days_title": "Darbo dienos",
+              "days_subtitle": "„Pažangos“ laikrodis rodomas čia pažymėtomis darbo dienomis. Likusią savaitės dalį rodomas laikrodis žemiau.",
+              "fallback_title": "Perjungti į atsarginį laikrodį",
+              "fallback_subtitle": "Rodyti šį laikrodį ne aukščiau nurodytomis dienomis. Jei nepažymėta, „Pažangos“ laikrodis rodomas kiekvieną dieną.",
+              "fallback_switch": "Perjungimas ne tomis dienomis",
+              "other_title": "Ne darbo metu",
+              "other_subtitle": "Laikrodis ne darbo dienoms."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Brūkšnys",
               "gaps": "Tarpai",
               "slashes": "Pasvirieji brūkšniai"
-            }
+            },
+            "show": "Rodyti datą",
+            "show_subtitle": "Įdėti datą po laikrodžiu."
           },
           "quote": {
             "title": "Citata",
@@ -234,13 +250,23 @@
               "custom_image": "Pasirinktinis paveikslėlis",
               "custom_colour": "Pasirinktinė spalva/gradientas",
               "random_colour": "Atsitiktinė spalva",
-              "random_gradient": "Atsitiktinis gradientas"
+              "random_gradient": "Atsitiktinis gradientas",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue biblioteka",
+              "coverr": "Coverr (vaizdo įrašas)",
+              "live": "Tiesioginės transliacijos",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash kolekcija(-os)",
               "subtitle": "Pasirinkite kolekciją(-as), kurią(-as) norite naudoti fonui",
               "id": "Kolekcijos ID",
-              "id_subtitle": "Įveskite kableliais atskirtą Unsplash ID sąrašą"
+              "id_subtitle": "Įveskite kableliais atskirtą Unsplash ID sąrašą",
+              "section_title": "Unsplash",
+              "section_subtitle": "Pasirinkite temas arba nurodykite kolekciją.",
+              "topics": "Temos",
+              "categories": "Kategorijos"
             },
             "source": {
               "title": "Šaltinis",
@@ -290,7 +316,45 @@
             "display": "Rodymas",
             "display_subtitle": "Keisti, kaip įkeliamas fonas ir nuotraukos informacija",
             "api": "API nustatymai",
-            "api_subtitle": "Parinktys paveikslėlio gavimui iš išorinės paslaugos (API)"
+            "api_subtitle": "Parinktys paveikslėlio gavimui iš išorinės paslaugos (API)",
+            "mue_library": {
+              "title": "Mue biblioteka",
+              "subtitle": "Atrinkti paveikslėliai, suskirstyti pagal kategorijas"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Nemokami kartojami klipai, leidžiami be garso.",
+              "search": "Ieškoti",
+              "search_subtitle": "Palikite tuščią, kad būtų rodomi bet kokie klipai, arba susiaurinkite iki vienos temos."
+            },
+            "live": {
+              "title": "Tiesioginės transliacijos",
+              "subtitle": "Visą parą veikiantys ambientiniai kanalai, leidžiami be garso. Tiesioginė transliacija atsisiunčiama ir toliau, kol skirtukas atidarytas, todėl sunaudoja daug daugiau duomenų nei kartojamas klipas.",
+              "channel": "Kanalas",
+              "channel_any": "Bet kuris kanalas"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Nemokami klipai. Reikia API rakto iš jūsų Pixabay paskyros.",
+              "key": "API raktas",
+              "key_subtitle": "Nemokamą susikurkite pixabay.com/api/docs.",
+              "key_placeholder": "Pixabay API raktas",
+              "search": "Ieškoti",
+              "search_subtitle": "Palikite tuščią, kad būtų rodomi bet kokie klipai, arba susiaurinkite iki vienos temos"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Nemokami klipai. Reikia API rakto iš jūsų Pexels paskyros.",
+              "key": "API raktas",
+              "key_subtitle": "Nemokamą susikurkite pexels.com/api.",
+              "key_placeholder": "Pexels API raktas",
+              "search": "Ieškoti",
+              "search_subtitle": "Palikite tuščią, kad būtų rodomi bet kokie klipai, arba susiaurinkite iki vienos temos"
+            },
+            "information": {
+              "title": "Informacija apie foną",
+              "subtitle": "Ką puslapis pasakoja apie paveikslėlį fone."
+            }
           },
           "search": {
             "title": "Paieška",
@@ -531,6 +595,39 @@
             "no_supporters": "Šiuo metu nėra Moo rėmėjų",
             "photographers": "Fotografai",
             "curators": "Priedų kūrėjai"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Įvairūs",
+            "scratch": {
+              "title": "Užrašinė",
+              "subtitle": "Tai, ką įdedate į patį puslapį, už bet kurio valdiklio ribų."
+            },
+            "scratch_notes": {
+              "title": "Užrašai užrašinėje",
+              "subtitle": "Dukart spustelėkite bet kurią tuščią puslapio vietą, kad įdėtumėte užrašą. Tempkite jį, kad perkeltumėte, spustelėkite, kad rašytumėte, ir dukart spustelėkite ×, kad ištrintumėte. Markdown veikia."
+            },
+            "scratch_images": {
+              "title": "Paveikslėliai užrašinėje",
+              "subtitle": "Įklijuokite paveikslėlį bet kurioje puslapio vietoje – jis atsiras ten, kur yra žymeklis, užrašo dydžio. Patraukite už kampo, kad pakeistumėte dydį, o ant jo esantys mygtukai jį nukopijuoja, išsaugo arba pašalina."
+            },
+            "signature": {
+              "title": "Firminė spalva",
+              "subtitle": "Atspalvis nuorodoms, varnelems, jungikliams ir mygtukų apvadui.",
+              "colour": {
+                "title": "Spalva",
+                "subtitle": "Pasirinkite spalvą arba paimkite tą, kuri jau yra fono paveikslėlyje."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Išjungti pasvirimą",
+              "subtitle": "Užrašai ir paveikslėliai išlieka tiesūs, o tempimas nebesuteikia jiems pasvirimo."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Skydelio stilius",
+          "subtitle": "Klasika – tai tamsus skydelis, pro kurį matosi fonas. Stiklas šviesesnis ir stipriai jį sulieja.",
+          "classic": "Klasika",
+          "glass": "Stiklas"
         }
       },
       "marketplace": {

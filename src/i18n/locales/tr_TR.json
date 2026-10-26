@@ -36,7 +36,8 @@
       "icon": "İkon (İsteğe Bağlı)",
       "add": "Ekle",
       "name_error": "İsim belirtilmelidir",
-      "url_error": "URL sağlanmalıdır"
+      "url_error": "URL sağlanmalıdır",
+      "icon_hint": "Bilinen siteler için doldurulur. Boş bırakmak sitenin kendi favicon'unu kullanır."
     },
     "date": {
       "week": "Hafta"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Saat kısmının metin rengini değiştirin",
               "change_minute_colour": "Dakika kısmının metin rengini değiştirin",
               "change_second_colour": "Saniye kısmının metin rengini değiştirin"
+            },
+            "percentage": {
+              "shift_title": "İş vardiyası",
+              "shift_subtitle": "Gününüzün başlangıcından vardiyanızın sonuna kadar sayar. 24 saatin tamamını saymak için ikisini de boş bırakın. 9, 9:30, 9am ve 17:00 çalışır.",
+              "shift_start": "Günün başlangıcı",
+              "shift_end": "Günün sonu",
+              "days_title": "İş Günleri",
+              "days_subtitle": "İlerleme saati burada işaretlenen iş günlerinde görünür. Haftanın geri kalanında aşağıdaki saat görünür.",
+              "fallback_title": "Yedek saate geç",
+              "fallback_subtitle": "Bu saati yukarıdaki günlerin dışında göster. İşaretlenmezse İlerleme saati her gün saattir.",
+              "fallback_switch": "Günler dışında değiştir",
+              "other_title": "İş Dışı",
+              "other_subtitle": "İş dışındaki günler için saat."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Kısa çizgi",
               "gaps": "Boşluk",
               "slashes": "Eğik çizgi"
-            }
+            },
+            "show": "Tarihi göster",
+            "show_subtitle": "Tarihi saatin altına koyun."
           },
           "quote": {
             "title": "Alıntı",
@@ -234,13 +250,23 @@
               "custom_image": "Özel görsel",
               "custom_colour": "Özel renk/gradyan",
               "random_colour": "Özel renk",
-              "random_gradient": "Özel gradyan"
+              "random_gradient": "Özel gradyan",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue Kitaplığı",
+              "coverr": "Coverr (Video)",
+              "live": "Canlı kanallar",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Koleksiyonu",
               "subtitle": "Arka planınız için kullanmak istediğiniz koleksiyonu seçin.",
               "id": "Koleksiyon Kimliği",
-              "id_subtitle": "Unsplash ID'lerinin virgülle ayrılmış bir listesini girin."
+              "id_subtitle": "Unsplash ID'lerinin virgülle ayrılmış bir listesini girin.",
+              "section_title": "Unsplash",
+              "section_subtitle": "Konuları seçin veya bir koleksiyon adı girin.",
+              "topics": "Konular",
+              "categories": "Kategoriler"
             },
             "source": {
               "title": "Kaynak",
@@ -290,7 +316,45 @@
             "display": "Görüntüleme",
             "display_subtitle": "Arka plan ve fotoğraf bilgilerinin nasıl yükleneceğini değiştirin",
             "api": "API Ayarları",
-            "api_subtitle": "Harici bir hizmet (API) aracılığıyla görüntü alma seçeneklerini belirleyin."
+            "api_subtitle": "Harici bir hizmet (API) aracılığıyla görüntü alma seçeneklerini belirleyin.",
+            "mue_library": {
+              "title": "Mue Kitaplığı",
+              "subtitle": "Kategoriye göre düzenlenmiş seçkin görseller"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Sessiz oynatılan ücretsiz döngü klipleri.",
+              "search": "Ara",
+              "search_subtitle": "Herhangi bir klip için boş bırakın veya tek bir konuya daraltın."
+            },
+            "live": {
+              "title": "Canlı kanallar",
+              "subtitle": "7/24 ortam kanalları, sessiz oynatılır. Canlı yayın sekme açık olduğu sürece indirmeye devam eder, bu yüzden döngü kliplerinden çok daha fazla veri kullanır.",
+              "channel": "Kanal",
+              "channel_any": "Herhangi bir kanal"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Ücretsiz klipler. Kendi Pixabay hesabınızdan bir API anahtarı gerekir.",
+              "key": "API anahtarı",
+              "key_subtitle": "pixabay.com/api/docs adresinden ücretsiz oluşturun.",
+              "key_placeholder": "Pixabay API anahtarı",
+              "search": "Ara",
+              "search_subtitle": "Herhangi bir klip için boş bırakın veya tek bir konuya daraltın"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Ücretsiz klipler. Kendi Pexels hesabınızdan bir API anahtarı gerekir.",
+              "key": "API anahtarı",
+              "key_subtitle": "pexels.com/api adresinden ücretsiz oluşturun.",
+              "key_placeholder": "Pexels API anahtarı",
+              "search": "Ara",
+              "search_subtitle": "Herhangi bir klip için boş bırakın veya tek bir konuya daraltın"
+            },
+            "information": {
+              "title": "Arka Plan Bilgileri",
+              "subtitle": "Sayfanın arkasındaki görsel hakkında söyledikleri."
+            }
           },
           "search": {
             "title": "Arama",
@@ -531,6 +595,39 @@
             "no_supporters": "Şu anda Moo destekçisi yok",
             "photographers": "Fotoğrafçılar",
             "curators": "Eklenti Oluşturucular"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Diğer",
+            "scratch": {
+              "title": "Karalama",
+              "subtitle": "Sayfanın kendisine, herhangi bir aracın dışına bıraktıklarınız."
+            },
+            "scratch_notes": {
+              "title": "Karalama notları",
+              "subtitle": "Not bırakmak için sayfanın boş bir yerine çift tıklayın. Taşımak için sürükleyin, yazmak için tıklayın ve atmak için × işaretine iki kez tıklayın. Markdown çalışır."
+            },
+            "scratch_images": {
+              "title": "Karalama görselleri",
+              "subtitle": "Sayfanın herhangi bir yerine bir görsel yapıştırın; işaretçinin olduğu yere, bir not boyutunda yerleşir. Yeniden boyutlandırmak için bir köşesini sürükleyin, üzerindeki düğmeler görseli kopyalar, kaydeder veya kaldırır."
+            },
+            "signature": {
+              "title": "Vurgu rengi",
+              "subtitle": "Bağlantılardaki, onay işaretlerindeki, anahtarlardaki ve düğmelerin çevresindeki halkanın tonu.",
+              "colour": {
+                "title": "Renk",
+                "subtitle": "Bir renk seçin veya duvar kağıdının hâlihazırda kullandığı rengi alın."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Eğimi kapat",
+              "subtitle": "Notlar ve görseller düz durur ve birini sürüklemek artık eğim vermez."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Panel stili",
+          "subtitle": "Klasik, duvar kağıdını içinden gördüğünüz koyu bir paneldir. Cam daha açıktır ve duvar kağıdını yoğun biçimde bulanıklaştırır.",
+          "classic": "Klasik",
+          "glass": "Cam"
         }
       },
       "marketplace": {

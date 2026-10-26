@@ -36,7 +36,8 @@
       "icon": "আইকন (ঐচ্ছিক)",
       "add": "যোগ করুন",
       "name_error": "অবশ্যই নাম দিতে হবে",
-      "url_error": "অবশ্যই URL দিতে হবে"
+      "url_error": "অবশ্যই URL দিতে হবে",
+      "icon_hint": "পরিচিত সাইটের জন্য স্বয়ংক্রিয়ভাবে পূরণ হয়। খালি থাকলে সাইটের নিজের ফেভিকন ব্যবহার হবে।"
     },
     "date": {
       "week": "সপ্তাহ"
@@ -135,6 +136,19 @@
               "change_hour_colour": "ঘন্টার পাঠ্যের রঙ পরিবর্তন করুন",
               "change_minute_colour": "মিনিটের পাঠ্যের রঙ পরিবর্তন করুন",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "কাজের শিফট",
+              "shift_subtitle": "আপনার দিনের শুরু থেকে শিফটের শেষ পর্যন্ত গণনা করে। দুটোই খালি রাখলে পুরো ২৪ ঘণ্টা গণনা হবে। 9, 9:30, 9am এবং 17:00 সবই কাজ করে।",
+              "shift_start": "দিনের শুরু",
+              "shift_end": "দিনের শেষ",
+              "days_title": "কাজের দিন",
+              "days_subtitle": "এখানে টিক দেওয়া কাজের দিনগুলোতে প্রোগ্রেস ঘড়ি দেখাবে। সপ্তাহের বাকি দিনগুলোতে নিচের ঘড়ি দেখাবে।",
+              "fallback_title": "ফলব্যাক ঘড়িতে সুইচ করুন",
+              "fallback_subtitle": "উপরের দিনগুলোর বাইরে সেই ঘড়িটি দেখাবে। টিক না দিলে প্রতিদিন প্রোগ্রেস ঘড়িই দেখাবে।",
+              "fallback_switch": "কাজের দিনের বাইরে সুইচ করুন",
+              "other_title": "কাজের বাইরে",
+              "other_subtitle": "কাজের দিনের বাইরের দিনগুলোর ঘড়ি।"
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "তারিখ দেখান",
+            "show_subtitle": "ঘড়ির নিচে তারিখ দেখান।"
           },
           "quote": {
             "title": "Quote",
@@ -234,13 +250,23 @@
               "custom_image": "কাস্টম ইমেজ",
               "custom_colour": "মনের মতো রঙ/গ্রেডিয়েন্ট",
               "random_colour": "এলোমেলো রঙ",
-              "random_gradient": "এলোমেলো গ্রেডিয়েন্ট"
+              "random_gradient": "এলোমেলো গ্রেডিয়েন্ট",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue লাইব্রেরি",
+              "coverr": "Coverr (ভিডিও)",
+              "live": "লাইভ চ্যানেল",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "টপিক বেছে নিন, অথবা একটি কালেকশনের নাম লিখুন।",
+              "topics": "টপিক",
+              "categories": "ক্যাটাগরি"
             },
             "source": {
               "title": "উৎস",
@@ -290,7 +316,45 @@
             "display": "প্রদর্শন",
             "display_subtitle": "পটভূমি এবং ছবির তথ্য কিভাবে লোড হয় তা পরিবর্তন করুন",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Mue লাইব্রেরি",
+              "subtitle": "ক্যাটাগরি অনুযায়ী সাজানো বাছাই করা ছবি"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "বিনামূল্যের লুপিং ক্লিপ, নিঃশব্দে চালানো হয়।",
+              "search": "অনুসন্ধান",
+              "search_subtitle": "যেকোনো ক্লিপের জন্য খালি রাখুন, অথবা একটি বিষয়ে সীমাবদ্ধ করুন।"
+            },
+            "live": {
+              "title": "লাইভ চ্যানেল",
+              "subtitle": "২৪/৭ পরিবেশ চ্যানেল, নিঃশব্দে চালানো হয়। ট্যাব খোলা থাকলে লাইভ স্ট্রিম ডাউনলোড হতে থাকে, তাই এটি লুপিং ক্লিপের চেয়ে অনেক বেশি ডেটা ব্যবহার করে।",
+              "channel": "চ্যানেল",
+              "channel_any": "যেকোনো চ্যানেল"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "বিনামূল্যের ক্লিপ। আপনার নিজের Pixabay অ্যাকাউন্টের API কী প্রয়োজন।",
+              "key": "API কী",
+              "key_subtitle": "pixabay.com/api/docs-এ বিনামূল্যে একটি তৈরি করুন।",
+              "key_placeholder": "Pixabay API কী",
+              "search": "অনুসন্ধান",
+              "search_subtitle": "যেকোনো ক্লিপের জন্য খালি রাখুন, অথবা একটি বিষয়ে সীমাবদ্ধ করুন"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "বিনামূল্যের ক্লিপ। আপনার নিজের Pexels অ্যাকাউন্টের API কী প্রয়োজন।",
+              "key": "API কী",
+              "key_subtitle": "pexels.com/api-তে বিনামূল্যে একটি তৈরি করুন।",
+              "key_placeholder": "Pexels API কী",
+              "search": "অনুসন্ধান",
+              "search_subtitle": "যেকোনো ক্লিপের জন্য খালি রাখুন, অথবা একটি বিষয়ে সীমাবদ্ধ করুন"
+            },
+            "information": {
+              "title": "পটভূমির তথ্য",
+              "subtitle": "পেছনের ছবি সম্পর্কে পৃষ্ঠাটি যা জানায়।"
+            }
           },
           "search": {
             "title": "Search",
@@ -531,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "বিবিধ",
+            "scratch": {
+              "title": "স্ক্র্যাচ",
+              "subtitle": "উইজেটের বাইরে পৃষ্ঠার উপরেই যা রাখেন।"
+            },
+            "scratch_notes": {
+              "title": "স্ক্র্যাচ নোট",
+              "subtitle": "পৃষ্ঠার ফাঁকা জায়গায় ডাবল-ক্লিক করলে একটি নোট বসবে। সরাতে টানুন, লিখতে ক্লিক করুন, আর × চিহ্নে দুইবার ক্লিক করলে এটি ফেলে দেওয়া হবে। Markdown কাজ করে।"
+            },
+            "scratch_images": {
+              "title": "স্ক্র্যাচ ছবি",
+              "subtitle": "পৃষ্ঠার যেকোনো জায়গায় ছবি পেস্ট করুন, এটি পয়েন্টারের জায়গায় নোটের আকারে বসে যাবে। আকার বদলাতে কোণা টানুন, আর ছবির বোতামগুলো দিয়ে কপি, সেভ বা সরিয়ে ফেলতে পারবেন।"
+            },
+            "signature": {
+              "title": "সিগনেচার রং",
+              "subtitle": "লিঙ্ক, টিক, সুইচ এবং বোতামের চারপাশের রিংয়ে যে রং লাগে।",
+              "colour": {
+                "title": "রং",
+                "subtitle": "একটি বেছে নিন, অথবা ওয়ালপেপারে যে রং আছে সেটিই নিন।"
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "কাত হওয়া বন্ধ করুন",
+              "subtitle": "নোট ও ছবি সোজা থাকে, আর টানলে সেগুলো আর কাত হয় না।"
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "প্যানেলের স্টাইল",
+          "subtitle": "ক্লাসিক হলো গাঢ় প্যানেল, যার ভেতর দিয়ে ওয়ালপেপার দেখা যায়। গ্লাস আরও হালকা এবং ওয়ালপেপারকে বেশ ঝাপসা করে দেয়।",
+          "classic": "ক্লাসিক",
+          "glass": "গ্লাস"
         }
       },
       "marketplace": {

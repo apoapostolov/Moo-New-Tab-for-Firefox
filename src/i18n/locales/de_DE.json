@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Hinzufügen",
       "name_error": "Muss einen Namen angeben",
-      "url_error": "Muss eine URL angeben"
+      "url_error": "Muss eine URL angeben",
+      "icon_hint": "Für bekannte Seiten vorausgefüllt. Leer bedeutet das Favicon der Seite selbst."
     },
     "date": {
       "week": "Kalenderwoche"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Textfarbe der Stunde ändern",
               "change_minute_colour": "Textfarbe der Minute ändern",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Arbeitszeit",
+              "shift_subtitle": "Zählt vom Beginn Ihres Tages bis zum Ende Ihrer Schicht. Beide Felder leer lassen, um alle 24 Stunden zu zählen. 9, 9:30, 9 Uhr und 17:00 funktionieren alle.",
+              "shift_start": "Tagesbeginn",
+              "shift_end": "Tagesende",
+              "days_title": "Arbeitstage",
+              "days_subtitle": "Die Fortschrittsuhr erscheint an den hier angehakten Arbeitstagen. Am Rest der Woche gilt die Uhr unten.",
+              "fallback_title": "Zur Ersatzuhr wechseln",
+              "fallback_subtitle": "Zeigt diese Uhr außerhalb der oben gewählten Tage. Ohne Häkchen gilt die Fortschrittsuhr an jedem Tag.",
+              "fallback_switch": "Außerhalb der Tage umschalten",
+              "other_title": "Außerhalb der Arbeit",
+              "other_subtitle": "Die Uhr für die Tage außerhalb der Arbeit."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Bindestrich",
               "gaps": "Lücke",
               "slashes": "Schrägstriche"
-            }
+            },
+            "show": "Datum anzeigen",
+            "show_subtitle": "Setzt das Datum unter die Uhr."
           },
           "quote": {
             "title": "Zitat",
@@ -234,13 +250,23 @@
               "custom_image": "Benutzerdefiniertes Bild",
               "custom_colour": "Benutzerdefinierte Farbe/Farbverlauf",
               "random_colour": "Zufällige Farben",
-              "random_gradient": "Zufälliger Verlauf"
+              "random_gradient": "Zufälliger Verlauf",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue-Bibliothek",
+              "coverr": "Coverr (Video)",
+              "live": "Live-Kanäle",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Themen auswählen oder einer Sammlung einen Namen geben.",
+              "topics": "Themen",
+              "categories": "Kategorien"
             },
             "source": {
               "title": "Quelle",
@@ -290,7 +316,45 @@
             "display": "Anzeige",
             "display_subtitle": "Ändern Sie, wie Hintergrund- und Fotodaten geladen werden",
             "api": "API Einstellung",
-            "api_subtitle": "Optionen für den Abruf eines Bildes von einem externen Anbieter (API)"
+            "api_subtitle": "Optionen für den Abruf eines Bildes von einem externen Anbieter (API)",
+            "mue_library": {
+              "title": "Mue-Bibliothek",
+              "subtitle": "Kuratierte Bilder, nach Kategorie sortiert"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Kostenlose Endlosschleifen, stumm abgespielt.",
+              "search": "Suche",
+              "search_subtitle": "Leer lassen für beliebige Clips oder auf ein Thema eingrenzen."
+            },
+            "live": {
+              "title": "Live-Kanäle",
+              "subtitle": "24/7-Ambient-Kanäle, stumm abgespielt. Ein Livestream lädt weiter herunter, solange der Tab offen ist, und verbraucht daher viel mehr Daten als eine Endlosschleife.",
+              "channel": "Kanal",
+              "channel_any": "Alle Kanäle"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Kostenlose Clips. Erfordert einen API-Schlüssel aus Ihrem eigenen Pixabay-Konto.",
+              "key": "API-Schlüssel",
+              "key_subtitle": "Kostenlos erstellen auf pixabay.com/api/docs.",
+              "key_placeholder": "Pixabay API-Schlüssel",
+              "search": "Suche",
+              "search_subtitle": "Leer lassen für beliebige Clips oder auf ein Thema eingrenzen"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Kostenlose Clips. Erfordert einen API-Schlüssel aus Ihrem eigenen Pexels-Konto.",
+              "key": "API-Schlüssel",
+              "key_subtitle": "Kostenlos erstellen auf pexels.com/api.",
+              "key_placeholder": "Pexels API-Schlüssel",
+              "search": "Suche",
+              "search_subtitle": "Leer lassen für beliebige Clips oder auf ein Thema eingrenzen"
+            },
+            "information": {
+              "title": "Hintergrundinformationen",
+              "subtitle": "Was die Seite über das Bild im Hintergrund verrät."
+            }
           },
           "search": {
             "title": "Suche",
@@ -531,6 +595,39 @@
             "no_supporters": "Derzeit gibt es keine Moo-Unterstützer",
             "photographers": "Fotografen",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Sonstiges",
+            "scratch": {
+              "title": "Zettel",
+              "subtitle": "Was Sie direkt auf der Seite ablegen, außerhalb jedes Widgets."
+            },
+            "scratch_notes": {
+              "title": "Zettelnotizen",
+              "subtitle": "Doppelklicken Sie auf eine freie Stelle der Seite, um einen Zettel abzulegen. Ziehen verschiebt ihn, Klicken schreibt darauf, und zweimal auf × klicken verwirft ihn. Markdown funktioniert."
+            },
+            "scratch_images": {
+              "title": "Zettelbilder",
+              "subtitle": "Fügen Sie ein Bild an beliebiger Stelle der Seite ein – es landet dort, wo der Zeiger steht, in der Größe einer Notiz. Ziehen Sie an einer Ecke, um es zu skalieren; über die Schaltflächen darauf kopieren, speichern oder entfernen Sie es."
+            },
+            "signature": {
+              "title": "Akzentfarbe",
+              "subtitle": "Der Farbton für Links, Häkchen, Schalter und den Ring um die Schaltflächen.",
+              "colour": {
+                "title": "Farbe",
+                "subtitle": "Eine auswählen oder die Farbe übernehmen, die das Hintergrundbild schon trägt."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Neigung ausschalten",
+              "subtitle": "Notizen und Bilder stehen gerade, und beim Ziehen kippt keines mehr."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Panelstil",
+          "subtitle": "Klassisch ist ein dunkles Panel, durch das man das Hintergrundbild sieht. Glas ist heller und verwischt es stark.",
+          "classic": "Klassisch",
+          "glass": "Glas"
         }
       },
       "marketplace": {

@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "Ifyllt för kända webbplatser. Tomt betyder webbplatsens egen favicon."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Arbetsskift",
+              "shift_subtitle": "Räknar från början av din dag till slutet av ditt skift. Lämna båda tomma för att räkna alla 24 timmar. 9, 9:30, 9am och 17:00 fungerar alla.",
+              "shift_start": "Dagens början",
+              "shift_end": "Dagens slut",
+              "days_title": "Arbetsdagar",
+              "days_subtitle": "Förloppsklockan visas på de arbetsdagar som är ikryssade här. Resten av veckan visas klockan nedan.",
+              "fallback_title": "Byt till reservklocka",
+              "fallback_subtitle": "Visa den klockan utanför dagarna ovan. Om den inte är ikryssad är förloppsklockan klockan varje dag.",
+              "fallback_switch": "Växla utanför dagarna",
+              "other_title": "Utanför arbetet",
+              "other_subtitle": "Klockan för dagarna utanför arbetet."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "Visa datum",
+            "show_subtitle": "Sätter datumet under klockan."
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "Händelser",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue-bibliotek",
+              "coverr": "Coverr (Video)",
+              "live": "Livekanaler",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Välj ämnen eller namnge en samling.",
+              "topics": "Ämnen",
+              "categories": "Kategorier"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Mue-bibliotek",
+              "subtitle": "Utvalda bilder, ordnade efter kategori"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Gratis loopande klipp som spelas utan ljud.",
+              "search": "Sök",
+              "search_subtitle": "Lämna tomt för valfritt klipp, eller begränsa det till ett ämne."
+            },
+            "live": {
+              "title": "Livekanaler",
+              "subtitle": "24/7-ambientkanaler som spelas utan ljud. En livestream fortsätter att laddas ner så länge fliken är öppen och använder därför mycket mer data än ett loopande klipp.",
+              "channel": "Kanal",
+              "channel_any": "Alla kanaler"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Gratis klipp. Kräver en API-nyckel från ditt eget Pixabay-konto.",
+              "key": "API-nyckel",
+              "key_subtitle": "Skapa en gratis på pixabay.com/api/docs.",
+              "key_placeholder": "Pixabay API-nyckel",
+              "search": "Sök",
+              "search_subtitle": "Lämna tomt för valfritt klipp, eller begränsa det till ett ämne"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Gratis klipp. Kräver en API-nyckel från ditt eget Pexels-konto.",
+              "key": "API-nyckel",
+              "key_subtitle": "Skapa en gratis på pexels.com/api.",
+              "key_placeholder": "Pexels API-nyckel",
+              "search": "Sök",
+              "search_subtitle": "Lämna tomt för valfritt klipp, eller begränsa det till ett ämne"
+            },
+            "information": {
+              "title": "Bakgrundsinformation",
+              "subtitle": "Vad sidan säger om bilden bakom."
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Övrigt",
+            "scratch": {
+              "title": "Klotter",
+              "subtitle": "Det du lägger direkt på sidan, utanför alla widgetar."
+            },
+            "scratch_notes": {
+              "title": "Klotteranteckningar",
+              "subtitle": "Dubbelklicka på en tom del av sidan för att lägga dit en anteckning. Dra i den för att flytta den, klicka på den för att skriva och klicka två gånger på × för att slänga den. Markdown fungerar."
+            },
+            "scratch_images": {
+              "title": "Klotterbilder",
+              "subtitle": "Klistra in en bild var som helst på sidan så hamnar den där pekaren är, i storlek som en anteckning. Dra i ett hörn för att ändra storlek, och knapparna på den kopierar, sparar eller tar bort den."
+            },
+            "signature": {
+              "title": "Accentfärg",
+              "subtitle": "Nyansen på länkar, bockar, reglage och ringen runt knapparna.",
+              "colour": {
+                "title": "Färg",
+                "subtitle": "Välj en, eller ta färgen som bakgrundsbilden redan bär."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Stäng av lutning",
+              "subtitle": "Anteckningar och bilder står rakt, och när du drar i en lutar den inte längre."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Panelstil",
+          "subtitle": "Klassisk är en mörk panel som du ser bakgrundsbilden genom. Glas är ljusare och suddar den kraftigt.",
+          "classic": "Klassisk",
+          "glass": "Glas"
         }
       },
       "marketplace": {

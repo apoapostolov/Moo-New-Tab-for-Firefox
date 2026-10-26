@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "Tự điền cho các trang đã biết. Để trống nghĩa là dùng favicon của chính trang đó."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Ca làm việc",
+              "shift_subtitle": "Tính từ đầu ngày đến cuối ca của bạn. Để trống cả hai để tính đủ 24 giờ. 9, 9:30, 9am và 17:00 đều dùng được.",
+              "shift_start": "Đầu ngày",
+              "shift_end": "Cuối ngày",
+              "days_title": "Ngày làm việc",
+              "days_subtitle": "Đồng hồ Tiến độ hiện vào những ngày làm việc được đánh dấu ở đây. Phần còn lại của tuần hiện đồng hồ bên dưới.",
+              "fallback_title": "Chuyển sang đồng hồ dự phòng",
+              "fallback_subtitle": "Hiện đồng hồ đó ngoài những ngày ở trên. Nếu không đánh dấu, đồng hồ Tiến độ là đồng hồ của mọi ngày.",
+              "fallback_switch": "Chuyển ngoài những ngày đó",
+              "other_title": "Ngoài giờ làm",
+              "other_subtitle": "Đồng hồ cho những ngày nghỉ làm."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "Hiện ngày",
+            "show_subtitle": "Đặt ngày bên dưới đồng hồ."
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "Sự kiện",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Thư viện Mue",
+              "coverr": "Coverr (Video)",
+              "live": "Kênh trực tiếp",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Chọn chủ đề, hoặc nhập tên bộ sưu tập.",
+              "topics": "Chủ đề",
+              "categories": "Danh mục"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Thư viện Mue",
+              "subtitle": "Hình ảnh tuyển chọn, sắp xếp theo danh mục"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Các clip lặp miễn phí, phát không tiếng.",
+              "search": "Tìm kiếm",
+              "search_subtitle": "Để trống để dùng bất kỳ clip nào, hoặc thu hẹp theo một chủ đề."
+            },
+            "live": {
+              "title": "Kênh trực tiếp",
+              "subtitle": "Kênh không gian 24/7, phát không tiếng. Luồng trực tiếp vẫn tải xuống khi thẻ còn mở, nên dùng dữ liệu nhiều hơn hẳn một clip lặp.",
+              "channel": "Kênh",
+              "channel_any": "Mọi kênh"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Clip miễn phí. Cần khóa API từ tài khoản Pixabay của bạn.",
+              "key": "Khóa API",
+              "key_subtitle": "Tạo miễn phí tại pixabay.com/api/docs.",
+              "key_placeholder": "Khóa API Pixabay",
+              "search": "Tìm kiếm",
+              "search_subtitle": "Để trống để dùng bất kỳ clip nào, hoặc thu hẹp theo một chủ đề"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Clip miễn phí. Cần khóa API từ tài khoản Pexels của bạn.",
+              "key": "Khóa API",
+              "key_subtitle": "Tạo miễn phí tại pexels.com/api.",
+              "key_placeholder": "Khóa API Pexels",
+              "search": "Tìm kiếm",
+              "search_subtitle": "Để trống để dùng bất kỳ clip nào, hoặc thu hẹp theo một chủ đề"
+            },
+            "information": {
+              "title": "Thông tin hình nền",
+              "subtitle": "Những gì trang cho biết về hình ảnh phía sau."
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Khác",
+            "scratch": {
+              "title": "Nháp",
+              "subtitle": "Những gì bạn đặt lên chính trang, nằm ngoài mọi tiện ích."
+            },
+            "scratch_notes": {
+              "title": "Ghi chú nháp",
+              "subtitle": "Nhấp đúp vào chỗ trống trên trang để đặt ghi chú. Kéo để di chuyển, nhấp để viết, nhấp × hai lần để xóa. Markdown được hỗ trợ."
+            },
+            "scratch_images": {
+              "title": "Ảnh nháp",
+              "subtitle": "Dán ảnh vào bất kỳ đâu trên trang, ảnh sẽ nằm đúng vị trí con trỏ với kích thước của một ghi chú. Kéo góc để đổi kích thước; các nút trên ảnh dùng để sao chép, lưu hoặc xóa."
+            },
+            "signature": {
+              "title": "Màu đặc trưng",
+              "subtitle": "Màu phủ trên liên kết, dấu tích, công tắc và vòng quanh các nút.",
+              "colour": {
+                "title": "Màu",
+                "subtitle": "Chọn một màu, hoặc lấy màu mà hình nền đang dùng."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Tắt độ nghiêng",
+              "subtitle": "Ghi chú và ảnh đứng thẳng, kéo chúng không còn bị nghiêng nữa."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Kiểu bảng",
+          "subtitle": "Cổ điển là một bảng tối để bạn nhìn xuyên qua thấy hình nền. Kính sáng hơn và làm mờ mạnh hơn.",
+          "classic": "Cổ điển",
+          "glass": "Kính"
         }
       },
       "marketplace": {

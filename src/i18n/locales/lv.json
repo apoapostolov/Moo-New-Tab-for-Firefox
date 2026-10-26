@@ -36,7 +36,8 @@
       "icon": "Ikona (neobligāti)",
       "add": "Pievienot",
       "name_error": "Jānorāda nosaukums",
-      "url_error": "Jānorāda URL"
+      "url_error": "Jānorāda URL",
+      "icon_hint": "Aizpildīts zināmajām vietnēm. Tukšs nozīmē pašas vietnes favicon."
     },
     "date": {
       "week": "Nedēļa"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Mainīt stundu teksta krāsu",
               "change_minute_colour": "Mainīt minūšu teksta krāsu",
               "change_second_colour": "Mainīt sekunžu teksta krāsu"
+            },
+            "percentage": {
+              "shift_title": "Darba maiņa",
+              "shift_subtitle": "Skaita no jūsu dienas sākuma līdz maiņas beigām. Atstājiet abus tukšus, lai skaitītu visas 24 stundas. Der 9, 9:30, 9am un 17:00.",
+              "shift_start": "Dienas sākums",
+              "shift_end": "Dienas beigas",
+              "days_title": "Darba dienas",
+              "days_subtitle": "Progresa pulkstenis tiek rādīts šeit atzīmētajās darba dienās. Pārējā nedēļā tiek rādīts zemāk esošais pulkstenis.",
+              "fallback_title": "Pārslēgšanās uz rezerves pulksteni",
+              "fallback_subtitle": "Rādīt šo pulksteni ārpus iepriekš norādītajām dienām. Ja atzīme nav likta, Progresa pulkstenis ir pulkstenis katru dienu.",
+              "fallback_switch": "Pārslēgties ārpus dienām",
+              "other_title": "Ārpus darba",
+              "other_subtitle": "Pulkstenis dienām ārpus darba."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Svītra",
               "gaps": "Atstarpes",
               "slashes": "Slīpsvītras"
-            }
+            },
+            "show": "Rādīt datumu",
+            "show_subtitle": "Novietojiet datumu zem pulksteņa."
           },
           "quote": {
             "title": "Citāts",
@@ -234,13 +250,23 @@
               "custom_image": "Pielāgots attēls",
               "custom_colour": "Pielāgota krāsa/gradients",
               "random_colour": "Nejauša krāsa",
-              "random_gradient": "Nejaušs gradients"
+              "random_gradient": "Nejaušs gradients",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue Library",
+              "coverr": "Coverr (video)",
+              "live": "Tiešraides kanāli",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash kolekcija(s)",
               "subtitle": "Izvēlieties kolekciju(as), kuras vēlaties izmantot savam fonam",
               "id": "Kolekcijas ID",
-              "id_subtitle": "Ievadiet ar komatu atdalītu Unsplash ID sarakstu"
+              "id_subtitle": "Ievadiet ar komatu atdalītu Unsplash ID sarakstu",
+              "section_title": "Unsplash",
+              "section_subtitle": "Izvēlieties tematus vai nosauciet kolekciju.",
+              "topics": "Temati",
+              "categories": "Kategorijas"
             },
             "source": {
               "title": "Avots",
@@ -290,7 +316,45 @@
             "display": "Attēlošana",
             "display_subtitle": "Mainīt, kā tiek ielādēts fons un fotogrāfijas informācija",
             "api": "API iestatījumi",
-            "api_subtitle": "Opcijas attēla iegūšanai no ārēja pakalpojuma (API)"
+            "api_subtitle": "Opcijas attēla iegūšanai no ārēja pakalpojuma (API)",
+            "mue_library": {
+              "title": "Mue Library",
+              "subtitle": "Kuratoru atlasīti attēli, sakārtoti pa kategorijām"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Bezmaksas cilpveida klipi, atskaņoti bez skaņas.",
+              "search": "Meklēt",
+              "search_subtitle": "Atstājiet tukšu, lai iegūtu jebkuru klipu, vai norādiet konkrētu tematu."
+            },
+            "live": {
+              "title": "Tiešraides kanāli",
+              "subtitle": "24/7 ambientie kanāli, atskaņoti bez skaņas. Tiešraide turpina lejupielādēties, kamēr cilne ir atvērta, tāpēc tā patērē daudz vairāk datu nekā cilpveida klips.",
+              "channel": "Kanāls",
+              "channel_any": "Jebkurš kanāls"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Bezmaksas klipi. Nepieciešama API atslēga no jūsu pašu Pixabay konta.",
+              "key": "API atslēga",
+              "key_subtitle": "Izveidojiet bezmaksas atslēgu vietnē pixabay.com/api/docs.",
+              "key_placeholder": "Pixabay API atslēga",
+              "search": "Meklēt",
+              "search_subtitle": "Atstājiet tukšu, lai iegūtu jebkuru klipu, vai norādiet konkrētu tematu"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Bezmaksas klipi. Nepieciešama API atslēga no jūsu pašu Pexels konta.",
+              "key": "API atslēga",
+              "key_subtitle": "Izveidojiet bezmaksas atslēgu vietnē pexels.com/api.",
+              "key_placeholder": "Pexels API atslēga",
+              "search": "Meklēt",
+              "search_subtitle": "Atstājiet tukšu, lai iegūtu jebkuru klipu, vai norādiet konkrētu tematu"
+            },
+            "information": {
+              "title": "Fona informācija",
+              "subtitle": "To, ko lapa vēsta par attēlu aiz tās."
+            }
           },
           "search": {
             "title": "Meklēšana",
@@ -531,6 +595,39 @@
             "no_supporters": "Pašlaik nav Moo atbalstītāju",
             "photographers": "Fotogrāfi",
             "curators": "Paplašinājumu veidotāji"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Dažādi",
+            "scratch": {
+              "title": "Uzmetumi",
+              "subtitle": "Tas, ko jūs nometat uz pašas lapas, ārpus jebkura logrīka."
+            },
+            "scratch_notes": {
+              "title": "Uzmetumu piezīmes",
+              "subtitle": "Veiciet dubultklikšķi uz jebkuras tukšas lapas vietas, lai pievienotu piezīmi. Velciet to, lai pārvietotu, klikšķiniet, lai rakstītu, un noklikšķiniet uz × divas reizes, lai to izmestu. Markdown darbojas."
+            },
+            "scratch_images": {
+              "title": "Uzmetumu attēli",
+              "subtitle": "Ielīmējiet attēlu jebkurā lapas vietā, un tas parādīsies tur, kur ir kursors, piezīmes lielumā. Velciet stūri, lai mainītu izmēru, un pogas uz tā ļauj attēlu kopēt, saglabāt vai noņemt."
+            },
+            "signature": {
+              "title": "Paraksta krāsa",
+              "subtitle": "Tonis saitēm, atzīmēm, slēdžiem un gredzenam ap pogām.",
+              "colour": {
+                "title": "Krāsa",
+                "subtitle": "Izvēlieties vienu vai izmantojiet krāsu, ko jau nēsā fona attēls."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Izslēgt slīpumu",
+              "subtitle": "Piezīmes un attēli stāv taisni, un velkšana tiem vairs nepiešķir slīpumu."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -540,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Paneļa stils",
+          "subtitle": "Klasiskais ir tumšs panelis, caur kuru redzams fona attēls. Stikls ir gaišāks un spēcīgi to izpludina.",
+          "classic": "Klasiskais",
+          "glass": "Stikls"
         }
       },
       "marketplace": {

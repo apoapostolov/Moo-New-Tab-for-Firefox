@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "Συμπληρώνεται για γνωστούς ιστότοπους. Κενό σημαίνει το favicon του ίδιου του ιστότοπου."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Βάρδια εργασίας",
+              "shift_subtitle": "Μετρά από την αρχή της ημέρας σας έως το τέλος της βάρδιας σας. Αφήστε και τα δύο κενά για να μετράει και τις 24 ώρες. Τα 9, 9:30, 9am και 17:00 λειτουργούν.",
+              "shift_start": "Αρχή ημέρας",
+              "shift_end": "Τέλος ημέρας",
+              "days_title": "Εργάσιμες ημέρες",
+              "days_subtitle": "Το ρολόι Προόδου εμφανίζεται στις εργάσιμες ημέρες που σημειώνονται εδώ. Την υπόλοιπη εβδομάδα εμφανίζεται το ρολόι παρακάτω.",
+              "fallback_title": "Εναλλαγή σε εφεδρικό ρολόι",
+              "fallback_subtitle": "Εμφάνιση αυτού του ρολογιού εκτός από τις παραπάνω ημέρες. Αν δεν είναι τσεκαρισμένο, το ρολόι Προόδου είναι το ρολόι κάθε ημέρα.",
+              "fallback_switch": "Εναλλαγή εκτός ημερών",
+              "other_title": "Εκτός εργασίας",
+              "other_subtitle": "Το ρολόι για τις ημέρες εκτός εργασίας."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "Εμφάνιση ημερομηνίας",
+            "show_subtitle": "Τοποθετήστε την ημερομηνία κάτω από το ρολόι."
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "Εκδηλώσεις",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Βιβλιοθήκη Mue",
+              "coverr": "Coverr (Βίντεο)",
+              "live": "Ζωντανά κανάλια",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Επιλέξτε θέματα ή δώστε όνομα σε μια συλλογή.",
+              "topics": "Θέματα",
+              "categories": "Κατηγορίες"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Βιβλιοθήκη Mue",
+              "subtitle": "Επιλεγμένες εικόνες, οργανωμένες ανά κατηγορία"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Δωρεάν κλιπ σε επανάληψη, χωρίς ήχο.",
+              "search": "Αναζήτηση",
+              "search_subtitle": "Αφήστε το κενό για οποιοδήποτε κλιπ ή περιορίστε το σε ένα θέμα."
+            },
+            "live": {
+              "title": "Ζωντανά κανάλια",
+              "subtitle": "Κανάλια περιβάλλοντος 24/7, χωρίς ήχο. Μια ζωντανή μετάδοση συνεχίζει να κατεβάζει όσο η καρτέλα είναι ανοιχτή, οπότε χρησιμοποιεί πολύ περισσότερα δεδομένα από ένα κλιπ σε επανάληψη.",
+              "channel": "Κανάλι",
+              "channel_any": "Οποιοδήποτε κανάλι"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Δωρεάν κλιπ. Απαιτείται κλειδί API από τον δικό σας λογαριασμό Pixabay.",
+              "key": "Κλειδί API",
+              "key_subtitle": "Δημιουργήστε ένα δωρεάν στο pixabay.com/api/docs.",
+              "key_placeholder": "Κλειδί API Pixabay",
+              "search": "Αναζήτηση",
+              "search_subtitle": "Αφήστε το κενό για οποιοδήποτε κλιπ ή περιορίστε το σε ένα θέμα"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Δωρεάν κλιπ. Απαιτείται κλειδί API από τον δικό σας λογαριασμό Pexels.",
+              "key": "Κλειδί API",
+              "key_subtitle": "Δημιουργήστε ένα δωρεάν στο pexels.com/api.",
+              "key_placeholder": "Κλειδί API Pexels",
+              "search": "Αναζήτηση",
+              "search_subtitle": "Αφήστε το κενό για οποιοδήποτε κλιπ ή περιορίστε το σε ένα θέμα"
+            },
+            "information": {
+              "title": "Πληροφορίες φόντου",
+              "subtitle": "Τι λέει η σελίδα για την εικόνα πίσω της."
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Διάφορα",
+            "scratch": {
+              "title": "Πρόχειρο",
+              "subtitle": "Ό,τι αφήνετε στην ίδια τη σελίδα, έξω από κάθε μικροεφαρμογή."
+            },
+            "scratch_notes": {
+              "title": "Σημειώσεις προχείρου",
+              "subtitle": "Κάντε διπλό κλικ σε οποιοδήποτε κενό σημείο της σελίδας για να αφήσετε μια σημείωση. Σύρετέ την για να τη μετακινήσετε, κάντε κλικ για να γράψετε και κάντε κλικ στο × δύο φορές για να τη διαγράψετε. Το Markdown λειτουργεί."
+            },
+            "scratch_images": {
+              "title": "Εικόνες προχείρου",
+              "subtitle": "Επικολλήστε μια εικόνα οπουδήποτε στη σελίδα και πηγαίνει εκεί που βρίσκεται ο δείκτης, στο μέγεθος μιας σημείωσης. Σύρετε μια γωνία για αλλαγή μεγέθους και τα κουμπιά της την αντιγράφουν, την αποθηκεύουν ή την αφαιρούν."
+            },
+            "signature": {
+              "title": "Χρώμα έμφασης",
+              "subtitle": "Η απόχρωση σε συνδέσμους, σημάδια, διακόπτες και τον δακτύλιο γύρω από τα κουμπιά.",
+              "colour": {
+                "title": "Χρώμα",
+                "subtitle": "Επιλέξτε ένα χρώμα ή πάρτε το χρώμα που φοράει ήδη η ταπετσαρία."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Απενεργοποίηση κλίσης",
+              "subtitle": "Οι σημειώσεις και οι εικόνες στέκονται ίσια και το σύρσιμο δεν τους δίνει πλέον κλίση."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Στυλ πλαισίου",
+          "subtitle": "Το Κλασικό είναι ένα σκούρο πλαίσιο μέσα από το οποίο βλέπετε την ταπετσαρία. Το Γυαλί είναι πιο ανοιχτό και τη θολώνει έντονα.",
+          "classic": "Κλασικό",
+          "glass": "Γυαλί"
         }
       },
       "marketplace": {

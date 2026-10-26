@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "Ismert oldalakhoz kitöltve. Az üres érték az oldal saját faviconját jelenti."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "Műszak",
+              "shift_subtitle": "A napod kezdetétől a műszakod végéig számol. Hagyd mindkettőt üresen a teljes 24 órához. A 9, 9:30, 9am és 17:00 is működik.",
+              "shift_start": "Nap kezdete",
+              "shift_end": "Nap vége",
+              "days_title": "Munkanapok",
+              "days_subtitle": "A Folyamat óra az itt bejelölt munkanapokon jelenik meg. A hét többi napján az alábbi óra látszik.",
+              "fallback_title": "Váltás tartalék órára",
+              "fallback_subtitle": "Ennek az órának a megjelenítése a fenti napokon kívül. Bejelölés nélkül a Folyamat óra minden nap az óra.",
+              "fallback_switch": "Váltás a napokon kívül",
+              "other_title": "Munkán kívül",
+              "other_subtitle": "Az óra a munkán kívüli napokra."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "Dátum megjelenítése",
+            "show_subtitle": "Tedd a dátumot az óra alá."
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "Események",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "Mue könyvtár",
+              "coverr": "Coverr (videó)",
+              "live": "Élő csatornák",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "Válassz témákat, vagy nevezz meg egy gyűjteményt.",
+              "topics": "Témák",
+              "categories": "Kategóriák"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "Mue könyvtár",
+              "subtitle": "Válogatott képek, kategóriák szerint rendezve"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "Ingyenes, ismétlődő klipek, némán lejátszva.",
+              "search": "Keresés",
+              "search_subtitle": "Hagyd üresen bármely klipekhez, vagy szűkítsd egy témára."
+            },
+            "live": {
+              "title": "Élő csatornák",
+              "subtitle": "Éjjel-nappali hangulatcsatornák, némán lejátszva. Az élő adás addig tölt, amíg a lap nyitva van, így sokkal több adatot használ, mint egy ismétlődő klip.",
+              "channel": "Csatorna",
+              "channel_any": "Bármely csatorna"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "Ingyenes klipek. A saját Pixabay-fiókodból származó API-kulcs szükséges.",
+              "key": "API-kulcs",
+              "key_subtitle": "Ingyeneset a pixabay.com/api/docs oldalon készíthetsz.",
+              "key_placeholder": "Pixabay API-kulcs",
+              "search": "Keresés",
+              "search_subtitle": "Hagyd üresen bármely klipekhez, vagy szűkítsd egy témára"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "Ingyenes klipek. A saját Pexels-fiókodból származó API-kulcs szükséges.",
+              "key": "API-kulcs",
+              "key_subtitle": "Ingyeneset a pexels.com/api oldalon készíthetsz.",
+              "key_placeholder": "Pexels API-kulcs",
+              "search": "Keresés",
+              "search_subtitle": "Hagyd üresen bármely klipekhez, vagy szűkítsd egy témára"
+            },
+            "information": {
+              "title": "Háttérinformációk",
+              "subtitle": "Amit az oldal a háttérben lévő képről mond."
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "Egyéb",
+            "scratch": {
+              "title": "Vázlat",
+              "subtitle": "Amit közvetlenül az oldalra teszel, bármely widgeten kívül."
+            },
+            "scratch_notes": {
+              "title": "Vázlatjegyzetek",
+              "subtitle": "Kattints duplán az oldal bármely üres részére jegyzet lerakásához. Húzd a mozgatáshoz, kattints rá az íráshoz, és kattints kétszer a × jelre az elvetéshez. A Markdown működik."
+            },
+            "scratch_images": {
+              "title": "Vázlatképek",
+              "subtitle": "Illessz be egy képet az oldal bármely pontjára, és ott jelenik meg, ahol a kurzor van, egy jegyzet méretében. A sarkát húzva méretezheted, a rajta lévő gombokkal pedig másolhatod, mentheted vagy eltávolíthatod."
+            },
+            "signature": {
+              "title": "Kiemelőszín",
+              "subtitle": "A hivatkozások, pipák, kapcsolók és a gombok körüli gyűrű árnyalata.",
+              "colour": {
+                "title": "Szín",
+                "subtitle": "Válassz egy színt, vagy vedd azt, amelyiket a háttérkép már visel."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "Döntés kikapcsolása",
+              "subtitle": "A jegyzetek és képek egyenesen állnak, és a húzás már nem dönti meg őket."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "Panel stílusa",
+          "subtitle": "A Klasszikus egy sötét panel, amelyen át látod a háttérképet. Az Üveg világosabb, és erősen elmossa.",
+          "classic": "Klasszikus",
+          "glass": "Üveg"
         }
       },
       "marketplace": {

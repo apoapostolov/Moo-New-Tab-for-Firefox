@@ -36,7 +36,8 @@
       "icon": "Icon (optional)",
       "add": "Add",
       "name_error": "Must provide name",
-      "url_error": "Must provide URL"
+      "url_error": "Must provide URL",
+      "icon_hint": "بيتملا للمواقع المعروفة. فاضي يعني أيقونة الموقع نفسه."
     },
     "date": {
       "week": "Week"
@@ -135,6 +136,19 @@
               "change_hour_colour": "Change hour text colour",
               "change_minute_colour": "Change minute text colour",
               "change_second_colour": "Change second text colour"
+            },
+            "percentage": {
+              "shift_title": "الشيفت",
+              "shift_subtitle": "بيتحسب من أول يومك لآخر الشيفت بتاعك. سيبهم فاضيين عشان تحسب الـ24 ساعة كلها. 9 و9:30 و9am و17:00 كلهم شغالين.",
+              "shift_start": "أول اليوم",
+              "shift_end": "آخر اليوم",
+              "days_title": "أيام الشغل",
+              "days_subtitle": "ساعة التقدّم بتظهر في أيام الشغل المعلّمة هنا. وباقي الأسبوع بيظهر فيه الساعة اللي تحت.",
+              "fallback_title": "بدّل لساعة بديلة",
+              "fallback_subtitle": "اعرض الساعة دي برّه الأيام اللي فوق. لو مش معلّم، ساعة التقدّم هي الساعة كل يوم.",
+              "fallback_switch": "بدّل برّه الأيام",
+              "other_title": "برّه الشغل",
+              "other_subtitle": "الساعة بتاعة الأيام اللي برّه الشغل."
             }
           },
           "date": {
@@ -157,7 +171,9 @@
               "dash": "Dash",
               "gaps": "Gaps",
               "slashes": "Slashes"
-            }
+            },
+            "show": "إظهار التاريخ",
+            "show_subtitle": "حط التاريخ تحت الساعة."
           },
           "quote": {
             "title": "Quote",
@@ -183,15 +199,7 @@
           },
           "greeting": {
             "title": "Greeting",
-            "events": {
-              "0": "E",
-              "1": "v",
-              "2": "e",
-              "3": "n",
-              "4": "t",
-              "5": "s",
-              "title": "Events"
-            },
+            "events": "المناسبات",
             "events_description": "Control events on Moo such as birthdays.",
             "enable_events": "Show messages on special days",
             "default": "Default greeting message",
@@ -242,13 +250,23 @@
               "custom_image": "Custom image",
               "custom_colour": "Custom colour/gradient",
               "random_colour": "Random colour",
-              "random_gradient": "Random gradient"
+              "random_gradient": "Random gradient",
+              "unsplash": "Unsplash",
+              "mue_library": "مكتبة Mue",
+              "coverr": "Coverr (فيديو)",
+              "live": "قنوات لايف",
+              "pixabay": "Pixabay",
+              "pexels": "Pexels"
             },
             "unsplash": {
               "title": "Unsplash Collection(s)",
               "subtitle": "Select the collection(s) you want to use for your background",
               "id": "Collection ID(s)",
-              "id_subtitle": "Enter a comma separated list of Unsplash IDs"
+              "id_subtitle": "Enter a comma separated list of Unsplash IDs",
+              "section_title": "Unsplash",
+              "section_subtitle": "اختار مواضيع، أو سمّي مجموعة.",
+              "topics": "المواضيع",
+              "categories": "الفئات"
             },
             "source": {
               "title": "Source",
@@ -298,7 +316,45 @@
             "display": "Display",
             "display_subtitle": "Change how background and photo information are loaded",
             "api": "API Settings",
-            "api_subtitle": "Options for getting an image from an external service (API)"
+            "api_subtitle": "Options for getting an image from an external service (API)",
+            "mue_library": {
+              "title": "مكتبة Mue",
+              "subtitle": "صور مختارة، مرتبة بالفئة"
+            },
+            "coverr": {
+              "title": "Coverr",
+              "subtitle": "مقاطع ببلاش بتتكرر، وبتشتغل من غير صوت.",
+              "search": "بحث",
+              "search_subtitle": "سيبه فاضي عشان أي مقطع، أو ضيّقه على موضوع واحد."
+            },
+            "live": {
+              "title": "قنوات لايف",
+              "subtitle": "قنوات هادية على مدار اليوم، بتشتغل من غير صوت. البث المباشر بيفضل ينزّل طول ما التاب مفتوح، فبيستهلك نت أكتر بكتير من مقطع بيتكرر.",
+              "channel": "القناة",
+              "channel_any": "أي قناة"
+            },
+            "pixabay": {
+              "title": "Pixabay",
+              "subtitle": "مقاطع ببلاش. محتاجة مفتاح API من حساب Pixabay بتاعك.",
+              "key": "مفتاح API",
+              "key_subtitle": "اعمل واحد ببلاش على pixabay.com/api/docs.",
+              "key_placeholder": "مفتاح API بتاع Pixabay",
+              "search": "بحث",
+              "search_subtitle": "سيبه فاضي عشان أي مقطع، أو ضيّقه على موضوع"
+            },
+            "pexels": {
+              "title": "Pexels",
+              "subtitle": "مقاطع ببلاش. محتاجة مفتاح API من حساب Pexels بتاعك.",
+              "key": "مفتاح API",
+              "key_subtitle": "اعمل واحد ببلاش على pexels.com/api.",
+              "key_placeholder": "مفتاح API بتاع Pexels",
+              "search": "بحث",
+              "search_subtitle": "سيبه فاضي عشان أي مقطع، أو ضيّقه على موضوع"
+            },
+            "information": {
+              "title": "معلومات الخلفية",
+              "subtitle": "اللي الصفحة بتقوله عن الصورة اللي وراها."
+            }
           },
           "search": {
             "title": "Search",
@@ -539,6 +595,39 @@
             "no_supporters": "There are currently no Moo supporters",
             "photographers": "Photographers",
             "curators": "Add-on creators"
+          },
+          "google": {
+            "title": "Google"
+          },
+          "misc": {
+            "title": "متفرقات",
+            "scratch": {
+              "title": "المسودة",
+              "subtitle": "اللي بترميه على الصفحة نفسها، برّه أي عنصر."
+            },
+            "scratch_notes": {
+              "title": "نوتات المسودة",
+              "subtitle": "دوس دبل كليك على أي حتة فاضية في الصفحة عشان تنزّل نوتة. اسحبها عشان تنقلها، ودوس عليها عشان تكتب فيها، ودوس على × مرتين عشان ترميها. Markdown شغال."
+            },
+            "scratch_images": {
+              "title": "صور المسودة",
+              "subtitle": "الصق صورة في أي حتة في الصفحة وهتنزل مكان المؤشر، بحجم نوتة. اسحب أي ركن عشان تغيّر حجمها، والأزرار اللي عليها بتنسخها أو تحفظها أو تشيلها."
+            },
+            "signature": {
+              "title": "لون التوقيع",
+              "subtitle": "اللون اللي على اللينكات والعلامات والمفاتيح والحلقة اللي حوالين الأزرار.",
+              "colour": {
+                "title": "اللون",
+                "subtitle": "اختار لون، أو خد اللون اللي الخلفية لابساه أصلًا."
+              }
+            },
+            "scratch_no_tilt": {
+              "title": "قفل الميل",
+              "subtitle": "النوتات والصور بتقعد عدلة، وسحبها مبقاش يميّلها."
+            }
+          },
+          "rss": {
+            "title": "RSS"
           }
         },
         "buttons": {
@@ -548,6 +637,12 @@
           "cancel": "Cancel",
           "continue": "Continue",
           "close": "Close"
+        },
+        "surface": {
+          "title": "شكل اللوحة",
+          "subtitle": "الكلاسيك لوحة غامقة بتشوف الخلفية من خلالها. والزجاج أفتح وبينعّمها جامد.",
+          "classic": "كلاسيك",
+          "glass": "زجاج"
         }
       },
       "marketplace": {
