@@ -30,6 +30,10 @@ const NOTES_FLAG = 'scratchNotes';
 const IMAGES_FLAG = 'scratchImages';
 // Off by default: the lean is part of the feel. Turning it on keeps everything straight.
 const NO_TILT_FLAG = 'scratchNoTilt';
+// Off by default too: the pane of glass is what makes a note a note. Turned on, a note at
+// rest is bare text on the wallpaper and takes its frame back when it is clicked, the way a
+// picture with a cut-out already behaves.
+const BARE_FLAG = 'scratchNotesBare';
 const TOP_Z = 'scratchTopZ';
 const ARM_TIMEOUT = 4000;
 // A picture is stored whole, so the store has a ceiling: past it the oldest picture gives way.
@@ -218,6 +222,7 @@ const Scratch = () => {
   const [notesOn, setNotesOn] = useState(() => localStorage.getItem(NOTES_FLAG) === 'true');
   const [imagesOn, setImagesOn] = useState(() => localStorage.getItem(IMAGES_FLAG) === 'true');
   const [noTilt, setNoTilt] = useState(() => localStorage.getItem(NO_TILT_FLAG) === 'true');
+  const [bare, setBare] = useState(() => localStorage.getItem(BARE_FLAG) === 'true');
   const [notes, setNotes] = useState(readNotes);
   const [images, setImages] = useState(readImages);
   const [editingId, setEditingId] = useState(null);
@@ -274,6 +279,7 @@ const Scratch = () => {
       setNotesOn(localStorage.getItem(NOTES_FLAG) === 'true');
       setImagesOn(localStorage.getItem(IMAGES_FLAG) === 'true');
       setNoTilt(localStorage.getItem(NO_TILT_FLAG) === 'true');
+      setBare(localStorage.getItem(BARE_FLAG) === 'true');
     };
 
     EventBus.on('refresh', reread);
@@ -769,11 +775,16 @@ const Scratch = () => {
           const editing = editingId === note.id;
           const active = drag?.id === note.id;
           const angle = noTilt ? 0 : note.angle + (active ? drag.tilt : 0);
+          // Bare is a resting state, not a mode: the frame comes back the moment the note is
+          // in hand, whether that is a click, a drag or the caret.
+          const frameless = bare && !editing && !active && focused !== note.id;
 
           return (
             <div
               key={note.id}
-              className={`scratchNote${editing ? ' editing' : ''}${active ? ' dragging' : ''}`}
+              className={`scratchNote${editing ? ' editing' : ''}${active ? ' dragging' : ''}${
+                focused === note.id ? ' focused' : ''
+              }${frameless ? ' bare' : ''}`}
               style={{
                 left: note.x + (active ? drag.dx : 0),
                 top: note.y + (active ? drag.dy : 0),

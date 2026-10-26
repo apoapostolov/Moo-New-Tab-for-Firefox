@@ -427,6 +427,10 @@
               "title": "Turn off tilting",
               "subtitle": "Notes and pictures sit straight, and dragging one no longer gives it a lean."
             },
+        "scratch_bare": {
+          "title": "Frameless notes",
+          "subtitle": "Notes rest as bare text on the wallpaper and take their frame back when you click one."
+        },
             "cinema": {
               "title": "Triple click to hide the UI",
               "subtitle": "Three clicks hide everything but the video; one click, or Escape, brings it back."

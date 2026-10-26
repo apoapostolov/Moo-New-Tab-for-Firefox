@@ -48,7 +48,10 @@
   transform-origin: 50% 50%;
   transition:
     transform 0.2s ease-out,
-    box-shadow 0.2s ease-out;
+    box-shadow 0.2s ease-out,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    backdrop-filter 0.15s ease;
 
   /* Only the shadow moves on hover: the note is picked up on press, and a
      travel here would fight the hand. */
@@ -65,6 +68,57 @@
 
   &.editing {
     cursor: text;
+  }
+}
+
+/*
+ * A frameless note, for a wallpaper that would rather be read than covered: at rest
+ * there is no pane, no border and no shadow, only the words on the picture. It is a
+ * resting state rather than a mode -- clicked, dragged or written in, the glass fades
+ * back in, which is how a picture with a cut-out already behaves.
+ *
+ * The blur is taken to zero rather than switched off, because `none` does not
+ * interpolate and the panel would snap in behind text that faded. The shadow under the
+ * words is stronger here: without a pane it is the only thing holding the type off a
+ * busy photograph.
+ */
+.scratchNote.bare {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: blur(0) saturate(1);
+  text-shadow:
+    0 1px 3px rgb(0 0 0 / 55%),
+    0 0 14px rgb(0 0 0 / 32%);
+
+  /* The corner control belongs to the note in hand, as it does on a sticker. */
+  .scratchNoteClose {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* A card lifts on hover; bare text does not. */
+  &:hover:not(.dragging) {
+    box-shadow: none;
+  }
+
+  &.focused,
+  &.editing,
+  &.dragging {
+    background: rgb(18 18 20 / 32%);
+    border-color: rgb(255 255 255 / 15%);
+    box-shadow: 0 14px 34px rgb(0 0 0 / 26%);
+    backdrop-filter: blur(16px) saturate(1.25);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
+
+    .scratchNoteClose {
+      opacity: 0.45;
+      pointer-events: auto;
+    }
+
+    &.dragging {
+      box-shadow: 0 22px 46px rgb(0 0 0 / 34%);
+    }
   }
 }
 

@@ -67,6 +67,20 @@ const MiscOptions = () => {
             />
           </Action>
         </Row>
+
+        <Row>
+          <Content
+            title={variables.getMessage(`${MISC_SECTION}.scratch_bare.title`)}
+            subtitle={variables.getMessage(`${MISC_SECTION}.scratch_bare.subtitle`)}
+          />
+          <Action>
+            <Switch
+              name="scratchNotesBare"
+              category="other"
+              text={variables.getMessage('modals.main.settings.enabled')}
+            />
+          </Action>
+        </Row>
       </Group>
 
       <Group>
