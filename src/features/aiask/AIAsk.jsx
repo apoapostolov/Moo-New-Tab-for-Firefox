@@ -35,8 +35,12 @@ const AIAsk = () => {
   const [service, setService] = useState(readService);
   const [query, setQuery] = useState('');
   const [picking, setPicking] = useState(false);
+  const [hintHidden, setHintHidden] = useState(false);
   const input = useRef(null);
   const box = useRef(null);
+  // Set for a focus the widget takes on its own, so the placeholder can tell that
+  // focus from the reader's and stay put for it.
+  const autoFocus = useRef(false);
 
   /**
    * Focus is claimed only while the page is idle, never over a dialog or a note
@@ -49,6 +53,7 @@ const AIAsk = () => {
       if (active && active !== document.body && active !== input.current) return;
       if (document.querySelector('.modalBackground')) return;
 
+      autoFocus.current = true;
       input.current?.focus({ preventScroll: true });
     };
 
@@ -84,6 +89,7 @@ const AIAsk = () => {
     const asked = query.trim();
 
     if (!asked) {
+      autoFocus.current = true;
       input.current?.focus();
 
       return;
@@ -96,6 +102,7 @@ const AIAsk = () => {
     localStorage.setItem(SERVICE_KEY, key);
     setService(key);
     setPicking(false);
+    autoFocus.current = true;
     input.current?.focus();
   }, []);
 
@@ -105,10 +112,24 @@ const AIAsk = () => {
     <form className="aiAsk" onSubmit={submit} ref={box}>
       <input
         ref={input}
-        className="aiAskInput"
+        className={hintHidden ? 'aiAskInput aiAskHintHide' : 'aiAskInput'}
         type="text"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
+        onPointerDown={() => {
+          autoFocus.current = false;
+          setHintHidden(true);
+        }}
+        onFocus={() => {
+          if (autoFocus.current) {
+            autoFocus.current = false;
+
+            return;
+          }
+
+          setHintHidden(true);
+        }}
+        onBlur={() => setHintHidden(false)}
         placeholder="Ask anything"
         aria-label={`Ask ${name}`}
         autoComplete="off"

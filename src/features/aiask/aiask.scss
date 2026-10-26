@@ -8,7 +8,10 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  width: min(680px, 62vw);
+  /* 140% of one column of the middle rail, the width a single centre widget has.
+     Not a viewport fraction: the pair of columns is what the widget is read against,
+     and it caps at 760px however wide the window gets. */
+  width: calc(var(--widget-column, 370px) * 1.4);
   padding: 0 2px 9px;
 
   /* The project's line: semi-transparent white, rounded at both ends. The thickness is
@@ -78,6 +81,13 @@
   &::placeholder {
     color: inherit;
     opacity: 0.5;
+  }
+
+  /* A hint is for a line nobody has picked up yet. The page focuses this input on
+     load so typing can start immediately, and that is not a choice to make the hint
+     go: only a pointer press or a deliberate focus does. */
+  &.aiAskHintHide::placeholder {
+    opacity: 0;
   }
 }
 

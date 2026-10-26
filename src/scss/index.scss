@@ -62,6 +62,10 @@ body {
     align-items: center;
     gap: 20px;
     animation: fadeIn 1s;
+    /* One column of the middle rail. The split below lays out two of these with a
+       20px gap, which is why its width is 2g + 20; the query line measures itself
+       against a single column rather than against the pair. */
+    --widget-column: calc((min(760px, 74vw) - 20px) / 2);
 
     /* The middle column split into two, which is the layout the Overview's
        hold-to-make-room gesture sets up. Only the cards are columns: the clock,
