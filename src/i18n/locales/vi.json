@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Tắt độ nghiêng",
               "subtitle": "Ghi chú và ảnh đứng thẳng, kéo chúng không còn bị nghiêng nữa."
+            },
+            "cinema": {
+              "title": "Nhấp ba lần để ẩn giao diện",
+              "subtitle": "Ba lần nhấp vào bất kỳ đâu trên trang sẽ ẩn mọi thứ trừ video, thêm ba lần nữa để hiện lại, và Escape cũng làm điều tương tự. Chỉ nền video mới phản hồi — ảnh tĩnh thì không có gì để xem."
             }
           },
           "rss": {

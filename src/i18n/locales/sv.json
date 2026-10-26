@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Stäng av lutning",
               "subtitle": "Anteckningar och bilder står rakt, och när du drar i en lutar den inte längre."
+            },
+            "cinema": {
+              "title": "Tre klick för att dölja gränssnittet",
+              "subtitle": "Tre klick var som helst på sidan döljer allt utom videon, tre till tar tillbaka det, och Escape gör samma sak. Det svarar bara när bakgrunden är en video — en stillbild har inget att titta på i sig själv."
             }
           },
           "rss": {

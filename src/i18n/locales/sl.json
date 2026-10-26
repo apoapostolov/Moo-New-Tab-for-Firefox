@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Izklopi nagib",
               "subtitle": "Zapiski in slike stojijo ravno, vlečenje pa jim ne da več nagiba."
+            },
+            "cinema": {
+              "title": "Trije kliki za skritje vmesnika",
+              "subtitle": "Trije kliki kjer koli na strani skrijejo vse razen videoposnetka, še trije ga vrnejo, Escape pa naredi enako. Odziva se le videoposnetek v ozadju — na mirujoči sliki ni česa gledati."
             }
           },
           "rss": {

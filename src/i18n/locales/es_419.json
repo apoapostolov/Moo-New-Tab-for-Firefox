@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Desactivar la inclinación",
               "subtitle": "Las notas y las imágenes se quedan rectas, y al arrastrarlas ya no se inclinan."
+            },
+            "cinema": {
+              "title": "Tres clics para ocultar la interfaz",
+              "subtitle": "Tres clics en cualquier parte de la página ocultan todo menos el video, tres más lo devuelven, y Escape hace lo mismo. Solo responde cuando el fondo es un video — una imagen fija no tiene nada que mirar por sí sola."
             }
           },
           "rss": {

@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Izslēgt slīpumu",
               "subtitle": "Piezīmes un attēli stāv taisni, un velkšana tiem vairs nepiešķir slīpumu."
+            },
+            "cinema": {
+              "title": "Trīs klikšķi, lai paslēptu saskarni",
+              "subtitle": "Trīs klikšķi jebkurā lapas vietā paslēpj visu, izņemot video, vēl trīs to atgriež, un Escape dara to pašu. Tas darbojas tikai tad, ja fons ir video — nekustīgā attēlā pašā par sevi nav ko skatīties."
             }
           },
           "rss": {

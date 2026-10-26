@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Slå av helning",
               "subtitle": "Notater og bilder står rett, og når du drar i et lener det seg ikke lenger."
+            },
+            "cinema": {
+              "title": "Trippelklikk for å skjule grensesnittet",
+              "subtitle": "Tre klikk hvor som helst på siden fjerner alt bortsett fra videoen, tre til henter det tilbake, og Escape gjør det samme. Bare en videobakgrunn svarer på dette — et stille bilde har ingenting å se på av seg selv."
             }
           },
           "rss": {

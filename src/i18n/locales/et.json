@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Lülita kallutamine välja",
               "subtitle": "Märkmed ja pildid seisavad sirgelt ning lohistamine ei anna neile enam kallet."
+            },
+            "cinema": {
+              "title": "Kasutajaliidese peitmiseks kolmekordne klõps",
+              "subtitle": "Kolm klõpsu ükskõik kus lehel peidavad kõik peale video, veel kolm toovad selle tagasi ja Escape teeb sama. Sellele reageerib ainult videotaust — liikumatul pildil pole omaette midagi vaadata."
             }
           },
           "rss": {

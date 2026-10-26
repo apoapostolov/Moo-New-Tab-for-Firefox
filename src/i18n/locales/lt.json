@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Išjungti pasvirimą",
               "subtitle": "Užrašai ir paveikslėliai išlieka tiesūs, o tempimas nebesuteikia jiems pasvirimo."
+            },
+            "cinema": {
+              "title": "Trys paspaudimai, kad paslėptumėte sąsają",
+              "subtitle": "Trys paspaudimai bet kurioje puslapio vietoje paslepia viską, išskyrus vaizdo įrašą, dar trys jį grąžina, o Escape daro tą patį. Tai veikia tik su vaizdo įrašo fonu — statiškoje nuotraukoje nėra ko žiūrėti."
             }
           },
           "rss": {

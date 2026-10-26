@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Neigung ausschalten",
               "subtitle": "Notizen und Bilder stehen gerade, und beim Ziehen kippt keines mehr."
+            },
+            "cinema": {
+              "title": "Dreifachklick zum Ausblenden der Oberfläche",
+              "subtitle": "Drei Klicks irgendwo auf der Seite lassen alles bis auf das Video verschwinden, drei weitere holen es zurück, und Escape tut dasselbe. Nur ein Video-Hintergrund reagiert darauf — ein Standbild hat nichts, was sich ansehen ließe."
             }
           },
           "rss": {

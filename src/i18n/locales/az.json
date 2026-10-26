@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Əyilməni söndür",
               "subtitle": "Qeydlər və şəkillər düz dayanır, birini dartdıqda artıq əyilmir."
+            },
+            "cinema": {
+              "title": "İnterfeysi gizlətmək üçün üç dəfə klikləyin",
+              "subtitle": "Səhifənin hər hansı yerinə üç klik videodan başqa hər şeyi gizlədir, daha üç klik onu geri qaytarır, Escape da eyni işi görür. Buna yalnız video fon cavab verir — hərəkətsiz şəklin özündə izləyəcək heç nə yoxdur."
             }
           },
           "rss": {

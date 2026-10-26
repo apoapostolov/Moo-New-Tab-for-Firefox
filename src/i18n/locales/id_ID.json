@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Matikan kemiringan",
               "subtitle": "Catatan dan gambar berdiri tegak, dan menyeretnya tidak lagi membuatnya miring."
+            },
+            "cinema": {
+              "title": "Tiga kali klik untuk menyembunyikan UI",
+              "subtitle": "Tiga klik di mana saja pada halaman menyembunyikan semua kecuali video, tiga klik lagi memunculkannya kembali, dan Escape melakukan hal yang sama. Hanya latar video yang merespons — gambar diam tidak punya apa pun untuk ditonton."
             }
           },
           "rss": {

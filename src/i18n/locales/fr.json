@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Désactiver l'inclinaison",
               "subtitle": "Les notes et les images restent droites, et les faire glisser ne les incline plus."
+            },
+            "cinema": {
+              "title": "Triple clic pour masquer l'interface",
+              "subtitle": "Trois clics n'importe où sur la page effacent tout sauf la vidéo, trois autres la font revenir, et Échap fait de même. Seul un fond vidéo y répond — une image fixe n'a rien à regarder en soi."
             }
           },
           "rss": {

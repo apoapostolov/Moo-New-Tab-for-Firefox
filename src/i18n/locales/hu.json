@@ -646,6 +646,10 @@
             "scratch_no_tilt": {
               "title": "Döntés kikapcsolása",
               "subtitle": "A jegyzetek és képek egyenesen állnak, és a húzás már nem dönti meg őket."
+            },
+            "cinema": {
+              "title": "Három kattintás a felület elrejtéséhez",
+              "subtitle": "Három kattintás bárhol az oldalon mindent eltüntet a videó kivételével, három további visszahozza, az Escape pedig ugyanezt teszi. Csak a videó háttere reagál rá — egy állóképnek nincs mit nézni."
             }
           },
           "rss": {
