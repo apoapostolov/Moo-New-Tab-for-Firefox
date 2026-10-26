@@ -27,6 +27,7 @@ import {
   MdCollectionsBookmark,
   MdStickyNote2,
   MdMailOutline,
+  MdRssFeed,
 } from 'react-icons/md';
 
 export const TAB_TYPES = {
@@ -49,6 +50,7 @@ export const ICON_COMPONENTS = {
   BACKGROUND: MdOutlinePhoto,
   WEATHER: MdCloudQueue,
   GOOGLE: MdMailOutline,
+  RSS: MdRssFeed,
   MISC: MdStickyNote2,
   APPEARANCE: MdFormatPaint,
   LANGUAGE: MdTranslate,
@@ -78,6 +80,7 @@ export const MESSAGE_KEYS = {
   BACKGROUND: 'modals.main.settings.sections.background.title',
   WEATHER: 'modals.main.settings.sections.weather.title',
   GOOGLE: 'modals.main.settings.sections.google.title',
+  RSS: 'modals.main.settings.sections.rss.title',
   MISC: 'modals.main.settings.sections.misc.title',
   APPEARANCE: 'modals.main.settings.sections.appearance.title',
   LANGUAGE: 'modals.main.settings.sections.language.title',
@@ -112,6 +115,7 @@ export const getIconComponent = (label, variables) => {
     [variables.getMessage(MESSAGE_KEYS.BACKGROUND)]: ICON_COMPONENTS.BACKGROUND,
     [variables.getMessage(MESSAGE_KEYS.WEATHER)]: ICON_COMPONENTS.WEATHER,
     [variables.getMessage(MESSAGE_KEYS.GOOGLE)]: ICON_COMPONENTS.GOOGLE,
+    [variables.getMessage(MESSAGE_KEYS.RSS)]: ICON_COMPONENTS.RSS,
     [variables.getMessage(MESSAGE_KEYS.MISC)]: ICON_COMPONENTS.MISC,
     [variables.getMessage(MESSAGE_KEYS.APPEARANCE)]: ICON_COMPONENTS.APPEARANCE,
     [variables.getMessage(MESSAGE_KEYS.LANGUAGE)]: ICON_COMPONENTS.LANGUAGE,
