@@ -1,19 +1,26 @@
-Moo 1.0.0 is the first tagged release of this Firefox-focused fork of [Mue](https://github.com/mue/mue). It puts your clock, weather, links, notes and optional Google widgets on a new-tab page you can arrange around a picture, video or live background.
+The first Moo release brings mail, plans, notes and a place to look things up to the Firefox new-tab page, with a layout you can arrange around them. Moo is a personal fork of [Mue](https://github.com/mue/mue).
 
-- Read Google mail, see calendar events and manage tasks from the page. Calendar editing respects the account's access to each calendar.
-- Arrange widgets across the page, with a scrollable layout for narrow or short windows and keyboard controls for moving widgets.
-- Keep notes and pictures locally. Backups can include uploaded pictures, show a preview before import and keep sign-in credentials separate. Settings reset and local-data erasure are separate actions.
-- Follow RSS feeds when you want them. RSS starts off and appears in the centre above Mail when enabled.
-- Choose stock, local or live backgrounds. The README shows the selected Alpine clouds video with fictional mail, events, tasks and weather.
+### Added
 
-Language files load as needed. The main JavaScript entry is about 669 KB before compression, down from 1.62 MB during development; startup speed has not been measured.
+- **Google widgets.** Read mail, check appointments and manage tasks without opening three separate apps. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use.
+- **AI Ask.** Type a question and choose a search engine, AI service or reference site from the menu. Use it for a quick fact, documentation or a question you want to talk through.
+- **Picture, video and live backgrounds.** Choose a source under Settings → Background, use your own pictures or add a live stream. Triple-click a playing video to watch it with the widgets hidden; Escape brings them back.
+- **A layout you can arrange.** Show, hide and move widgets under Settings → Overview, placing them on either side or in the centre. Keep mail beside your plans on a wide window, with a scrollable layout for narrow splits.
+- **Clock and weather.** Choose a clock and set Progress around your working days and hours under Settings → Time. Add your location under Weather to see current conditions and a five-day forecast before making plans outside.
+- **RSS reader.** Enable RSS in Overview and add feed addresses under Settings → RSS to follow several sites in one list. Hover a headline to read the article when available, or open the original site.
+- **Notes, pictures and quick links.** Use New note for reminders, place pictures on the page and add regular destinations under Settings → Quick Links. Keep the things you need for a project within reach of the next tab.
+- **Backups.** Export your setup under Settings → Advanced, with uploaded pictures included if you choose, then preview an import before applying it. Move your layout and notes to another profile while keeping sign-in credentials separate.
+
+### Changed
+
+### Removed
+
+- From Mue: Marketplace and Library, quotes and greetings, achievements, the old search widget, the message form, and the About sections for support, contributors, supporters, photographers and curators. AI Ask provides the current search options.
 
 ### Installation
 
-Download `firefox-1.0.0.zip` and extract it. In Firefox or Zen, open `about:debugging` → **This Firefox** → **Load Temporary Add-on** and select the extracted `manifest.json`.
+Download and extract `firefox-1.0.0.zip`. In Firefox or Zen, open `about:debugging` → **This Firefox** → **Load Temporary Add-on**, then select the extracted `manifest.json`.
 
-**This is an unsigned development build.** Temporary installation ends when the browser restarts. Normal permanent installation in Firefox requires a Mozilla-signed XPI; renaming the ZIP does not sign it. See the [installation and release instructions](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/blob/v1.0.0/docs/RELEASE_PROCESS.md).
+**This is an unsigned development build.** Temporary installation ends when the browser restarts. Normal permanent installation in Firefox requires a Mozilla-signed XPI; renaming the ZIP does not sign it. See the [release process](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/blob/v1.0.0/docs/RELEASE_PROCESS.md).
 
-### Verification
-
-All 28 regression tests, JavaScript and style lint, the production build and archive validation pass locally. Layout and selected interactions were checked in headless Chromium. Installed Firefox/Zen, connected-account operations, screen-reader use and sustained memory/CPU profiling still need verification; see the [audit record](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/blob/v1.0.0/docs/REFACTOR-PROGRESS.md).
+The release passed 28 regression tests, lint, the production build and archive validation in GitHub CI. Layout checks used headless Chromium; installed Firefox/Zen and real-account operations still need verification. The [audit record](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/blob/v1.0.0/docs/REFACTOR-PROGRESS.md) covers the remaining checks.
