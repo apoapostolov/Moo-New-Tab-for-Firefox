@@ -204,6 +204,16 @@ const toPngBlob = async (src) => {
   });
 };
 
+/* The page arrives in an order. The middle column fades in over a second
+ * (`#widgets { animation: fadeIn 1s }` in src/scss/index.scss), and the notes and pictures
+ * follow it rather than racing it: arriving alongside a slower fade made them look like
+ * they snapped into place while the page was still coming up. One number is derived from
+ * the other, so a change to the fade drags the entrance with it. */
+const WIDGET_FADE = 1000;
+const SCRATCH_ENTRANCE = WIDGET_FADE + 120; // a beat after the page settles
+const SCRATCH_STAGGER = 60; // between one note and the next
+const SCRATCH_WINDOW = 1600; // how long after arriving the entrance still counts
+
 const Scratch = () => {
   const [notesOn, setNotesOn] = useState(() => localStorage.getItem(NOTES_FLAG) === 'true');
   const [imagesOn, setImagesOn] = useState(() => localStorage.getItem(IMAGES_FLAG) === 'true');
@@ -227,6 +237,37 @@ const Scratch = () => {
   const inputs = useRef({});
   // Last pointer position; a paste with no pointer over the page falls back to the window centre.
   const pointer = useRef(null);
+
+  // The entrance belongs to the layer arriving on the page, not to every note ever written:
+  // a note made at noon appears at once. Each item's delay is decided the first time it is
+  // seen and then kept, because re-deciding it on a later render would restart an animation
+  // that is already running.
+  const shown = notesOn || imagesOn;
+  const shownBefore = useRef(shown);
+  const enteredAt = useRef(performance.now());
+  const delays = useRef(new Map());
+
+  if (shown !== shownBefore.current) {
+    shownBefore.current = shown;
+
+    if (shown) {
+      enteredAt.current = performance.now();
+      delays.current.clear();
+    }
+  }
+
+  const entrance = (id, step) => {
+    if (!delays.current.has(id)) {
+      const arriving = performance.now() - enteredAt.current < SCRATCH_WINDOW;
+
+      delays.current.set(
+        id,
+        arriving ? `${SCRATCH_ENTRANCE + Math.min(step, 9) * SCRATCH_STAGGER}ms` : '0ms',
+      );
+    }
+
+    return delays.current.get(id);
+  };
 
   useEffect(() => {
     const reread = () => {
@@ -738,8 +779,9 @@ const Scratch = () => {
                 top: note.y + (active ? drag.dy : 0),
                 zIndex: note.z,
                 transform: `rotate(${angle.toFixed(2)}deg)`,
-                // Staggered so the notes assemble rather than appearing at once.
-                animationDelay: `${Math.min(index, 9) * 60}ms`,
+                // Behind the page, then staggered so the notes assemble rather than
+                // appearing at once.
+                animationDelay: entrance(note.id, index),
               }}
               onPointerDown={(event) => startDrag(event, note)}
               onPointerMove={moveDrag}
@@ -803,7 +845,7 @@ const Scratch = () => {
                 zIndex: image.z,
                 transform: `rotate(${angle.toFixed(2)}deg)`,
                 // Pictures follow the notes, so both kinds assemble in one run.
-                animationDelay: `${Math.min(index + notes.length, 9) * 60}ms`,
+                animationDelay: entrance(image.id, index + notes.length),
               }}
               onPointerDown={(event) => startImageDrag(event, image)}
               onPointerMove={moveImageDrag}
