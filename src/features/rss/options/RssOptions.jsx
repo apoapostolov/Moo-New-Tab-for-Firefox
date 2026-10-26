@@ -18,6 +18,33 @@ import {
 
 const COUNTS = ['6', '8', '12', '20'];
 const REFRESH = ['15', '30', '60', '120'];
+// Hours a kept article may sit unused before the page drops it.
+const KEEP = [
+  { value: '24', text: '1 day' },
+  { value: '72', text: '3 days' },
+  { value: '168', text: '7 days' },
+  { value: '336', text: '14 days' },
+];
+
+/**
+ * The controls read their stored value when they mount, so the defaults have to be in
+ * place before the panel renders. Written in an effect they arrive after it, and a
+ * profile that has never touched these shows the first option instead of the default.
+ */
+const seedDefaults = () => {
+  const defaults = {
+    rssFullArticle: 'true',
+    rssItemCount: '12',
+    rssRefreshMinutes: '30',
+    rssArticleTtl: '168',
+  };
+
+  for (const [key, value] of Object.entries(defaults)) {
+    if (localStorage.getItem(key) === null) localStorage.setItem(key, value);
+  }
+};
+
+seedDefaults();
 
 const Section = ({ title, subtitle }) => (
   <Row>
@@ -35,15 +62,6 @@ const RssOptions = () => {
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
   const [access, setAccess] = useState({});
-
-  // The switches read a stored value, so the defaults have to exist before them.
-  useEffect(() => {
-    if (localStorage.getItem('rssFullArticle') === null) localStorage.setItem('rssFullArticle', 'true');
-    if (localStorage.getItem('rssItemCount') === null) localStorage.setItem('rssItemCount', '12');
-    if (localStorage.getItem('rssRefreshMinutes') === null) {
-      localStorage.setItem('rssRefreshMinutes', '30');
-    }
-  }, []);
 
   useEffect(() => {
     let live = true;
@@ -198,15 +216,21 @@ const RssOptions = () => {
 
         <Row>
           <Content
-            title="Read the whole article"
-            subtitle="Hovering a headline fetches the story and shows it in the reader. Turned off, the feed's own summary is shown."
+            title="Full articles"
+            subtitle="The page reads the story behind each headline while it stands, so hovering opens the article itself rather than a request. Turned off, the reader shows the feed's own summary."
           />
           <Action>
-            <Checkbox
-              name="rssFullArticle"
-              category="rss"
-              text="Fetch on hover"
-            />
+            <Checkbox name="rssFullArticle" category="rss" text="Full Articles on Hover" />
+          </Action>
+        </Row>
+
+        <Row>
+          <Content
+            title="Keep full articles for"
+            subtitle="A story the card still lists is kept as long as it is listed. Past this age it is read again when it is next shown."
+          />
+          <Action>
+            <Dropdown name="rssArticleTtl" category="rss" items={KEEP} />
           </Action>
         </Row>
 

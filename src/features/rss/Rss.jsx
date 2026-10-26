@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { MdRefresh } from 'react-icons/md';
 
@@ -7,6 +7,7 @@ import EventBus from 'utils/eventbus';
 
 import { loadItems, readCount, readFullArticle, readRefresh } from './feedStore';
 import { fetchArticle } from './extractArticle';
+import { cachedImages, pruneArticles, readArticle, storeArticle } from './articleCache';
 
 import './rss.scss';
 
@@ -34,14 +35,17 @@ const relative = (stamp) => {
 
 /**
  * Headlines from every feed in one list. Hovering a row opens a reader beside it:
- * the feed's own summary first, then the article itself once it has been fetched,
- * so the digest is readable without leaving the new tab.
+ * the article itself when it is already kept, the feed's own summary until then, so
+ * the digest is readable without leaving the new tab. With full articles on, the page
+ * reads them while it stands rather than when the pointer arrives.
  */
 const Rss = () => {
   const [feeds, setFeeds] = useState({ items: [], errors: [], loading: true });
   const [open, setOpen] = useState(null);
   const [article, setArticle] = useState({ status: 'idle' });
   const [tick, setTick] = useState(0);
+  // Bumped whenever the article cache changes, so the thumbnails pick up new images.
+  const [stored, setStored] = useState(0);
 
   const panel = useRef(null);
   const closeTimer = useRef(null);
@@ -93,6 +97,59 @@ const Rss = () => {
     [],
   );
 
+  // The card's own list is the licence to keep an article: anything it stops showing
+  // goes, and anything past its age goes with it. It waits for that list: the first
+  // render has none, and a prune against it would empty the cache on every visit.
+  useEffect(() => {
+    if (feeds.loading || !feeds.items.length) return;
+
+    const links = feeds.items.map((item) => item.link).filter(Boolean);
+
+    pruneArticles(new Set(links));
+    setStored((value) => value + 1);
+  }, [feeds.items, feeds.loading]);
+
+  /**
+   * Reading the articles while the page stands. One after another rather than all at
+   * once: a dozen parallel page loads is a rude way to treat a dozen publishers, and
+   * the pointer is rarely faster than the second story.
+   */
+  useEffect(() => {
+    if (!readFullArticle()) return undefined;
+
+    const items = feeds.items;
+    let stopped = false;
+
+    (async () => {
+      for (const item of items) {
+        if (stopped) return;
+
+        if (!item.link || readArticle(item.link)) continue;
+
+        try {
+          storeArticle(item.link, await fetchArticle(item.link));
+          if (!stopped) setStored((value) => value + 1);
+        } catch {
+          // Not every page can be read; the row keeps the feed's own summary.
+        }
+      }
+    })();
+
+    return () => {
+      stopped = true;
+    };
+  }, [feeds.items]);
+
+  const thumbs = useMemo(() => {
+    const links = feeds.items.map((item) => item.link).filter(Boolean);
+    const images = cachedImages(links);
+    const out = {};
+
+    for (const item of feeds.items) out[item.link] = item.image || images[item.link] || null;
+
+    return out;
+  }, [feeds.items, stored]);
+
   const keep = () => {
     if (!closeTimer.current) return;
 
@@ -112,8 +169,18 @@ const Rss = () => {
   const show = (item, element) => {
     keep();
     clearTimeout(articleTimer.current);
-    setArticle({ status: 'idle' });
     setOpen({ item, element });
+
+    // Kept already: there is nothing to wait for, so nothing is shown waiting.
+    const kept = item.link ? readArticle(item.link) : null;
+
+    if (kept) {
+      setArticle({ status: 'ready', article: kept });
+
+      return;
+    }
+
+    setArticle({ status: 'idle' });
 
     if (!readFullArticle()) return;
 
@@ -121,7 +188,11 @@ const Rss = () => {
       setArticle({ status: 'loading' });
 
       try {
-        setArticle({ status: 'ready', article: await fetchArticle(item.link) });
+        const fetched = await fetchArticle(item.link);
+
+        storeArticle(item.link, fetched);
+        setStored((value) => value + 1);
+        setArticle({ status: 'ready', article: fetched });
       } catch {
         setArticle({ status: 'unavailable' });
       }
@@ -263,12 +334,23 @@ const Rss = () => {
           <li key={item.id}>
             <button
               type="button"
-              className="rssItem"
+              className={`rssItem${thumbs[item.link] ? ' rssItem-hasThumb' : ''}`}
               onMouseEnter={(event) => show(item, event.currentTarget)}
               onFocus={(event) => show(item, event.currentTarget)}
               onBlur={hide}
               onClick={() => window.open(item.link, '_blank', 'noopener,noreferrer')}
             >
+              {thumbs[item.link] ? (
+                <img
+                  className="rssThumb"
+                  src={thumbs[item.link]}
+                  alt=""
+                  loading="lazy"
+                  onError={(event) => {
+                    event.currentTarget.remove();
+                  }}
+                />
+              ) : null}
               <span className="rssSource">{item.source.title}</span>
               <span className="rssItemTitle">{item.title}</span>
               <span className="rssAge">{relative(item.date)}</span>
