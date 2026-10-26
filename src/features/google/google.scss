@@ -1,0 +1,827 @@
+@use 'scss/variables' as *;
+
+/* A card is drawn only once its data has arrived, so mounting is the moment it
+   becomes visible, and that is the moment the fade belongs to. It is short on
+   purpose: the card should read as having been there, not as having arrived
+   late. */
+@keyframes googleWidgetIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+// Widgets sit over a photo or video, so their contrast comes from the card, not the
+// page text colour.
+.googleWidget {
+  animation: googleWidgetIn 150ms ease-out both;
+  // The page centres its content and these rows run edge to edge in the card, so both
+  // need settling here rather than being inherited.
+  box-sizing: border-box;
+  width: 340px;
+  padding: 12px 14px;
+  text-align: left;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.4;
+  // A heavier scrim keeps the set uniform: a thinner one lets each card's photo tint it
+  // a different colour.
+  background: rgb(0 0 0 / 62%);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 22%);
+  border: 1px solid rgb(255 255 255 / 9%);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 45%);
+  user-select: none;
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+.googleWidgetEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.gwHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.gwLabel {
+  flex: 1;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.gwBadge {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  background: rgb(255 255 255 / 22%);
+}
+
+.gwIconButton {
+  padding: 0 2px;
+  border: 0;
+  font-size: 15px;
+  line-height: 20px;
+  opacity: 0.75;
+  background: none;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.gwList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gwDay + .gwDay {
+  margin-top: 8px;
+}
+
+.gwDayLabel {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.gwItem {
+  display: block;
+  width: 100%;
+  padding: 6px 6px 6px 8px;
+  border: 0;
+  border-radius: 9px;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(255 255 255 / 10%);
+  }
+
+  &.bare {
+    padding-left: 4px;
+  }
+}
+
+.gwItemTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gwItemTitle {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.gwItemMeta {
+  flex: 0 0 auto;
+  font-size: 11px;
+  opacity: 0.78;
+}
+
+.gwItemSub {
+  display: block;
+  overflow: hidden;
+  font-size: 11.5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 0.78;
+}
+
+.gwTaskRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/*
+ * Task rows share one middle line: the tick sits on the title's first line and the
+ * date on the title's axis rather than on its own baseline.
+ */
+.gwCheckSlot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  height: 1.4em;
+  height: 1lh;
+  margin-top: 6px;
+}
+
+.gwCheck {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: #7cb0ff;
+}
+
+.gwEmpty {
+  margin: 2px 0 6px;
+  font-size: 12px;
+  opacity: 0.72;
+}
+
+.gwError {
+  margin: 4px 0 8px;
+  font-size: 11.5px;
+  color: #ffb4b4;
+}
+
+.gwSelect {
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  text-transform: inherit;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  // The closed control is invisible on the card, but the browser paints the open list
+  // from the option colours: without a dark scheme it is light under white text.
+  color-scheme: dark;
+
+  option {
+    background: #1c1c1f;
+    color: #fff;
+  }
+}
+
+// A real <dialog> sits in the top layer, so it needs no z-index; the scrim is its own ::backdrop,
+// since a backdrop-filter here would join the composited layer the cards paint over.
+// Hover preview of a whole message: a popover, so the top layer keeps it above the card.
+.gwPreview {
+  @extend %basic;
+
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: none;
+  flex-direction: column;
+  max-height: 62vh;
+  overflow: hidden;
+
+  &:popover-open {
+    display: flex;
+  }
+}
+
+.gwPreviewHead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 14px 0;
+
+  @include themed {
+    color: t($subColor);
+  }
+}
+
+.gwPreviewFrom {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12.5px;
+
+  @include themed {
+    color: t($color);
+  }
+}
+
+.gwPreviewDate {
+  flex: 0 0 auto;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.gwPreviewSubject {
+  margin: 4px 14px 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+
+  @include themed {
+    color: t($color);
+  }
+}
+
+.gwPreviewBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 8px 0 0;
+  padding: 0 14px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  @include themed {
+    color: t($subColor);
+  }
+}
+
+.gwPreviewNote {
+  margin: 0;
+  font-style: italic;
+
+  @include themed {
+    color: t($subColor);
+  }
+}
+
+.gwPreviewFoot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 12px;
+  font-size: 11px;
+
+  @include themed {
+    color: t($subColor);
+  }
+
+  span + span::before {
+    content: '·';
+    margin: 0 8px 0 2px;
+    opacity: 0.5;
+  }
+}
+
+.gwDialog {
+  @extend %basic;
+
+  display: none;
+  margin: auto;
+  padding: 0;
+  border: 0;
+
+  // One fixed width for every dialog: content sizing made the panel narrower than its
+  // own controls, which added a horizontal scrollbar.
+  width: min(500px, calc(100vw - 48px));
+  max-height: 86vh;
+  flex-direction: column;
+  overflow: hidden;
+
+  // Padding is inside the box from here down, so a 100% field is 100% of the space it
+  // sits in.
+  &,
+  * {
+    box-sizing: border-box;
+  }
+
+  &[open] {
+    display: flex;
+  }
+
+  &::backdrop {
+    background: rgb(0 0 0 / 45%);
+  }
+}
+
+.gwDialogHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px 10px;
+
+  h3 {
+    flex: 1;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+
+    @include themed {
+      color: t($color);
+    }
+  }
+
+  .gwIconButton {
+    font-size: 18px;
+  }
+}
+
+.gwDialogBody {
+  padding: 4px 16px 8px;
+  overflow-y: auto;
+  // overflow-y: auto already computes overflow-x to auto; stating it keeps a stray wide
+  // child from adding a sideways scrollbar.
+  overflow-x: hidden;
+}
+
+.gwDialogFoot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px 16px;
+}
+
+.gwSpacer {
+  flex: 1;
+}
+
+// What the title box was understood to mean, so a parsed date is never a surprise at
+// save time.
+.gwParsedHint {
+  margin: -4px 0 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+
+  @include themed {
+    color: t($subColor);
+  }
+}
+
+.gwParsedTitle {
+  @include themed {
+    color: t($color);
+  }
+}
+
+.gwForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    @include themed {
+      color: t($subColor);
+    }
+  }
+
+  select {
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 9px;
+    font-size: 13px;
+
+    @include themed {
+      color: t($color);
+      background: t($modal-sidebar);
+      border: 1px solid t($modal-sidebarActive);
+    }
+  }
+
+  // The browser paints the open list from the option colours: a themed control with
+  // unthemed options opens a light list under light text.
+  option {
+    @include themed {
+      color: t($color);
+      background: t($modal-background);
+    }
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    // No fixed floor: a hard minimum here pushed the form past the dialog's own padding.
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+
+    @include themed {
+      color: t($color);
+      background: t($modal-sidebar);
+      border: 1px solid t($modal-sidebarActive);
+
+      &:focus {
+        border-color: t($color);
+        outline: none;
+      }
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  // A checkbox is not a text field: the 100% width above stretched box and all.
+  input[type='checkbox'] {
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    accent-color: #7cb0ff;
+  }
+
+  .gwInline {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+  }
+}
+
+.gwRow {
+  display: flex;
+  gap: 10px;
+
+  // Neither field may hold a minimum: a date input's intrinsic width exceeds half a
+  // narrow dialog and would push its neighbour out of the panel.
+  label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.gwButton {
+  padding: 7px 14px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+
+  @include themed {
+    color: t($color);
+    background: t($modal-sidebar);
+    border: 1px solid t($modal-sidebarActive);
+
+    &:hover {
+      background: t($modal-sidebarActive);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  &.primary {
+    border-color: transparent;
+    background: #4c8dff;
+
+    &:hover {
+      background: #5f99ff;
+    }
+  }
+
+  &.danger {
+    border-color: transparent;
+    background: rgb(220 60 70 / 85%);
+
+    &:hover {
+      background: rgb(226 74 84 / 95%);
+    }
+  }
+}
+
+// A three-step setup, so the numbers must survive a narrow settings column and read as
+// a sequence rather than decoration.
+.googleStepNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  vertical-align: 1px;
+  border-radius: 50%;
+
+  @include themed {
+    color: t($modal-background);
+    background: t($color);
+  }
+}
+
+.googleRedirect {
+  display: inline-block;
+  padding: 7px 10px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  word-break: break-all;
+  user-select: all;
+  border-radius: 8px;
+
+  @include themed {
+    color: t($color);
+    background: t($modal-sidebarActive);
+    border: 1px solid t($modal-sidebarActive);
+  }
+}
+
+.googleScopeList {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 12.5px;
+  line-height: 1.7;
+
+  @include themed {
+    color: t($subColor);
+  }
+}
+
+.googleOpenLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+}
+
+// A calendar is recognised by its colour first, so the dot belongs to the name wherever
+// it is listed.
+.gwDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 7px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 45%);
+}
+
+// The Action column is flex-end, so a narrower list drifts right; stretching it keeps the
+// ticks on the same left edge as every other control in the row.
+.gwCalendarPicker {
+  align-self: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.gwCalendarOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+
+  @include themed {
+    color: t($color);
+  }
+
+  input {
+    margin: 0 6px 0 0;
+  }
+
+  .gwPrimaryTick {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+}
+
+.gwCalendarTick {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.gwCalendarName {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// Category and folder ticks, each with its own glyph so the list reads as Gmail's own
+// category strip rather than five anonymous checkboxes.
+.gwOptionList {
+  align-self: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.gwOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+
+  @include themed {
+    color: t($color);
+  }
+
+  input {
+    margin: 0;
+    accent-color: #7cb0ff;
+  }
+
+}
+
+.gwOptionIcon {
+  flex: 0 0 auto;
+  font-size: 16px;
+
+  @include themed {
+    color: t($subColor);
+  }
+}
+
+.gwOptionName {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.gwMuted {
+  font-size: 11.5px;
+  line-height: 1.5;
+
+  @include themed {
+    color: t($subColor);
+  }
+}
+
+// One control with three notches rather than three loose buttons: the choice governs
+// everything below it, so it must read as tabs.
+.gwSegmented {
+  display: flex;
+  width: 100%;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 999px;
+  box-sizing: border-box;
+
+  @include themed {
+    background: t($modal-sidebar);
+    border: 1px solid t($modal-sidebarActive);
+  }
+}
+
+.gwSegment {
+  flex: 1;
+  padding: 7px 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: center;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  @include themed {
+    color: t($subColor);
+    background: transparent;
+
+    &:hover {
+      color: t($color);
+    }
+
+    &.active {
+      color: t($modal-background);
+      background: t($color);
+    }
+  }
+}
+
+// Settings-row buttons carry a 10px top margin that pushed the pill below its track's
+// middle. That rule is theme- and type-scoped, so raise specificity rather than use
+// !important.
+.settingsRow .action .gwSegmented .gwSegment.gwSegment {
+  margin: 0;
+}
+
+.gwTaskRow.done .gwItemTitle {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+.gwItemSub.snippet {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.gwBadge.dot {
+  width: 8px;
+  height: 8px;
+  min-width: 0;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0;
+  background: #4c8dff;
+}
+
+/* Reduced motion: the card appears without the fade. */
+@media (prefers-reduced-motion: reduce) {
+  .googleWidget {
+    animation: none;
+  }
+}

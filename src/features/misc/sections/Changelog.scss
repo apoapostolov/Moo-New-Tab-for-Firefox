@@ -1,0 +1,142 @@
+// The theme declares no --modal-text or --modal-link, so every tint is mixed from
+// currentcolor and stays readable in both themes instead of hard-coding one.
+.changelog {
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px 26px 36px;
+  color: inherit;
+  font-size: 15px;
+  line-height: 1.62;
+  user-select: text;
+
+  // The modal's own scrollbar thumb is nearly invisible against this much text.
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, currentcolor 30%, transparent) transparent;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in srgb, currentcolor 30%, transparent);
+    background-clip: padding-box;
+  }
+
+  a {
+    color: var(--modal-link, currentcolor);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, currentcolor 50%, transparent);
+    transition: border-color 0.15s ease;
+
+    &:hover {
+      border-bottom-color: currentcolor;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace !important;
+    font-size: 0.92em;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: color-mix(in srgb, currentcolor 12%, transparent);
+  }
+}
+
+.release + .release {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid color-mix(in srgb, currentcolor 16%, transparent);
+}
+
+.releaseHead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.releaseVersion {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.releaseDate {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 1;
+  border: 1px solid color-mix(in srgb, currentcolor 22%, transparent);
+  background: color-mix(in srgb, currentcolor 13%, transparent);
+}
+
+.releaseSummary {
+  margin: 0 0 22px;
+  max-width: 74ch;
+  opacity: 0.8;
+}
+
+.releaseGroup {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 26px 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 1;
+
+  &::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentcolor;
+    opacity: 0.75;
+  }
+}
+
+.releaseItems {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    margin: 9px 0;
+    padding-left: 17px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 0.66em;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentcolor;
+      opacity: 0.5;
+    }
+  }
+}
+
+.releaseRule {
+  display: none;
+}

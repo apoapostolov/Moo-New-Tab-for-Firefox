@@ -1,0 +1,71 @@
+@use 'scss/variables' as *;
+
+.stats {
+  display: flex;
+  flex-flow: column;
+  gap: 30px;
+  width: 100%;
+
+  .rightPanel {
+    .statIcon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .statGrid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-gap: 10px;
+
+      div {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        min-width: 0;
+        text-align: center;
+      }
+
+      .subtitle {
+        font-size: 12px;
+        line-height: 1.2;
+      }
+    }
+
+    .subtitle {
+      text-transform: capitalize;
+    }
+
+    span {
+      font-size: 20px;
+    }
+  }
+}
+
+.statSection.rightPanel {
+  padding: 25px;
+
+  @include themed {
+    border-radius: t($borderRadius);
+    background: t($modal-secondaryColour);
+    box-shadow: 0 0 0 1px t($modal-sidebarActive);
+
+    svg {
+      font-size: 50px;
+      color: t($subColor);
+    }
+  }
+}
+
+.statsTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    margin-bottom: 15px;
+    flex-flow: row !important;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

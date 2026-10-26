@@ -1,0 +1,137 @@
+@use 'scss/variables' as *;
+
+/*
+ * The signature colour picker: fixed choices, one free picker, and a button that
+ * reads a colour out of the wallpaper. Each swatch is drawn from its own colour,
+ * so the strip is the palette rather than a description of it.
+ */
+/* Three circles to a row, two rows, then the wallpaper button across the
+   column. A flex line squeezed five colours and the free picker into the 300px
+   action column and the browser shrank the swatches into ovals; a fixed grid
+   track keeps every one of them a circle of the same size. */
+.signaturePicker {
+  display: grid;
+  /* Six fixed tracks in one row: five colours and the free picker. Six circles
+     of 36px and five 10px gaps come to 266px, inside the 300px action column,
+     so none of them can be squeezed into an oval again. The box stretches to
+     the column so the circles start where the switches above them start and the
+     button below can take the full width. */
+  grid-template-columns: repeat(6, 36px);
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.signatureSwatch {
+  width: 36px;
+  height: 36px;
+  /* The action column adds a top margin to its buttons; a grid cell must not. */
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  cursor: pointer;
+  background: var(--swatch);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+
+  @include themed {
+    border: 1px solid t($boxShadow);
+  }
+
+  border: 1px solid rgb(255 255 255 / 22%);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  // The chosen colour says so with a ring, not with a tick over the colour.
+  &.active {
+    box-shadow:
+      0 0 0 2px var(--swatch),
+      0 0 0 4px rgb(255 255 255 / 55%);
+  }
+}
+
+.signatureCustom {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: pointer;
+  background: var(--signature);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 35%);
+
+  input {
+    position: absolute;
+    inset: -8px;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    opacity: 0;
+  }
+
+  // A dotted ring, so the free picker reads as "anything" next to fixed colours.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px dashed rgb(255 255 255 / 45%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+}
+
+/* Row three: the whole width of the four circles above it. Two classes deep
+   because `.action button` gives every button in the column a top margin, which
+   would otherwise push each row taller than the circles in it. */
+/* The settings column gives every button a 10px top margin from inside a theme
+   class (`.dark .modalTabContent .settingsRow .action button`), so an override
+   has to name the same path and go one level deeper, or each grid row stays 10px
+   taller than the circles standing in it. */
+/* Row three: one button the width of the column, under the circles. */
+.modalTabContent .settingsGroup .action .signatureSample {
+  align-self: stretch;
+  margin: 4px 0 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.modalTabContent .settingsGroup .action .signaturePicker .signatureSwatch,
+.modalTabContent .settingsGroup .action .signaturePicker .signatureCustom {
+  margin: 0;
+}
+
+.signatureSample {
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+
+  @include themed {
+    color: t($color);
+    background: t($btn-background);
+    border: 1px solid t($boxShadow);
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--signature);
+    color: var(--signature-link);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+}

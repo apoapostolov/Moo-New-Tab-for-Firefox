@@ -1,0 +1,18 @@
+/*
+   The signature colour: links, ticks, rings and filled controls all read `--signature`, set from a
+   preset, a pick, or the wallpaper.
+*/
+
+:root {
+  --signature: #6b86a8;
+  /* Filled shapes need a shade that white text still sits on. */
+  --signature-strong: color-mix(in srgb, var(--signature) 72%, #0b1622);
+  /* The lighter end of the ring and the toast bar. */
+  --signature-light: color-mix(in srgb, var(--signature) 58%, #ffffff);
+  --signature-link: var(--signature);
+}
+
+/* On white the same colour needs to go darker to keep its contrast. */
+body.light {
+  --signature-link: color-mix(in srgb, var(--signature) 62%, #0c1622);
+}

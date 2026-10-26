@@ -1,0 +1,277 @@
+/*
+ * Notes sit on the wallpaper as paper would: a thin pane of dark glass, tilted,
+ * with the text over it. The layer must not eat clicks, so only the notes inside
+ * it are reachable.
+ */
+.scratchLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+
+/*
+ * A note arrives: it lifts a few pixels, settles from slightly under its own size,
+ * and fades up. `translate` and `scale` are separate properties, so this composes
+ * with the tilt in `transform` instead of overwriting it.
+ */
+@keyframes scratchNoteIn {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+    scale: 0.94;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+.scratchNote {
+  position: fixed;
+  animation: scratchNoteIn 420ms cubic-bezier(0.2, 0.75, 0.3, 1) backwards;
+  width: 240px;
+  padding: 12px 14px 13px;
+  border-radius: 12px;
+  pointer-events: auto;
+  cursor: grab;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #fff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
+  background: rgb(18 18 20 / 32%);
+  backdrop-filter: blur(16px) saturate(1.25);
+  border: 1px solid rgb(255 255 255 / 15%);
+  box-shadow: 0 14px 34px rgb(0 0 0 / 26%);
+  transform-origin: 50% 50%;
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out;
+
+  /* Only the shadow moves on hover: the note is picked up on press, and a
+     travel here would fight the hand. */
+  &:hover:not(.dragging) {
+    box-shadow: 0 20px 44px rgb(0 0 0 / 34%);
+  }
+
+  &.dragging {
+    cursor: grabbing;
+    box-shadow: 0 22px 46px rgb(0 0 0 / 34%);
+    // No easing during a drag, or the note lags the pointer.
+    transition: none;
+  }
+
+  &.editing {
+    cursor: text;
+  }
+}
+
+.scratchNoteClose {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1;
+  color: #fff;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  opacity: 0.45;
+  cursor: pointer;
+  transition:
+    opacity 0.15s ease,
+    color 0.15s ease,
+    background 0.15s ease;
+
+  &:hover {
+    opacity: 1;
+    background: rgb(255 255 255 / 12%);
+  }
+
+  // Armed: the second click removes the note.
+  &.armed {
+    opacity: 1;
+    color: #ff9d9d;
+    background: rgb(255 90 90 / 22%);
+  }
+}
+
+.scratchNoteInput {
+  display: block;
+  width: 100%;
+  min-height: 22px;
+  max-height: 240px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-shadow: inherit;
+  background: none;
+  border: 0;
+  outline: none;
+  resize: none;
+
+  &::placeholder {
+    /* The note's own colour, held back, so the hint belongs to the note instead
+       of looking like a second, greyer element placed on top of it. */
+    color: inherit;
+    opacity: 0.42;
+  }
+}
+
+.scratchNoteBody {
+  overflow-wrap: anywhere;
+
+  :first-child {
+    margin-top: 0;
+  }
+
+  :last-child {
+    margin-bottom: 0;
+  }
+
+  p,
+  ul,
+  ol,
+  blockquote,
+  pre {
+    margin: 0 0 6px;
+  }
+
+  /* A note is not a modal. The app sets every p to 1rem from the modal sheet,
+     which made a note's text 16px while its own face — the one the textarea
+     shows while typing — is 13px, so rendering a note grew it and left the
+     headings looking smaller than the words they head. */
+  p,
+  li {
+    font-size: inherit;
+  }
+
+  /* A note is markdown, so its headings have to be headings: each level is a
+     step under the one above and none of them is under the note's own size.
+     The last two cannot grow without leaving the note behind, so they are set
+     apart by case and tracking instead of by size. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin: 6px 0 5px;
+  }
+
+  h4,
+  h5,
+  h6 {
+    margin: 5px 0 4px;
+  }
+
+  h1 {
+    margin-bottom: 6px;
+    font-size: 1.6em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  h3 {
+    font-size: 1.25em;
+  }
+
+  h4 {
+    font-size: 1.12em;
+  }
+
+  h5 {
+    font-size: 1.02em;
+  }
+
+  h6 {
+    font-size: 1em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.78;
+  }
+
+  ul,
+  ol {
+    padding-left: 17px;
+  }
+
+  li {
+    margin: 1px 0;
+  }
+
+  code {
+    padding: 1px 4px;
+    font-size: 0.92em;
+    background: rgb(255 255 255 / 15%);
+    border-radius: 4px;
+  }
+
+  pre {
+    padding: 8px 9px;
+    overflow-x: auto;
+    background: rgb(0 0 0 / 26%);
+    border-radius: 8px;
+
+    code {
+      padding: 0;
+      background: none;
+    }
+  }
+
+  blockquote {
+    padding-left: 9px;
+    border-left: 2px solid rgb(255 255 255 / 28%);
+    opacity: 0.92;
+  }
+
+  hr {
+    margin: 8px 0;
+    border: 0;
+    border-top: 1px solid rgb(255 255 255 / 22%);
+  }
+
+  a {
+    color: #a9c9ff;
+    text-decoration: underline;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  // Raw HTML is shown as text, so it needs to look plain.
+  .scratchNoteRaw {
+    font-family: inherit;
+    white-space: pre-wrap;
+    opacity: 0.85;
+  }
+}
+
+/* With reduced motion asked for, the notes simply are there: no travel, no
+   fade to wait through. */
+@media (prefers-reduced-motion: reduce) {
+  .scratchNote,
+  .scratchImage {
+    animation: none;
+  }
+}

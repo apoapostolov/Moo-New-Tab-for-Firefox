@@ -1,0 +1,98 @@
+@use 'photoinformation' as *;
+@use 'scss/mixins' as *;
+
+#backgroundImage {
+  height: 100vh;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  zoom: 100% !important;
+  position: relative;
+  z-index: -2;
+}
+
+#backgroundOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 1.2s ease-in-out;
+}
+
+#backgroundFilterOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  transition: backdrop-filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.backgroundPreload {
+  opacity: 0;
+}
+
+#backgroundVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+body.bg-animated #backgroundImage,
+body.bg-animated #backgroundOverlay {
+  animation: kenburns 40s linear infinite alternate;
+  transform-origin: center center;
+  will-change: transform;
+  background-attachment: scroll !important;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.bg-animated #backgroundImage,
+  body.bg-animated #backgroundOverlay {
+    animation: none;
+  }
+}
+
+/* Scale never drops below 1.04 and each translation stays inside the (s - 1) / 2
+ * overflow per side, so no edge strip can show: 2% per side at s = 1.04, hence the
+ * 1.5% horizontal and 0.8% vertical travel. */
+@keyframes kenburns {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.12);
+  }
+  50% {
+    transform: translate3d(-1.5%, -0.8%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(1.5%, 0.8%, 0) scale(1.04);
+  }
+}
+
+.fade-in {
+  @include animation('fadein 0.8s ease-in-out');
+}
+
+@include keyframes(fadein) {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

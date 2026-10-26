@@ -1,0 +1,18 @@
+.mobile {
+  .navbar {
+    flex-flow: column;
+  }
+
+  .searchComponents {
+    display: none;
+  }
+
+  #modal {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .modalSidebar {
+    display: none;
+  }
+}

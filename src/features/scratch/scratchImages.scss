@@ -1,0 +1,137 @@
+/*
+ * A scratch image is a window in the page: the picture fills it corner to corner
+ * and the card takes the picture's own proportions.
+ */
+/* Pictures arrive like the notes, one after another. */
+@keyframes scratchImageIn {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+    scale: 0.95;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+.scratchImage {
+  animation: scratchImageIn 420ms cubic-bezier(0.2, 0.75, 0.3, 1) backwards;
+  position: fixed;
+  overflow: hidden;
+  pointer-events: auto;
+  cursor: grab;
+  border-radius: 10px;
+  background: rgb(18 18 20 / 32%);
+  border: 1px solid rgb(255 255 255 / 15%);
+  box-shadow: 0 14px 34px rgb(0 0 0 / 26%);
+  transform-origin: 50% 50%;
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out;
+
+  &.dragging {
+    cursor: grabbing;
+    box-shadow: 0 22px 46px rgb(0 0 0 / 34%);
+    transition: none;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    // Cover rather than contain: no letterboxing inside the card.
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+.scratchImageButton {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1;
+  color: #fff;
+  background: rgb(0 0 0 / 58%);
+  backdrop-filter: blur(6px);
+  border: 0;
+  border-radius: 7px;
+  opacity: 0.62;
+  cursor: pointer;
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+    background: rgb(0 0 0 / 68%);
+  }
+}
+
+.scratchImageClose {
+  top: 6px;
+  right: 6px;
+  font-size: 15px;
+
+  // Armed: the second click removes the picture. Same red as the note's close control.
+  &.armed {
+    opacity: 1;
+    color: #ff9d9d;
+    background: rgb(150 30 30 / 78%);
+  }
+}
+
+.scratchImageCopy {
+  top: 6px;
+  left: 6px;
+
+  // The clipboard refused: show that, not a tick that is not true.
+  &.refused {
+    color: #ff9d9d;
+    background: rgb(120 20 20 / 70%);
+    opacity: 1;
+  }
+}
+
+.scratchImageDownload {
+  bottom: 6px;
+  left: 6px;
+  font-size: 14px;
+}
+
+/* The grip is drawn, not lettered: two diagonal strokes in the corner read as
+   "pull me" in every language. */
+.scratchImageResize {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  opacity: 0.72;
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0 46%,
+      rgb(255 255 255 / 85%) 46% 54%,
+      transparent 54% 68%,
+      rgb(255 255 255 / 85%) 68% 76%,
+      transparent 76%
+    ),
+    radial-gradient(circle at 100% 100%, rgb(0 0 0 / 45%) 0 60%, transparent 61%);
+  border-radius: 4px;
+  transition: opacity 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+  }
+}

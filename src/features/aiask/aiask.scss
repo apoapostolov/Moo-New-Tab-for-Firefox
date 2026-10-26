@@ -1,0 +1,158 @@
+/*
+ * The query line: a hairline under the words, not a field around them. It is drawn
+ * by the widget rather than the input's border, so it can fade at both ends and
+ * fill with the signature colour.
+ */
+.aiAsk {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(680px, 62vw);
+  padding: 0 2px 9px;
+
+  /* The hairline, soft at both ends so it reads as a line under the words
+     instead of the edge of a box. */
+  &::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0%),
+      rgb(255 255 255 / 22%) 16%,
+      rgb(255 255 255 / 22%) 84%,
+      rgb(255 255 255 / 0%)
+    );
+  }
+
+  /* With the caret in the line, the signature colour fills it from the middle
+     outwards, which is the only motion the widget has. */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0%),
+      var(--signature, #6b86a8),
+      rgb(255 255 255 / 0%)
+    );
+    opacity: 0;
+    transition:
+      width 460ms cubic-bezier(0.22, 0.61, 0.24, 1),
+      left 460ms cubic-bezier(0.22, 0.61, 0.24, 1),
+      opacity 260ms ease;
+  }
+
+  &:focus-within::after {
+    left: 0;
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+/* The size is the column's own, the size the date and the weather line sit at,
+   so the query reads as another line of the page rather than a control dropped
+   onto it. */
+.aiAskInput {
+  flex: 1;
+  min-width: 0;
+  padding: 2px 0 0;
+  font-family: inherit;
+  font-size: 1em;
+  line-height: 1.35;
+  color: inherit;
+  text-align: left;
+  text-shadow: inherit;
+  background: none;
+  border: 0;
+  outline: none;
+
+  /* The hint is the widget's own colour held back, the way the scratch notes do
+     it, rather than a second grey that would fight the theme. */
+  &::placeholder {
+    color: inherit;
+    opacity: 0.5;
+  }
+}
+
+.aiAskService {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  font-size: 0.78em;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  opacity: 0.6;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    background 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgb(255 255 255 / 12%);
+    opacity: 1;
+  }
+}
+
+/* The service menu opens upwards: the widget sits at the bottom of the middle
+   column, so downwards would leave the window. */
+.aiAskMenu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 178px;
+  padding: 5px;
+  background: rgb(20 20 24 / 74%);
+  backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 10px;
+  box-shadow: 0 16px 34px rgb(0 0 0 / 34%);
+}
+
+.aiAskOption {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  font-family: inherit;
+  font-size: 13px;
+  color: inherit;
+  text-align: left;
+  text-shadow: none;
+  background: none;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+
+  svg {
+    flex: 0 0 auto;
+    font-size: 15px;
+    opacity: 0.8;
+  }
+
+  &:hover {
+    background: rgb(255 255 255 / 10%);
+  }
+
+  &.aiAskOptionOn {
+    background: rgb(255 255 255 / 8%);
+  }
+}

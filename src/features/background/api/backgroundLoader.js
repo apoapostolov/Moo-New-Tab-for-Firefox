@@ -1,0 +1,373 @@
+import variables from 'config/variables';
+import { supportsAVIF } from './avifSupport';
+import { getOfflineImage } from './offlineImage';
+import { randomColourStyleBuilder } from './randomColour';
+import videoCheck from './videoCheck';
+import { fetchCoverrVideo } from './coverr';
+import { fetchPixabayVideo } from './pixabay';
+import { fetchPexelsVideo } from './pexels';
+import { getLiveBackground } from './live';
+import { getAllBackgrounds, getAllBackgroundsWithMetadata } from 'utils/customBackgroundDB';
+
+const parseJSON = (key, fallback = null) => {
+  const item = localStorage.getItem(key);
+  if (item === null || item === 'null') {
+    return fallback;
+  }
+  try {
+    const parsed = JSON.parse(item);
+    return parsed !== null ? parsed : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+/** Null when no usable image comes back, so callers fall back to the offline image. */
+export async function fetchAPIImageData(excludedPun = null) {
+  const api = localStorage.getItem('backgroundAPI') || 'unsplash';
+  const quality = localStorage.getItem('apiQuality') || 'high';
+  const categories = parseJSON('apiCategories', localStorage.getItem('apiCategories'));
+  const excludes = [...parseJSON('backgroundExclude', []), ...(excludedPun ? [excludedPun] : [])];
+
+  const baseURL = `${variables.constants.API_URL}/images`;
+  const collection = localStorage.getItem('unsplashCollections');
+  const topics = localStorage.getItem('unsplashTopics');
+  const excludeList = excludes.filter(Boolean).join(',');
+
+  let url;
+  if (api === 'unsplash' || api === 'pexels') {
+    const params = new URLSearchParams({ quality });
+    // A typed collection only applies when no topic is picked: Unsplash
+    // intersects the two filters.
+    if (topics) {
+      params.set('topics', topics);
+    } else if (collection) {
+      params.set('collections', collection);
+    }
+    if (excludeList) {
+      params.set('exclude', excludeList);
+    }
+    url = `${baseURL}/unsplash?${params.toString()}`;
+  } else {
+    const params = new URLSearchParams({ categories: categories || '', quality });
+    if (excludeList) {
+      params.set('exclude', excludeList);
+    }
+    url = `${baseURL}/random?${params.toString()}`;
+  }
+
+  try {
+    const accept = `application/json, ${(await supportsAVIF()) ? 'image/avif' : 'image/webp'}`;
+
+    // The library API answers 500 intermittently, so it is retried before the
+    // offline image is used.
+    let data = null;
+    for (let attempt = 0; attempt < 3 && !data?.file; attempt++) {
+      const response = await fetch(url, { headers: { accept } });
+      data = await response.json().catch(() => null);
+    }
+
+    if (!data?.file) {
+      throw new Error('The image API did not return a usable image');
+    }
+
+    const location = data.location ?? {};
+
+    return {
+      url: data.file,
+      type: 'api',
+      currentAPI: api,
+      photoInfo: {
+        hidden: false,
+        id: data.id,
+        api: api === 'pexels' ? 'unsplash' : api,
+        category: data.category,
+        credit: data.photographer,
+        location: location.name,
+        camera: data.camera,
+        url: data.file,
+        photographerURL: api === 'unsplash' ? data.photographer_page : undefined,
+        photoURL: api === 'unsplash' ? data.photo_page : undefined,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        views: data.views,
+        downloads: data.downloads,
+        likes: data.likes ?? data.hearts,
+        description: data.description,
+        colour: data.colour,
+        blur_hash: data.blur_hash,
+        pun: data.pun,
+      },
+    };
+  } catch (error) {
+    console.error('Failed to fetch API image:', error);
+    return null;
+  }
+}
+
+export async function getBackgroundData() {
+  const isOffline =
+    localStorage.getItem('offlineMode') === 'true' ||
+    localStorage.getItem('showWelcome') === 'true';
+
+  // A favourite overrides whatever source is configured.
+  const fav = parseJSON('favourite');
+  if (fav) {
+    if (fav.type === 'random_colour' || fav.type === 'random_gradient') {
+      return { type: 'colour', style: `background:${fav.url}` };
+    }
+    return { url: fav.url, video: videoCheck(fav.url), photoInfo: { ...fav, url: fav.url } };
+  }
+
+  const type = localStorage.getItem('backgroundType');
+
+  switch (type) {
+    case 'api':
+    case 'api_mue':
+    case 'api_unsplash':
+      return getAPIBackground(isOffline);
+
+    case 'api_coverr':
+      return getVideoBackground(isOffline, 'coverr', fetchCoverrVideo);
+
+    case 'api_pixabay':
+      return getVideoBackground(isOffline, 'pixabay', fetchPixabayVideo);
+
+    case 'api_pexels':
+      return getVideoBackground(isOffline, 'pexels', fetchPexelsVideo);
+
+    case 'api_live':
+      return getLiveBackground(isOffline);
+
+    case 'colour':
+      return getColourBackground();
+
+    case 'random_colour':
+    case 'random_gradient':
+      return randomColourStyleBuilder(type);
+
+    case 'custom':
+      return await getCustomBackground(isOffline);
+
+    case 'photo_pack':
+      return getPhotoPackBackground(isOffline);
+
+    default:
+      return null;
+  }
+}
+
+function getColourBackground() {
+  return {
+    type: 'colour',
+    style: `background: ${localStorage.getItem('customBackgroundColour') || 'rgb(0,0,0)'}`,
+  };
+}
+
+/** Serves the prefetched queue first, then refills it in the background. */
+async function getAPIBackground(isOffline) {
+  if (isOffline) return getOfflineImage('api');
+
+  const cachedQueue = parseJSON('imageQueue', []);
+  let data;
+
+  if (cachedQueue.length > 0) {
+    data = cachedQueue.shift();
+    localStorage.setItem('imageQueue', JSON.stringify(cachedQueue));
+  } else {
+    data = await fetchAPIImageData();
+  }
+
+  if (!data) return getOfflineImage('api');
+
+  localStorage.setItem('currentBackground', JSON.stringify(data));
+
+  const targetQueueSize = 3;
+  const currentQueueSize = cachedQueue.length;
+
+  if (currentQueueSize < targetQueueSize) {
+    // Unsplash photos have no pun, so their id is used to skip repeats.
+    const imageKey = (image) => image?.photoInfo?.id ?? image?.photoInfo?.pun;
+    const currentKey = imageKey(data);
+    const excludedPuns = [currentKey, ...cachedQueue.map(imageKey).filter(Boolean)];
+
+    Promise.all(
+      Array.from({ length: targetQueueSize - currentQueueSize }, (_, i) =>
+        fetchAPIImageData(excludedPuns[i] || currentKey),
+      ),
+    ).then((newImages) => {
+      const validImages = newImages.filter(Boolean);
+      if (validImages.length > 0) {
+        const updatedQueue = [...cachedQueue, ...validImages];
+        localStorage.setItem('imageQueue', JSON.stringify(updatedQueue));
+      }
+    });
+  }
+
+  return data;
+}
+
+const VIDEO_QUEUE_KEY = 'videoQueue';
+const VIDEO_QUEUE_SIZE = 2;
+const VIDEO_WARMUP_BYTES = 1048576;
+
+let videoRefillRunning = false;
+
+const readVideoQueue = (api) =>
+  parseJSON(VIDEO_QUEUE_KEY, []).filter((clip) => clip?.url && clip.currentAPI === api);
+
+/**
+ * Pulls the first megabyte so the connection is already open when the clip
+ * becomes the background; the media element fetches whatever this misses.
+ */
+const warmVideo = (url) => {
+  fetch(url, { headers: { Range: `bytes=0-${VIDEO_WARMUP_BYTES}` } }).catch(() => {});
+};
+
+/**
+ * Keeps a short queue of resolved clips so the next tab needs no API call.
+ */
+function refillVideoQueue(api, fetchVideo) {
+  if (videoRefillRunning) return;
+
+  const queued = readVideoQueue(api);
+  const missing = VIDEO_QUEUE_SIZE - queued.length;
+
+  if (missing <= 0) {
+    if (queued[0]) warmVideo(queued[0].url);
+    return;
+  }
+
+  videoRefillRunning = true;
+
+  // Sequential: each source records what it served, so parallel calls would
+  // race on that list and could return the same clip twice.
+  (async () => {
+    const fresh = [];
+
+    for (let index = 0; index < missing; index++) {
+      const clip = await fetchVideo();
+      if (clip) fresh.push(clip);
+    }
+
+    const seen = new Set(queued.map((clip) => clip.photoInfo?.id));
+    const merged = [...queued, ...fresh.filter((clip) => !seen.has(clip.photoInfo?.id))].slice(
+      0,
+      VIDEO_QUEUE_SIZE,
+    );
+
+    if (merged.length) {
+      localStorage.setItem(VIDEO_QUEUE_KEY, JSON.stringify(merged));
+      warmVideo(merged[0].url);
+    }
+  })()
+    .catch(() => {})
+    .finally(() => {
+      videoRefillRunning = false;
+    });
+}
+
+async function getVideoBackground(isOffline, api, fetchVideo) {
+  if (isOffline) return getOfflineImage('api');
+
+  // A queued clip is used straight away, so no API round trip delays the new tab.
+  const queue = readVideoQueue(api);
+  let data = queue.shift();
+
+  if (data) {
+    localStorage.setItem(VIDEO_QUEUE_KEY, JSON.stringify(queue));
+  } else {
+    data = await fetchVideo();
+  }
+
+  if (!data) return getOfflineImage('api');
+
+  localStorage.setItem('currentBackground', JSON.stringify(data));
+
+  refillVideoQueue(api, fetchVideo);
+
+  return data;
+}
+
+async function getCustomBackground(isOffline) {
+  let backgrounds = await getAllBackgroundsWithMetadata();
+
+  // Profiles that predate IndexedDB keep bare URLs in localStorage.
+  if (!backgrounds || backgrounds.length === 0) {
+    const urls = parseJSON('customBackground', []);
+    if (urls && urls.length > 0) {
+      backgrounds = urls.map((url) => ({ url, photoInfo: { hidden: true } }));
+    }
+  }
+
+  if (!backgrounds || backgrounds.length === 0) return null;
+
+  const selected = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+
+  if (!selected) return null;
+
+  const url = selected.url || selected;
+
+  if (isOffline && !url.startsWith('data:')) {
+    return getOfflineImage('custom');
+  }
+
+  const data = {
+    url,
+    type: 'custom',
+    video: videoCheck(url),
+    photoInfo: {
+      hidden: true,
+      blur_hash: selected.blurHash || null,
+    },
+  };
+
+  // Metadata only: image data would exceed the localStorage quota.
+  try {
+    localStorage.setItem(
+      'currentBackground',
+      JSON.stringify({
+        type: 'custom',
+        video: data.video,
+        photoInfo: data.photoInfo,
+      }),
+    );
+  } catch (e) {
+    console.warn('Could not save currentBackground to localStorage:', e);
+  }
+
+  return data;
+}
+
+function getPhotoPackBackground(isOffline) {
+  if (isOffline) return getOfflineImage('photo_pack');
+
+  const photos = parseJSON('installed', []).flatMap((item) =>
+    item.type === 'photos' && item.photos ? item.photos : [],
+  );
+
+  if (photos.length === 0) return null;
+
+  const interval = localStorage.getItem('backgroundchange');
+  const startTime = Number(localStorage.getItem('backgroundStartTime'));
+  const shouldRefresh =
+    !interval || interval === 'refresh' || startTime + Number(interval) < Date.now();
+
+  let index;
+  if (shouldRefresh) {
+    index = Math.floor(Math.random() * photos.length);
+    localStorage.setItem('marketplaceNumber', index);
+  } else {
+    index = Number(localStorage.getItem('marketplaceNumber')) || 0;
+  }
+
+  const photo = photos[index];
+
+  return photo
+    ? {
+        url: photo.url.default,
+        type: 'photo_pack',
+        photoInfo: { hidden: false, credit: photo.photographer, location: photo.location },
+      }
+    : null;
+}

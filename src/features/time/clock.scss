@@ -1,0 +1,163 @@
+@use 'scss/variables' as *;
+
+.clock {
+  font-size: 4em;
+  margin: 0;
+  cursor: initial;
+  user-select: none;
+  font-weight: 600;
+  animation: fadeIn 1s;
+
+  --shadow-shift: 0.4rem;
+}
+
+.ampm {
+  font-size: 0.5em;
+}
+
+/*
+   The progress bar sits under the number: a faint track for the day and a firmer fill for the part
+   that is gone, stopped short of the digits on both sides so it reads as part of the clock.
+*/
+
+.clockProgress {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.clockProgressValue {
+  line-height: 1;
+}
+
+.clockProgressTrack {
+  position: relative;
+  display: block;
+  width: 84%;
+  height: clamp(3px, 0.05em, 7px);
+  margin-top: clamp(7px, 0.13em, 18px);
+  border-radius: 999px;
+  overflow: hidden;
+  // Width follows the number, so it steps when a digit is added; easing hides the snap.
+  transition: width 0.4s ease-out;
+
+  // The full day at low strength.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: currentColor;
+    opacity: 0.13;
+  }
+}
+
+.clockProgressFill {
+  position: relative;
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0.55;
+  // The spring overshoots briefly; the track clips it, but cap the bar too.
+  max-width: 100%;
+  transition: width 0.6s ease-out;
+
+  // Keyframes declare only `from`, so the animation runs to the inline width and no
+  // percentage has to be handed to the stylesheet.
+  animation: clockProgressFill 1100ms backwards;
+
+  // Damped spring (zeta 0.65) sampled into linear(), with the plain bezier first
+  // as the fallback for engines that do not read linear() yet.
+  animation-timing-function: cubic-bezier(0.16, 0.9, 0.24, 1);
+  animation-timing-function: linear(
+    0,
+    0.0288,
+    0.1025,
+    0.2045,
+    0.3213,
+    0.4423,
+    0.5597,
+    0.6681,
+    0.7642,
+    0.8462,
+    0.9135,
+    0.9666,
+    1.0066,
+    1.035,
+    1.0535,
+    1.0639,
+    1.0679,
+    1.067,
+    1.0628,
+    1.0563,
+    1.0485,
+    1.0403,
+    1.0322,
+    1.0246,
+    1.0178,
+    1.012,
+    1.0071,
+    1.0032,
+    1
+  );
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes clockProgressFill {
+  from {
+    width: 0;
+  }
+}
+
+.analogclock,
+.react-clock__face {
+  margin: 0 auto;
+  border-radius: 100%;
+
+  border: none !important;
+
+  @include themed {
+    border: 1px solid t($color) !important;
+  }
+
+  cursor: initial;
+  user-select: none;
+}
+
+.react-clock__hand__body,
+.react-clock__mark__body {
+  @include themed {
+    background: t($color) !important;
+  }
+
+}
+
+/*
+ * The analogue clock sits directly on the wallpaper. It is a drawing, not a
+ * card, so it gets no panel, no frost and no shadow: anything behind it would
+ * cut a square out of the background.
+ */
+.clockBackground {
+  padding: 1rem;
+  background: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.vertical-clock {
+  line-height: 100%;
+  user-select: none;
+  font-size: 4em;
+
+  .seconds {
+    font-size: 7rem;
+    margin: 50px;
+    line-height: 0;
+  }
+}

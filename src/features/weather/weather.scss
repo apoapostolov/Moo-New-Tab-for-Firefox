@@ -1,0 +1,290 @@
+//noinspection CssUnknownTarget
+@use 'scss/variables' as *;
+
+.weather {
+  @extend %basic;
+
+  // Position comes from the zone the widget was dropped into, not from this rule.
+  cursor: initial;
+  user-select: none;
+  transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+  display: flex;
+  flex-flow: column;
+  animation: fadeIn 1s;
+
+  &:hover {
+    height: auto;
+    transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  .extra-info {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 18px;
+    gap: 12px;
+
+    @include themed {
+      color: t($weather);
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .visibility {
+    text-transform: none !important;
+  }
+}
+
+.weatherCore {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 10px 20px 6px 20px;
+
+  div {
+    align-items: center;
+    display: flex;
+
+    svg {
+      font-size: 2em !important;
+    }
+  }
+
+  .minmax {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    margin-left: auto;
+
+    span {
+      text-align: right;
+    }
+  }
+}
+
+.weatherIcon {
+  display: grid;
+  align-items: center;
+}
+
+.weather.skeleton {
+  // Measured from the loaded widget at 100% zoom, so nothing shifts when data arrives.
+  .mainSkeletonIcon {
+    width: 52px;
+    height: 52px;
+    border-radius: 100%;
+  }
+
+  .minmax .subtitle {
+    width: 32px;
+  }
+
+  .extra-info {
+    span:first-child {
+      width: 126px;
+    }
+
+    .loc {
+      width: 45px;
+    }
+  }
+
+  .iconAndTemps {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    justify-content: space-between;
+
+    svg {
+      font-size: 2em !important;
+    }
+
+    // Only the temperature placeholder takes temperature size; min/max stay at subtitle size.
+    .weathericon span {
+      font-size: 34px;
+      width: 59px;
+    }
+  }
+
+  .weatherCore {
+    gap: 6px;
+  }
+
+  .weathericon {
+    gap: 0;
+  }
+
+  .minmax {
+    max-width: fit-content;
+    background: transparent !important;
+
+    .subtitle {
+      margin-bottom: 5px;
+    }
+  }
+
+  .weatherExpandedInfoItems {
+    padding-top: 10px;
+  }
+
+  .infoItemSkeleton {
+    display: flex;
+    flex-flow: row;
+    gap: 5px;
+    align-items: center;
+
+    .subtitle {
+      font-size: 18px;
+    }
+  }
+
+  .smallSkeletonIcon {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+  }
+
+  .title,
+  span {
+    color: transparent;
+    width: 100px;
+  }
+
+  .subtitle {
+    color: transparent;
+    width: 50px;
+  }
+}
+
+.weatherExpandedInfo {
+  padding: 0 25px 25px;
+  text-align: left;
+
+  @include themed {
+    border-top: 1px solid t($btn-backgroundHover);
+  }
+}
+
+.weatherExpandedInfoItems {
+  font-size: 18px;
+  text-transform: capitalize;
+  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  .tooltipTitle {
+    max-height: 12px;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tooltip {
+    width: 100%;
+  }
+
+  @include themed {
+    svg {
+      color: t($subColor);
+    }
+
+    .weatherIcon {
+      font-size: 21px !important;
+      display: grid;
+      align-items: center;
+    }
+
+    .materialWeatherIcon {
+      font-size: 18px !important;
+      padding: 2px;
+    }
+  }
+}
+
+.weather.weatherCompact {
+  position: static;
+  bottom: auto;
+  right: auto;
+  flex-flow: row;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  animation: none;
+
+  .weatherCompactDesc {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  .loc {
+    font-size: 12px;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.weather .weatherForecast {
+  // Sized here to beat the global .pulse 100% rule; each bar matches the text it
+  // stands in for, so the row keeps the size of the finished forecast.
+  .wfSkeletonDay {
+    width: 35px;
+    height: 15px;
+    border-radius: 4px;
+  }
+
+  .wfSkeletonIcon {
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+  }
+
+  .wfSkeletonTemp {
+    width: 25px;
+    height: 14px;
+    border-radius: 4px;
+  }
+}
+
+.weatherForecast {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  padding: 0 20px 12px 20px;
+  text-align: center;
+
+  .weatherForecastDay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px;
+
+    .wfDay {
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .wfTemps {
+      font-size: 11px;
+      opacity: 0.85;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
