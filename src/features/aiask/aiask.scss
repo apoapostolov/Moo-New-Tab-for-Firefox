@@ -16,15 +16,15 @@
 
   /* The project's line: semi-transparent white, rounded at both ends. The thickness is
      a thinner version of the Progress clock's bar (clamp(4px, 0.065em, 9px) in a number
-     roughly four times this em), so 0.19em lands at about three quarters of it — 6px
-     against the clock's 8.2px at 1080p. */
+     roughly four times this em), so 0.13em lands at about half of it — 4px against the
+     clock's 8.2px at 1080p. */
   &::before {
     content: '';
     position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
-    height: clamp(3px, 0.19em, 6px);
+    height: clamp(2px, 0.13em, 5px);
     border-radius: 999px;
     background: rgb(255 255 255 / 20%);
   }
@@ -37,7 +37,7 @@
     bottom: 0;
     left: 50%;
     width: 0;
-    height: clamp(3px, 0.19em, 6px);
+    height: clamp(2px, 0.13em, 5px);
     border-radius: 999px;
     background: linear-gradient(
       90deg,
