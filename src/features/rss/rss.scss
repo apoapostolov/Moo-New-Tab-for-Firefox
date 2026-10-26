@@ -20,9 +20,9 @@
 .rssLabel {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .rssRefresh {
@@ -37,8 +37,8 @@
   background: none;
   color: inherit;
   cursor: pointer;
-  opacity: 0.55;
-  transition: opacity 0.15s ease, transform 0.3s ease;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
 
   svg {
     font-size: 15px;
@@ -46,7 +46,6 @@
 
   &:hover {
     opacity: 1;
-    transform: rotate(45deg);
   }
 }
 
@@ -65,24 +64,21 @@
   grid-template-columns: 1fr auto;
   gap: 1px 8px;
   width: 100%;
-  padding: 6px 0;
+  padding: 6px 6px 6px 8px;
   border: none;
   background: none;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 9px;
 
+  /* A row in a card is highlighted, not underlined: the mail card's own rule, so the two
+     lists answer the pointer the same way. */
   &:hover,
   &:focus-visible {
     outline: none;
-
-    .rssItemTitle {
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      text-decoration-thickness: 1px;
-    }
+    background: rgb(255 255 255 / 10%);
   }
 
   /* A story with a picture carries it in a small square at the right of its two lines, so
@@ -128,40 +124,44 @@
   overflow: hidden;
   font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
   text-overflow: ellipsis;
-  opacity: 0.62;
+  opacity: 0.7;
 }
 
 .rssAge {
   grid-column: 2;
-  font-size: 10.5px;
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
-  opacity: 0.5;
+  opacity: 0.78;
 }
 
+/* The card's own size, which is what a mail row's subject line sits at. */
 .rssItemTitle {
   display: -webkit-box;
   grid-column: 1 / -1;
   overflow: hidden;
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.35;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
+/* The mail card's "nothing here" line, at the mail card's size. */
 .rssNote {
   margin: 0;
-  font-size: 12.5px;
+  font-size: 12px;
   line-height: 1.45;
-  opacity: 0.6;
+  opacity: 0.72;
 }
 
+/* And its failure line: smaller, and the one red in the card. */
 .rssNote-warn {
+  font-size: 11.5px;
+  color: #ffb4b4;
   cursor: help;
-  opacity: 0.75;
 }
 
 /* The reader is mounted on the body: the card's own blur would otherwise become the
