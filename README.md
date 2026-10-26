@@ -22,6 +22,8 @@ Moo is a personal fork of [Mue](https://github.com/mue/mue) for Firefox and Zen.
 
 The preview uses fictional mail, events, tasks and weather over a real video background. [Compare the three backgrounds](assets/previews/README.md).
 
+Current source builds open directly in English with the time, Search/Ask Bar, basic weather in the bottom-left corner and Unsplash backgrounds. Other widgets are enabled in Settings. This startup preset is [unreleased](CHANGELOG.md#unreleased).
+
 ## Features
 
 - Google widgets: read mail, check upcoming events and manage tasks beside the clock. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use.
@@ -72,4 +74,4 @@ The build writes `build/firefox/` and `build/firefox-<version>.zip`. For tempora
 
 Moo builds on [Mue](https://github.com/mue/mue) by The Mue Authors under the [BSD-3-Clause licence](LICENSE). The original copyright notices and attribution are preserved. Moo is a personal fork and is not affiliated with or endorsed by Mue.
 
-Stock images and video come from Unsplash, Pexels, Pixabay, Coverr and Mixkit. The [preview credits](assets/previews/README.md) identify the footage used in the README. Live channels were found through the [iptv-org index](https://github.com/iptv-org/iptv); each stream remains the property of its broadcaster. Welcome illustrations are from [unDraw](https://undraw.co).
+Stock images and video come from Unsplash, Pexels, Pixabay, Coverr and Mixkit. The [preview credits](assets/previews/README.md) identify the footage used in the README. Live channels were found through the [iptv-org index](https://github.com/iptv-org/iptv); each stream remains the property of its broadcaster. Illustrations retained from Mue are from [unDraw](https://undraw.co).

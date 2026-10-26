@@ -10,6 +10,7 @@ export const WIDGETS = [
     id: 'time',
     label: () => variables.getMessage('modals.main.settings.sections.time.title'),
     setting: 'time',
+    onByDefault: true,
     fullWidth: true,
   },
   {
@@ -17,7 +18,8 @@ export const WIDGETS = [
     id: 'weather',
     label: () => 'Weather Full',
     setting: 'weatherEnabled',
-    zone: 'right',
+    onByDefault: true,
+    zone: 'left',
   },
   {
     id: 'date',
@@ -29,11 +31,10 @@ export const WIDGETS = [
     id: 'quickweather',
     label: () => 'Weather Now',
     setting: 'quickWeatherEnabled',
-    onByDefault: true,
     fullWidth: true,
   },
   {
-    // A question typed here goes to an AI service, Google AI Mode by default.
+    // Search and answer services share a query.
     id: 'aiask',
     label: () => 'Search/Ask Bar',
     setting: 'aiAskEnabled',
@@ -210,8 +211,7 @@ export function saveSecondLane(ids) {
 }
 
 /**
- * A widget with no stored value takes its own default; only Weather Now is on
- * by default.
+ * A widget with no stored value uses its default visibility.
  */
 export function isWidgetEnabled(id) {
   const widget = widgetById(id);

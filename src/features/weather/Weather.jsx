@@ -1,7 +1,8 @@
+import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import { fetchWithTimeout as fetch, requestOwner, settingsStamp } from 'utils/requests';
 import variables from 'config/variables';
-import { memo, useState, useEffect, useCallback, useRef, useEffectEvent } from 'react';
+import { memo, useState, useEffect, useCallback, useRef } from 'react';
 import { formatNumber } from 'utils/formatNumber';
 
 import WeatherIcon from './components/WeatherIcon';
@@ -11,6 +12,7 @@ import Expanded from './components/Expanded';
 import WeatherSkeleton from './components/WeatherSkeleton';
 
 import EventBus from 'utils/eventbus';
+import { updateHash } from 'utils/deepLinking';
 
 import { getWeather } from './api/getWeather.js';
 
@@ -53,7 +55,7 @@ const WeatherWidget = memo(({ compact = false }) => {
         }
       },
       (error) => {
-        console.error(error);
+        if (error.code !== 1) console.error(error);
       },
       { enableHighAccuracy: true },
     );
@@ -90,7 +92,6 @@ const WeatherWidget = memo(({ compact = false }) => {
     }
   }, [location]);
 
-  const refreshWeather = useEffectEvent(updateWeather);
   useEffect(() => {
     const effectOwner = owner.current;
     const handleRefresh = async (data) => {
@@ -101,7 +102,7 @@ const WeatherWidget = memo(({ compact = false }) => {
     };
 
     EventBus.on('refresh', handleRefresh);
-    const first = setTimeout(refreshWeather, 0);
+    const first = setTimeout(updateWeather, 0);
     const timer = setInterval(updateWeather, 300000);
 
     return () => {
@@ -121,7 +122,20 @@ const WeatherWidget = memo(({ compact = false }) => {
   if (!weatherData.weather) {
     return (
       <div className={`weather ${getSurface('weather')}`}>
-        <span className="loc">{location}</span>
+        {location ? (
+          <span className="loc">{location}</span>
+        ) : (
+          <button
+            type="button"
+            className="weatherLocationButton"
+            onClick={() => {
+              updateHash('#settings/weather');
+              EventBus.emit('modal', 'openMainModal');
+            }}
+          >
+            {uiText('set_weather_location')}
+          </button>
+        )}
       </div>
     );
   }

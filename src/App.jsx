@@ -6,7 +6,7 @@ import Widgets from 'features/misc/views/Widgets';
 import Scratch from 'features/scratch/Scratch';
 import Modals from 'features/misc/modals/Modals';
 import { applySignature } from 'features/misc/signature';
-import { loadSettings, moveSettings } from 'utils/settings';
+import { loadSettings } from 'utils/settings';
 import EventBus from 'utils/eventbus';
 import variables from 'config/variables';
 import { TranslationProvider } from 'contexts/TranslationContext';
@@ -16,14 +16,6 @@ const useAppSetup = () => {
     // The signature colour is a custom property on the root, so it has to be on
     // the document before anything paints with it.
     applySignature();
-
-    const firstRun = localStorage.getItem('firstRun');
-    const stats = localStorage.getItem('stats');
-
-    if (!firstRun || !stats) {
-      moveSettings();
-      window.location.reload();
-    }
 
     loadSettings();
     const profileChanged = (event) => {

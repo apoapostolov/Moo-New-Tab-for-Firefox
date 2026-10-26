@@ -112,9 +112,7 @@ export async function fetchAPIImageData(excludedPun = null) {
 }
 
 export async function getBackgroundData() {
-  const isOffline =
-    localStorage.getItem('offlineMode') === 'true' ||
-    localStorage.getItem('showWelcome') === 'true';
+  const isOffline = localStorage.getItem('offlineMode') === 'true';
 
   // A favourite overrides whatever source is configured.
   const fav = parseJSON('favourite');

@@ -24,41 +24,38 @@ function AdvancedOptions({ currentSubSection, onSubSectionChange, sectionName })
 
   const [includeImages, setIncludeImages] = useState(false);
   const [dataError, setDataError] = useState('');
-  const Data = () =>
-    localStorage.getItem('welcomePreview') !== 'true' ? (
-      <div className="backupData">
-        <p>{uiText('save_your_settings_and_notes_or_bring_them_ba_f30abc')}</p>
-        <label>
-          <input
-            type="checkbox"
-            checked={includeImages}
-            onChange={(event) => setIncludeImages(event.target.checked)}
-          />
-          {uiText('include_uploaded_pictures_66d00b')}
-        </label>
-        <div className="resetDataButtonsLayout">
-          <Button
-            label={uiText('save_a_backup_5835d2')}
-            onClick={() =>
-              exportSettings(includeImages).catch((error) => setDataError(error.message))
-            }
-          />
-          <Button
-            label={uiText('restore_settings_6562d0')}
-            onClick={() => setResetModal('settings')}
-          />
-          <Button
-            label={uiText('erase_all_local_data_e70015')}
-            onClick={() => setResetModal('all')}
-          />
-        </div>
-        <BackupImport />
-        <StorageManagement />
-        {dataError && <p role="alert">{dataError}</p>}
+  const Data = () => (
+    <div className="backupData">
+      <p>{uiText('save_your_settings_and_notes_or_bring_them_ba_f30abc')}</p>
+      <label>
+        <input
+          type="checkbox"
+          checked={includeImages}
+          onChange={(event) => setIncludeImages(event.target.checked)}
+        />
+        {uiText('include_uploaded_pictures_66d00b')}
+      </label>
+      <div className="resetDataButtonsLayout">
+        <Button
+          label={uiText('save_a_backup_5835d2')}
+          onClick={() =>
+            exportSettings(includeImages).catch((error) => setDataError(error.message))
+          }
+        />
+        <Button
+          label={uiText('restore_settings_6562d0')}
+          onClick={() => setResetModal('settings')}
+        />
+        <Button
+          label={uiText('erase_all_local_data_e70015')}
+          onClick={() => setResetModal('all')}
+        />
       </div>
-    ) : (
-      <p>{uiText('backups_and_reset_are_available_after_setup_37f176')}</p>
-    );
+      <BackupImport />
+      <StorageManagement />
+      {dataError && <p role="alert">{dataError}</p>}
+    </div>
+  );
 
   const isDataSection = currentSubSection === 'data';
 

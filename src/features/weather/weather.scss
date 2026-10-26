@@ -297,3 +297,13 @@
     }
   }
 }
+
+.weatherLocationButton {
+  border: 0;
+  border-bottom: 1px solid currentcolor;
+  background: none;
+  color: inherit;
+  font: inherit;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}

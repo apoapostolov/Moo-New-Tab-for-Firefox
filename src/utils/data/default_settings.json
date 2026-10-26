@@ -96,14 +96,6 @@
     "value": "false"
   },
   {
-    "name": "currentBackground",
-    "value": "{\"url\":\"https://images.unsplash.com/photo-1520763185298-1b434c919102?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4NjIyMTV8&ixlib=rb-4.1.0&q=80&auto=format&w=3840\",\"type\":\"api\",\"currentAPI\":\"unsplash\",\"photoInfo\":{\"hidden\":false,\"category\":null,\"credit\":\"RoonZ nl\",\"location\":null,\"camera\":\"SLT-A58\",\"url\":\"https://images.unsplash.com/photo-1520763185298-1b434c919102?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4NjIyMTV8&ixlib=rb-4.1.0&q=80&auto=format&w=3840\",\"photographerURL\":\"https://unsplash.com/@roonz_nl?utm_source=mue&utm_medium=referral\",\"photoURL\":\"https://unsplash.com/photos/pink-flower-ATgfRqpFfFI?utm_source=mue&utm_medium=referral\",\"latitude\":null,\"longitude\":null,\"views\":65001311,\"downloads\":358111,\"likes\":2284,\"description\":\"Pink Tulip & window light\",\"colour\":\"#f3c0d9\",\"blur_hash\":\"LKRKwa?^.TX8$+ayb]R%%#bHMdnj\"}}"
-  },
-  {
-    "name": "currentWeather",
-    "value": "{\"data\":{\"icon\":\"04n\",\"temp_text\":\"°C\",\"weather\":{\"temp\":12,\"description\":\"overcast clouds\",\"temp_min\":11,\"temp_max\":12,\"feels_like\":11,\"humidity\":69,\"wind_speed\":4.63,\"wind_degrees\":130,\"cloudiness\":97,\"visibility\":10000,\"pressure\":1017},\"done\":true},\"cachedAt\":1792868410314}"
-  },
-  {
     "name": "customBackground",
     "value": ""
   },
@@ -189,7 +181,7 @@
   },
   {
     "name": "location",
-    "value": "Sofia, Bulgaria"
+    "value": ""
   },
   {
     "name": "minuteHand",
@@ -213,7 +205,7 @@
   },
   {
     "name": "order",
-    "value": "[\"time\", \"quicklinks\", \"date\", \"message\"]"
+    "value": "[\"time\",\"aiask\",\"weather\",\"date\",\"quickweather\",\"quicklinks\",\"rss\",\"mail\",\"calendar\",\"tasks\",\"photoinfo\"]"
   },
   {
     "name": "percentageFallback",
@@ -280,10 +272,6 @@
     "value": "false"
   },
   {
-    "name": "showWelcome",
-    "value": "false"
-  },
-  {
     "name": "showlocation",
     "value": "true"
   },
@@ -293,7 +281,7 @@
   },
   {
     "name": "statsData",
-    "value": "{\"tabs-opened\":213,\"modal\":{\"opened-welcome\":22,\"opened-main\":4},\"setting\":{\"widget-order\":7,\"undefined-disabled\":1,\"navbarhover-enabled\":1,\"view-enabled\":1,\"notesenabled-enabled\":1,\"refresh-enabled\":1,\"undefined-enabled\":3,\"backgroundapi-from-mue-to-unsplash\":1,\"photomap-disabled\":1,\"photoinformation-disabled\":1,\"experimental-disabled\":1},\"tab\":{\"opened-weather\":2,\"opened-order\":3,\"opened-navbar\":2,\"opened-greeting\":2,\"opened-time\":2,\"opened-quicklinks\":2,\"opened-quote\":2,\"opened-date\":2,\"opened-background\":3,\"opened-search\":2,\"opened-message\":2,\"opened-about\":1,\"opened-advanced\":2,\"opened-language\":2,\"opened-appearance\":2,\"opened-stats\":1,\"opened-changelog\":1}}"
+    "value": "{}"
   },
   {
     "name": "tabName",
@@ -337,11 +325,11 @@
   },
   {
     "name": "quickWeatherEnabled",
-    "value": "true"
+    "value": "false"
   },
   {
     "name": "weatherType",
-    "value": "2"
+    "value": "1"
   },
   {
     "name": "widgetStyle",
@@ -362,5 +350,41 @@
   {
     "name": "rssEnabled",
     "value": "false"
+  },
+  {
+    "name": "aiAskEnabled",
+    "value": "true"
+  },
+  {
+    "name": "googleMailEnabled",
+    "value": "false"
+  },
+  {
+    "name": "googleCalendarEnabled",
+    "value": "false"
+  },
+  {
+    "name": "googleTasksEnabled",
+    "value": "false"
+  },
+  {
+    "name": "scratchNotes",
+    "value": "false"
+  },
+  {
+    "name": "scratchImages",
+    "value": "false"
+  },
+  {
+    "name": "widgetPlacement",
+    "value": "{\"weather\":\"left\",\"rss\":\"center\"}"
+  },
+  {
+    "name": "widgetSecondLane",
+    "value": "[]"
+  },
+  {
+    "name": "aiAskService",
+    "value": "googleSearch"
   }
 ]

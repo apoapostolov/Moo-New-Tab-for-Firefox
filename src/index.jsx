@@ -14,10 +14,12 @@ import { selectLanguage } from 'lib/translations';
 import { migrateScratchAssets } from './utils/customBackgroundDB';
 import { recoverProfileChange, withProfileLock } from './utils/settings/profile';
 import runMigrations from './utils/settings/migrations';
+import { moveSettings } from './utils/settings/move';
 
 async function start() {
   await withProfileLock(async () => {
     await recoverProfileChange();
+    moveSettings();
     await migrateScratchAssets();
   });
   // Before anything reads a setting, so no component mounts with a stale value.

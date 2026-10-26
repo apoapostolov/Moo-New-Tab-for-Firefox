@@ -12,6 +12,7 @@ function ResetModal({ modalClose, scope = 'settings' }) {
     setBusy(true);
     try {
       await resetProfile(erase);
+      window.history.replaceState(null, '', window.location.pathname);
       window.location.reload();
     } catch (error) {
       setError(error.message);

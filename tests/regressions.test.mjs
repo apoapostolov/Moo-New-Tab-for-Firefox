@@ -99,6 +99,68 @@ test('first-run migration works with empty storage and preserves existing choice
   assert.equal(localStorage.getItem('theme'), 'dark');
 });
 
+test('fresh profiles open with English, time, search and basic weather on the left', async () => {
+  const widgets = await server.ssrLoadModule('/src/utils/widgets.js');
+  moveSettings();
+  assert.equal(localStorage.getItem('language'), 'en_GB');
+  assert.equal(localStorage.getItem('timeType'), 'digital');
+  assert.equal(localStorage.getItem('aiAskService'), 'googleSearch');
+  assert.equal(localStorage.getItem('weatherType'), '1');
+  assert.equal(widgets.readPlacement().weather, 'left');
+  assert.deepEqual(
+    widgets.WIDGETS.filter(({ id }) => widgets.isWidgetEnabled(id)).map(({ id }) => id),
+    ['time', 'weather', 'aiask'],
+  );
+  assert.equal(localStorage.getItem('backgroundType'), 'api_unsplash');
+  assert.equal(localStorage.getItem('backgroundAPI'), 'unsplash');
+  assert.equal(localStorage.getItem('location'), '');
+  assert.equal(localStorage.getItem('currentWeather'), null);
+  assert.equal(localStorage.getItem('currentBackground'), null);
+  assert.equal(localStorage.getItem('statsData'), '{}');
+});
+
+test('startup retires wizard flags without changing an existing profile', () => {
+  const saved = {
+    language: 'bg',
+    theme: 'dark',
+    time: 'false',
+    backgroundType: 'api_live',
+    location: 'Rome',
+    widgetPlacement: '{"weather":"right"}',
+    scratchNotesData: '[{"id":"saved","text":"Keep this","x":1,"y":1}]',
+  };
+  for (const [key, value] of Object.entries(saved)) localStorage.setItem(key, value);
+  for (const key of ['showWelcome', 'welcomePreview', 'welcomeTab', 'welcomeImage'])
+    localStorage.setItem(key, 'true');
+  moveSettings();
+  for (const [key, value] of Object.entries(saved)) assert.equal(localStorage.getItem(key), value);
+  for (const key of ['showWelcome', 'welcomePreview', 'welcomeTab', 'welcomeImage'])
+    assert.equal(localStorage.getItem(key), null);
+});
+
+test('both reset scopes restore the ready-to-use preset without a setup screen', async () => {
+  const { resetProfile } = await server.ssrLoadModule('/src/utils/settings/profile.js');
+  const widgets = await server.ssrLoadModule('/src/utils/widgets.js');
+  for (const erase of [false, true]) {
+    localStorage.setItem('language', 'bg');
+    localStorage.setItem('weatherType', '4');
+    localStorage.setItem('widgetPlacement', '{"weather":"right"}');
+    localStorage.setItem('showWelcome', 'true');
+    localStorage.setItem('welcomePreview', 'true');
+    await resetProfile(erase);
+    assert.equal(localStorage.getItem('language'), 'en_GB');
+    assert.equal(localStorage.getItem('weatherType'), '1');
+    assert.equal(widgets.readPlacement().weather, 'left');
+    assert.equal(localStorage.getItem('backgroundAPI'), 'unsplash');
+    assert.equal(localStorage.getItem('showWelcome'), null);
+    assert.equal(localStorage.getItem('welcomePreview'), null);
+    assert.deepEqual(
+      widgets.WIDGETS.filter(({ id }) => widgets.isWidgetEnabled(id)).map(({ id }) => id),
+      ['time', 'weather', 'aiask'],
+    );
+  }
+});
+
 test('settings import rejects arrays, null and nested objects before writing', async () => {
   localStorage.setItem('theme', 'dark');
   for (const input of ['[]', 'null', '{"theme":"light","quicklinks":{}}']) {

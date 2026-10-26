@@ -143,7 +143,7 @@ const SERVICE_KEY = 'aiAskService';
 const readService = () => {
   const stored = localStorage.getItem(SERVICE_KEY);
 
-  return SERVICES[stored] ? stored : 'google';
+  return SERVICES[stored] ? stored : 'googleSearch';
 };
 
 const AIAsk = () => {

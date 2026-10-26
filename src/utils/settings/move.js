@@ -1,23 +1,11 @@
-import { setDefaultSettings } from './default';
+import defaultSettings from '../data/default_settings.json';
 
-/**
- * Resets to defaults, then restores every stored key that still exists.
- */
+const retiredWelcomeKeys = ['showWelcome', 'welcomePreview', 'welcomeTab', 'welcomeImage'];
+
+/** Fill missing settings without resetting an existing profile. */
 export function moveSettings() {
-  const currentSettings = Object.keys(localStorage);
-  if (currentSettings.length === 0) {
-    return setDefaultSettings();
+  for (const { name, value } of defaultSettings) {
+    if (localStorage.getItem(name) === null) localStorage.setItem(name, value);
   }
-
-  const settings = {};
-  currentSettings.forEach((key) => {
-    settings[key] = localStorage.getItem(key);
-  });
-
-  localStorage.clear();
-  setDefaultSettings();
-
-  Object.keys(settings).forEach((key) => {
-    localStorage.setItem(key, settings[key]);
-  });
+  for (const key of retiredWelcomeKeys) localStorage.removeItem(key);
 }

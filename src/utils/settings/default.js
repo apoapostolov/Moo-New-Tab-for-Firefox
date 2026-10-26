@@ -1,17 +1,7 @@
 import defaultSettings from 'utils/data/default_settings.json';
 
-/**
- * Clears storage and applies the shipped defaults; `reset` also skips the
- * welcome page.
- */
-export function setDefaultSettings(reset) {
+/** Replace preferences with the ready-to-use default profile. */
+export function setDefaultSettings() {
   localStorage.clear();
-  defaultSettings.forEach((element) => localStorage.setItem(element.name, element.value));
-
-  if (reset) {
-    localStorage.setItem('showWelcome', false);
-  }
-
-  // Prevents this running again on the next load.
-  localStorage.setItem('firstRun', true);
+  for (const { name, value } of defaultSettings) localStorage.setItem(name, value);
 }

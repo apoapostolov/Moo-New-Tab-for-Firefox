@@ -41,7 +41,6 @@ const Widgets = () => {
     placement: readPlacement(),
     lane: readSecondLane(),
   }));
-  const [welcome, setWelcome] = useState(localStorage.getItem('showWelcome'));
 
   const enabled = (id) => isWidgetEnabled(id);
 
@@ -58,29 +57,22 @@ const Widgets = () => {
     photoinfo: enabled('photoinfo') ? <PhotoInfoWidget /> : null,
     rss: enabled('rss') ? <Rss /> : null,
   };
+  const basicLayout =
+    widgets.weather &&
+    layout.placement.weather === 'left' &&
+    ['time', 'aiask'].every((id) => !widgets[id] || layout.placement[id] === 'center') &&
+    Object.entries(widgets).every(
+      ([id, widget]) => !widget || ['time', 'aiask', 'weather'].includes(id),
+    );
 
   useEffect(() => {
     const handleRefresh = (data) => {
-      switch (data) {
-        case 'widgets':
-          return setLayout({
-            order: readOrder(),
-            placement: readPlacement(),
-            lane: readSecondLane(),
-          });
-        case 'widgetsWelcome':
-          setWelcome(localStorage.getItem('showWelcome'));
-          localStorage.setItem('showWelcome', true);
-          window.onbeforeunload = () => {
-            localStorage.clear();
-          };
-          break;
-        case 'widgetsWelcomeDone':
-          setWelcome(localStorage.getItem('showWelcome'));
-          window.onbeforeunload = null;
-          break;
-        default:
-          break;
+      if (data === 'widgets') {
+        setLayout({
+          order: readOrder(),
+          placement: readPlacement(),
+          lane: readSecondLane(),
+        });
       }
     };
 
@@ -132,12 +124,9 @@ const Widgets = () => {
     </>
   );
 
-  // The welcome screen replaces the widgets.
-  return welcome !== 'false' ? (
-    <WidgetsLayout />
-  ) : (
+  return (
     <Suspense fallback={<></>}>
-      {compact ? (
+      {compact && !basicLayout ? (
         <div className="compactWidgets">
           <WidgetsLayout>{draw(layout.order)}</WidgetsLayout>
         </div>

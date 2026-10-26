@@ -1,5 +1,11 @@
 # Moo changelog
 
+## Unreleased
+
+### Changed
+
+- **Startup.** New profiles and resets open directly in English with the time, Search/Ask Bar, basic weather in the bottom-left corner and Unsplash backgrounds. The setup wizard is removed; enable other widgets in Settings.
+
 ## 1.0.0 — 26 October 2026
 
 The first Moo release brings mail, plans, notes and a place to look things up to the Firefox new-tab page, with a layout you can arrange around them. Moo is a personal fork of [Mue](https://github.com/mue/mue).

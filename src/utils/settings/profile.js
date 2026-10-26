@@ -73,7 +73,6 @@ export async function resetProfile(erase = false) {
         ),
       ),
       firstRun: 'true',
-      showWelcome: 'false',
       customBackgroundMigrated: 'true',
     }),
     erase ? [] : undefined,
