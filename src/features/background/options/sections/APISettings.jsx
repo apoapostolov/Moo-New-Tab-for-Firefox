@@ -181,10 +181,15 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
         value: LIVE_CHANNEL_ANY,
         text: variables.getMessage('modals.main.settings.sections.background.live.channel_any'),
       },
-      ...channels.map((channel) => ({
-        value: channel.id,
-        text: channel.quality ? `${channel.name} (${channel.quality})` : channel.name,
-      })),
+      // Alphabetical, by the name as written: thirty channels in the order they were added is
+      // a hunt, and this is a picker rather than a list to be arranged. The editor keeps the
+      // stored order, because there a drag means something.
+      ...[...channels]
+        .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }))
+        .map((channel) => ({
+          value: channel.id,
+          text: channel.quality ? `${channel.name} (${channel.quality})` : channel.name,
+        })),
     ];
 
     return (
