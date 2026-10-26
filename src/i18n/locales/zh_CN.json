@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue 图库",
               "coverr": "Coverr (视频)",
+              "mixkit": "Mixkit (视频)",
               "live": "直播频道",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "选择主题，或指定一个合集。",
               "topics": "主题",
               "categories": "分类"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "免费片段，无需密钥。Firefox 会请求一次读取 Mixkit 目录的权限。",
+              "search": "搜索",
+              "search_subtitle": "留空则显示任意片段，也可以缩小到某个主题。",
+              "allow": "允许"
             },
             "source": {
               "title": "来源",

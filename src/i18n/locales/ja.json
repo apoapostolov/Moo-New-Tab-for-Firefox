@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue ライブラリ",
               "coverr": "Coverr (動画)",
+              "mixkit": "Mixkit (動画)",
               "live": "ライブチャンネル",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "トピックを選ぶか、コレクション名を指定します。",
               "topics": "トピック",
               "categories": "カテゴリー"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "無料のクリップで、キーは不要です。Mixkit のカタログを読むため、Firefox が一度だけ許可を求めます。",
+              "search": "検索",
+              "search_subtitle": "空欄にするとすべてのクリップ、入力すると特定のテーマに絞り込みます。",
+              "allow": "許可"
             },
             "source": {
               "title": "Source",

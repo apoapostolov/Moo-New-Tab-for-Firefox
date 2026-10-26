@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Библиотека Mue",
               "coverr": "Coverr (видео)",
+              "mixkit": "Mixkit (видео)",
               "live": "Прямые трансляции",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Выберите темы или укажите коллекцию.",
               "topics": "Темы",
               "categories": "Категории"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Бесплатные клипы, ключ не нужен. Firefox один раз спросит разрешение на чтение каталога Mixkit.",
+              "search": "Поиск",
+              "search_subtitle": "Оставьте пустым для любых клипов или сузьте до одной темы.",
+              "allow": "Разрешить"
             },
             "source": {
               "title": "Source",

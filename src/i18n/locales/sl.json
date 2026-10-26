@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Knjižnica Mue",
               "coverr": "Coverr (video)",
+              "mixkit": "Mixkit (video)",
               "live": "Kanali v živo",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Izberite teme ali določite zbirko.",
               "topics": "Teme",
               "categories": "Kategorije"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Brezplačni posnetki, brez ključa. Firefox enkrat vpraša za dovoljenje za branje kataloga Mixkit.",
+              "search": "Iskanje",
+              "search_subtitle": "Pustite prazno za vse posnetke ali zožite na eno temo.",
+              "allow": "Dovoli"
             },
             "source": {
               "title": "Vir",

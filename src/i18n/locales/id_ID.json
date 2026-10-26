@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Pustaka Mue",
               "coverr": "Coverr (Video)",
+              "mixkit": "Mixkit (Video)",
               "live": "Kanal langsung",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Pilih topik, atau sebutkan nama koleksi.",
               "topics": "Topik",
               "categories": "Kategori"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Klip gratis, tanpa kunci. Firefox meminta izin sekali untuk membaca katalog Mixkit.",
+              "search": "Cari",
+              "search_subtitle": "Biarkan kosong untuk klip apa saja, atau persempit ke satu subjek.",
+              "allow": "Izinkan"
             },
             "source": {
               "title": "Sumber",

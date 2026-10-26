@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue-bibliotheek",
               "coverr": "Coverr (Video)",
+              "mixkit": "Mixkit (Video)",
               "live": "Livekanalen",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Kies onderwerpen of geef een collectie een naam.",
               "topics": "Onderwerpen",
               "categories": "Categorieën"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Gratis clips, geen sleutel nodig. Firefox vraagt één keer toestemming om Mixkits catalogus te lezen.",
+              "search": "Zoeken",
+              "search_subtitle": "Laat leeg voor elke clip, of beperk het tot één onderwerp.",
+              "allow": "Toestaan"
             },
             "source": {
               "title": "Source",

@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue biblioteka",
               "coverr": "Coverr (vaizdo įrašas)",
+              "mixkit": "Mixkit (vaizdo įrašas)",
               "live": "Tiesioginės transliacijos",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Pasirinkite temas arba nurodykite kolekciją.",
               "topics": "Temos",
               "categories": "Kategorijos"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Nemokami klipai, rakto nereikia. Firefox vieną kartą paprašys leidimo skaityti Mixkit katalogą.",
+              "search": "Ieškoti",
+              "search_subtitle": "Palikite tuščią, kad būtų rodomi bet kokie klipai, arba susiaurinkite iki temos.",
+              "allow": "Leisti"
             },
             "source": {
               "title": "Šaltinis",

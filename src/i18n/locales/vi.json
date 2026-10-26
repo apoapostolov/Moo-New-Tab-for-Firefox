@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Thư viện Mue",
               "coverr": "Coverr (Video)",
+              "mixkit": "Mixkit (Video)",
               "live": "Kênh trực tiếp",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Chọn chủ đề, hoặc nhập tên bộ sưu tập.",
               "topics": "Chủ đề",
               "categories": "Danh mục"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Clip miễn phí, không cần khóa. Firefox hỏi quyền một lần để đọc danh mục của Mixkit.",
+              "search": "Tìm kiếm",
+              "search_subtitle": "Để trống để dùng bất kỳ clip nào, hoặc thu hẹp theo một chủ đề.",
+              "allow": "Cho phép"
             },
             "source": {
               "title": "Source",

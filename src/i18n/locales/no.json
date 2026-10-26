@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue-bibliotek",
               "coverr": "Coverr (Video)",
+              "mixkit": "Mixkit (Video)",
               "live": "Direktekanaler",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Velg emner, eller gi en samling et navn.",
               "topics": "Emner",
               "categories": "Kategorier"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Gratis klipp, ingen nøkkel. Firefox spør én gang om tillatelse til å lese Mixkits katalog.",
+              "search": "Søk",
+              "search_subtitle": "La stå tomt for et hvilket som helst klipp, eller begrens det til ett emne.",
+              "allow": "Tillat"
             },
             "source": {
               "title": "Source",

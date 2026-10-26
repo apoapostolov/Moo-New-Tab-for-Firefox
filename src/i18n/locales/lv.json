@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue Library",
               "coverr": "Coverr (video)",
+              "mixkit": "Mixkit (video)",
               "live": "Tiešraides kanāli",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Izvēlieties tematus vai nosauciet kolekciju.",
               "topics": "Temati",
               "categories": "Kategorijas"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Bezmaksas klipi, bez atslēgas. Firefox vienreiz prasa atļauju, lai lasītu Mixkit katalogu.",
+              "search": "Meklēt",
+              "search_subtitle": "Atstājiet tukšu, lai iegūtu jebkuru klipu, vai sašauriniet to uz kādu tematu.",
+              "allow": "Atļaut"
             },
             "source": {
               "title": "Avots",

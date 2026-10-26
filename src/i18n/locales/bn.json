@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue লাইব্রেরি",
               "coverr": "Coverr (ভিডিও)",
+              "mixkit": "Mixkit (ভিডিও)",
               "live": "লাইভ চ্যানেল",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "টপিক বেছে নিন, অথবা একটি কালেকশনের নাম লিখুন।",
               "topics": "টপিক",
               "categories": "ক্যাটাগরি"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "বিনামূল্যের ক্লিপ, API কী ছাড়াই। Mixkit-এর ক্যাটালগ পড়তে Firefox একবার অনুমতি চায়।",
+              "search": "অনুসন্ধান",
+              "search_subtitle": "যেকোনো ক্লিপের জন্য খালি রাখুন, অথবা একটি বিষয়ে সীমাবদ্ধ করুন।",
+              "allow": "অনুমতি দিন"
             },
             "source": {
               "title": "উৎস",

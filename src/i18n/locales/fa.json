@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "کتابخانهٔ Mue",
               "coverr": "Coverr (ویدیو)",
+              "mixkit": "Mixkit (ویدیو)",
               "live": "کانال‌های زنده",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "موضوع‌ها را انتخاب کنید، یا نام یک مجموعه را بنویسید.",
               "topics": "موضوع‌ها",
               "categories": "دسته‌ها"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "کلیپ‌های رایگان، بدون کلید. Firefox یک بار برای خواندن فهرست Mixkit اجازه می‌خواهد.",
+              "search": "جستجو",
+              "search_subtitle": "برای هر کلیپی خالی بگذارید، یا آن را به یک موضوع محدود کنید.",
+              "allow": "اجازه دادن"
             },
             "source": {
               "title": "Source",

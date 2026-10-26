@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue Kitaplığı",
               "coverr": "Coverr (Video)",
+              "mixkit": "Mixkit (Video)",
               "live": "Canlı kanallar",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Konuları seçin veya bir koleksiyon adı girin.",
               "topics": "Konular",
               "categories": "Kategoriler"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Ücretsiz klipler, anahtar gerekmez. Firefox, Mixkit kataloğunu okumak için bir kez izin ister.",
+              "search": "Ara",
+              "search_subtitle": "Herhangi bir klip için boş bırakın veya tek bir konuya daraltın.",
+              "allow": "İzin ver"
             },
             "source": {
               "title": "Kaynak",

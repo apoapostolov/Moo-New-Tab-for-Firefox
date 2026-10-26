@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Βιβλιοθήκη Mue",
               "coverr": "Coverr (Βίντεο)",
+              "mixkit": "Mixkit (Βίντεο)",
               "live": "Ζωντανά κανάλια",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Επιλέξτε θέματα ή δώστε όνομα σε μια συλλογή.",
               "topics": "Θέματα",
               "categories": "Κατηγορίες"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Δωρεάν κλιπ, χωρίς κλειδί. Το Firefox ζητά μία φορά άδεια για να διαβάσει τον κατάλογο του Mixkit.",
+              "search": "Αναζήτηση",
+              "search_subtitle": "Αφήστε το κενό για οποιοδήποτε κλιπ ή περιορίστε το σε ένα θέμα.",
+              "allow": "Να επιτραπεί"
             },
             "source": {
               "title": "Source",

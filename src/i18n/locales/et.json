@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue Library",
               "coverr": "Coverr (video)",
+              "mixkit": "Mixkit (video)",
               "live": "Otsekanalid",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Vali teemad või määra kollektsiooni nimi.",
               "topics": "Teemad",
               "categories": "Kategooriad"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Tasuta klipid, võtit pole. Firefox küsib üks kord luba Mixkiti kataloogi lugemiseks.",
+              "search": "Otsi",
+              "search_subtitle": "Jäta tühjaks, et saada suvaline klipp, või täpsusta teemat.",
+              "allow": "Luba"
             },
             "source": {
               "title": "Allikas",

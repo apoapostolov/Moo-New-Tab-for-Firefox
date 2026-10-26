@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Biblioteca Mue",
               "coverr": "Coverr (Video)",
+              "mixkit": "Mixkit (Video)",
               "live": "Canales en vivo",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Elige temas o indica el nombre de una colección.",
               "topics": "Temas",
               "categories": "Categorías"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Clips gratis, sin clave. Firefox pide permiso una vez para leer el catálogo de Mixkit.",
+              "search": "Buscar",
+              "search_subtitle": "Déjalo vacío para cualquier clip o acótalo a un tema.",
+              "allow": "Permitir"
             },
             "source": {
               "title": "Fuente",

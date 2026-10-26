@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue நூலகம்",
               "coverr": "Coverr (வீடியோ)",
+              "mixkit": "Mixkit (வீடியோ)",
               "live": "நேரலை சேனல்கள்",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "தலைப்புகளைத் தேர்ந்தெடுக்கவும் அல்லது தொகுப்பின் பெயரைக் குறிப்பிடவும்.",
               "topics": "தலைப்புகள்",
               "categories": "வகைகள்"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "இலவச கிளிப்புகள், விசை தேவையில்லை. Mixkit பட்டியலைப் படிக்க Firefox ஒருமுறை அனுமதி கேட்கும்.",
+              "search": "தேடு",
+              "search_subtitle": "எந்த கிளிப்பிற்கும் காலியாக விடவும், அல்லது ஒரு பொருளுக்கு சுருக்கவும்.",
+              "allow": "அனுமதி"
             },
             "source": {
               "title": "மூலம்",

@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "مكتبة Mue",
               "coverr": "Coverr (فيديو)",
+              "mixkit": "Mixkit (فيديو)",
               "live": "قنوات لايف",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "اختار مواضيع، أو سمّي مجموعة.",
               "topics": "المواضيع",
               "categories": "الفئات"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "مقاطع ببلاش، من غير مفتاح. Firefox بيطلب منك إذن مرة واحدة عشان يقرا كتالوج Mixkit.",
+              "search": "بحث",
+              "search_subtitle": "سيبه فاضي عشان أي مقطع، أو ضيّقه على موضوع.",
+              "allow": "اسمح"
             },
             "source": {
               "title": "Source",

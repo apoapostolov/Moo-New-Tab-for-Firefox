@@ -259,6 +259,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue könyvtár",
               "coverr": "Coverr (videó)",
+              "mixkit": "Mixkit (videó)",
               "live": "Élő csatornák",
               "pixabay": "Pixabay",
               "pexels": "Pexels"
@@ -272,6 +273,13 @@
               "section_subtitle": "Válassz témákat, vagy nevezz meg egy gyűjteményt.",
               "topics": "Témák",
               "categories": "Kategóriák"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Ingyenes klipek, kulcs nélkül. A Firefox egyszer engedélyt kér a Mixkit katalógusának olvasásához.",
+              "search": "Keresés",
+              "search_subtitle": "Hagyd üresen bármely klipekhez, vagy szűkítsd egy témára.",
+              "allow": "Engedélyezés"
             },
             "source": {
               "title": "Source",
