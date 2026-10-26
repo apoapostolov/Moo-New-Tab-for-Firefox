@@ -351,9 +351,12 @@ const Rss = () => {
                   }}
                 />
               ) : null}
+              {/* Source and age share the line above the headline, so the age is placed
+                  before the headline in the grid rather than after it: written after, the
+                  headline spanning both columns pushed it onto a line of its own. */}
               <span className="rssSource">{item.source.title}</span>
-              <span className="rssItemTitle">{item.title}</span>
               <span className="rssAge">{relative(item.date)}</span>
+              <span className="rssItemTitle">{item.title}</span>
             </button>
           </li>
         ))}
