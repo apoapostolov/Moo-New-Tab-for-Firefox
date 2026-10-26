@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Triple clic pour masquer l'interface",
-              "subtitle": "Trois clics n'importe où sur la page effacent tout sauf la vidéo, trois autres la font revenir, et Échap fait de même. Seul un fond vidéo y répond — une image fixe n'a rien à regarder en soi."
+              "subtitle": "Trois clics masquent tout sauf la vidéo ; un clic, ou Échap, fait tout revenir."
             }
           },
           "rss": {

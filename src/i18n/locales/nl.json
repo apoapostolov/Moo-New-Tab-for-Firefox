@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Drie keer klikken om de interface te verbergen",
-              "subtitle": "Drie klikken waar dan ook op de pagina verbergen alles behalve de video, nog drie brengen hem terug, en Escape doet hetzelfde. Alleen een videowachtergrond reageert erop — een stilstaand beeld heeft niets om naar te kijken."
+              "subtitle": "Drie klikken verbergen alles behalve de video; één klik of Escape brengt hem terug."
             }
           },
           "rss": {

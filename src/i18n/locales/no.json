@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Trippelklikk for å skjule grensesnittet",
-              "subtitle": "Tre klikk hvor som helst på siden fjerner alt bortsett fra videoen, tre til henter det tilbake, og Escape gjør det samme. Bare en videobakgrunn svarer på dette — et stille bilde har ingenting å se på av seg selv."
+              "subtitle": "Tre klikk skjuler alt unntatt videoen; ett klikk, eller Escape, henter det tilbake."
             }
           },
           "rss": {

@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Trije kliki za skritje vmesnika",
-              "subtitle": "Trije kliki kjer koli na strani skrijejo vse razen videoposnetka, še trije ga vrnejo, Escape pa naredi enako. Odziva se le videoposnetek v ozadju — na mirujoči sliki ni česa gledati."
+              "subtitle": "Trije kliki skrijejo vse razen videoposnetka; en klik ali Escape ga vrne."
             }
           },
           "rss": {

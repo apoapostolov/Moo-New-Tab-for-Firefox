@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Três cliques para ocultar a interface",
-              "subtitle": "Três cliques em qualquer lugar da página escondem tudo menos o vídeo, mais três trazem tudo de volta, e Escape faz o mesmo. Só um vídeo de fundo responde — uma imagem estática não tem nada para assistir por conta própria."
+              "subtitle": "Três cliques escondem tudo menos o vídeo; um clique, ou Escape, traz tudo de volta."
             }
           },
           "rss": {

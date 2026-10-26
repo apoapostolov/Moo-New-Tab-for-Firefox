@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "İnterfeysi gizlətmək üçün üç dəfə klikləyin",
-              "subtitle": "Səhifənin hər hansı yerinə üç klik videodan başqa hər şeyi gizlədir, daha üç klik onu geri qaytarır, Escape da eyni işi görür. Buna yalnız video fon cavab verir — hərəkətsiz şəklin özündə izləyəcək heç nə yoxdur."
+              "subtitle": "Üç klik videodan başqa hər şeyi gizlədir; bir klik və ya Escape onu geri qaytarır."
             }
           },
           "rss": {

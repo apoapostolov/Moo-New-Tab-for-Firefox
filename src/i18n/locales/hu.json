@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Három kattintás a felület elrejtéséhez",
-              "subtitle": "Három kattintás bárhol az oldalon mindent eltüntet a videó kivételével, három további visszahozza, az Escape pedig ugyanezt teszi. Csak a videó háttere reagál rá — egy állóképnek nincs mit nézni."
+              "subtitle": "Három kattintás mindent elrejt a videó kivételével; egy kattintás vagy az Escape visszahozza."
             }
           },
           "rss": {

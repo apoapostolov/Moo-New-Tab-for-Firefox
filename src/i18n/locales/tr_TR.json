@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Arayüzü gizlemek için üç kez tıklayın",
-              "subtitle": "Sayfanın herhangi bir yerine üç tıklama videodan başka her şeyi temizler, üç tıklama daha hepsini geri getirir ve Escape de aynısını yapar. Yalnızca video arka planı buna yanıt verir — durağan bir görselin kendi başına izlenecek bir şeyi yoktur."
+              "subtitle": "Üç tıklama videodan başka her şeyi gizler; bir tıklama ya da Escape onu geri getirir."
             }
           },
           "rss": {

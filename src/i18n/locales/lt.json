@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Trys paspaudimai, kad paslėptumėte sąsają",
-              "subtitle": "Trys paspaudimai bet kurioje puslapio vietoje paslepia viską, išskyrus vaizdo įrašą, dar trys jį grąžina, o Escape daro tą patį. Tai veikia tik su vaizdo įrašo fonu — statiškoje nuotraukoje nėra ko žiūrėti."
+              "subtitle": "Trys paspaudimai paslepia viską, išskyrus vaizdo įrašą; vienas paspaudimas arba Escape jį grąžina."
             }
           },
           "rss": {

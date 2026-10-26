@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Kasutajaliidese peitmiseks kolmekordne klõps",
-              "subtitle": "Kolm klõpsu ükskõik kus lehel peidavad kõik peale video, veel kolm toovad selle tagasi ja Escape teeb sama. Sellele reageerib ainult videotaust — liikumatul pildil pole omaette midagi vaadata."
+              "subtitle": "Kolm klõpsu peidavad kõik peale video; üks klõps või Escape toob selle tagasi."
             }
           },
           "rss": {

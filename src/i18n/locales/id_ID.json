@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Tiga kali klik untuk menyembunyikan UI",
-              "subtitle": "Tiga klik di mana saja pada halaman menyembunyikan semua kecuali video, tiga klik lagi memunculkannya kembali, dan Escape melakukan hal yang sama. Hanya latar video yang merespons — gambar diam tidak punya apa pun untuk ditonton."
+              "subtitle": "Tiga klik menyembunyikan semua kecuali video; satu klik, atau Escape, mengembalikannya."
             }
           },
           "rss": {

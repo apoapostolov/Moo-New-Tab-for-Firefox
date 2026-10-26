@@ -649,7 +649,7 @@
             },
             "cinema": {
               "title": "Trīs klikšķi, lai paslēptu saskarni",
-              "subtitle": "Trīs klikšķi jebkurā lapas vietā paslēpj visu, izņemot video, vēl trīs to atgriež, un Escape dara to pašu. Tas darbojas tikai tad, ja fons ir video — nekustīgā attēlā pašā par sevi nav ko skatīties."
+              "subtitle": "Trīs klikšķi paslēpj visu, izņemot video; viens klikšķis vai Escape to atgriež."
             }
           },
           "rss": {
