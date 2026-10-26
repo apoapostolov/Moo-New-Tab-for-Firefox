@@ -13,7 +13,7 @@ export const WEBLATE_URL = 'https://hosted.weblate.org/projects/mue/mue-tab/';
 export const REPO_URL = 'https://github.com/apoapostolov/Moo-New-Tab-for-Firefox';
 export const ISSUES_URL = `${REPO_URL}/issues`;
 // The settings header appends the page name as the issue title.
-export const BUG_REPORT = `${REPO_URL}/issues/new?labels=bug&template=bug_report.yml&title=`;
+export const BUG_REPORT = `${ISSUES_URL}/new?labels=bug&template=bug_report.yml&title=`;
 export const SENTRY_DSN =
   'https://430352fd4b174d688ebd82fc85c22c58@o1217438.ingest.sentry.io/6359480';
 export const KNOWLEDGEBASE = 'https://support.muetab.com';
