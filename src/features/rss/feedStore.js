@@ -13,6 +13,9 @@ const REFRESH_KEY = 'rssRefreshMinutes';
 const FULL_ARTICLE_KEY = 'rssFullArticle';
 
 const DEFAULT_COUNT = 12;
+// A dozen headlines is the most the card is asked to carry, so an older profile that
+// stored more is read back down to it rather than kept.
+const MAX_COUNT = 12;
 const DEFAULT_REFRESH = 30;
 const CACHE_LIMIT = 150;
 const EXCERPT_LIMIT = 480;
@@ -68,7 +71,9 @@ export function feedTitle(url) {
 export function readCount() {
   const stored = Number(localStorage.getItem(COUNT_KEY));
 
-  return Number.isFinite(stored) && stored > 0 ? stored : DEFAULT_COUNT;
+  if (!Number.isFinite(stored) || stored < 1) return DEFAULT_COUNT;
+
+  return Math.min(MAX_COUNT, Math.floor(stored));
 }
 
 export function readRefresh() {

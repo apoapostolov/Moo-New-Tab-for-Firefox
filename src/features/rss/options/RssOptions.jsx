@@ -16,7 +16,8 @@ import {
   saveFeeds,
 } from '../feedStore';
 
-const COUNTS = ['6', '8', '12', '20'];
+// The card lists what the profile asks for, one at a time up to a dozen.
+const COUNTS = Array.from({ length: 12 }, (_, index) => String(index + 1));
 const REFRESH = ['15', '30', '60', '120'];
 // Hours a kept article may sit unused before the page drops it.
 const KEEP = [
