@@ -22,7 +22,7 @@ Moo is a personal fork of [Mue](https://github.com/mue/mue) for Firefox and Zen.
 
 The preview uses fictional mail, events, tasks and weather over a real video background. [Compare the three backgrounds](assets/previews/README.md).
 
-Current source builds open directly in English with the time, Search/Ask Bar, basic weather in the bottom-left corner and Unsplash backgrounds. Other widgets are enabled in Settings. This startup preset is [unreleased](CHANGELOG.md#unreleased).
+Moo opens directly in English with the time, Search/Ask Bar, basic weather in the bottom-left corner and Unsplash backgrounds. Other widgets are enabled in Settings.
 
 ## Features
 
