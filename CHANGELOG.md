@@ -74,6 +74,7 @@ Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab exten
 - Scratch notes keep the heading level they are written at, on a real six-step scale. `####` and `#####` used to be flattened into `h3`, and every heading sat at the note's own 13px while its paragraphs rendered at the app's 16px, so a heading came out smaller than the words under it. Text no longer grows when a note stops being edited, either.
 
 ### Fixed
+- The update line in About did not check anything that could work: it compared versions by deleting the dots (so 1.0.10 read as larger than 1.1.0), and the release tags carry a leading v, which made the comparison fail outright. It now asks GitHub for the newest published release, compares it segment by segment, refuses drafts and pre-releases, shows the installed version from the manifest rather than a constant, and keeps the answer for six hours, or thirty minutes when nothing has been published yet, so a page visit cannot spend the unauthenticated rate limit.
 - The hard text shadow never appeared when the page loaded: it was written onto the clock and the date before either had been drawn, so only switching the option by hand ever applied it. It is set on the page now, so it is there from the first paint.
 
 - A transparent scratch picture stuttered once or twice the first time it was dragged. It carried a shadow filter, which the browser re-renders for every frame of a move, and the card had no layer of its own until the drag asked for one.

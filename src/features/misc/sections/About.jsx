@@ -7,11 +7,13 @@ import { SiX } from 'react-icons/si';
 
 import { Button } from 'components/Elements';
 import { Row, Content, Action } from 'components/Layout/Settings/Item';
+import { checkForUpdate, currentVersion } from 'utils/updates';
 
 class About extends PureComponent {
   constructor() {
     super();
     this.state = {
+      version: currentVersion(),
       update: variables.getMessage('modals.main.settings.sections.about.version.checking_update'),
       loading: variables.getMessage('modals.main.loading'),
     };
@@ -19,61 +21,30 @@ class About extends PureComponent {
   }
 
   async getGitHubData() {
-    let versionData;
+    const message = 'modals.main.settings.sections.about.version';
 
     try {
-      versionData = await (
-        await fetch(
-          variables.constants.GITHUB_URL +
-            '/repos/' +
-            variables.constants.ORG_NAME +
-            '/' +
-            variables.constants.REPO_NAME +
-            '/releases',
-          { signal: this.controller.signal },
-        )
-      ).json();
-    } catch {
-      if (this.controller.signal.aborted === true) {
-        return;
-      }
-
-      return this.setState({
-        update: variables.getMessage('modals.main.settings.sections.about.version.error.title'),
-        loading: variables.getMessage(
-          'modals.main.settings.sections.about.version.error.description',
-        ),
+      const { current, latest, hasUpdate } = await checkForUpdate({
+        signal: this.controller.signal,
       });
-    }
 
-    if (this.controller.signal.aborted === true) {
-      return;
-    }
+      if (this.controller.signal.aborted === true) return;
 
-    if (!versionData || !Array.isArray(versionData) || versionData.length === 0) {
       this.setState({
-        update: variables.getMessage('modals.main.settings.sections.about.version.no_update'),
+        version: current,
+        update: hasUpdate
+          ? `${variables.getMessage(`${message}.update_available`)}: ${latest}`
+          : variables.getMessage(`${message}.no_update`),
         loading: null,
       });
-      return;
+    } catch {
+      if (this.controller.signal.aborted === true) return;
+
+      this.setState({
+        update: variables.getMessage(`${message}.error.title`),
+        loading: variables.getMessage(`${message}.error.description`),
+      });
     }
-
-    const newVersion = versionData[0].tag_name;
-
-    let update = variables.getMessage('modals.main.settings.sections.about.version.no_update');
-    if (
-      Number(variables.constants.VERSION.replaceAll('.', '')) <
-      Number(newVersion.replaceAll('.', ''))
-    ) {
-      update = `${variables.getMessage(
-        'modals.main.settings.sections.about.version.update_available',
-      )}: ${newVersion}`;
-    }
-
-    this.setState({
-      update,
-      loading: null,
-    });
   }
 
   componentDidMount() {
@@ -107,7 +78,7 @@ class About extends PureComponent {
               <span className="title">Moo</span>
               <span className="subtitle">
                 {variables.getMessage('modals.main.settings.sections.about.version.title')}{' '}
-                {variables.constants.VERSION}
+                {this.state.version}
               </span>
               <span className="subtitle">({this.state.update})</span>
             </div>
