@@ -53,11 +53,22 @@ const seedPhotoInfoLocation = () => {
   }
 };
 
+/**
+ * The triple click that hides the page is on unless it is turned off: the gesture is
+ * only discoverable if it works, so a profile that predates the switch needs the value.
+ */
+const seedCinemaMode = () => {
+  if (localStorage.getItem('cinemaMode') === null) {
+    localStorage.setItem('cinemaMode', 'true');
+  }
+};
+
 const runMigrations = () => {
   retireMueLibrary();
   seedPercentageFallback();
   seedPercentageDoubleClick();
   seedPhotoInfoLocation();
+  seedCinemaMode();
 
   if (!localStorage.getItem(HOVER_MARK)) {
     if (localStorage.getItem('navbarHover') === 'true') localStorage.removeItem('navbarHover');

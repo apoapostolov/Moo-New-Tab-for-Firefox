@@ -426,6 +426,10 @@
             "scratch_no_tilt": {
               "title": "Turn off tilting",
               "subtitle": "Notes and pictures sit straight, and dragging one no longer gives it a lean."
+            },
+            "cinema": {
+              "title": "Triple click to hide the UI",
+              "subtitle": "Three clicks anywhere on the page clear everything but the video, three more bring it back, and Escape does the same. Only a video background answers it — a still picture has nothing to watch on its own."
             }
           },
           "rss": {

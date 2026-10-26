@@ -354,5 +354,9 @@
   {
     "name": "zero",
     "value": "true"
+  },
+  {
+    "name": "cinemaMode",
+    "value": "true"
   }
 ]

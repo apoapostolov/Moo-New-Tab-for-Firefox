@@ -68,6 +68,22 @@ const MiscOptions = () => {
           </Action>
         </Row>
       </Group>
+
+      <Group>
+        <Row>
+          <Content
+            title={variables.getMessage(`${MISC_SECTION}.cinema.title`)}
+            subtitle={variables.getMessage(`${MISC_SECTION}.cinema.subtitle`)}
+          />
+          <Action>
+            <Switch
+              name="cinemaMode"
+              category="other"
+              text={variables.getMessage('modals.main.settings.enabled')}
+            />
+          </Action>
+        </Row>
+      </Group>
     </>
   );
 };
