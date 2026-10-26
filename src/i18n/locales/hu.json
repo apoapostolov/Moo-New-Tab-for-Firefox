@@ -647,6 +647,10 @@
               "title": "Döntés kikapcsolása",
               "subtitle": "A jegyzetek és képek egyenesen állnak, és a húzás már nem dönti meg őket."
             },
+        "scratch_bare": {
+          "title": "Keret nélküli jegyzetek",
+          "subtitle": "A jegyzetek csupasz szövegként állnak a háttérképen, és visszakapják a keretüket, ha rájuk kattintasz."
+        },
             "cinema": {
               "title": "Három kattintás a felület elrejtéséhez",
               "subtitle": "Három kattintás mindent elrejt a videó kivételével; egy kattintás vagy az Escape visszahozza."

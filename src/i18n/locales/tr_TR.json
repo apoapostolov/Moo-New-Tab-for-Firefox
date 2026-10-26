@@ -647,6 +647,10 @@
               "title": "Eğimi kapat",
               "subtitle": "Notlar ve görseller düz durur ve birini sürüklemek artık eğim vermez."
             },
+        "scratch_bare": {
+          "title": "Çerçevesiz notlar",
+          "subtitle": "Notlar duvar kağıdında yalnızca metin olarak durur ve birine tıkladığınızda çerçevesini geri alır."
+        },
             "cinema": {
               "title": "Arayüzü gizlemek için üç kez tıklayın",
               "subtitle": "Üç tıklama videodan başka her şeyi gizler; bir tıklama ya da Escape onu geri getirir."

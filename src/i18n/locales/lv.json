@@ -647,6 +647,10 @@
               "title": "Izslēgt slīpumu",
               "subtitle": "Piezīmes un attēli stāv taisni, un velkšana tiem vairs nepiešķir slīpumu."
             },
+        "scratch_bare": {
+          "title": "Piezīmes bez rāmja",
+          "subtitle": "Piezīmes guļ kā pliks teksts uz fona un atgūst savu rāmi, kad uz kādas no tām noklikšķināt."
+        },
             "cinema": {
               "title": "Trīs klikšķi, lai paslēptu saskarni",
               "subtitle": "Trīs klikšķi paslēpj visu, izņemot video; viens klikšķis vai Escape to atgriež."

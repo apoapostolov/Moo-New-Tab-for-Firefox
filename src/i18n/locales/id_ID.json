@@ -647,6 +647,10 @@
               "title": "Matikan kemiringan",
               "subtitle": "Catatan dan gambar berdiri tegak, dan menyeretnya tidak lagi membuatnya miring."
             },
+        "scratch_bare": {
+          "title": "Catatan tanpa bingkai",
+          "subtitle": "Catatan tampil sebagai teks polos di atas wallpaper dan kembali berbingkai saat Anda mengkliknya."
+        },
             "cinema": {
               "title": "Tiga kali klik untuk menyembunyikan UI",
               "subtitle": "Tiga klik menyembunyikan semua kecuali video; satu klik, atau Escape, mengembalikannya."

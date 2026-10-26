@@ -647,6 +647,10 @@
               "title": "Išjungti pasvirimą",
               "subtitle": "Užrašai ir paveikslėliai išlieka tiesūs, o tempimas nebesuteikia jiems pasvirimo."
             },
+        "scratch_bare": {
+          "title": "Užrašai be rėmelių",
+          "subtitle": "Užrašai guli kaip plikas tekstas ant fono paveikslėlio ir atgauna savo rėmelius, kai spustelite vieną iš jų."
+        },
             "cinema": {
               "title": "Trys paspaudimai, kad paslėptumėte sąsają",
               "subtitle": "Trys paspaudimai paslepia viską, išskyrus vaizdo įrašą; vienas paspaudimas arba Escape jį grąžina."

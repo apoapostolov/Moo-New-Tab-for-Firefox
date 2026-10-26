@@ -647,6 +647,10 @@
               "title": "Neigung ausschalten",
               "subtitle": "Notizen und Bilder stehen gerade, und beim Ziehen kippt keines mehr."
             },
+        "scratch_bare": {
+          "title": "Rahmenlose Zettel",
+          "subtitle": "Zettel liegen als reiner Text auf dem Hintergrundbild und bekommen ihren Rahmen zurück, sobald Sie einen anklicken."
+        },
             "cinema": {
               "title": "Dreifachklick zum Ausblenden der Oberfläche",
               "subtitle": "Drei Klicks blenden alles außer dem Video aus; ein Klick oder Escape holt es zurück."

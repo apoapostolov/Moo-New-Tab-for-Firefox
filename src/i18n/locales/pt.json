@@ -647,6 +647,10 @@
               "title": "Desativar a inclinação",
               "subtitle": "As notas e as imagens ficam direitas, e arrastá-las já não as inclina."
             },
+        "scratch_bare": {
+          "title": "Notas sem moldura",
+          "subtitle": "As notas ficam como texto simples sobre o plano de fundo e recuperam a moldura quando clica numa."
+        },
             "cinema": {
               "title": "Clique triplo para ocultar a interface",
               "subtitle": "Três cliques escondem tudo menos o vídeo; um clique ou Escape traz tudo de volta."

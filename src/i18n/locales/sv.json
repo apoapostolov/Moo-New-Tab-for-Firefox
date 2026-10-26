@@ -647,6 +647,10 @@
               "title": "Stäng av lutning",
               "subtitle": "Anteckningar och bilder står rakt, och när du drar i en lutar den inte längre."
             },
+        "scratch_bare": {
+          "title": "Klotteranteckningar utan ram",
+          "subtitle": "Anteckningarna ligger som bar text på bakgrundsbilden och får tillbaka sin ram när du klickar på en."
+        },
             "cinema": {
               "title": "Tre klick för att dölja gränssnittet",
               "subtitle": "Tre klick döljer allt utom videon; ett klick, eller Escape, tar tillbaka det."
