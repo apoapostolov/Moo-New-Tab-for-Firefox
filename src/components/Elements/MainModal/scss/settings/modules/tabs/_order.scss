@@ -756,7 +756,7 @@
   // Mail, Calendar and Tasks are drawn, not written: one entry per card, bars for text, dots for
   // glyphs, all in currentColor so one card reads in both themes. Drawn as a thumbnail.
 
-  /* AI Ask is a line, not a card, so its preview is a hint and a hairline drawn
+  /* Search/Ask Bar is a line, not a card, so its preview is a hint and a hairline drawn
      in the same tints of currentColor as the widget skeletons beside it. */
   .aiAskSkeleton {
     display: flex;

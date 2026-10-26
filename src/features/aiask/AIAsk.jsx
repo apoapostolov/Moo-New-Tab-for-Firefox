@@ -247,7 +247,7 @@ const AIAsk = () => {
   const { Icon, name } = SERVICES[service];
 
   return (
-    <form className="aiAsk" onSubmit={submit} ref={box}>
+    <form className="aiAsk" aria-label="Search/Ask Bar" onSubmit={submit} ref={box}>
       <input
         ref={input}
         className={hintHidden ? 'aiAskInput aiAskHintHide' : 'aiAskInput'}

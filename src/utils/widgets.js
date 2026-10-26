@@ -35,7 +35,7 @@ export const WIDGETS = [
   {
     // A question typed here goes to an AI service, Google AI Mode by default.
     id: 'aiask',
-    label: () => 'AI Ask',
+    label: () => 'Search/Ask Bar',
     setting: 'aiAskEnabled',
     onByDefault: true,
     fullWidth: true,

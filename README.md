@@ -25,7 +25,7 @@ The preview uses fictional mail, events, tasks and weather over a real video bac
 ## Features
 
 - Google widgets: read mail, check upcoming events and manage tasks beside the clock. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use.
-- AI Ask: enter a question and choose a search engine, AI service or reference site from the service menu. Open a web search, find documentation or continue the question in a conversation.
+- Search/Ask Bar: enter a question and choose a search engine, AI service or reference site from the service menu. Open a web search, find documentation or continue the question in a conversation.
 - RSS reader: enable RSS under Settings → Overview and add feeds under Settings → RSS. Headlines from several sites appear in one list; hover to read an article when available, or open the original site.
 - Notes and pictures: leave reminders and place pictures on the page. Use New note to start a note; notes and uploaded pictures are stored in your browser.
 - Quick links: add regular destinations under Settings → Quick Links so the sites you use for a project are available on a new tab.

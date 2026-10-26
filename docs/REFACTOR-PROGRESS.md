@@ -2,7 +2,7 @@
 
 Order approved on 26 October 2026: **R1 → R3 → R4 → R5 → R2 → R6 → R7 → R8 → R9 → R10 → R11**.
 
-The acceptance criteria are in [the audit](AUDIT-2026-10-26.md). This file records implementation and verification as work progresses. Hidden UI remains available, and AI Ask keeps its borderless field and soft underline.
+The acceptance criteria are in [the audit](AUDIT-2026-10-26.md). This file records implementation and verification as work progresses. Hidden UI remains available, and Search/Ask Bar keeps its borderless field and soft underline.
 
 | Scope | Status | Evidence |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ The acceptance criteria are in [the audit](AUDIT-2026-10-26.md). This file recor
 
 RSS now defaults to off, in the centre immediately above Mail. A one-time migration applies that requested layout to existing profiles; later user choices remain intact. Every registered widget has a preview, including distinct RSS and Weather Full thumbnails. A regression contract prevents a new widget being added without a preview.
 
-Connect Google is centred in each disconnected widget and uses the signature colour. Google form primary buttons use the same colour token. AI Ask retains its borderless field and soft underline. Hidden Discord, toast and dormant UI/styles are retained.
+Connect Google is centred in each disconnected widget and uses the signature colour. Google form primary buttons use the same colour token. Search/Ask Bar retains its borderless field and soft underline. Hidden Discord, toast and dormant UI/styles are retained.
 
 The README GIF uses Alpine clouds, selected by Apostol from the three variants. Three five-second Full HD alternatives use actual widgets, fictional data and people-free nature videos. See [the choices and source credits](../assets/previews/README.md). Rich HTML mail previews are added to the original audit's further-development list; they are not implemented in this pass.
 

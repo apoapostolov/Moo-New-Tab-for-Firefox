@@ -523,7 +523,7 @@ const Scratch = () => {
   );
 
   // A left click anywhere that is not a note or a picture takes the controls off the one
-  // in hand: the page, a widget, its buttons, the AI ask box, the photo credit.
+  // in hand: the page, a widget, its buttons, the Search/Ask Bar, the photo credit.
   useEffect(() => {
     if (!notesOn && !imagesOn) return undefined;
 

@@ -12,7 +12,7 @@ The local counters are not sent to an analytics service. The inherited Sentry er
 | Google widgets | After you connect, Google receives OAuth requests and the selected mail searches, calendar/task reads and edits. The OAuth client secret is sent to Google's token endpoint; it is not a confidential secret in a Desktop app client. Disconnect removes the local token and attempts remote revocation. |
 | RSS | Selected feed and article websites receive requests. Full-article mode can fetch stories before you open the reader; turn it off to use feed summaries only. Embedded article pictures contact their hosts when displayed. |
 | Quick links | Custom images load from their supplied addresses. Automatic title/icon lookup contacts the selected site or configured icon service. |
-| Search / AI Ask | Submitting opens the selected service with your query in its URL. It is then handled by that service. Typing alone does not submit the query. |
+| Search/Ask Bar | Submitting opens the selected service with your query in its URL. It is then handled by that service. Typing alone does not submit the query. |
 | Fonts and photo maps | A custom Google Font contacts Google's font service. Displaying the photo map contacts the configured map provider. |
 | Support and translations | These actions open Moo's GitHub repository or local documentation links; issue text is submitted only when you submit the GitHub form. |
 
