@@ -22,14 +22,17 @@ Moo is a personal fork of [Mue](https://github.com/mue/mue) for Firefox and Zen.
 
 The preview uses fictional mail, events, tasks and weather over a real video background. [Compare the three backgrounds](assets/previews/README.md).
 
-## What you can do
+## Features
 
-- **See what needs your attention.** Read mail, check upcoming events and manage Google tasks beside the clock. Google widgets are optional and need your own Google OAuth client; Settings → Google walks through the setup.
-- **Look something up.** Type in AI Ask, then use its service menu to choose a search engine, an AI service or a reference site. The question opens there, so you can look up a fact or carry it into a longer conversation.
-- **Keep things you would otherwise lose in another tab.** Leave notes and pictures on the page, save regular destinations as quick links, or enable RSS and add the feeds you follow. Hover a headline to read it; open the original when you want the full site.
-- **Make the page fit your day.** Put widgets in the left, centre or right column under Settings → Overview. Choose a clock, set Progress around your working hours, and check the weather before heading out. Narrow and short windows use a scrollable layout.
-- **Give the page a background you want to look at.** Use your pictures, stock photos, video clips or live channels. Some sources need a free API key. With a video playing, triple-click the page to hide the widgets and watch; triple-click again or press Escape to return.
-- **Take your setup with you.** Export a backup under Settings → Advanced, including uploaded pictures if you want them. Imports show a preview before applying, and sign-in credentials stay out of the backup.
+- Google widgets: read mail, check upcoming events and manage tasks beside the clock. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use.
+- AI Ask: enter a question and choose a search engine, AI service or reference site from the service menu. Open a web search, find documentation or continue the question in a conversation.
+- RSS reader: enable RSS under Settings → Overview and add feeds under Settings → RSS. Headlines from several sites appear in one list; hover to read an article when available, or open the original site.
+- Notes and pictures: leave reminders and place pictures on the page. Use New note to start a note; notes and uploaded pictures are stored in your browser.
+- Quick links: add regular destinations under Settings → Quick Links so the sites you use for a project are available on a new tab.
+- Clock and weather: choose a clock, set Progress around your working hours and see current conditions and a five-day forecast for your location.
+- Widget layout: show, hide and arrange widgets in the left, centre or right column under Settings → Overview. Narrow and short windows use a scrollable layout.
+- Backgrounds: use local pictures, stock photos, video clips or live channels. Some sources need a free API key. While a video is playing, triple-click the page to hide the widgets; triple-click again or press Escape to return.
+- Backups: export your setup under Settings → Advanced, including uploaded pictures if you choose. Imports show a preview before applying, and sign-in credentials stay out of the backup.
 
 Settings, notes and uploaded pictures are stored in your browser. Weather, backgrounds, feeds and connected Google widgets contact their respective services; [Data and connections](docs/PRIVACY.md) explains what goes where.
 
