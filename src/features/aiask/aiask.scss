@@ -116,12 +116,17 @@
    downwards would leave the window — and it opens sideways: eleven services stacked in one
    column would be a ribbon down the page, so Answers and Reference stand beside each other,
    each under its own heading. The panel is capped to the window, so it can never drift off
-   the edge on a small screen. */
+   the edge on a small screen.
+
+   The height matters as much as the placement: notes and pictures float on a layer of their
+   own at 40, and the widget they belong to carries no height of its own, so a menu at 3 opened
+   underneath a note. It now sits above that layer and still below a dialog (the overlay at
+   100, the dialog itself at 300), which is the only thing allowed to cover it. */
 .aiAskMenu {
   position: absolute;
   right: 0;
   bottom: calc(100% + 8px);
-  z-index: 3;
+  z-index: 90;
   display: grid;
   grid-template-columns: repeat(2, minmax(156px, 1fr));
   gap: 0 10px;

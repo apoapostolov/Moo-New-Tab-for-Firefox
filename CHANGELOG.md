@@ -164,6 +164,7 @@ Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab exten
 - Settings has a Misc page after Google for the things that are not a widget of their own.
 - A live channel that publishes captions no longer draws them over the wallpaper. The background has no text of its own, and a webcam stream that ships a caption rendition used to have it switched on automatically.
 
+- The AI Ask service menu opens above notes and pictures. It sat at 3 while the scratch layer floats at 40, so a note parked over the widget covered the list; it is now above that layer and still below a dialog.
 ### Removed
 
 - Marketplace and Library.
