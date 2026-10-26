@@ -7,6 +7,7 @@ export const API_BACKGROUND_TYPES = [
   'api_mue',
   'api_unsplash',
   'api_coverr',
+  'api_mixkit',
   'api_live',
   'api_pixabay',
   'api_pexels',
@@ -19,6 +20,7 @@ export function isApiBackgroundType(type) {
 /** Which API a background type uses; everything unanswered is Unsplash. */
 export function getApiForBackgroundType(type) {
   if (type === 'api_coverr') return 'coverr';
+  if (type === 'api_mixkit') return 'mixkit';
   if (type === 'api_live') return 'live';
   if (type === 'api_pixabay') return 'pixabay';
   if (type === 'api_pexels') return 'pexels';
@@ -47,6 +49,10 @@ export function getBackgroundOptionItems(marketplaceEnabled) {
     {
       value: 'api_coverr',
       text: variables.getMessage('modals.main.settings.sections.background.type.coverr'),
+    },
+    {
+      value: 'api_mixkit',
+      text: variables.getMessage('modals.main.settings.sections.background.type.mixkit'),
     },
     {
       value: 'api_live',

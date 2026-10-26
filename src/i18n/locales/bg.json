@@ -261,6 +261,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue библиотека",
               "coverr": "Coverr (видео)",
+              "mixkit": "Mixkit (видео)",
               "live": "Живи канали",
               "pixabay": "Pixabay",
               "pexels": "Pexels",
@@ -278,6 +279,13 @@
               "id_subtitle": "ID на колекции в Unsplash, разделени със запетая.",
               "topics": "Теми",
               "categories": "Категории"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Безплатни клипове, без ключ. Firefox пита веднъж за разрешение да чете каталога на Mixkit.",
+              "search": "Търсене",
+              "search_subtitle": "Остави празно за произволен клип или стесни до тема.",
+              "allow": "Разреши"
             },
             "mue_library": {
               "title": "Mue библиотека",

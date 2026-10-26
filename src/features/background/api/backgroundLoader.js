@@ -4,6 +4,7 @@ import { getOfflineImage } from './offlineImage';
 import { randomColourStyleBuilder } from './randomColour';
 import videoCheck from './videoCheck';
 import { fetchCoverrVideo } from './coverr';
+import { fetchMixkitVideo } from './mixkit';
 import { fetchPixabayVideo } from './pixabay';
 import { fetchPexelsVideo } from './pexels';
 import { getLiveBackground } from './live';
@@ -129,6 +130,9 @@ export async function getBackgroundData() {
 
     case 'api_coverr':
       return getVideoBackground(isOffline, 'coverr', fetchCoverrVideo);
+
+    case 'api_mixkit':
+      return getVideoBackground(isOffline, 'mixkit', fetchMixkitVideo);
 
     case 'api_pixabay':
       return getVideoBackground(isOffline, 'pixabay', fetchPixabayVideo);

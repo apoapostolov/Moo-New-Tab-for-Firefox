@@ -261,6 +261,7 @@
               "unsplash": "Unsplash",
               "mue_library": "Mue Library",
               "coverr": "Coverr (Video)",
+              "mixkit": "Mixkit (Video)",
               "live": "Live channels",
               "pixabay": "Pixabay",
               "pexels": "Pexels",
@@ -278,6 +279,13 @@
               "id_subtitle": "Unsplash collection IDs, separated by commas.",
               "topics": "Topics",
               "categories": "Categories"
+            },
+            "mixkit": {
+              "title": "Mixkit",
+              "subtitle": "Free clips, no key. Firefox asks once for permission to read Mixkit's catalogue.",
+              "search": "Search",
+              "search_subtitle": "Leave empty for any clip, or narrow it to a subject.",
+              "allow": "Allow"
             },
             "mue_library": {
               "title": "Mue Library",

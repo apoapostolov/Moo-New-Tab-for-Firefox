@@ -97,3 +97,21 @@ body.bg-animated #backgroundOverlay {
     opacity: 1;
   }
 }
+
+/* The Mixkit row's prompt, when the origin has not been granted. Same shape as the RSS
+   feed row's Allow: a plain outlined button beside the field, not a new control. */
+.apiAllowButton {
+  padding: 7px 12px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    border-color: rgb(255 255 255 / 40%);
+  }
+}

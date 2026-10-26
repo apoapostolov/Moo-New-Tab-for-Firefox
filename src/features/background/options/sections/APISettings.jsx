@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react';
 import variables from 'config/variables';
 import { Dropdown, Text, ChipSelect } from 'components/Form/Settings';
 import { Row, Content, Action } from 'components/Layout/Settings/Item';
 import { APIQualityOptions } from '../optionTypes';
 import { LIVE_CHANNEL_ANY, readChannels } from '../../api/live';
+import { grantMixkit, mixkitAccess } from '../../api/mixkit';
 import LiveChannels from './LiveChannels';
 
 const clearPrefetch = () => {
@@ -17,6 +19,28 @@ const loadingItems = [
 
 const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) => {
   const loading = backgroundCategories[0] === variables.getMessage('modals.main.loading');
+
+  // Mixkit answers no CORS header, so Firefox has to be given its origin before a new tab
+  // may read the catalogue. The answer is read here so the row can offer the prompt when it
+  // is missing, and again after the prompt, because the answer arrives as a boolean.
+  const [mixkit, setMixkit] = useState('unknown');
+
+  useEffect(() => {
+    let live = true;
+
+    mixkitAccess().then((state) => {
+      if (live) setMixkit(state);
+    });
+
+    return () => {
+      live = false;
+    };
+  }, []);
+
+  const allowMixkit = async () => {
+    await grantMixkit();
+    setMixkit(await mixkitAccess());
+  };
 
   const categoriesControl = (options) =>
     loading ? (
@@ -80,6 +104,31 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
             )}
             placeholder="e.g. ocean, forest, city"
             name="coverrQuery"
+            category="backgroundrefresh"
+            onChange={clearPrefetch}
+          />
+        </Action>
+      </Row>
+    );
+  }
+
+  if (backgroundAPI === 'mixkit') {
+    const base = 'modals.main.settings.sections.background.mixkit';
+
+    return (
+      <Row final={true}>
+        <Content title={variables.getMessage(`${base}.title`)} subtitle={variables.getMessage(`${base}.subtitle`)} />
+        <Action>
+          {mixkit === 'missing' && (
+            <button className="apiAllowButton" type="button" onClick={allowMixkit}>
+              {variables.getMessage(`${base}.allow`)}
+            </button>
+          )}
+          <Text
+            title={variables.getMessage(`${base}.search`)}
+            subtitle={variables.getMessage(`${base}.search_subtitle`)}
+            placeholder="e.g. ink, water, clouds"
+            name="mixkitQuery"
             category="backgroundrefresh"
             onChange={clearPrefetch}
           />
