@@ -37,7 +37,8 @@
       "add": "Add",
       "name_error": "Must provide name",
       "url_error": "Must provide URL",
-      "icon_hint": "Forhåndsutfylt for kjente nettsteder. Tomt betyr nettstedets egen favicon."
+      "icon_hint": "Forhåndsutfylt for kjente nettsteder. Tomt betyr nettstedets egen favicon.",
+      "icon_error": "Kunne ikke laste inn ikonet"
     },
     "date": {
       "week": "Week"
@@ -46,7 +47,8 @@
       "not_found": "Not Found",
       "meters": "{amount} meter",
       "extra_information": "Extra Information",
-      "feels_like": "Feels like {amount}"
+      "feels_like": "Feels like {amount}",
+      "fetch_error": "Været er ikke tilgjengelig"
     },
     "quote": {
       "link_tooltip": "Open on Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Vis den klokken utenfor dagene ovenfor. Uten hake er fremdriftsklokken klokken hver dag.",
               "fallback_switch": "Bytt utenfor dagene",
               "other_title": "Utenfor arbeid",
-              "other_subtitle": "Klokken for dagene utenfor arbeid."
+              "other_subtitle": "Klokken for dagene utenfor arbeid.",
+              "doubleclick_title": "Gi klokken videre",
+              "doubleclick_subtitle": "Mens Fremdrift vises, dobbeltklikk på klokken for å se klokken den faller tilbake på, og dobbeltklikk på den for å komme tilbake. Utenfor Fremdriftens dager og timer er det ingenting å bytte.",
+              "doubleclick_switch": "Dobbeltklikk for å bytte"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Direktekanaler",
               "subtitle": "24/7-ambientkanaler, spilt av uten lyd. En direktestrøm fortsetter å lastes ned så lenge fanen er åpen, og bruker derfor langt mer data enn et løkkeklipp.",
               "channel": "Kanal",
-              "channel_any": "Alle kanaler"
+              "channel_any": "Alle kanaler",
+              "channels_title": "Kanaler",
+              "channels_subtitle": "Enhver HLS-strøm denne siden kan nå. De innebygde kanalene kan gis nytt navn, pekes om eller fjernes.",
+              "add": "Legg til en kanal",
+              "name": "Navn",
+              "name_placeholder": "Havnekamera",
+              "url": "Strømadresse",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Lagre",
+              "cancel": "Avbryt",
+              "edit": "Rediger",
+              "delete": "Slett",
+              "name_error": "Gi kanalen et navn.",
+              "url_error": "Det er ikke en http- eller https-adresse.",
+              "url_duplicate": "Den adressen står allerede i listen.",
+              "empty": "Ingen kanaler. Legg til en, eller gjenopprett de innebygde kanalene.",
+              "restore": "Gjenopprett de innebygde kanalene"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Bakgrunnsinformasjon",
               "subtitle": "Hva siden sier om bildet bak."
-            }
+            },
+            "category": "Kategori"
           },
           "search": {
             "title": "Søkebar",
@@ -827,6 +849,7 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Slettet"
   }
 }

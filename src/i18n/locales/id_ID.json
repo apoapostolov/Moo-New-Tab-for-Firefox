@@ -37,7 +37,8 @@
       "add": "Tambah",
       "name_error": "Harap cantumkan nama",
       "url_error": "Harap cantumkan URL",
-      "icon_hint": "Terisi otomatis untuk situs yang dikenal. Jika kosong, favicon situs itu sendiri yang dipakai."
+      "icon_hint": "Terisi otomatis untuk situs yang dikenal. Jika kosong, favicon situs itu sendiri yang dipakai.",
+      "icon_error": "Tidak dapat memuat ikon tersebut"
     },
     "date": {
       "week": "Pekan"
@@ -46,7 +47,8 @@
       "not_found": "Tidak Ditemukan",
       "meters": "{amount} meter",
       "extra_information": "Informasi Tambahan",
-      "feels_like": "Terasa seperti {amount}"
+      "feels_like": "Terasa seperti {amount}",
+      "fetch_error": "Cuaca tidak tersedia"
     },
     "quote": {
       "link_tooltip": "Buka di Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Tampilkan jam itu di luar hari-hari di atas. Jika tidak ditandai, jam Progres adalah jam setiap hari.",
               "fallback_switch": "Alihkan di luar hari tersebut",
               "other_title": "Di luar kerja",
-              "other_subtitle": "Jam untuk hari-hari di luar kerja."
+              "other_subtitle": "Jam untuk hari-hari di luar kerja.",
+              "doubleclick_title": "Serahkan jam",
+              "doubleclick_subtitle": "Selagi Persentase ditampilkan, klik dua kali jam untuk melihat jam penggantinya, dan klik dua kali jam itu untuk kembali. Di luar hari dan jam Persentase tidak ada yang bisa dialihkan.",
+              "doubleclick_switch": "Klik dua kali untuk beralih"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Kanal langsung",
               "subtitle": "Kanal ambient 24/7, diputar tanpa suara. Siaran langsung terus mengunduh selama tab terbuka, jadi data yang dipakai jauh lebih banyak daripada klip berulang.",
               "channel": "Kanal",
-              "channel_any": "Kanal apa saja"
+              "channel_any": "Kanal apa saja",
+              "channels_title": "Kanal",
+              "channels_subtitle": "Stream HLS apa pun yang dapat dijangkau halaman ini. Kanal bawaan dapat diganti namanya, diarahkan ulang, atau dihapus.",
+              "add": "Tambah kanal",
+              "name": "Nama",
+              "name_placeholder": "Kamera pelabuhan",
+              "url": "Alamat stream",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Simpan",
+              "cancel": "Batal",
+              "edit": "Edit",
+              "delete": "Hapus",
+              "name_error": "Beri nama untuk kanal ini.",
+              "url_error": "Itu bukan alamat http atau https.",
+              "url_duplicate": "Alamat itu sudah ada dalam daftar.",
+              "empty": "Tidak ada kanal. Tambahkan satu, atau pulihkan kanal bawaan.",
+              "restore": "Pulihkan kanal bawaan"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Informasi latar belakang",
               "subtitle": "Apa yang halaman katakan tentang gambar di belakangnya."
-            }
+            },
+            "category": "Kategori"
           },
           "search": {
             "title": "Cari",
@@ -827,6 +849,7 @@
     "imported": "Berhasil mengimpor",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Berhasil dihapus"
   }
 }

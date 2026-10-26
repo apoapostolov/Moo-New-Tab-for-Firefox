@@ -37,7 +37,8 @@
       "add": "Ekle",
       "name_error": "İsim belirtilmelidir",
       "url_error": "URL sağlanmalıdır",
-      "icon_hint": "Bilinen siteler için doldurulur. Boş bırakmak sitenin kendi favicon'unu kullanır."
+      "icon_hint": "Bilinen siteler için doldurulur. Boş bırakmak sitenin kendi favicon'unu kullanır.",
+      "icon_error": "Bu simge yüklenemedi"
     },
     "date": {
       "week": "Hafta"
@@ -46,7 +47,8 @@
       "not_found": "Bulunamadı",
       "meters": "{amount} metre",
       "extra_information": "Ek Bilgilendirme",
-      "feels_like": "Hissedilen {amount}"
+      "feels_like": "Hissedilen {amount}",
+      "fetch_error": "Hava durumu kullanılamıyor"
     },
     "quote": {
       "link_tooltip": "Wikipedia'da Aç",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Bu saati yukarıdaki günlerin dışında göster. İşaretlenmezse İlerleme saati her gün saattir.",
               "fallback_switch": "Günler dışında değiştir",
               "other_title": "İş Dışı",
-              "other_subtitle": "İş dışındaki günler için saat."
+              "other_subtitle": "İş dışındaki günler için saat.",
+              "doubleclick_title": "Saati devret",
+              "doubleclick_subtitle": "İlerleme gösterilirken saate çift tıklayarak yedek saatini görün, geri dönmek için ona da çift tıklayın. İlerleme'nin günleri ve saatleri dışında değiştirilecek bir şey yok.",
+              "doubleclick_switch": "Değiştirmek için çift tıklayın"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Canlı kanallar",
               "subtitle": "7/24 ortam kanalları, sessiz oynatılır. Canlı yayın sekme açık olduğu sürece indirmeye devam eder, bu yüzden döngü kliplerinden çok daha fazla veri kullanır.",
               "channel": "Kanal",
-              "channel_any": "Herhangi bir kanal"
+              "channel_any": "Herhangi bir kanal",
+              "channels_title": "Kanallar",
+              "channels_subtitle": "Bu sayfanın erişebildiği herhangi bir HLS yayını. Yerleşik kanallar yeniden adlandırılabilir, adresleri değiştirilebilir veya kaldırılabilir.",
+              "add": "Kanal ekle",
+              "name": "İsim",
+              "name_placeholder": "Liman kamerası",
+              "url": "Yayın adresi",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Kaydet",
+              "cancel": "İptal",
+              "edit": "Düzenle",
+              "delete": "Sil",
+              "name_error": "Kanala bir isim verin.",
+              "url_error": "Bu bir http veya https adresi değil.",
+              "url_duplicate": "Bu adres zaten listede.",
+              "empty": "Kanal yok. Bir tane ekleyin veya yerleşik kanalları geri yükleyin.",
+              "restore": "Yerleşik kanalları geri yükle"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Arka Plan Bilgileri",
               "subtitle": "Sayfanın arkasındaki görsel hakkında söyledikleri."
-            }
+            },
+            "category": "Kategori"
           },
           "search": {
             "title": "Arama",
@@ -827,6 +849,7 @@
     "imported": "Başarıyla içe aktarıldı",
     "no_storage": "Yeteri kadar yer yok",
     "link_copied": "Bağlantı kopyalandı",
-    "stats_reset": "İstatistikler sıfırlandı"
+    "stats_reset": "İstatistikler sıfırlandı",
+    "deleted": "Başarıyla silindi"
   }
 }

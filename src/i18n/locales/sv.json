@@ -37,7 +37,8 @@
       "add": "Add",
       "name_error": "Must provide name",
       "url_error": "Must provide URL",
-      "icon_hint": "Ifyllt för kända webbplatser. Tomt betyder webbplatsens egen favicon."
+      "icon_hint": "Ifyllt för kända webbplatser. Tomt betyder webbplatsens egen favicon.",
+      "icon_error": "Det gick inte att läsa in ikonen"
     },
     "date": {
       "week": "Week"
@@ -46,7 +47,8 @@
       "not_found": "Not Found",
       "meters": "{amount} metres",
       "extra_information": "Extra Information",
-      "feels_like": "Feels like {amount}"
+      "feels_like": "Feels like {amount}",
+      "fetch_error": "Vädret är inte tillgängligt"
     },
     "quote": {
       "link_tooltip": "Open on Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Visa den klockan utanför dagarna ovan. Om den inte är ikryssad är förloppsklockan klockan varje dag.",
               "fallback_switch": "Växla utanför dagarna",
               "other_title": "Utanför arbetet",
-              "other_subtitle": "Klockan för dagarna utanför arbetet."
+              "other_subtitle": "Klockan för dagarna utanför arbetet.",
+              "doubleclick_title": "Lämna över klockan",
+              "doubleclick_subtitle": "Medan Förlopp visas kan du dubbelklicka på klockan för att se klockan den faller tillbaka på, och dubbelklicka på den för att komma tillbaka. Utanför Förloppets dagar och timmar finns inget att växla.",
+              "doubleclick_switch": "Dubbelklicka för att växla"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Livekanaler",
               "subtitle": "24/7-ambientkanaler som spelas utan ljud. En livestream fortsätter att laddas ner så länge fliken är öppen och använder därför mycket mer data än ett loopande klipp.",
               "channel": "Kanal",
-              "channel_any": "Alla kanaler"
+              "channel_any": "Alla kanaler",
+              "channels_title": "Kanaler",
+              "channels_subtitle": "Vilken HLS-ström som helst som sidan kan nå. De inbyggda kanalerna kan byta namn, pekas om eller tas bort.",
+              "add": "Lägg till en kanal",
+              "name": "Namn",
+              "name_placeholder": "Hamnkamera",
+              "url": "Strömadress",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Spara",
+              "cancel": "Avbryt",
+              "edit": "Redigera",
+              "delete": "Ta bort",
+              "name_error": "Ge kanalen ett namn.",
+              "url_error": "Det är inte en http- eller https-adress.",
+              "url_duplicate": "Den adressen finns redan i listan.",
+              "empty": "Inga kanaler. Lägg till en eller återställ de inbyggda kanalerna.",
+              "restore": "Återställ de inbyggda kanalerna"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Bakgrundsinformation",
               "subtitle": "Vad sidan säger om bilden bakom."
-            }
+            },
+            "category": "Kategori"
           },
           "search": {
             "title": "Search",
@@ -827,6 +849,7 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Borttaget"
   }
 }

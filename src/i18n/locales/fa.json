@@ -37,7 +37,8 @@
       "add": "Add",
       "name_error": "Must provide name",
       "url_error": "Must provide URL",
-      "icon_hint": "برای سایت‌های شناخته‌شده پر می‌شود. خالی یعنی فاوآیکون خود سایت."
+      "icon_hint": "برای سایت‌های شناخته‌شده پر می‌شود. خالی یعنی فاوآیکون خود سایت.",
+      "icon_error": "آن آیکون بارگذاری نشد"
     },
     "date": {
       "week": "Week"
@@ -46,7 +47,8 @@
       "not_found": "Not Found",
       "meters": "{amount} metres",
       "extra_information": "Extra Information",
-      "feels_like": "Feels like {amount}"
+      "feels_like": "Feels like {amount}",
+      "fetch_error": "هوا در دسترس نیست"
     },
     "quote": {
       "link_tooltip": "Open on Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "آن ساعت را بیرون از روزهای بالا نشان بده. اگر تیک نخورده باشد، ساعت پیشرفت هر روز همان ساعت است.",
               "fallback_switch": "تغییر در بیرون روزها",
               "other_title": "بیرون از کار",
-              "other_subtitle": "ساعت روزهای بیرون از کار."
+              "other_subtitle": "ساعت روزهای بیرون از کار.",
+              "doubleclick_title": "سپردن ساعت",
+              "doubleclick_subtitle": "وقتی ساعت پیشرفت نمایش داده می‌شود، روی ساعت دوبار کلیک کنید تا ساعت جایگزین را ببینید، و روی آن دوبار کلیک کنید تا برگردید. بیرون از روزها و ساعت‌های پیشرفت چیزی برای جابه‌جایی نیست.",
+              "doubleclick_switch": "برای جابه‌جایی دوبار کلیک کنید"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "کانال‌های زنده",
               "subtitle": "کانال‌های محیطی شبانه‌روزی، بی‌صدا پخش می‌شوند. پخش زنده تا وقتی زبانه باز است دانلود می‌شود، پس بسیار بیشتر از یک کلیپ حلقه‌ای داده مصرف می‌کند.",
               "channel": "کانال",
-              "channel_any": "هر کانالی"
+              "channel_any": "هر کانالی",
+              "channels_title": "کانال‌ها",
+              "channels_subtitle": "هر جریان HLS که این صفحه بتواند به آن دسترسی داشته باشد. کانال‌های داخلی را می‌توان تغییر نام داد، نشانی‌شان را عوض کرد یا حذف کرد.",
+              "add": "افزودن کانال",
+              "name": "نام",
+              "name_placeholder": "دوربین بندرگاه",
+              "url": "نشانی جریان",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "ذخیره",
+              "cancel": "لغو",
+              "edit": "ویرایش",
+              "delete": "حذف",
+              "name_error": "برای کانال یک نام بگذارید.",
+              "url_error": "این نشانی http یا https نیست.",
+              "url_duplicate": "این نشانی از قبل در فهرست هست.",
+              "empty": "کانالی نیست. یکی اضافه کنید، یا کانال‌های داخلی را بازگردانید.",
+              "restore": "بازگرداندن کانال‌های داخلی"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "اطلاعات پس‌زمینه",
               "subtitle": "چیزی که صفحه دربارهٔ تصویر پشت خودش می‌گوید."
-            }
+            },
+            "category": "دسته"
           },
           "search": {
             "title": "Search",
@@ -827,6 +849,7 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "ریست امار"
+    "stats_reset": "ریست امار",
+    "deleted": "با موفقیت حذف شد"
   }
 }

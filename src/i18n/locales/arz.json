@@ -37,7 +37,8 @@
       "add": "Add",
       "name_error": "Must provide name",
       "url_error": "Must provide URL",
-      "icon_hint": "بيتملا للمواقع المعروفة. فاضي يعني أيقونة الموقع نفسه."
+      "icon_hint": "بيتملا للمواقع المعروفة. فاضي يعني أيقونة الموقع نفسه.",
+      "icon_error": "مقدرتش أحمّل الأيقونة دي"
     },
     "date": {
       "week": "Week"
@@ -46,7 +47,8 @@
       "not_found": "Not Found",
       "meters": "{amount} metres",
       "extra_information": "Extra Information",
-      "feels_like": "Feels like {amount}"
+      "feels_like": "Feels like {amount}",
+      "fetch_error": "الطقس مش متاح"
     },
     "quote": {
       "link_tooltip": "Open on Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "اعرض الساعة دي برّه الأيام اللي فوق. لو مش معلّم، ساعة التقدّم هي الساعة كل يوم.",
               "fallback_switch": "بدّل برّه الأيام",
               "other_title": "برّه الشغل",
-              "other_subtitle": "الساعة بتاعة الأيام اللي برّه الشغل."
+              "other_subtitle": "الساعة بتاعة الأيام اللي برّه الشغل.",
+              "doubleclick_title": "سلّم الساعة",
+              "doubleclick_subtitle": "طول ما ساعة التقدّم ظاهرة، دوس دبل كليك على الساعة عشان تشوف الساعة اللي بترجع لها، ودوس دبل كليك عليها عشان ترجع. برّه أيام ساعة التقدّم وساعاتها مفيش حاجة تتغيّر.",
+              "doubleclick_switch": "دوس دبل كليك عشان تبدّل"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "قنوات لايف",
               "subtitle": "قنوات هادية على مدار اليوم، بتشتغل من غير صوت. البث المباشر بيفضل ينزّل طول ما التاب مفتوح، فبيستهلك نت أكتر بكتير من مقطع بيتكرر.",
               "channel": "القناة",
-              "channel_any": "أي قناة"
+              "channel_any": "أي قناة",
+              "channels_title": "قنوات لايف",
+              "channels_subtitle": "أي بث HLS الصفحة دي تقدر توصله. تقدر تغيّر اسم القنوات المدمجة، أو تغيّر عنوانها، أو تشيلها.",
+              "add": "ضيف قناة",
+              "name": "الاسم",
+              "name_placeholder": "كاميرا المينا",
+              "url": "عنوان البث",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "احفظ",
+              "cancel": "إلغاء",
+              "edit": "عدّل",
+              "delete": "احذف",
+              "name_error": "ادّي القناة اسم.",
+              "url_error": "ده مش عنوان http ولا https.",
+              "url_duplicate": "العنوان ده موجود في اللستة خلاص.",
+              "empty": "مفيش قنوات. ضيف واحدة، أو رجّع القنوات المدمجة.",
+              "restore": "رجّع القنوات المدمجة"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "معلومات الخلفية",
               "subtitle": "اللي الصفحة بتقوله عن الصورة اللي وراها."
-            }
+            },
+            "category": "الفئة"
           },
           "search": {
             "title": "Search",
@@ -827,6 +849,7 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "تم المسح بنجاح"
   }
 }

@@ -37,7 +37,8 @@
       "add": "Əlavə et",
       "name_error": "Ad göstərilməlidir",
       "url_error": "URL göstərilməlidir",
-      "icon_hint": "Tanınmış saytlar üçün doldurulur. Boş, saytın öz faviconu deməkdir."
+      "icon_hint": "Tanınmış saytlar üçün doldurulur. Boş, saytın öz faviconu deməkdir.",
+      "icon_error": "O ikon yüklənə bilmədi"
     },
     "date": {
       "week": "Həftə"
@@ -46,7 +47,8 @@
       "not_found": "Tapılmadı",
       "meters": "{amount} metr",
       "extra_information": "Əlavə Məlumat",
-      "feels_like": "Hiss olunur {amount}"
+      "feels_like": "Hiss olunur {amount}",
+      "fetch_error": "Hava mövcud deyil"
     },
     "quote": {
       "link_tooltip": "Vikipediyada aç",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Həmin saatı yuxarıdakı günlərdən kənarda göstər. İşarələnməyibsə, hər gün Tərəqqi saatı göstərilir.",
               "fallback_switch": "Günlərdən kənarda keçid",
               "other_title": "İşdən kənar",
-              "other_subtitle": "İşdən kənar günlər üçün saat."
+              "other_subtitle": "İşdən kənar günlər üçün saat.",
+              "doubleclick_title": "Saatı ötürmək",
+              "doubleclick_subtitle": "Tərəqqi göstərilərkən saata iki dəfə klikləyin ki, onun yerinə keçən saatı görəsiniz, və geri qayıtmaq üçün həmin saata iki dəfə klikləyin. Tərəqqinin günləri və saatları xaricində dəyişdiriləsi bir şey yoxdur.",
+              "doubleclick_switch": "Dəyişdirmək üçün iki dəfə klikləyin"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Canlı kanallar",
               "subtitle": "24/7 fon kanalları, səssiz oynadılır. Canlı yayım tab açıq olduqca yüklənməyə davam edir, ona görə dövr edən klipdən qat-qat çox data istifadə edir.",
               "channel": "Kanal",
-              "channel_any": "İstənilən kanal"
+              "channel_any": "İstənilən kanal",
+              "channels_title": "Kanallar",
+              "channels_subtitle": "Bu səhifənin çata bildiyi istənilən HLS axını. Daxili kanalların adı dəyişdirilə, ünvanı yenidən göstərilə və ya silinə bilər.",
+              "add": "Kanal əlavə et",
+              "name": "Ad",
+              "name_placeholder": "Liman kamerası",
+              "url": "Axın ünvanı",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Yadda saxla",
+              "cancel": "Ləğv et",
+              "edit": "Redaktə et",
+              "delete": "Sil",
+              "name_error": "Kanala ad verin.",
+              "url_error": "Bu http və ya https ünvanı deyil.",
+              "url_duplicate": "Bu ünvan artıq siyahıdadır.",
+              "empty": "Kanal yoxdur. Birini əlavə edin və ya daxili kanalları bərpa edin.",
+              "restore": "Daxili kanalları bərpa et"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Arxa fon məlumatı",
               "subtitle": "Səhifənin arxasındakı şəkil haqqında dedikləri."
-            }
+            },
+            "category": "Kateqoriya"
           },
           "search": {
             "title": "Axtarış",
@@ -827,6 +849,7 @@
     "imported": "Uğurla idxal edildi",
     "no_storage": "Kifayət qədər yaddaş yoxdur",
     "link_copied": "Link kopyalandı",
-    "stats_reset": "Statistikalar sıfırlandı"
+    "stats_reset": "Statistikalar sıfırlandı",
+    "deleted": "Uğurla silindi"
   }
 }

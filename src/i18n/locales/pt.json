@@ -37,7 +37,8 @@
       "add": "Adicionar",
       "name_error": "Deve fornecer o nome",
       "url_error": "Forneça uma URL",
-      "icon_hint": "Preenchido para sites conhecidos. Vazio significa o favicon do próprio site."
+      "icon_hint": "Preenchido para sites conhecidos. Vazio significa o favicon do próprio site.",
+      "icon_error": "Não foi possível carregar esse ícone"
     },
     "date": {
       "week": "Semana"
@@ -46,7 +47,8 @@
       "not_found": "Não encontrado",
       "meters": "{amount} metros",
       "extra_information": "Informação extra",
-      "feels_like": "Parece {amount}"
+      "feels_like": "Parece {amount}",
+      "fetch_error": "Tempo indisponível"
     },
     "quote": {
       "link_tooltip": "Abrir na Wikipédia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Mostra esse relógio fora dos dias acima. Sem marcar, o relógio de progresso é o relógio todos os dias.",
               "fallback_switch": "Alternar fora dos dias",
               "other_title": "Fora do trabalho",
-              "other_subtitle": "O relógio para os dias fora do trabalho."
+              "other_subtitle": "O relógio para os dias fora do trabalho.",
+              "doubleclick_title": "Passar o relógio",
+              "doubleclick_subtitle": "Enquanto a percentagem estiver visível, faça duplo clique no relógio para ver o relógio alternativo e faça duplo clique nesse para voltar. Fora dos dias e das horas da percentagem não há nada para alternar.",
+              "doubleclick_switch": "Faça duplo clique para alternar"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Canais em direto",
               "subtitle": "Canais ambiente 24/7, reproduzidos sem som. Uma transmissão em direto continua a descarregar enquanto a guia está aberta, por isso gasta muito mais dados do que um clip em loop.",
               "channel": "Canal",
-              "channel_any": "Qualquer canal"
+              "channel_any": "Qualquer canal",
+              "channels_title": "Canais",
+              "channels_subtitle": "Qualquer fluxo HLS que esta página consiga alcançar. Os canais incorporados podem ser renomeados, reapontados ou removidos.",
+              "add": "Adicionar um canal",
+              "name": "Nome",
+              "name_placeholder": "Câmara do porto",
+              "url": "Endereço do fluxo",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Guardar",
+              "cancel": "Cancelar",
+              "edit": "Editar",
+              "delete": "Remover",
+              "name_error": "Dê um nome ao canal.",
+              "url_error": "Esse não é um endereço http ou https.",
+              "url_duplicate": "Esse endereço já está na lista.",
+              "empty": "Sem canais. Adicione um ou restaure os canais incorporados.",
+              "restore": "Restaurar os canais incorporados"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Informações do plano de fundo",
               "subtitle": "O que a página diz sobre a imagem que está por trás."
-            }
+            },
+            "category": "Categoria"
           },
           "search": {
             "title": "Pesquisar",
@@ -827,6 +849,7 @@
     "imported": "Importado com sucesso",
     "no_storage": "Espaço de armazenamento insuficiente",
     "link_copied": "Ligação copiada",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Removido com sucesso"
   }
 }

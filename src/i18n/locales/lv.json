@@ -37,7 +37,8 @@
       "add": "Pievienot",
       "name_error": "Jānorāda nosaukums",
       "url_error": "Jānorāda URL",
-      "icon_hint": "Aizpildīts zināmajām vietnēm. Tukšs nozīmē pašas vietnes favicon."
+      "icon_hint": "Aizpildīts zināmajām vietnēm. Tukšs nozīmē pašas vietnes favicon.",
+      "icon_error": "Nevarēja ielādēt šo ikonu"
     },
     "date": {
       "week": "Nedēļa"
@@ -46,7 +47,8 @@
       "not_found": "Nav atrasts",
       "meters": "{amount} metri",
       "extra_information": "Papildu informācija",
-      "feels_like": "Pēc sajūtām {amount}"
+      "feels_like": "Pēc sajūtām {amount}",
+      "fetch_error": "Laikapstākļi nav pieejami"
     },
     "quote": {
       "link_tooltip": "Atvērt Vikipēdijā",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Rādīt šo pulksteni ārpus iepriekš norādītajām dienām. Ja atzīme nav likta, Progresa pulkstenis ir pulkstenis katru dienu.",
               "fallback_switch": "Pārslēgties ārpus dienām",
               "other_title": "Ārpus darba",
-              "other_subtitle": "Pulkstenis dienām ārpus darba."
+              "other_subtitle": "Pulkstenis dienām ārpus darba.",
+              "doubleclick_title": "Nododiet pulksteni",
+              "doubleclick_subtitle": "Kamēr tiek rādīts Progress, veiciet dubultklikšķi uz pulksteņa, lai redzētu pulksteni, uz kuru tas pārslēdzas, un veiciet dubultklikšķi uz tā, lai atgrieztos. Ārpus Progresa dienām un stundām nav ko pārslēgt.",
+              "doubleclick_switch": "Veiciet dubultklikšķi, lai pārslēgtos"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Tiešraides kanāli",
               "subtitle": "24/7 ambientie kanāli, atskaņoti bez skaņas. Tiešraide turpina lejupielādēties, kamēr cilne ir atvērta, tāpēc tā patērē daudz vairāk datu nekā cilpveida klips.",
               "channel": "Kanāls",
-              "channel_any": "Jebkurš kanāls"
+              "channel_any": "Jebkurš kanāls",
+              "channels_title": "Kanāli",
+              "channels_subtitle": "Jebkura HLS straume, kurai šī lapa var piekļūt. Iebūvētos kanālus var pārdēvēt, pārvirzīt vai noņemt.",
+              "add": "Pievienot kanālu",
+              "name": "Nosaukums",
+              "name_placeholder": "Ostas kamera",
+              "url": "Straumes adrese",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Saglabāt",
+              "cancel": "Atcelt",
+              "edit": "Rediģēt",
+              "delete": "Dzēst",
+              "name_error": "Piešķiriet kanālam nosaukumu.",
+              "url_error": "Šī nav http vai https adrese.",
+              "url_duplicate": "Šī adrese jau ir sarakstā.",
+              "empty": "Nav kanālu. Pievienojiet vienu vai atjaunojiet iebūvētos kanālus.",
+              "restore": "Atjaunot iebūvētos kanālus"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Fona informācija",
               "subtitle": "To, ko lapa vēsta par attēlu aiz tās."
-            }
+            },
+            "category": "Kategorija"
           },
           "search": {
             "title": "Meklēšana",
@@ -827,6 +849,7 @@
     "imported": "Veiksmīgi importēts",
     "no_storage": "Nepietiek atmiņas",
     "link_copied": "Saite nokopēta",
-    "stats_reset": "Statistika atiestatīta"
+    "stats_reset": "Statistika atiestatīta",
+    "deleted": "Veiksmīgi dzēsts"
   }
 }

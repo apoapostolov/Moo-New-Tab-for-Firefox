@@ -37,7 +37,8 @@
       "add": "Añadir",
       "name_error": "Debe indicar el nombre",
       "url_error": "Debe indicar la URL",
-      "icon_hint": "Se rellena para los sitios conocidos. Vacío significa el favicon del propio sitio."
+      "icon_hint": "Se rellena para los sitios conocidos. Vacío significa el favicon del propio sitio.",
+      "icon_error": "No se pudo cargar ese ícono"
     },
     "date": {
       "week": "Semana"
@@ -46,7 +47,8 @@
       "not_found": "No encontrado",
       "meters": "{amount} metros",
       "extra_information": "Extra Information",
-      "feels_like": "Feels like {amount}"
+      "feels_like": "Feels like {amount}",
+      "fetch_error": "No se pudo cargar el clima"
     },
     "quote": {
       "link_tooltip": "Open on Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Muestra ese reloj fuera de los días de arriba. Sin marcar, el reloj de progreso es el reloj todos los días.",
               "fallback_switch": "Cambiar fuera de los días",
               "other_title": "Fuera del trabajo",
-              "other_subtitle": "El reloj para los días fuera del trabajo."
+              "other_subtitle": "El reloj para los días fuera del trabajo.",
+              "doubleclick_title": "Ceder el reloj",
+              "doubleclick_subtitle": "Mientras se muestra el porcentaje, haz doble clic en el reloj para ver el reloj al que vuelve, y haz doble clic en ese para regresar. Fuera de los días y las horas del porcentaje no hay nada que cambiar.",
+              "doubleclick_switch": "Haz doble clic para cambiar"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Canales en vivo",
               "subtitle": "Canales de ambiente 24/7, reproducidos sin sonido. Una transmisión en vivo sigue descargándose mientras la pestaña está abierta, así que consume muchos más datos que un clip en bucle.",
               "channel": "Canal",
-              "channel_any": "Cualquier canal"
+              "channel_any": "Cualquier canal",
+              "channels_title": "Canales",
+              "channels_subtitle": "Cualquier transmisión HLS a la que pueda acceder esta página. Los canales integrados se pueden renombrar, redirigir o quitar.",
+              "add": "Agregar un canal",
+              "name": "Nombre",
+              "name_placeholder": "Cámara del puerto",
+              "url": "Dirección de la transmisión",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Guardar",
+              "cancel": "Cancelar",
+              "edit": "Editar",
+              "delete": "Eliminar",
+              "name_error": "Ponle un nombre al canal.",
+              "url_error": "Esa no es una dirección http o https.",
+              "url_duplicate": "Esa dirección ya está en la lista.",
+              "empty": "No hay canales. Agrega uno o restaura los canales integrados.",
+              "restore": "Restaurar los canales integrados"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Información del fondo",
               "subtitle": "Lo que la página dice de la imagen que hay detrás."
-            }
+            },
+            "category": "Categoría"
           },
           "search": {
             "title": "Búsqueda",
@@ -827,6 +849,7 @@
     "imported": "Importado correctamente",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Eliminado correctamente"
   }
 }

@@ -37,7 +37,8 @@
       "add": "Ajouter",
       "name_error": "Le nom est obligatoire",
       "url_error": "L'URL est obligatoire",
-      "icon_hint": "Rempli pour les sites connus. Vide signifie la favicon du site."
+      "icon_hint": "Rempli pour les sites connus. Vide signifie la favicon du site.",
+      "icon_error": "Impossible de charger cette icône"
     },
     "date": {
       "week": "Semaine"
@@ -46,7 +47,8 @@
       "not_found": "Non trouvé",
       "meters": "{amount} mètres",
       "extra_information": "Informations supplémentaires",
-      "feels_like": "Ressenti {amount}"
+      "feels_like": "Ressenti {amount}",
+      "fetch_error": "Météo indisponible"
     },
     "quote": {
       "link_tooltip": "Ouvrir sur Wikipédia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Afficher cette horloge en dehors des jours ci-dessus. Décoché, l'horloge de progression reste l'horloge tous les jours.",
               "fallback_switch": "Basculer en dehors des jours",
               "other_title": "Hors travail",
-              "other_subtitle": "L'horloge des jours hors travail."
+              "other_subtitle": "L'horloge des jours hors travail.",
+              "doubleclick_title": "Passer la main à l'horloge",
+              "doubleclick_subtitle": "Lorsque la progression est affichée, double-cliquez sur l'horloge pour voir celle vers laquelle elle bascule, et double-cliquez sur cette dernière pour revenir. En dehors des jours et des horaires de la progression, il n'y a rien à basculer.",
+              "doubleclick_switch": "Double-cliquez pour basculer"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Chaînes en direct",
               "subtitle": "Chaînes d'ambiance 24 h/24, lues en sourdine. Un direct continue de se télécharger tant que l'onglet est ouvert : il consomme donc bien plus de données qu'un clip en boucle.",
               "channel": "Chaîne",
-              "channel_any": "Toutes les chaînes"
+              "channel_any": "Toutes les chaînes",
+              "channels_title": "Chaînes",
+              "channels_subtitle": "Tout flux HLS accessible depuis cette page. Les chaînes intégrées peuvent être renommées, redirigées ou supprimées.",
+              "add": "Ajouter une chaîne",
+              "name": "Nom",
+              "name_placeholder": "Webcam du port",
+              "url": "Adresse du flux",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Enregistrer",
+              "cancel": "Annuler",
+              "edit": "Modifier",
+              "delete": "Supprimer",
+              "name_error": "Donnez un nom à la chaîne.",
+              "url_error": "Ce n'est pas une adresse http ou https.",
+              "url_duplicate": "Cette adresse figure déjà dans la liste.",
+              "empty": "Aucune chaîne. Ajoutez-en une ou restaurez les chaînes intégrées.",
+              "restore": "Restaurer les chaînes intégrées"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Informations sur le fond d'écran",
               "subtitle": "Ce que la page indique sur l'image qui se trouve derrière."
-            }
+            },
+            "category": "Catégorie"
           },
           "search": {
             "title": "Recherche",
@@ -827,6 +849,7 @@
     "imported": "Importé avec succès",
     "no_storage": "Pas assez d'espace de stockage",
     "link_copied": "Lien copié",
-    "stats_reset": "Statistiques réinitialisées"
+    "stats_reset": "Statistiques réinitialisées",
+    "deleted": "Supprimé avec succès"
   }
 }

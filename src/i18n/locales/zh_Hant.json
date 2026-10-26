@@ -37,7 +37,8 @@
       "add": "增加",
       "name_error": "必須提供名稱",
       "url_error": "必須提供網址",
-      "icon_hint": "已知網站會自動填入。留空則使用網站自己的圖示。"
+      "icon_hint": "已知網站會自動填入。留空則使用網站自己的圖示。",
+      "icon_error": "無法載入該圖示"
     },
     "date": {
       "week": "週"
@@ -46,7 +47,8 @@
       "not_found": "找不到",
       "meters": "{amount} 公尺",
       "extra_information": "額外資訊",
-      "feels_like": "感覺像 {amount}"
+      "feels_like": "感覺像 {amount}",
+      "fetch_error": "天氣無法使用"
     },
     "quote": {
       "link_tooltip": "在維基百科上開啟",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "在上述日子之外顯示那個時鐘。不勾選時，每天的時鐘都是進度時鐘。",
               "fallback_switch": "在非上班日切換",
               "other_title": "非上班日",
-              "other_subtitle": "非上班日使用的時鐘。"
+              "other_subtitle": "非上班日使用的時鐘。",
+              "doubleclick_title": "讓出時鐘",
+              "doubleclick_subtitle": "顯示進度時鐘時，連按兩下時鐘就能看到它回退到的時鐘，再連按兩下那個時鐘即可返回。在進度時鐘的上班日和上班時段之外，沒有可切換的內容。",
+              "doubleclick_switch": "連按兩下切換"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "直播頻道",
               "subtitle": "全天候環境頻道，靜音播放。只要分頁開著，直播就會一直下載，所以流量遠高於循環片段。",
               "channel": "頻道",
-              "channel_any": "任何頻道"
+              "channel_any": "任何頻道",
+              "channels_title": "頻道",
+              "channels_subtitle": "此頁面能存取的任何 HLS 串流都可以使用。內建頻道可以重新命名、變更位址或刪除。",
+              "add": "新增頻道",
+              "name": "名稱",
+              "name_placeholder": "港口攝影機",
+              "url": "串流位址",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "儲存",
+              "cancel": "取消",
+              "edit": "編輯",
+              "delete": "刪除",
+              "name_error": "請為該頻道填寫名稱。",
+              "url_error": "這不是 http 或 https 位址。",
+              "url_duplicate": "該位址已在清單中。",
+              "empty": "沒有頻道。請新增一個，或還原內建頻道。",
+              "restore": "還原內建頻道"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "背景資訊",
               "subtitle": "頁面顯示的有關背景圖片的資訊。"
-            }
+            },
+            "category": "類別"
           },
           "search": {
             "title": "Search",
@@ -827,6 +849,7 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "刪除成功"
   }
 }

@@ -37,7 +37,8 @@
       "add": "Hinzufügen",
       "name_error": "Muss einen Namen angeben",
       "url_error": "Muss eine URL angeben",
-      "icon_hint": "Für bekannte Seiten vorausgefüllt. Leer bedeutet das Favicon der Seite selbst."
+      "icon_hint": "Für bekannte Seiten vorausgefüllt. Leer bedeutet das Favicon der Seite selbst.",
+      "icon_error": "Dieses Symbol konnte nicht geladen werden"
     },
     "date": {
       "week": "Kalenderwoche"
@@ -46,7 +47,8 @@
       "not_found": "Nicht gefunden",
       "meters": "{amount} Meter",
       "extra_information": "Zusätzliche informationen",
-      "feels_like": "Bei gefühlten {amount}"
+      "feels_like": "Bei gefühlten {amount}",
+      "fetch_error": "Wetter nicht verfügbar"
     },
     "quote": {
       "link_tooltip": "Auf Wikipedia öffnen",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Zeigt diese Uhr außerhalb der oben gewählten Tage. Ohne Häkchen gilt die Fortschrittsuhr an jedem Tag.",
               "fallback_switch": "Außerhalb der Tage umschalten",
               "other_title": "Außerhalb der Arbeit",
-              "other_subtitle": "Die Uhr für die Tage außerhalb der Arbeit."
+              "other_subtitle": "Die Uhr für die Tage außerhalb der Arbeit.",
+              "doubleclick_title": "Die Uhr übergeben",
+              "doubleclick_subtitle": "Solange Fortschritt angezeigt wird, doppelklicken Sie auf die Uhr, um die Uhr zu sehen, auf die zurückgefallen wird, und doppelklicken Sie auf diese, um zurückzukehren. Außerhalb der Tage und Stunden von Fortschritt gibt es nichts umzuschalten.",
+              "doubleclick_switch": "Zum Umschalten doppelklicken"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Live-Kanäle",
               "subtitle": "24/7-Ambient-Kanäle, stumm abgespielt. Ein Livestream lädt weiter herunter, solange der Tab offen ist, und verbraucht daher viel mehr Daten als eine Endlosschleife.",
               "channel": "Kanal",
-              "channel_any": "Alle Kanäle"
+              "channel_any": "Alle Kanäle",
+              "channels_title": "Kanäle",
+              "channels_subtitle": "Jeder HLS-Stream, den diese Seite erreichen kann. Die integrierten Kanäle können umbenannt, neu ausgerichtet oder entfernt werden.",
+              "add": "Kanal hinzufügen",
+              "name": "Name",
+              "name_placeholder": "Hafenkamera",
+              "url": "Stream-Adresse",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Speichern",
+              "cancel": "Abbrechen",
+              "edit": "Bearbeiten",
+              "delete": "Löschen",
+              "name_error": "Geben Sie dem Kanal einen Namen.",
+              "url_error": "Das ist keine http- oder https-Adresse.",
+              "url_duplicate": "Diese Adresse steht bereits in der Liste.",
+              "empty": "Keine Kanäle. Fügen Sie einen hinzu oder stellen Sie die integrierten Kanäle wieder her.",
+              "restore": "Integrierte Kanäle wiederherstellen"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Hintergrundinformationen",
               "subtitle": "Was die Seite über das Bild im Hintergrund verrät."
-            }
+            },
+            "category": "Kategorie"
           },
           "search": {
             "title": "Suche",
@@ -827,6 +849,7 @@
     "imported": "Erfolgreich importiert",
     "no_storage": "Nicht genügend Speicherplatz",
     "link_copied": "Link kopiert",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Erfolgreich gelöscht"
   }
 }

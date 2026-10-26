@@ -37,7 +37,8 @@
       "add": "Lisa",
       "name_error": "Nimi peab olema määratud",
       "url_error": "URL peab olema määratud",
-      "icon_hint": "Täidetud tuntud saitide jaoks. Tühi tähendab saidi enda faviconi."
+      "icon_hint": "Täidetud tuntud saitide jaoks. Tühi tähendab saidi enda faviconi.",
+      "icon_error": "Seda ikooni ei õnnestunud laadida"
     },
     "date": {
       "week": "Nädal"
@@ -46,7 +47,8 @@
       "not_found": "Ei leitud",
       "meters": "{amount} meetrit",
       "extra_information": "Lisateave",
-      "feels_like": "Tundub nagu {amount}"
+      "feels_like": "Tundub nagu {amount}",
+      "fetch_error": "Ilm pole saadaval"
     },
     "quote": {
       "link_tooltip": "Ava Wikipedias",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Kuva seda kella väljaspool ülaltoodud päevi. Kui see on märkimata, on Progress-kell iga päev kellaks.",
               "fallback_switch": "Lülitu väljaspool päevi",
               "other_title": "Väljaspool tööd",
-              "other_subtitle": "Kell päevade jaoks väljaspool tööd."
+              "other_subtitle": "Kell päevade jaoks väljaspool tööd.",
+              "doubleclick_title": "Anna kell üle",
+              "doubleclick_subtitle": "Kui Progress on näidatud, tee kellale topeltklõps, et näha kella, millele see lülitub, ja tee sellele topeltklõps, et tagasi tulla. Väljaspool Progressi päevi ja tunde pole midagi vahetada.",
+              "doubleclick_switch": "Vahetamiseks tee topeltklõps"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Otsekanalid",
               "subtitle": "Ööpäevaringseid ambientkanaleid esitatakse vaigistatult. Otsevoog laadib vahekaardi avatud olles pidevalt alla, seega kasutab see kordusklippist palju rohkem andmeid.",
               "channel": "Kanal",
-              "channel_any": "Ükskõik milline kanal"
+              "channel_any": "Ükskõik milline kanal",
+              "channels_title": "Kanalid",
+              "channels_subtitle": "Ükskõik milline HLS voog, millele see leht pääseb ligi. Sisseehitatud kanaleid saab ümber nimetada, ümber suunata või eemaldada.",
+              "add": "Lisa kanal",
+              "name": "Nimi",
+              "name_placeholder": "Sadamakaamera",
+              "url": "Voo aadress",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Salvesta",
+              "cancel": "Tühista",
+              "edit": "Muuda",
+              "delete": "Kustuta",
+              "name_error": "Anna kanalile nimi.",
+              "url_error": "See pole http ega https aadress.",
+              "url_duplicate": "See aadress on juba nimekirjas.",
+              "empty": "Kanaleid pole. Lisa üks või taasta sisseehitatud kanalid.",
+              "restore": "Taasta sisseehitatud kanalid"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Taustainfo",
               "subtitle": "Mida leht räägib selle taga olevast pildist."
-            }
+            },
+            "category": "Kategooria"
           },
           "search": {
             "title": "Otsing",
@@ -827,6 +849,7 @@
     "imported": "Edukalt imporditud",
     "no_storage": "Pole piisavalt mäluruumi",
     "link_copied": "Link kopeeritud",
-    "stats_reset": "Statistika lähtestatud"
+    "stats_reset": "Statistika lähtestatud",
+    "deleted": "Edukalt kustutatud"
   }
 }

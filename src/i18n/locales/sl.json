@@ -37,7 +37,8 @@
       "add": "Dodaj",
       "name_error": "Vnesite ime",
       "url_error": "Vnesite URL",
-      "icon_hint": "Izpolnjeno za znana mesta. Prazno pomeni lastni favicon mesta."
+      "icon_hint": "Izpolnjeno za znana mesta. Prazno pomeni lastni favicon mesta.",
+      "icon_error": "Te ikone ni bilo mogoče naložiti"
     },
     "date": {
       "week": "Teden"
@@ -46,7 +47,8 @@
       "not_found": "Ni najdeno",
       "meters": "{amount} metrov",
       "extra_information": "Dodatne informacije",
-      "feels_like": "Občutek kot {amount}"
+      "feels_like": "Občutek kot {amount}",
+      "fetch_error": "Vreme ni na voljo"
     },
     "quote": {
       "link_tooltip": "Odpri na Wikipediji",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Prikaži to uro zunaj zgornjih dni. Če ni označeno, se ura napredka prikaže vsak dan.",
               "fallback_switch": "Preklop zunaj dni",
               "other_title": "Zunaj dela",
-              "other_subtitle": "Ura za dneve zunaj dela."
+              "other_subtitle": "Ura za dneve zunaj dela.",
+              "doubleclick_title": "Predaja ure",
+              "doubleclick_subtitle": "Dokler je prikazana ura napredka, dvokliknite uro, da vidite rezervno uro, in dvokliknite to, da se vrnete. Zunaj dni in ur napredka ni ničesar za preklop.",
+              "doubleclick_switch": "Dvokliknite za preklop"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Kanali v živo",
               "subtitle": "24/7 ambientalni kanali, predvajani brez zvoka. Prenos v živo se nadaljuje, dokler je zavihek odprt, zato porabi veliko več podatkov kot posnetek v zanki.",
               "channel": "Kanal",
-              "channel_any": "Kateri koli kanal"
+              "channel_any": "Kateri koli kanal",
+              "channels_title": "Kanali",
+              "channels_subtitle": "Vsak pretok HLS, dosegljiv tej strani. Vgrajene kanale lahko preimenujete, preusmerite ali odstranite.",
+              "add": "Dodaj kanal",
+              "name": "Ime",
+              "name_placeholder": "Pristaniška kamera",
+              "url": "Naslov pretoka",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Shrani",
+              "cancel": "Prekliči",
+              "edit": "Uredi",
+              "delete": "Odstrani",
+              "name_error": "Kanalu dajte ime.",
+              "url_error": "To ni naslov http ali https.",
+              "url_duplicate": "Ta naslov je že na seznamu.",
+              "empty": "Ni kanalov. Dodajte enega ali obnovite vgrajene kanale.",
+              "restore": "Obnovi vgrajene kanale"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Informacije o ozadju",
               "subtitle": "Kaj stran pove o sliki v ozadju."
-            }
+            },
+            "category": "Kategorija"
           },
           "search": {
             "title": "Iskanje",
@@ -827,6 +849,7 @@
     "imported": "Uspešno uvoženo",
     "no_storage": "Ni dovolj prostora za shranjevanje",
     "link_copied": "Povezava kopirana",
-    "stats_reset": "Statistika ponastavljena"
+    "stats_reset": "Statistika ponastavljena",
+    "deleted": "Uspešno odstranjeno"
   }
 }

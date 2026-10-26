@@ -37,7 +37,8 @@
       "add": "Add",
       "name_error": "Must provide name",
       "url_error": "Must provide URL",
-      "icon_hint": "既知のサイトでは自動で入力されます。空欄の場合はサイト自身のファビコンを使います。"
+      "icon_hint": "既知のサイトでは自動で入力されます。空欄の場合はサイト自身のファビコンを使います。",
+      "icon_error": "そのアイコンを読み込めませんでした"
     },
     "date": {
       "week": "Week"
@@ -46,7 +47,8 @@
       "not_found": "Not Found",
       "meters": "{amount} metres",
       "extra_information": "Extra Information",
-      "feels_like": "Feels like {amount}"
+      "feels_like": "Feels like {amount}",
+      "fetch_error": "天気を取得できません"
     },
     "quote": {
       "link_tooltip": "Open on Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "上の日以外ではその時計を表示します。チェックを外すと、プログレス時計が毎日の時計になります。",
               "fallback_switch": "勤務日以外で切り替え",
               "other_title": "勤務時間外",
-              "other_subtitle": "勤務日以外の日の時計です。"
+              "other_subtitle": "勤務日以外の日の時計です。",
+              "doubleclick_title": "時計を明け渡す",
+              "doubleclick_subtitle": "プログレスを表示している間、時計をダブルクリックすると切り替え先の時計が表示され、それをダブルクリックすると元に戻ります。プログレスの勤務日と勤務時間の外では切り替えるものはありません。",
+              "doubleclick_switch": "ダブルクリックで切り替え"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "ライブチャンネル",
               "subtitle": "24時間いつでも流れる環境チャンネルをミュートで再生します。ライブ配信はタブを開いている間ずっとダウンロードを続けるため、ループ動画よりはるかに通信量が多くなります。",
               "channel": "チャンネル",
-              "channel_any": "すべてのチャンネル"
+              "channel_any": "すべてのチャンネル",
+              "channels_title": "チャンネル",
+              "channels_subtitle": "このページから接続できる HLS ストリームならどれでも使えます。内蔵のチャンネルは名前の変更、接続先の変更、削除ができます。",
+              "add": "チャンネルを追加",
+              "name": "名前",
+              "name_placeholder": "港のライブカメラ",
+              "url": "ストリームのアドレス",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "保存",
+              "cancel": "キャンセル",
+              "edit": "編集",
+              "delete": "削除",
+              "name_error": "チャンネルに名前を付けてください。",
+              "url_error": "http または https のアドレスではありません。",
+              "url_duplicate": "そのアドレスはすでにリストにあります。",
+              "empty": "チャンネルがありません。追加するか、内蔵のチャンネルを復元してください。",
+              "restore": "内蔵のチャンネルを復元"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "背景情報",
               "subtitle": "背景の画像についてページが表示する情報です。"
-            }
+            },
+            "category": "カテゴリ"
           },
           "search": {
             "title": "Search",
@@ -827,6 +849,7 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "削除しました"
   }
 }

@@ -37,7 +37,8 @@
       "add": "添加",
       "name_error": "请输入名称",
       "url_error": "请输入链接",
-      "icon_hint": "已知网站会自动填入。留空则使用网站自己的图标。"
+      "icon_hint": "已知网站会自动填入。留空则使用网站自己的图标。",
+      "icon_error": "无法加载该图标"
     },
     "date": {
       "week": "周"
@@ -46,7 +47,8 @@
       "not_found": "未找到",
       "meters": "{amount}米",
       "extra_information": "更多信息",
-      "feels_like": "体感温度 {amount}"
+      "feels_like": "体感温度 {amount}",
+      "fetch_error": "天气不可用"
     },
     "quote": {
       "link_tooltip": "在维基百科中打开",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "在上述日子之外显示那个时钟。不勾选时，每天的时钟都是进度时钟。",
               "fallback_switch": "在非上班日切换",
               "other_title": "非上班日",
-              "other_subtitle": "非上班日使用的时钟。"
+              "other_subtitle": "非上班日使用的时钟。",
+              "doubleclick_title": "让出时钟",
+              "doubleclick_subtitle": "显示进度时钟时，双击时钟就能看到它回退到的时钟，再双击那个时钟即可返回。在进度时钟的上班日和上班时段之外，没有可切换的内容。",
+              "doubleclick_switch": "双击切换"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "直播频道",
               "subtitle": "全天候环境频道，静音播放。只要标签页开着，直播就会一直下载，所以流量远高于循环片段。",
               "channel": "频道",
-              "channel_any": "任意频道"
+              "channel_any": "任意频道",
+              "channels_title": "频道",
+              "channels_subtitle": "本页面能访问的任何 HLS 流都可以使用。内置频道可以重命名、更改地址或删除。",
+              "add": "添加频道",
+              "name": "名称",
+              "name_placeholder": "港口摄像头",
+              "url": "流地址",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "保存",
+              "cancel": "取消",
+              "edit": "编辑",
+              "delete": "删除",
+              "name_error": "请为该频道填写名称。",
+              "url_error": "这不是 http 或 https 地址。",
+              "url_duplicate": "该地址已在列表中。",
+              "empty": "没有频道。请添加一个，或恢复内置频道。",
+              "restore": "恢复内置频道"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "背景信息",
               "subtitle": "页面显示的有关背景图片的信息。"
-            }
+            },
+            "category": "分类"
           },
           "search": {
             "title": "搜索栏",
@@ -827,6 +849,7 @@
     "imported": "导入成功",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "删除成功"
   }
 }

@@ -37,7 +37,8 @@
       "add": "Pridėti",
       "name_error": "Būtina įvesti pavadinimą",
       "url_error": "Būtina įvesti URL",
-      "icon_hint": "Užpildoma žinomiems puslapiams. Tuščia reiškia paties puslapio favicon."
+      "icon_hint": "Užpildoma žinomiems puslapiams. Tuščia reiškia paties puslapio favicon.",
+      "icon_error": "Nepavyko įkelti šios piktogramos"
     },
     "date": {
       "week": "Savaitė"
@@ -46,7 +47,8 @@
       "not_found": "Nerasta",
       "meters": "{amount} metrų",
       "extra_information": "Papildoma informacija",
-      "feels_like": "Jaučiasi kaip {amount}"
+      "feels_like": "Jaučiasi kaip {amount}",
+      "fetch_error": "Oras nepasiekiamas"
     },
     "quote": {
       "link_tooltip": "Atidaryti Vikipedijoje",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Rodyti šį laikrodį ne aukščiau nurodytomis dienomis. Jei nepažymėta, „Pažangos“ laikrodis rodomas kiekvieną dieną.",
               "fallback_switch": "Perjungimas ne tomis dienomis",
               "other_title": "Ne darbo metu",
-              "other_subtitle": "Laikrodis ne darbo dienoms."
+              "other_subtitle": "Laikrodis ne darbo dienoms.",
+              "doubleclick_title": "Laikrodžio perdavimas",
+              "doubleclick_subtitle": "Kol rodomas „Pažangos“ laikrodis, dukart spustelėkite jį, kad pamatytumėte atsarginį laikrodį, ir dukart spustelėkite atsarginį, kad grįžtumėte. Ne „Pažangos“ dienomis ir valandomis perjungti nėra ko.",
+              "doubleclick_switch": "Dukart spustelėkite, kad perjungtumėte"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Tiesioginės transliacijos",
               "subtitle": "Visą parą veikiantys ambientiniai kanalai, leidžiami be garso. Tiesioginė transliacija atsisiunčiama ir toliau, kol skirtukas atidarytas, todėl sunaudoja daug daugiau duomenų nei kartojamas klipas.",
               "channel": "Kanalas",
-              "channel_any": "Bet kuris kanalas"
+              "channel_any": "Bet kuris kanalas",
+              "channels_title": "Kanalai",
+              "channels_subtitle": "Bet koks HLS srautas, pasiekiamas šiam puslapiui. Įtaisytus kanalus galima pervadinti, nukreipti iš naujo arba pašalinti.",
+              "add": "Pridėti kanalą",
+              "name": "Pavadinimas",
+              "name_placeholder": "Uosto kamera",
+              "url": "Srauto adresas",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Išsaugoti",
+              "cancel": "Atšaukti",
+              "edit": "Redaguoti",
+              "delete": "Pašalinti",
+              "name_error": "Suteikite kanalui pavadinimą.",
+              "url_error": "Tai ne http ar https adresas.",
+              "url_duplicate": "Šis adresas jau yra sąraše.",
+              "empty": "Nėra kanalų. Pridėkite kanalą arba atkurkite įtaisytus kanalus.",
+              "restore": "Atkurti įtaisytus kanalus"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Informacija apie foną",
               "subtitle": "Ką puslapis pasakoja apie paveikslėlį fone."
-            }
+            },
+            "category": "Kategorija"
           },
           "search": {
             "title": "Paieška",
@@ -827,6 +849,7 @@
     "imported": "Sėkmingai importuota",
     "no_storage": "Nepakanka saugyklos vietos",
     "link_copied": "Nuoroda nukopijuota",
-    "stats_reset": "Statistika atstatyta"
+    "stats_reset": "Statistika atstatyta",
+    "deleted": "Sėkmingai pašalinta"
   }
 }

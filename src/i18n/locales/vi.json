@@ -37,7 +37,8 @@
       "add": "Add",
       "name_error": "Must provide name",
       "url_error": "Must provide URL",
-      "icon_hint": "Tự điền cho các trang đã biết. Để trống nghĩa là dùng favicon của chính trang đó."
+      "icon_hint": "Tự điền cho các trang đã biết. Để trống nghĩa là dùng favicon của chính trang đó.",
+      "icon_error": "Không thể tải biểu tượng đó"
     },
     "date": {
       "week": "Week"
@@ -46,7 +47,8 @@
       "not_found": "Not Found",
       "meters": "{amount} metres",
       "extra_information": "Extra Information",
-      "feels_like": "Feels like {amount}"
+      "feels_like": "Feels like {amount}",
+      "fetch_error": "Thời tiết không khả dụng"
     },
     "quote": {
       "link_tooltip": "Open on Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Hiện đồng hồ đó ngoài những ngày ở trên. Nếu không đánh dấu, đồng hồ Tiến độ là đồng hồ của mọi ngày.",
               "fallback_switch": "Chuyển ngoài những ngày đó",
               "other_title": "Ngoài giờ làm",
-              "other_subtitle": "Đồng hồ cho những ngày nghỉ làm."
+              "other_subtitle": "Đồng hồ cho những ngày nghỉ làm.",
+              "doubleclick_title": "Chuyển giao đồng hồ",
+              "doubleclick_subtitle": "Khi Progress đang hiển thị, nhấp đúp vào đồng hồ để xem đồng hồ dự phòng và nhấp đúp vào đồng hồ đó để quay lại. Ngoài ngày và giờ của Progress thì không có gì để chuyển.",
+              "doubleclick_switch": "Nhấp đúp để chuyển"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Kênh trực tiếp",
               "subtitle": "Kênh không gian 24/7, phát không tiếng. Luồng trực tiếp vẫn tải xuống khi thẻ còn mở, nên dùng dữ liệu nhiều hơn hẳn một clip lặp.",
               "channel": "Kênh",
-              "channel_any": "Mọi kênh"
+              "channel_any": "Mọi kênh",
+              "channels_title": "Kênh",
+              "channels_subtitle": "Bất kỳ luồng HLS nào mà trang này truy cập được. Các kênh tích hợp có thể được đổi tên, trỏ lại hoặc xóa.",
+              "add": "Thêm kênh",
+              "name": "Tên",
+              "name_placeholder": "Camera bến cảng",
+              "url": "Địa chỉ luồng",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Lưu",
+              "cancel": "Hủy",
+              "edit": "Sửa",
+              "delete": "Xóa",
+              "name_error": "Hãy đặt tên cho kênh.",
+              "url_error": "Đó không phải là địa chỉ http hoặc https.",
+              "url_duplicate": "Địa chỉ đó đã có trong danh sách.",
+              "empty": "Không có kênh. Hãy thêm một kênh hoặc khôi phục các kênh tích hợp.",
+              "restore": "Khôi phục các kênh tích hợp"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Thông tin hình nền",
               "subtitle": "Những gì trang cho biết về hình ảnh phía sau."
-            }
+            },
+            "category": "Danh mục"
           },
           "search": {
             "title": "Search",
@@ -827,6 +849,7 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Đã xóa thành công"
   }
 }

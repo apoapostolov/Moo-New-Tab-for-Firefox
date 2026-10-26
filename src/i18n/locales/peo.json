@@ -37,7 +37,8 @@
       "add": "Add",
       "name_error": "Must provide name",
       "url_error": "Must provide URL",
-      "icon_hint": "Filled in for known sites. Empty means the site's own favicon."
+      "icon_hint": "Filled in for known sites. Empty means the site's own favicon.",
+      "icon_error": "Could not load that icon"
     },
     "date": {
       "week": "Week"
@@ -46,7 +47,8 @@
       "not_found": "Not Found",
       "meters": "{amount} metres",
       "extra_information": "Extra Information",
-      "feels_like": "Feels like {amount}"
+      "feels_like": "Feels like {amount}",
+      "fetch_error": "Weather unavailable"
     },
     "quote": {
       "link_tooltip": "Open on Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Show that clock outside the days above. Unticked, the Progress clock is the clock every day.",
               "fallback_switch": "Switch outside the days",
               "other_title": "Outside Work",
-              "other_subtitle": "The clock for the days outside work."
+              "other_subtitle": "The clock for the days outside work.",
+              "doubleclick_title": "Hand the clock over",
+              "doubleclick_subtitle": "While Progress is showing, double-click the clock to see the clock it falls back to, and double-click that to come back. Outside Progress's days and hours there is nothing to switch.",
+              "doubleclick_switch": "Double-click to switch"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Live channels",
               "subtitle": "24/7 ambient channels, played muted. A live stream keeps downloading while the tab is open, so it uses far more data than a looping clip.",
               "channel": "Channel",
-              "channel_any": "Any channel"
+              "channel_any": "Any channel",
+              "channels_title": "Channels",
+              "channels_subtitle": "Any HLS stream this page can reach. The built-in channels can be renamed, re-pointed or removed.",
+              "add": "Add a channel",
+              "name": "Name",
+              "name_placeholder": "Harbour cam",
+              "url": "Stream address",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Save",
+              "cancel": "Cancel",
+              "edit": "Edit",
+              "delete": "Delete",
+              "name_error": "Give the channel a name.",
+              "url_error": "That is not an http or https address.",
+              "url_duplicate": "That address is already in the list.",
+              "empty": "No channels. Add one, or restore the built-in channels.",
+              "restore": "Restore the built-in channels"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Background Information",
               "subtitle": "What the page says about the picture behind it."
-            }
+            },
+            "category": "Category"
           },
           "search": {
             "title": "Search",
@@ -827,6 +849,7 @@
     "imported": "Successfully imported",
     "no_storage": "Not enough storage",
     "link_copied": "Link copied",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Successfully deleted"
   }
 }

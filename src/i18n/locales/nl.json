@@ -37,7 +37,8 @@
       "add": "Toevoegen",
       "name_error": "Naam moet worden opgegeven",
       "url_error": "URL moet worden opgegeven",
-      "icon_hint": "Ingevuld voor bekende sites. Leeg betekent de favicon van de site zelf."
+      "icon_hint": "Ingevuld voor bekende sites. Leeg betekent de favicon van de site zelf.",
+      "icon_error": "Dat pictogram kon niet worden geladen"
     },
     "date": {
       "week": "Week"
@@ -46,7 +47,8 @@
       "not_found": "Niet Gevonden",
       "meters": "{amount} meter",
       "extra_information": "Extra Informatie",
-      "feels_like": "Voelt als {amount}"
+      "feels_like": "Voelt als {amount}",
+      "fetch_error": "Weer niet beschikbaar"
     },
     "quote": {
       "link_tooltip": "Openen op Wikipedia",
@@ -148,7 +150,10 @@
               "fallback_subtitle": "Toon die klok buiten de dagen hierboven. Zonder vinkje is de voortgangsklok elke dag de klok.",
               "fallback_switch": "Omschakelen buiten de dagen",
               "other_title": "Buiten werktijd",
-              "other_subtitle": "De klok voor de dagen buiten het werk."
+              "other_subtitle": "De klok voor de dagen buiten het werk.",
+              "doubleclick_title": "De klok overdragen",
+              "doubleclick_subtitle": "Terwijl Voortgang wordt getoond, kun je dubbelklikken op de klok om de klok te zien waarop wordt teruggevallen, en daarop dubbelklikken om terug te keren. Buiten de dagen en uren van Voortgang is er niets om te wisselen.",
+              "doubleclick_switch": "Dubbelklik om te wisselen"
             }
           },
           "date": {
@@ -331,7 +336,23 @@
               "title": "Livekanalen",
               "subtitle": "24/7-ambientkanalen, zonder geluid afgespeeld. Een livestream blijft downloaden zolang het tabblad open is en gebruikt daardoor veel meer data dan een loopclip.",
               "channel": "Kanaal",
-              "channel_any": "Alle kanalen"
+              "channel_any": "Alle kanalen",
+              "channels_title": "Kanalen",
+              "channels_subtitle": "Elke HLS-stream die deze pagina kan bereiken. De ingebouwde kanalen kunnen worden hernoemd, opnieuw ingesteld of verwijderd.",
+              "add": "Kanaal toevoegen",
+              "name": "Naam",
+              "name_placeholder": "Havenwebcam",
+              "url": "Streamadres",
+              "url_placeholder": "https://example.com/stream.m3u8",
+              "save": "Opslaan",
+              "cancel": "Annuleren",
+              "edit": "Bewerken",
+              "delete": "Verwijderen",
+              "name_error": "Geef het kanaal een naam.",
+              "url_error": "Dat is geen http- of https-adres.",
+              "url_duplicate": "Dat adres staat al in de lijst.",
+              "empty": "Geen kanalen. Voeg er een toe of herstel de ingebouwde kanalen.",
+              "restore": "Ingebouwde kanalen herstellen"
             },
             "pixabay": {
               "title": "Pixabay",
@@ -354,7 +375,8 @@
             "information": {
               "title": "Achtergrondinformatie",
               "subtitle": "Wat de pagina over de afbeelding erachter zegt."
-            }
+            },
+            "category": "Categorie"
           },
           "search": {
             "title": "Zoekbalk",
@@ -827,6 +849,7 @@
     "imported": "Het importeren is voltooid",
     "no_storage": "Niet genoeg opslag",
     "link_copied": "Link gekopieerd",
-    "stats_reset": "Stats reset"
+    "stats_reset": "Stats reset",
+    "deleted": "Het verwijderen is voltooid"
   }
 }
