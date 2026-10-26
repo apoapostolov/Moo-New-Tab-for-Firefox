@@ -6,9 +6,16 @@ import './aiask.scss';
 
 /**
  * Asks a question from the new tab page; nothing leaves the page until Enter.
- * Reached by address, with no API key: Google needs `udm=50` for AI Mode
- * (`udm=14` is the plain web view), and ChatGPT needs `?q=` plus `hints=search`
- * to run a web search rather than open a plain chat.
+ * Reached by address, with no API key.
+ *
+ * Google answers the address itself: `udm=50` is AI Mode (`udm=14` is the plain web
+ * view), so landing on the link is the search.
+ *
+ * ChatGPT does not. `?q=` fills the composer and `hints=search` arms the search tool,
+ * and OpenAI deliberately stops there — no parameter sends the message, so the tab
+ * opens ready to go rather than answered, one Enter behind. `temporary-chat=true` keeps
+ * those searches out of the history they would otherwise fill, which is what a query
+ * typed on a new tab and forgotten deserves.
  */
 const SERVICES = {
   google: {
@@ -18,7 +25,8 @@ const SERVICES = {
   },
   chatgpt: {
     name: 'ChatGPT',
-    url: (query) => `https://chatgpt.com/?q=${encodeURIComponent(query)}&hints=search`,
+    url: (query) =>
+      `https://chatgpt.com/?q=${encodeURIComponent(query)}&hints=search&temporary-chat=true`,
     Icon: SiOpenai,
   },
 };
