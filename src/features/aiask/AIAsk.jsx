@@ -3,11 +3,16 @@ import { MdMenuBook, MdTerminal } from 'react-icons/md';
 import {
   SiBrave,
   SiClaude,
+  SiDuckduckgo,
+  SiEcosia,
   SiGithub,
+  SiGoogle,
   SiGooglegemini,
   SiOpenai,
   SiPerplexity,
+  SiQwant,
   SiStackoverflow,
+  SiStartpage,
   SiWikipedia,
   SiWolframmathematica,
 } from 'react-icons/si';
@@ -18,11 +23,11 @@ import './aiask.scss';
  * Where a question can be sent, by address alone: no key, no account, nothing to configure,
  * which is the only kind of service this widget can offer.
  *
- * Two kinds, and the difference is worth knowing before adding another. A service that
- * *answers* the address runs the search on arrival, because the server does the work and the
- * URL is the question: `/search?q=…` on a search engine, `input?i=…` on a calculator. One
- * that fills a composer only opens ready to send, one Enter short, because the site chose to
- * keep the send for the person — ChatGPT and Claude both do this deliberately.
+ * One thing to know before adding another: some of these answer on arrival, because the
+ * server does the work and the address is the question — `/search?q=…` on a search engine,
+ * `input?i=…` on a calculator. Others only fill a composer and open ready to send, one Enter
+ * short, because the site keeps the send for the person — ChatGPT and Claude both do this
+ * deliberately. Plain search sits among the first kind: it hands back results and stops.
  *
  * Google needs `udm=50` (AI Mode; `udm=14` is the plain web view). ChatGPT needs
  * `hints=search` to arm its search tool and `temporary-chat=true` to keep a query typed on a
@@ -30,6 +35,45 @@ import './aiask.scss';
  * AI answer rather than ten links.
  */
 const SERVICES = {
+  // Casual search: the question goes to a page of results, not to an answer. Kept apart from
+  // the answer engines above, because 'what is the weather' and 'who won in 1994' want
+  // opposite things from a drop-down in the middle of a new tab.
+  googleSearch: {
+    group: 'search',
+    name: 'Google',
+    url: (query) => `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+    Icon: SiGoogle,
+  },
+  duckduckgo: {
+    group: 'search',
+    name: 'DuckDuckGo',
+    url: (query) => `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
+    Icon: SiDuckduckgo,
+  },
+  braveSearch: {
+    group: 'search',
+    name: 'Brave Search',
+    url: (query) => `https://search.brave.com/search?q=${encodeURIComponent(query)}`,
+    Icon: SiBrave,
+  },
+  ecosia: {
+    group: 'search',
+    name: 'Ecosia',
+    url: (query) => `https://www.ecosia.org/search?q=${encodeURIComponent(query)}`,
+    Icon: SiEcosia,
+  },
+  startpage: {
+    group: 'search',
+    name: 'Startpage',
+    url: (query) => `https://www.startpage.com/sp/search?query=${encodeURIComponent(query)}`,
+    Icon: SiStartpage,
+  },
+  qwant: {
+    group: 'search',
+    name: 'Qwant',
+    url: (query) => `https://www.qwant.com/?q=${encodeURIComponent(query)}`,
+    Icon: SiQwant,
+  },
   google: {
     group: 'answers',
     name: 'Google AI Mode',
@@ -99,9 +143,11 @@ const SERVICES = {
   },
 };
 
-/* Two headings rather than one list of eleven: a question about an error message and a
- * question about the weather do not go to the same place, and the menu says so. */
+/* Three headings rather than one list of seventeen: a question about the weather, a question
+ * that wants one answer, and a question about an error message do not go to the same place,
+ * and the menu says so. Search leads, because it is the widest net. */
 const GROUPS = [
+  ['search', 'Search'],
   ['answers', 'Answers'],
   ['reference', 'Reference'],
 ];
