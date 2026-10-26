@@ -258,10 +258,47 @@
   }
 }
 
-/* Settings rows: the buttons sit in the action column beside the text. */
+/* Settings rows. The feed address runs the width of the row, so the add can sit at the
+ * end of it as a glyph and the text has room for a real address. */
+.rssFeedField {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.rssOptionGlyph {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s ease, background 0.15s ease;
+
+  svg {
+    font-size: 20px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: rgb(255 255 255 / 10%);
+    opacity: 1;
+  }
+}
+
 .rssOptionInput {
-  width: 200px;
-  padding: 7px 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 9px 12px;
   border: 1px solid rgb(255 255 255 / 16%);
   border-radius: 8px;
   background: rgb(0 0 0 / 22%);

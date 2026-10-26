@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MdDeleteOutline } from 'react-icons/md';
+import { MdAdd, MdDeleteOutline } from 'react-icons/md';
 
 import { Header, Row, Content, Action, Group } from 'components/Layout/Settings';
 import { Checkbox, Dropdown } from 'components/Form/Settings';
@@ -135,7 +135,12 @@ const RssOptions = () => {
             title="Add a feed"
             subtitle="Any RSS or Atom address. Adding it asks the browser to let the page read that site."
           />
-          <Action>
+        </Row>
+
+        {/* The address is the longest thing typed in these settings, so it takes the row
+            rather than the action column, with the add itself as the glyph at its end. */}
+        <Row>
+          <div className="rssFeedField">
             <input
               className="rssOptionInput"
               type="url"
@@ -150,10 +155,10 @@ const RssOptions = () => {
                 if (event.key === 'Enter') add();
               }}
             />
-            <button className="rssOptionButton" type="button" onClick={add}>
-              Add
+            <button className="rssOptionGlyph" type="button" onClick={add} aria-label="Add feed" title="Add feed">
+              <MdAdd />
             </button>
-          </Action>
+          </div>
         </Row>
 
         {error ? (
