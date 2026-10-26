@@ -24,6 +24,12 @@
     width: 100%;
     font-size: 18px;
     gap: 12px;
+    // The row above is as tall as the min/max column, so the big temperature's ink ends
+    // well above it and the line reads low. Half that difference is taken off the top and
+    // given back underneath, which evens the air around the line without moving the
+    // forecast below it or changing the card's height.
+    margin-top: -6px;
+    margin-bottom: 6px;
 
     @include themed {
       color: t($weather);
