@@ -524,8 +524,8 @@
               "animations": "Animations",
               "text_shadow": {
                 "title": "Widget text shadow",
-                "new": "New",
-                "old": "Old",
+                "new": "Soft glow",
+                "old": "Hard shadow",
                 "none": "None"
               },
               "widget_zoom": "Widget Zoom",

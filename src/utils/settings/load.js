@@ -44,26 +44,10 @@ export function loadSettings(hotreload) {
   }
 
   // The setting is really a text SHADOW rather than a border; the name predates it.
+  // The class goes on the body: this runs before the clock is mounted, so the clock
+  // cannot be found yet and the shadow never arrived on a fresh page.
   const textBorder = localStorage.getItem('textBorder');
-  if (textBorder === 'true') {
-    const elements = ['clock', 'date'];
-    elements.forEach((element) => {
-      try {
-        document.querySelector('.' + element).classList.add('textBorder');
-      } catch (e) {
-        // Element may be absent.
-      }
-    });
-  } else {
-    const elements = ['clock', 'date'];
-    elements.forEach((element) => {
-      try {
-        document.querySelector('.' + element).classList.remove('textBorder');
-      } catch (e) {
-        // Element may be absent.
-      }
-    });
-  }
+  document.body.classList.toggle('hardTextShadow', textBorder === 'true');
 
   // 'none' removes the default shadow as well.
   if (textBorder === 'none') {

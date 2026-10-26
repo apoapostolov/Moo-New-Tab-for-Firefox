@@ -461,6 +461,25 @@ const Scratch = () => {
     });
   }, []);
 
+  // A left click anywhere that is not a note or a picture takes the controls off the one
+  // in hand: the page, a widget, its buttons, the AI ask box, the photo credit.
+  useEffect(() => {
+    if (!notesOn && !imagesOn) return undefined;
+
+    const onPointerDown = (event) => {
+      if (event.button !== 0) return;
+      if (event.target?.closest?.('.scratchNote, .scratchImage')) return;
+
+      setFocused(null);
+      setArmedId(null);
+    };
+
+    // Capture, so this settles before the thing that was clicked handles its own press.
+    document.addEventListener('pointerdown', onPointerDown, true);
+
+    return () => document.removeEventListener('pointerdown', onPointerDown, true);
+  }, [imagesOn, notesOn]);
+
   // Pictures stored before the sticker rule carry no flag: read the pixels once, then keep it.
   useEffect(() => {
     const pending = images.find((image) => typeof image.transparent !== 'boolean');

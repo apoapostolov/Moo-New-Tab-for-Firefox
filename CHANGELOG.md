@@ -31,8 +31,9 @@ Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab exten
 
 ### Changed
 
-- Scratch pictures keep their corner controls out of the way: copy, close, download and the resize grip appear on the picture you clicked or dragged, and leave when another note or picture takes over.
-- A scratch picture with transparency is drawn as a sticker: no panel, no frame and no shadow, so a cut-out sits on the wallpaper as its own shape, still with the card's round corners. Click or drag it and the glass comes back under it, the frame with it, and the controls in the corners.
+- The two widget text shadows are named for how they look: Soft glow, the wide blurred halo, and Hard shadow, the crisp copy offset behind the clock and the date.
+- Scratch pictures keep their corner controls out of the way: copy, close, download and the resize grip appear on the picture you clicked or dragged, and go when another note or picture takes over, or when you click anywhere else — the page, a widget, its buttons, the AI ask box or the photo credit.
+- A scratch picture with transparency is drawn as a sticker: bare and square at rest, no panel, no frame and no shadow, so a cut-out sits on the wallpaper as its own shape. Click or drag it and it becomes a card again, round corners, glass and all, with the controls in the corners.
 - Firefox only, with its own add-on id so it installs next to Mue.
 - The first run keeps the settings already in use in Mue.
 - Background effects each get their own heading (blur, brightness, filter) instead of one shared block.
@@ -72,6 +73,7 @@ Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab exten
 - Scratch notes keep the heading level they are written at, on a real six-step scale. `####` and `#####` used to be flattened into `h3`, and every heading sat at the note's own 13px while its paragraphs rendered at the app's 16px, so a heading came out smaller than the words under it. Text no longer grows when a note stops being edited, either.
 
 ### Fixed
+- The hard text shadow never appeared when the page loaded: it was written onto the clock and the date before either had been drawn, so only switching the option by hand ever applied it. It is set on the page now, so it is there from the first paint.
 
 - A transparent scratch picture stuttered once or twice the first time it was dragged. It carried a shadow filter, which the browser re-renders for every frame of a move, and the card had no layer of its own until the drag asked for one.
 - The Add Link dialog had no room on its right: the form width excluded its own padding while the inputs added theirs, so the right edge was clipped. The box now measures from the border, and the dialog is 560px wide.

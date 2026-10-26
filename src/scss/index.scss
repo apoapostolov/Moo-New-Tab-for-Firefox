@@ -114,9 +114,12 @@ body {
   }
 }
 
-/* accessibility */
-.textBorder {
-  filter: drop-shadow(var(--shadow-shift) var(--shadow-shift) 0 #111c);
+/* accessibility: a hard copy of the clock and the date, offset behind them */
+body.hardTextShadow {
+  .clock,
+  .date {
+    filter: drop-shadow(var(--shadow-shift) var(--shadow-shift) 0 #111c);
+  }
 }
 
 .no-animations {
