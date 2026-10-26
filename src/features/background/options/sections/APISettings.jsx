@@ -2,7 +2,8 @@ import variables from 'config/variables';
 import { Dropdown, Text, ChipSelect } from 'components/Form/Settings';
 import { Row, Content, Action } from 'components/Layout/Settings/Item';
 import { APIQualityOptions } from '../optionTypes';
-import { LIVE_CHANNELS, LIVE_CHANNEL_ANY } from '../../api/live';
+import { LIVE_CHANNEL_ANY, readChannels } from '../../api/live';
+import LiveChannels from './LiveChannels';
 
 const clearPrefetch = () => {
   localStorage.removeItem('imageQueue');
@@ -124,33 +125,39 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
   }
 
   if (backgroundAPI === 'live') {
+    // The list is the profile's, so a renamed channel reads under its new name here.
+    const channels = readChannels();
     const liveItems = [
       {
         value: LIVE_CHANNEL_ANY,
         text: variables.getMessage('modals.main.settings.sections.background.live.channel_any'),
       },
-      ...LIVE_CHANNELS.map((channel) => ({
+      ...channels.map((channel) => ({
         value: channel.id,
-        text: `${channel.name} (${channel.quality})`,
+        text: channel.quality ? `${channel.name} (${channel.quality})` : channel.name,
       })),
     ];
 
     return (
-      <Row final={true}>
-        <Content
-          title={variables.getMessage('modals.main.settings.sections.background.live.title')}
-          subtitle={variables.getMessage('modals.main.settings.sections.background.live.subtitle')}
-        />
-        <Action>
-          <Dropdown
-            label={variables.getMessage('modals.main.settings.sections.background.live.channel')}
-            name="liveChannel"
-            items={liveItems}
-            category="backgroundrefresh"
-            onChange={clearPrefetch}
+      <>
+        <Row>
+          <Content
+            title={variables.getMessage('modals.main.settings.sections.background.live.title')}
+            subtitle={variables.getMessage('modals.main.settings.sections.background.live.subtitle')}
           />
-        </Action>
-      </Row>
+          <Action>
+            <Dropdown
+              label={variables.getMessage('modals.main.settings.sections.background.live.channel')}
+              name="liveChannel"
+              items={liveItems}
+              category="backgroundrefresh"
+              onChange={clearPrefetch}
+            />
+          </Action>
+        </Row>
+
+        <LiveChannels onChanged={clearPrefetch} />
+      </>
     );
   }
 

@@ -11,6 +11,7 @@ Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab exten
 - Coverr: free looping video clips as a background source, with an optional search.
 - Pixabay and Pexels video clips, each using your own free API key.
 - Live channels: 24/7 ambient streams (WildEarth, ZenLIFE, Love Nature, Red Bull TV) played behind the clock.
+- The channel list under Live channels is yours to edit. Add a stream by name and address, rename or re-point any channel — the built-in ones included — and delete one you no longer want. A renamed channel keeps its place in the selector and its credit on the photo card, a deleted one takes the selector back to Any channel with it, and a stream that is not HLS is played as a plain video instead. With every channel deleted the offline picture stands in, and Restore the built-in channels puts the five back once the list differs from them.
 - Google widgets: mail, calendar and tasks, each with its own sign-in, and dialogs to create, edit or delete appointments and to add, rename, complete or delete tasks. Off by default, and they use your own Google OAuth client.
 - A panel style switch in the weather, quick links and background information sections: Classic paints a dark panel, Glass lets the wallpaper show through.
 - Google widgets gained their own settings once connected: which calendars feed the agenda and how far ahead it looks, what each event line carries, task list, sorting, grouping and filters, and the Gmail filter, custom search, preview text and unread indicator.
