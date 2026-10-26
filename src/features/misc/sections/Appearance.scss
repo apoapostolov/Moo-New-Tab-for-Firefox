@@ -11,21 +11,24 @@
    track keeps every one of them a circle of the same size. */
 .signaturePicker {
   display: grid;
-  /* Six fixed tracks in one row: five colours and the free picker. Six circles
-     of 36px and five 10px gaps come to 266px, inside the 300px action column,
-     so none of them can be squeezed into an oval again. The box stretches to
-     the column so the circles start where the switches above them start and the
-     button below can take the full width. */
-  grid-template-columns: repeat(6, 36px);
-  justify-content: start;
+  /* Seven fixed tracks in one row: six colours and the free picker. Seven circles
+     of 34px and six 10px gaps come to 298px, inside the 300px action column, so
+     none of them can be squeezed into an oval again. The box stretches to the
+     column so the button below can take the full width, and the tracks are
+     centred inside it. */
+  grid-template-columns: repeat(7, 34px);
+  // The six come to 266px of the 300px action column. Centred, the spare width is
+  // shared, and the strip sits over the middle of the button underneath it instead
+  // of hugging the left edge with all the slack on one side.
+  justify-content: center;
   align-items: center;
   gap: 10px;
   width: 100%;
 }
 
 .signatureSwatch {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   /* The action column adds a top margin to its buttons; a grid cell must not. */
   margin: 0;
   padding: 0;
@@ -59,8 +62,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   overflow: hidden;
   border-radius: 50%;
   cursor: pointer;
@@ -70,8 +73,8 @@
   input {
     position: absolute;
     inset: -8px;
-    width: 52px;
-    height: 52px;
+    width: 50px;
+    height: 50px;
     padding: 0;
     border: 0;
     cursor: pointer;

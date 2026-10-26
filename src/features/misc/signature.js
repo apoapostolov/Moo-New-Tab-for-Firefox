@@ -8,13 +8,17 @@ import EventBus from 'utils/eventbus';
 const STORE = 'signatureColour';
 const DEFAULT_SIGNATURE = '#6b86a8';
 
-// Presets offered before anything is sampled; the first is the logo colour.
+// Presets offered before anything is sampled. The first is the logo colour and the
+// rest share its tone: every one is the same saturation and lightness as the navy,
+// only at another point on the wheel, so the six read as one palette rather than a
+// blue and four strangers.
 const PRESETS = [
   { name: 'Moo navy', value: DEFAULT_SIGNATURE },
-  { name: 'Steel blue', value: '#4f6d92' },
-  { name: 'Grey teal', value: '#6c8f97' },
-  { name: 'Deep teal', value: '#3f6f7a' },
-  { name: 'Slate', value: '#7d8fa6' },
+  { name: 'Rose', value: '#a8796b' },
+  { name: 'Amber', value: '#a8946b' },
+  { name: 'Sage', value: '#85a86b' },
+  { name: 'Teal', value: '#6ba8a0' },
+  { name: 'Violet', value: '#886ba8' },
 ];
 
 const HEX = /^#[0-9a-f]{6}$/i;

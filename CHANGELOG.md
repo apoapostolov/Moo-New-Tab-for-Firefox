@@ -31,6 +31,7 @@ Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab exten
 
 ### Changed
 
+- The colour presets are one palette instead of a blue and four near-blues: Moo navy stays, and Rose, Amber, Sage, Teal and Violet join it at the same saturation and lightness, so the six differ in hue alone and read as a family. The row of seven, free picker included, is centred over the button beneath it.
 - The two widget text shadows are named for how they look: Soft glow, the wide blurred halo, and Hard shadow, the crisp copy offset behind the clock and the date.
 - Scratch pictures keep their corner controls out of the way: copy, close, download and the resize grip appear on the picture you clicked or dragged, and go when another note or picture takes over, or when you click anywhere else — the page, a widget, its buttons, the AI ask box or the photo credit.
 - A scratch picture with transparency is drawn as a sticker: bare and square at rest, no panel, no frame and no shadow, so a cut-out sits on the wallpaper as its own shape. Click or drag it and it becomes a card again, round corners, glass and all, with the controls in the corners.
