@@ -13,6 +13,7 @@ export function loadSettings(hotreload) {
     case 'auto':
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.classList.add('dark');
+        document.body.classList.remove('light');
       } else {
         document.body.classList.remove('dark');
         document.body.classList.add('light');
@@ -31,7 +32,7 @@ export function loadSettings(hotreload) {
     custom.forEach((element) => {
       try {
         document.head.removeChild(document.getElementById(element));
-      } catch (e) {
+      } catch {
         // Element may be absent.
       }
     });
@@ -58,29 +59,30 @@ export function loadSettings(hotreload) {
 
   const css = localStorage.getItem('customcss');
   if (css) {
-    document.head.insertAdjacentHTML('beforeend', '<style id="customcss">' + css + '</style>');
+    const style = document.createElement('style');
+    style.id = 'customcss';
+    style.textContent = css;
+    document.head.append(style);
   }
 
   const font = localStorage.getItem('font');
   if (font) {
     let url = '';
     if (localStorage.getItem('fontGoogle') === 'true') {
-      url = `@import url('https://fonts.googleapis.com/css2?family=${font}&display=swap');`;
+      url = `@import url('https://fonts.googleapis.com/css2?family=${encodeURIComponent(font)}&display=swap');`;
     }
 
-    document.head.insertAdjacentHTML(
-      'beforeend',
-      `
-        <style id='customfont'>
+    const style = document.createElement('style');
+    style.id = 'customfont';
+    style.textContent = `
           ${url}
           * {
             font-family: '${font}', 'Lexend Deca', 'Inter', sans-serif !important;
             font-weight: ${localStorage.getItem('fontweight')};
             font-style: ${localStorage.getItem('fontstyle')};
           }
-        </style>
-      `,
-    );
+      `;
+    document.head.append(style);
   }
 
   // Seeded on update: an older profile has no value for these keys.
@@ -88,7 +90,7 @@ export function loadSettings(hotreload) {
     localStorage.setItem('applinks', JSON.stringify([]));
   }
   if (localStorage.getItem('appsEnabled') === null) {
-    localStorage.setItem('showWelcome', false);
+    localStorage.setItem('appsEnabled', false);
   }
 
   // One-time work only.
@@ -97,23 +99,4 @@ export function loadSettings(hotreload) {
   }
 
   ExperimentalInit();
-
-  // easter egg
-  console.log(`
-  █████████████████████████████████████████████████████████████                                                                        
-  ██                                                         ██
-  ██               ███    ███ ██    ██ ███████               ██  
-  ██               ████  ████ ██    ██ ██                    ██ 
-  ██               ██ ████ ██ ██    ██ █████                 ██ 
-  ██               ██  ██  ██ ██    ██ ██                    ██ 
-  ██               ██      ██  ██████  ███████               ██ 
-  ██                                                         ██ 
-  ██                                                         ██                                                                                                 
-  ██           Copyright 2018-${new Date().getFullYear()} Apostol Apostolov           ██
-  ██           GitHub: https://github.com/apoapostolov        ██
-  ██                                                         ██
-  ██               Thank you for using Moo!                  ██
-  ██              Feedback: hello@muetab.com                 ██
-  █████████████████████████████████████████████████████████████
-  `);
 }

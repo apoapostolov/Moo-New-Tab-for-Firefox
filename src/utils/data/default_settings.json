@@ -101,7 +101,7 @@
   },
   {
     "name": "currentWeather",
-    "value": "{\"data\":{\"icon\":\"04n\",\"temp_text\":\"\u00b0C\",\"weather\":{\"temp\":12,\"description\":\"overcast clouds\",\"temp_min\":11,\"temp_max\":12,\"feels_like\":11,\"humidity\":69,\"wind_speed\":4.63,\"wind_degrees\":130,\"cloudiness\":97,\"visibility\":10000,\"pressure\":1017},\"done\":true},\"cachedAt\":1792868410314}"
+    "value": "{\"data\":{\"icon\":\"04n\",\"temp_text\":\"°C\",\"weather\":{\"temp\":12,\"description\":\"overcast clouds\",\"temp_min\":11,\"temp_max\":12,\"feels_like\":11,\"humidity\":69,\"wind_speed\":4.63,\"wind_degrees\":130,\"cloudiness\":97,\"visibility\":10000,\"pressure\":1017},\"done\":true},\"cachedAt\":1792868410314}"
   },
   {
     "name": "customBackground",
@@ -358,5 +358,9 @@
   {
     "name": "cinemaMode",
     "value": "true"
+  },
+  {
+    "name": "rssEnabled",
+    "value": "false"
   }
 ]

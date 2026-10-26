@@ -19,6 +19,9 @@ export function useBackgroundRenderer(backgroundData) {
       abortControllerRef.current.abort();
     }
     abortControllerRef.current = new AbortController();
+    const controller = abortControllerRef.current;
+    let fadeTimer;
+    let image;
 
     const applyBackground = async () => {
       if (backgroundData.url) {
@@ -51,7 +54,11 @@ export function useBackgroundRenderer(backgroundData) {
           }
         }
 
-        const blobUrl = await createBlobUrl(backgroundData.url);
+        const blobUrl = await createBlobUrl(backgroundData.url, controller.signal);
+        if (controller.signal.aborted) {
+          if (blobUrl) URL.revokeObjectURL(blobUrl);
+          return;
+        }
         const finalUrl = blobUrl || backgroundData.url;
 
         if (blobUrl) {
@@ -62,13 +69,14 @@ export function useBackgroundRenderer(backgroundData) {
         }
 
         // Wait for load so the fade starts with the image ready.
-        const img = new Image();
-        img.src = finalUrl;
-
+        image = new Image();
         await new Promise((resolve) => {
-          img.onload = resolve;
-          img.onerror = resolve;
+          image.onload = resolve;
+          image.onerror = resolve;
+          controller.signal.addEventListener('abort', resolve, { once: true });
+          image.src = finalUrl;
         });
+        if (controller.signal.aborted) return;
 
         // Order matters: go transparent without a transition, set the image,
         // restore the transition, then raise opacity. Each step needs its own
@@ -90,7 +98,7 @@ export function useBackgroundRenderer(backgroundData) {
         overlay.style.opacity = '1';
 
         // The main element takes over once the fade ends, so the overlay can clear.
-        setTimeout(() => {
+        fadeTimer = setTimeout(() => {
           element.style.backgroundImage = `url(${finalUrl})`;
           overlay.style.opacity = '0';
           overlay.style.backgroundImage = '';
@@ -103,8 +111,15 @@ export function useBackgroundRenderer(backgroundData) {
     applyBackground();
 
     return () => {
+      clearTimeout(fadeTimer);
+      controller.abort();
+      if (image) {
+        image.onload = null;
+        image.onerror = null;
+      }
       if (blobRef.current) {
         URL.revokeObjectURL(blobRef.current);
+        blobRef.current = null;
       }
 
       if (abortControllerRef.current) {

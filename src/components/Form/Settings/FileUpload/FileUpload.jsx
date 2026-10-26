@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo, useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -5,20 +6,28 @@ import { compressAccurately, filetoDataURL } from 'image-conversion';
 import videoCheck from 'features/background/api/videoCheck';
 
 const FileUpload = memo(({ id, type, accept, loadFunction, multiple }) => {
+  useTranslationVersion();
   useEffect(() => {
     const fileInput = document.getElementById(id);
     if (!fileInput) return;
 
     const handleChange = (e) => {
       const files = Array.from(e.target.files);
+      if (!files.length) return;
+      e.target.value = '';
 
       if (type === 'settings') {
         const reader = new FileReader();
         const file = files[0];
         reader.readAsText(file, 'UTF-8');
         reader.onload = (e) => {
-          return loadFunction(e.target.result);
+          Promise.resolve()
+            .then(() => loadFunction(e.target.result))
+            .catch(() => {
+              toast(variables.getMessage('toasts.error'));
+            });
         };
+        reader.onerror = () => toast(variables.getMessage('toasts.error'));
       } else {
         // A loadFunction taking the files directly is the current signature; a string name is legacy.
         if (typeof loadFunction === 'function' && loadFunction.length === 1) {

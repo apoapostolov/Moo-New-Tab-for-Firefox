@@ -1,3 +1,4 @@
+import { DEFAULT_ORDER } from '../widgets';
 /**
  * One-off repairs to a stored profile. Run before the first render, so no
  * component mounts holding a value that is about to change.
@@ -76,7 +77,37 @@ const reseedRssCount = () => {
   localStorage.setItem(RSS_COUNT_MARK, 'true');
 };
 
+const reseedRssLayout = () => {
+  if (localStorage.getItem('rssCenteredDefaultOff')) return;
+  let order, placement;
+  try {
+    order = JSON.parse(localStorage.getItem('order'));
+  } catch {
+    /* Use defaults. */
+  }
+  try {
+    placement = JSON.parse(localStorage.getItem('widgetPlacement'));
+  } catch {
+    /* Use defaults. */
+  }
+  order = Array.isArray(order)
+    ? order.filter((id) => id !== 'rss')
+    : DEFAULT_ORDER.filter((id) => id !== 'rss');
+  if (!order.includes('mail')) order.push('mail');
+  order.splice(order.indexOf('mail'), 0, 'rss');
+  localStorage.setItem('order', JSON.stringify(order));
+  localStorage.setItem(
+    'widgetPlacement',
+    JSON.stringify({
+      ...(placement && typeof placement === 'object' && !Array.isArray(placement) ? placement : {}),
+      rss: 'center',
+    }),
+  );
+  localStorage.setItem('rssEnabled', 'false');
+  localStorage.setItem('rssCenteredDefaultOff', 'true');
+};
 const runMigrations = () => {
+  reseedRssLayout();
   retireMueLibrary();
   seedPercentageFallback();
   seedPercentageDoubleClick();

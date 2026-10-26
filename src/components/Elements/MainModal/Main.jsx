@@ -1,5 +1,5 @@
-import { Suspense, lazy, useState, memo, useEffect } from 'react';
-import variables from 'config/variables';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { Suspense, lazy, useState, memo, useEffect, useCallback } from 'react';
 
 import './scss/index.scss';
 import ModalLoader from './components/ModalLoader';
@@ -14,40 +14,17 @@ const TAB_COMPONENTS = {
 };
 
 function MainModal({ modalClose, deepLinkData }) {
+  useTranslationVersion();
   // A deep link wins on open, otherwise Settings.
   const initialTab = deepLinkData?.tab || TAB_TYPES.SETTINGS;
   const [currentTab, setCurrentTab] = useState(initialTab);
   const [currentSection, setCurrentSection] = useState('');
-  const [currentSectionName, setCurrentSectionName] = useState('');
+  const [currentSectionName, setCurrentSectionName] = useState(deepLinkData?.section || '');
   const [currentSubSection, setCurrentSubSection] = useState(deepLinkData?.subSection || null);
   const [productView, setProductView] = useState(null);
   const [resetDiscoverToAll, setResetDiscoverToAll] = useState(false);
   const [navigationTrigger, setNavigationTrigger] = useState(null);
   const [iframeBreadcrumbs, setIframeBreadcrumbs] = useState([]);
-
-  useEffect(() => {
-    setProductView(null);
-  }, [currentTab]);
-
-  // A deep link arriving while the modal is open switches tab.
-  useEffect(() => {
-    if (deepLinkData) {
-      if (deepLinkData.tab && deepLinkData.tab !== currentTab) {
-        setCurrentTab(deepLinkData.tab);
-      }
-
-      if (deepLinkData.tab === TAB_TYPES.SETTINGS && deepLinkData.section) {
-        setNavigationTrigger({
-          type: 'settings-section',
-          data: deepLinkData.section,
-          timestamp: Date.now(),
-        });
-        if (deepLinkData.subSection) {
-          setCurrentSubSection(deepLinkData.subSection);
-        }
-      }
-    }
-  }, [deepLinkData]);
 
   // Close drops the hash so the next open starts at the default tab.
   useEffect(() => {
@@ -126,18 +103,19 @@ function MainModal({ modalClose, deepLinkData }) {
   }, [currentTab]);
 
   const handleChangeTab = (newTab) => {
+    setProductView(null);
     setCurrentTab(newTab);
     updateHash(`#${newTab}`);
   };
 
-  const handleSectionChange = (section, sectionName) => {
-    setCurrentSection(section);
-    setCurrentSectionName(sectionName);
-    setCurrentSubSection(null);
-    if (currentTab === TAB_TYPES.SETTINGS && sectionName) {
-      updateHash(`#${currentTab}/${sectionName}`, false);
-    }
-  };
+  const handleSectionChange = useCallback(
+    (section, sectionName) => {
+      setCurrentSection(section);
+      setCurrentSectionName(sectionName);
+      if (sectionName !== currentSectionName) setCurrentSubSection(null);
+    },
+    [currentSectionName],
+  );
 
   const handleSubSectionChange = (subSection, sectionName) => {
     setCurrentSubSection(subSection);

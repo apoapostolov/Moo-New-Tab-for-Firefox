@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { requestOwner } from 'utils/requests';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { MdRefresh } from 'react-icons/md';
 
-import { getSurface } from 'utils/widgetSurface';
+import WidgetCard, { WidgetHeader } from 'components/Elements/WidgetCard/WidgetCard';
 import EventBus from 'utils/eventbus';
 
 import { loadItems, readCount, readFullArticle, readRefresh } from './feedStore';
@@ -33,29 +36,29 @@ const relative = (stamp) => {
   return new Date(stamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 };
 
-/**
- * Headlines from every feed in one list. Hovering a row opens a reader beside it:
- * the article itself when it is already kept, the feed's own summary until then, so
- * the digest is readable without leaving the new tab. With full articles on, the page
- * reads them while it stands rather than when the pointer arrives.
- */
+/** Merged headlines with a hover reader; full articles are prefetched when enabled. */
 const Rss = () => {
+  useTranslationVersion();
   const [feeds, setFeeds] = useState({ items: [], errors: [], loading: true });
   const [open, setOpen] = useState(null);
   const [article, setArticle] = useState({ status: 'idle' });
   const [tick, setTick] = useState(0);
   // Bumped whenever the article cache changes, so the thumbnails pick up new images.
-  const [stored, setStored] = useState(0);
+  const [, setStored] = useState(0);
 
+  const owner = useRef(requestOwner());
   const panel = useRef(null);
   const closeTimer = useRef(null);
   const articleTimer = useRef(null);
+  const articleRequest = useRef(null);
 
   const load = useCallback(async (force = false) => {
+    const request = owner.current.start();
     setFeeds((previous) => ({ ...previous, loading: previous.items.length === 0 }));
 
     try {
-      const result = await loadItems({ force });
+      const result = await loadItems({ force, signal: request.signal });
+      if (!request.current()) return;
 
       setFeeds({
         items: result.items.slice(0, readCount()),
@@ -63,6 +66,7 @@ const Rss = () => {
         loading: false,
       });
     } catch (error) {
+      if (!request.current()) return;
       setFeeds((previous) => ({
         ...previous,
         loading: false,
@@ -72,6 +76,7 @@ const Rss = () => {
   }, []);
 
   useEffect(() => {
+    const effectOwner = owner.current;
     load();
 
     const refresh = setInterval(() => load(true), readRefresh() * 60000);
@@ -83,6 +88,7 @@ const Rss = () => {
     EventBus.on('refresh', onRefresh);
 
     return () => {
+      effectOwner.cancel();
       clearInterval(refresh);
       clearInterval(ages);
       EventBus.off('refresh', onRefresh);
@@ -93,6 +99,7 @@ const Rss = () => {
     () => () => {
       clearTimeout(closeTimer.current);
       clearTimeout(articleTimer.current);
+      articleRequest.current?.abort();
     },
     [],
   );
@@ -119,6 +126,7 @@ const Rss = () => {
 
     const items = feeds.items;
     let stopped = false;
+    const controller = new AbortController();
 
     (async () => {
       for (const item of items) {
@@ -127,7 +135,9 @@ const Rss = () => {
         if (!item.link || readArticle(item.link)) continue;
 
         try {
-          storeArticle(item.link, await fetchArticle(item.link));
+          const fetched = await fetchArticle(item.link, { signal: controller.signal });
+          if (stopped) return;
+          storeArticle(item.link, fetched);
           if (!stopped) setStored((value) => value + 1);
         } catch {
           // Not every page can be read; the row keeps the feed's own summary.
@@ -137,10 +147,11 @@ const Rss = () => {
 
     return () => {
       stopped = true;
+      controller.abort();
     };
   }, [feeds.items]);
 
-  const thumbs = useMemo(() => {
+  const thumbs = (() => {
     const links = feeds.items.map((item) => item.link).filter(Boolean);
     const images = cachedImages(links);
     const out = {};
@@ -148,7 +159,7 @@ const Rss = () => {
     for (const item of feeds.items) out[item.link] = item.image || images[item.link] || null;
 
     return out;
-  }, [feeds.items, stored]);
+  })();
 
   const keep = () => {
     if (!closeTimer.current) return;
@@ -161,6 +172,7 @@ const Rss = () => {
     clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(() => {
       clearTimeout(articleTimer.current);
+      articleRequest.current?.abort();
       setOpen(null);
       setArticle({ status: 'idle' });
     }, 140);
@@ -169,6 +181,7 @@ const Rss = () => {
   const show = (item, element) => {
     keep();
     clearTimeout(articleTimer.current);
+    articleRequest.current?.abort();
     setOpen({ item, element });
 
     // Kept already: there is nothing to wait for, so nothing is shown waiting.
@@ -183,28 +196,26 @@ const Rss = () => {
     setArticle({ status: 'idle' });
 
     if (!readFullArticle()) return;
+    const controller = new AbortController();
+    articleRequest.current = controller;
 
     articleTimer.current = setTimeout(async () => {
       setArticle({ status: 'loading' });
 
       try {
-        const fetched = await fetchArticle(item.link);
+        const fetched = await fetchArticle(item.link, { signal: controller.signal });
+        if (controller.signal.aborted) return;
 
         storeArticle(item.link, fetched);
         setStored((value) => value + 1);
         setArticle({ status: 'ready', article: fetched });
       } catch {
-        setArticle({ status: 'unavailable' });
+        if (!controller.signal.aborted) setArticle({ status: 'unavailable' });
       }
     }, ARTICLE_DELAY);
   };
 
-  /**
-   * The panel is placed after it has been measured, and it stands beside the card rather than
-   * over it. The rule is the mail preview's, down to the numbers: the card's own half of the
-   * window decides the side, the panel is pinned to the middle of the window, and its height
-   * is the same share of the window — two panels that open from a row should not drift apart.
-   */
+  // Match the mail reader: beside the card and centred vertically in the viewport.
   useLayoutEffect(() => {
     const node = panel.current;
 
@@ -253,6 +264,14 @@ const Rss = () => {
         role="dialog"
         aria-label={open.item.title}
         onMouseEnter={keep}
+        tabIndex={0}
+        onFocus={keep}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            open.element?.focus();
+            setOpen(null);
+          }
+        }}
         onMouseLeave={hide}
       >
         <div className="rssReaderHead">
@@ -262,7 +281,9 @@ const Rss = () => {
 
         <h3 className="rssReaderTitle">{open.item.title}</h3>
 
-        {article.status === 'loading' ? <p className="rssReaderNote">Reading the article…</p> : null}
+        {article.status === 'loading' ? (
+          <p className="rssReaderNote">{uiText('reading_the_article_6a4e0f')}</p>
+        ) : null}
 
         {article.article?.image ? (
           <img className="rssReaderImage" src={article.article.image} alt="" loading="lazy" />
@@ -270,7 +291,10 @@ const Rss = () => {
 
         {blocks
           ? blocks.map((block, index) => (
-              <p className={`rssBlock rssBlock-${block.tag}`} key={`${index}-${block.text.slice(0, 24)}`}>
+              <p
+                className={`rssBlock rssBlock-${block.tag}`}
+                key={`${index}-${block.text.slice(0, 24)}`}
+              >
                 {block.text}
               </p>
             ))
@@ -281,12 +305,12 @@ const Rss = () => {
         ) : null}
 
         {article.status === 'unavailable' ? (
-          <p className="rssReaderNote">The article could not be read here.</p>
+          <p className="rssReaderNote">{uiText('the_article_could_not_be_read_here_70d641')}</p>
         ) : null}
 
         <footer className="rssReaderFoot">
           <a href={open.item.link} target="_blank" rel="noopener noreferrer">
-            Open article
+            {uiText('open_article_5899c6')}
           </a>
         </footer>
       </div>,
@@ -294,23 +318,28 @@ const Rss = () => {
     );
 
   return (
-    <section className={`rssWidget ${getSurface('rss')}`} aria-label="RSS headlines">
-      <header className="rssHead">
-        <span className="rssLabel">Reading</span>
+    <WidgetCard
+      as="section"
+      widget="rss"
+      className="rssWidget"
+      aria-label={uiText('rss_headlines_a9cbd7')}
+    >
+      <WidgetHeader className="rssHead">
+        <span className="rssLabel">{uiText('reading_cffa2a')}</span>
         <button
           className="rssRefresh"
           type="button"
-          aria-label="Refresh feeds"
+          aria-label={uiText('refresh_feeds_71e1bc')}
           onClick={() => load(true)}
         >
           <MdRefresh />
         </button>
-      </header>
+      </WidgetHeader>
 
-      {feeds.loading ? <p className="rssNote">Fetching headlines…</p> : null}
+      {feeds.loading ? <p className="rssNote">{uiText('fetching_headlines_1f9878')}</p> : null}
 
       {!feeds.loading && !feeds.items.length ? (
-        <p className="rssNote">No headlines yet. Add feeds in Settings, under RSS.</p>
+        <p className="rssNote">{uiText('no_headlines_yet_add_feeds_in_settings_under_2306de')}</p>
       ) : null}
 
       <ul className="rssList" onMouseLeave={hide}>
@@ -347,13 +376,18 @@ const Rss = () => {
       </ul>
 
       {failed.length ? (
-        <p className="rssNote rssNote-warn" title={failed.map((error) => `${error.url}: ${error.message}`).join('\n')}>
-          {failed.length === 1 ? '1 feed did not answer.' : `${failed.length} feeds did not answer.`}
+        <p
+          className="rssNote rssNote-warn"
+          title={failed.map((error) => `${error.url}: ${error.message}`).join('\n')}
+        >
+          {failed.length === 1
+            ? '1 feed did not answer.'
+            : `${failed.length} feeds did not answer.`}
         </p>
       ) : null}
 
       {reader}
-    </section>
+    </WidgetCard>
   );
 };
 

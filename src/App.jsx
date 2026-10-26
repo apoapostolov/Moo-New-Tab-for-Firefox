@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import Background from 'features/background/Background';
@@ -25,6 +26,10 @@ const useAppSetup = () => {
     }
 
     loadSettings();
+    const profileChanged = (event) => {
+      if (event.key === 'profileRevision' && event.newValue) window.location.reload();
+    };
+    window.addEventListener('storage', profileChanged);
 
     const refreshHandler = (data) => {
       if (data === 'other') {
@@ -38,25 +43,27 @@ const useAppSetup = () => {
 
     return () => {
       EventBus.off('refresh', refreshHandler);
+      window.removeEventListener('storage', profileChanged);
     };
   }, []);
 };
 
 const App = () => {
-  const [toastDisplayTime, setToastDisplayTime] = useState(2500);
-  const [showBackground, setShowBackground] = useState(false);
+  useTranslationVersion();
+  const [toastDisplayTime] = useState(
+    () => Number(localStorage.getItem('toastDisplayTime')) || 2500,
+  );
+  const [showBackground, setShowBackground] = useState(
+    () => localStorage.getItem('background') === 'true',
+  );
 
   useEffect(() => {
-    const storedToastDisplayTime = localStorage.getItem('toastDisplayTime');
-    const storedBackground = localStorage.getItem('background');
-
-    if (storedToastDisplayTime) {
-      setToastDisplayTime(parseInt(storedToastDisplayTime, 10));
-    }
-
-    if (storedBackground === 'true') {
-      setShowBackground(true);
-    }
+    const refresh = (category) => {
+      if (category === 'background')
+        setShowBackground(localStorage.getItem('background') === 'true');
+    };
+    EventBus.on('refresh', refresh);
+    return () => EventBus.off('refresh', refresh);
   }, []);
 
   useAppSetup();

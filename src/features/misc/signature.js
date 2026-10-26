@@ -47,7 +47,8 @@ const setSignature = (hex) => {
 
 const clampByte = (value) => Math.min(255, Math.max(0, Math.round(value)));
 
-const toHex = (r, g, b) => `#${[r, g, b].map((v) => clampByte(v).toString(16).padStart(2, '0')).join('')}`;
+const toHex = (r, g, b) =>
+  `#${[r, g, b].map((v) => clampByte(v).toString(16).padStart(2, '0')).join('')}`;
 
 const rgbToHsl = (r, g, b) => {
   const rn = r / 255;
@@ -160,7 +161,11 @@ const sample = async () => {
   if (!buckets.size) throw new Error('The background has no colour strong enough to take.');
 
   const winner = [...buckets.values()].sort((a, b) => b.weight - a.weight)[0];
-  const { h, s, l } = rgbToHsl(winner.r / winner.count, winner.g / winner.count, winner.b / winner.count);
+  const { h, s, l } = rgbToHsl(
+    winner.r / winner.count,
+    winner.g / winner.count,
+    winner.b / winner.count,
+  );
 
   // A near-monochrome picture still has to yield a colour you can pick out.
   const lifted = hslToRgb(h, Math.min(0.75, Math.max(0.28, s)), Math.min(0.66, Math.max(0.44, l)));

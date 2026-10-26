@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState } from 'react';
 
@@ -8,6 +9,7 @@ import { Row, Content, Action } from 'components/Layout/Settings/Item';
 /** The date renders inside the Time section, so this holds only its rows: the
  *  header and the show/hide switch belong to TimeOptions. */
 function DateOptions() {
+  useTranslationVersion();
   const [dateType, setDateType] = useState(localStorage.getItem('dateType') || 'long');
   const dateFormats = ['DMY', 'MDY', 'YMD'];
 

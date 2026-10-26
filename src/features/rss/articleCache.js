@@ -1,13 +1,4 @@
-/**
- * The pages behind the headlines, kept after they are read. The card lists a dozen
- * stories and the reader opens on hover, so fetching at that moment puts a request
- * between the pointer and the story. The page fills this while the new tab is open
- * instead, and the reader finds the article already there.
- *
- * An entry is kept only while the card is still showing its headline, and never past
- * the age the profile allows: a feed's items turn over, and a page kept for a story
- * nobody sees any more is bytes paid for nothing.
- */
+/** Prefetched articles. Keep only visible headlines, within the configured lifetime. */
 
 const CACHE_KEY = 'rssArticles';
 const TTL_KEY = 'rssArticleTtl';

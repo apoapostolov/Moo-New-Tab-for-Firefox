@@ -1,3 +1,4 @@
+import { fetchWithTimeout as fetch } from 'utils/requests';
 import { readRecent, rememberClip, pickUnseen } from './videoHistory';
 
 // Coverr's site API is undocumented, so responses are treated as untrusted:
@@ -69,6 +70,7 @@ export async function fetchCoverrVideo() {
         },
       };
     } catch {
+      // Try another catalogue page.
     }
   }
 

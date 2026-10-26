@@ -1,9 +1,12 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { Checkbox } from 'components/Form/Settings';
 import { Text, Dropdown } from 'components/Form/Settings';
 import { Row, Content, Action } from 'components/Layout/Settings/Item';
 
 const DisplaySettings = ({ usingImage }) => {
+  useTranslationVersion();
   return (
     <>
       <Row>
@@ -34,7 +37,7 @@ const DisplaySettings = ({ usingImage }) => {
           />
           <Text
             name="backgroundAutoChangeInterval"
-            title="Change interval (minutes)"
+            title={uiText('change_interval_minutes_c7a418')}
             default="60"
             placeholder="60"
           />

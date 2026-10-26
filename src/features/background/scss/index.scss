@@ -36,7 +36,9 @@
   height: 100vh;
   pointer-events: none;
   z-index: 0;
-  transition: backdrop-filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  transition:
+    backdrop-filter 0.3s ease-in-out,
+    background-color 0.3s ease-in-out;
 }
 
 .backgroundPreload {
@@ -76,9 +78,11 @@ body.bg-animated #backgroundOverlay {
   0% {
     transform: translate3d(0, 0, 0) scale(1.12);
   }
+
   50% {
     transform: translate3d(-1.5%, -0.8%, 0) scale(1.08);
   }
+
   100% {
     transform: translate3d(1.5%, 0.8%, 0) scale(1.04);
   }

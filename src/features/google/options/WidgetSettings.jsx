@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import {
@@ -74,6 +76,7 @@ const Section = ({ title, subtitle, children }) => (
  * "work and family but not birthdays".
  */
 const CalendarPicker = () => {
+  useTranslationVersion();
   const [calendars, setCalendars] = useState([]);
   const [selected, setSelected] = useState(readCalendarIds);
   const [primary, setPrimary] = useState(readPrimaryCalendar);
@@ -109,14 +112,12 @@ const CalendarPicker = () => {
 
   if (failed) {
     return (
-      <p className="gwEmpty">
-        Calendars could not be listed. Disconnect and connect again so Moo can read the calendar
-        list, then reload this page.
-      </p>
+      <p className="gwEmpty">{uiText('calendars_could_not_be_listed_disconnect_and_a35520')}</p>
     );
   }
 
-  if (!calendars.length) return <p className="gwEmpty">Reading your calendars…</p>;
+  if (!calendars.length)
+    return <p className="gwEmpty">{uiText('reading_your_calendars_e7d8b6')}</p>;
 
   return (
     <div className="gwCalendarPicker">
@@ -133,9 +134,12 @@ const CalendarPicker = () => {
                 checked={selected.includes(calendar.id)}
                 onChange={() => toggle(calendar.id)}
               />
-              <span className="gwDot" style={calendar.color ? { background: calendar.color } : {}} />
+              <span
+                className="gwDot"
+                style={calendar.color ? { background: calendar.color } : {}}
+              />
               <span className="gwCalendarName">{calendar.summary}</span>
-              {calendar.primary && <span className="gwMuted">primary</span>}
+              {calendar.primary && <span className="gwMuted">{uiText('primary_e3b7c9')}</span>}
             </label>
             <input
               type="checkbox"
@@ -150,11 +154,12 @@ const CalendarPicker = () => {
         );
       })}
       <span className="gwMuted">
-        {selected.length ? 'Only the ticked calendars are shown.' : 'Nothing ticked: only the primary calendar is shown.'}
+        {selected.length
+          ? 'Only the ticked calendars are shown.'
+          : 'Nothing ticked: only the primary calendar is shown.'}
       </span>
       <span className="gwMuted">
-        The box on the right is the calendar new events start in. Nothing ticked there: the last one
-        you used.
+        {uiText('the_box_on_the_right_is_the_calendar_new_even_2286a9')}
       </span>
     </div>
   );
@@ -162,6 +167,7 @@ const CalendarPicker = () => {
 
 /** One reusable tick list for the mail categories and the labels. */
 const OptionTicks = ({ options, selected, onToggle, empty }) => {
+  useTranslationVersion();
   if (!options.length) return <p className="gwEmpty">{empty}</p>;
 
   return (
@@ -186,6 +192,7 @@ const OptionTicks = ({ options, selected, onToggle, empty }) => {
 };
 
 const CategoryPicker = () => {
+  useTranslationVersion();
   const [selected, setSelected] = useState(readMailCategories);
 
   const toggle = (id) => {
@@ -212,6 +219,7 @@ const CategoryPicker = () => {
 };
 
 const FolderPicker = () => {
+  useTranslationVersion();
   const [labels, setLabels] = useState([]);
   const [failed, setFailed] = useState(false);
   const [selected, setSelected] = useState(readMailFolders);
@@ -235,7 +243,9 @@ const FolderPicker = () => {
   };
 
   if (failed) {
-    return <p className="gwEmpty">Folders could not be read. Reconnect Google and open this page again.</p>;
+    return (
+      <p className="gwEmpty">{uiText('folders_could_not_be_read_reconnect_google_an_a7fcda')}</p>
+    );
   }
 
   return (
@@ -249,6 +259,7 @@ const FolderPicker = () => {
 };
 
 const TaskListPicker = () => {
+  useTranslationVersion();
   const [lists, setLists] = useState([]);
 
   useEffect(() => {
@@ -272,7 +283,7 @@ const TaskListPicker = () => {
 
 /** Everything that only makes sense once an account is connected. */
 export const GoogleWidgetSettings = () => {
-
+  useTranslationVersion();
   // Nothing is open until one is picked: three sets of controls stacked on top of each other
   // made the page look like every option was already in play.
   const [tab, setTab] = useState(null);
@@ -291,31 +302,58 @@ export const GoogleWidgetSettings = () => {
         <Fragment key={tab}>
           <Row>
             <Content
-              title="Calendars shown"
-              subtitle="Which calendars feed the calendar widget."
+              title={uiText('calendars_shown_0b1365')}
+              subtitle={uiText('choose_which_calendars_appear_on_your_page_07fd10')}
             />
             <Action>
               <CalendarPicker />
             </Action>
           </Row>
-          <Section title="Range" subtitle="How far ahead the widget looks.">
-            <Dropdown name="googleCalendarRange" category="google" items={options(CALENDAR_RANGES)} />
+          <Section
+            title={uiText('range_a16c5b')}
+            subtitle={uiText('how_far_ahead_the_widget_looks_feda5c')}
+          >
+            <Dropdown
+              name="googleCalendarRange"
+              category="google"
+              items={options(CALENDAR_RANGES)}
+            />
           </Section>
-          <Section title="Events shown" subtitle="Upper limit for the whole range.">
+          <Section
+            title={uiText('events_shown_57f3eb')}
+            subtitle={uiText('the_most_events_to_show_at_once_6546bc')}
+          >
             <Dropdown name="googleCalendarMax" category="google" items={options(MAX_EVENTS)} />
           </Section>
-          <Section title="Event details" subtitle="What each line carries.">
+          <Section
+            title={uiText('event_details_bc2a9c')}
+            subtitle={uiText('choose_which_details_to_show_with_each_event_211d3b')}
+          >
             <Checkbox name="googleCalendarLocation" text="Location" category="google" />
             <Checkbox name="googleCalendarNotes" text="Notes" category="google" />
             <Checkbox name="googleCalendarDeclined" text="Declined events" category="google" />
-            <Checkbox name="googleCalendarHideAllDay" text="Hide all-day events" category="google" />
+            <Checkbox
+              name="googleCalendarHideAllDay"
+              text="Hide all-day events"
+              category="google"
+            />
           </Section>
-          <Section title="Layout" subtitle="How the agenda is drawn.">
+          <Section
+            title={uiText('layout_972ad8')}
+            subtitle={uiText('choose_how_to_group_events_and_show_their_tim_268cbd')}
+          >
             <Checkbox name="googleCalendarGroup" text="Group by day" category="google" />
             <Checkbox name="googleCalendar24Hour" text="24-hour times" category="google" />
           </Section>
-          <Section title="Refresh" subtitle="How often Google is asked again.">
-            <Dropdown name="googleCalendarRefresh" category="google" items={options(REFRESH_OPTIONS)} />
+          <Section
+            title={uiText('refresh_56e3ba')}
+            subtitle={uiText('how_often_to_check_for_updates_e7f165')}
+          >
+            <Dropdown
+              name="googleCalendarRefresh"
+              category="google"
+              items={options(REFRESH_OPTIONS)}
+            />
           </Section>
         </Fragment>
       );
@@ -325,32 +363,55 @@ export const GoogleWidgetSettings = () => {
       return (
         <Fragment key={tab}>
           <Row>
-            <Content title="Task list" subtitle="Which list the widget reads and writes." />
+            <Content
+              title={uiText('task_list_91c40a')}
+              subtitle={uiText('choose_where_to_view_and_add_tasks_a2c6f1')}
+            />
             <Action>
               <TaskListPicker />
             </Action>
           </Row>
-          <Section title="Sorting" subtitle="Order of the tasks that pass the filters.">
+          <Section
+            title={uiText('sorting_378e9e')}
+            subtitle={uiText('choose_the_order_of_your_tasks_1c693d')}
+          >
             <Dropdown name="googleTasksSort" category="google" items={options(TASK_SORTS)} />
             <Checkbox name="googleTasksGroup" text="Group by due date" category="google" />
           </Section>
-          <Section title="Filtering" subtitle="What is left out of the list.">
+          <Section
+            title={uiText('filtering_9075ed')}
+            subtitle={uiText('what_is_left_out_of_the_list_78c20b')}
+          >
             <Checkbox name="googleTasksCompleted" text="Show completed tasks" category="google" />
-            <Checkbox name="googleTasksHideUndated" text="Hide tasks without a date" category="google" />
+            <Checkbox
+              name="googleTasksHideUndated"
+              text="Hide tasks without a date"
+              category="google"
+            />
           </Section>
-          <Section title="Due dates" subtitle="Written as a countdown or as a date.">
+          <Section
+            title={uiText('due_dates_1e24cb')}
+            subtitle={uiText('written_as_a_countdown_or_as_a_date_13a7f9')}
+          >
             <Dropdown
               name="googleTasksDateStyle"
               category="google"
               items={options(TASK_DATE_STYLES)}
             />
           </Section>
-          <Section title="Details" subtitle="What each row shows.">
+          <Section title={uiText('details_dc3dec')} subtitle={uiText('what_each_row_shows_c9f5b1')}>
             <Checkbox name="googleTasksNotes" text="Notes" category="google" />
             <Dropdown name="googleTasksMax" category="google" items={options(MAX_ITEMS)} />
           </Section>
-          <Section title="Refresh" subtitle="How often Google is asked again.">
-            <Dropdown name="googleTasksRefresh" category="google" items={options(REFRESH_OPTIONS)} />
+          <Section
+            title={uiText('refresh_56e3ba')}
+            subtitle={uiText('how_often_to_check_for_updates_e7f165')}
+          >
+            <Dropdown
+              name="googleTasksRefresh"
+              category="google"
+              items={options(REFRESH_OPTIONS)}
+            />
           </Section>
         </Fragment>
       );
@@ -360,8 +421,8 @@ export const GoogleWidgetSettings = () => {
       <Fragment key={tab}>
         <Row>
           <Content
-            title="Inbox categories"
-            subtitle="Unticked categories are never fetched, so a promotions flood cannot push real mail out of the widget."
+            title={uiText('inbox_categories_41ffe8')}
+            subtitle={uiText('show_messages_from_these_gmail_categories_unt_9e4fb0')}
           />
           <Action>
             <CategoryPicker />
@@ -369,29 +430,43 @@ export const GoogleWidgetSettings = () => {
         </Row>
         <Row>
           <Content
-            title="Folders and labels"
-            subtitle="Also pull messages from these Gmail folders and labels. Nothing ticked leaves the widget on the categories above."
+            title={uiText('folders_and_labels_3d61b8')}
+            subtitle={uiText('include_messages_from_these_folders_and_label_35adee')}
           />
           <Action>
             <FolderPicker />
           </Action>
         </Row>
-        <Section title="Filter" subtitle="Which messages the widget lists.">
+        <Section
+          title={uiText('filter_d7decf')}
+          subtitle={uiText('which_messages_the_widget_lists_cb527b')}
+        >
           <Dropdown name="googleMailQuery" category="google" items={options(MAIL_QUERIES)} />
         </Section>
         <Row>
           <Content
-            title="Custom search"
-            subtitle="Overrides the filter above. Try from:ana@example.com or has:attachment is:unread."
+            title={uiText('custom_search_c6246f')}
+            subtitle={uiText('overrides_the_filter_above_try_from_ana_examp_b68846')}
           />
           <Action>
-            <Text name="googleMailCustomQuery" title="Gmail search" placeholder="from:ana@example.com" />
+            <Text
+              name="googleMailCustomQuery"
+              title={uiText('gmail_search_58ae54')}
+              placeholder={uiText('from_ana_example_com_522bd1')}
+              category="google"
+            />
           </Action>
         </Row>
-        <Section title="Messages shown" subtitle="Upper limit per refresh.">
+        <Section
+          title={uiText('messages_shown_d051d6')}
+          subtitle={uiText('the_most_messages_to_show_at_once_641f05')}
+        >
           <Dropdown name="googleMailMax" category="google" items={options(MAX_MAIL)} />
         </Section>
-        <Section title="First line" subtitle="Which field leads each message.">
+        <Section
+          title={uiText('first_line_ce405c')}
+          subtitle={uiText('show_the_sender_or_the_subject_first_1850d5')}
+        >
           <Dropdown
             name="googleMailPrimary"
             category="google"
@@ -401,7 +476,10 @@ export const GoogleWidgetSettings = () => {
             ]}
           />
         </Section>
-        <Section title="Detail" subtitle="Extra text and the unread indicator.">
+        <Section
+          title={uiText('detail_7c9a7c')}
+          subtitle={uiText('extra_text_and_the_unread_indicator_425e7c')}
+        >
           <Checkbox name="googleMailSnippet" text="Preview text" category="google" />
           <Dropdown
             name="googleMailBadge"
@@ -413,7 +491,10 @@ export const GoogleWidgetSettings = () => {
             ]}
           />
         </Section>
-        <Section title="Refresh" subtitle="How often Google is asked again.">
+        <Section
+          title={uiText('refresh_56e3ba')}
+          subtitle={uiText('how_often_to_check_for_updates_e7f165')}
+        >
           <Dropdown name="googleMailRefresh" category="google" items={options(REFRESH_OPTIONS)} />
         </Section>
       </Fragment>
@@ -424,15 +505,19 @@ export const GoogleWidgetSettings = () => {
     <>
       <Row>
         <Content
-          title="Widget settings"
+          title={uiText('widget_settings_02de30')}
           subtitle={
             tab
               ? 'These controls change what the widget shows.'
-              : 'Pick a widget to see the controls behind it.'
+              : 'Choose a widget to change what it shows.'
           }
         />
         <Action>
-          <div className="gwSegmented" role="tablist" aria-label="Which widget to configure">
+          <div
+            className="gwSegmented"
+            role="tablist"
+            aria-label={uiText('which_widget_to_configure_0ad894')}
+          >
             {tabs.map((entry) => (
               <button
                 key={entry.id}

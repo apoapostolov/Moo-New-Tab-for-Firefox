@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo, useState, useEffect } from 'react';
 import variables from 'config/variables';
 import { updateHash } from 'utils/deepLinking';
@@ -5,6 +6,7 @@ import EventBus from 'utils/eventbus';
 import { getAllBackgrounds } from 'utils/customBackgroundDB';
 
 function BackgroundImage() {
+  useTranslationVersion();
   const isCustomType = localStorage.getItem('backgroundType') === 'custom';
   const [customBackgrounds, setCustomBackgrounds] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

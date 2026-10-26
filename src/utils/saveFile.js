@@ -8,30 +8,15 @@ export function saveFile(data, filename = 'file', type = 'text/json') {
 
   const blob = new Blob([data], { type });
 
-  const event = document.createEvent('MouseEvents');
   const a = document.createElement('a');
 
   a.href = window.URL.createObjectURL(blob);
   a.download = filename;
   a.dataset.downloadurl = [type, a.download, a.href].join(':');
 
-  // Deprecated API: every one of these positional arguments is required.
-  event.initMouseEvent(
-    'click',
-    true,
-    false,
-    window,
-    0,
-    0,
-    0,
-    0,
-    0,
-    false,
-    false,
-    false,
-    false,
-    0,
-    null,
-  );
-  a.dispatchEvent(event);
+  document.body.append(a);
+  a.click();
+  a.remove();
+  // Let the browser start the download before releasing the blob.
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }

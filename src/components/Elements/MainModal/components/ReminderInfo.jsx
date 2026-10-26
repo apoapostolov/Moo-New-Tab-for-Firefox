@@ -1,7 +1,9 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { MdRefresh, MdClose } from 'react-icons/md';
 
 const ReminderInfo = ({ isVisible, onHide }) => {
+  useTranslationVersion();
   if (!isVisible) {
     return null;
   }

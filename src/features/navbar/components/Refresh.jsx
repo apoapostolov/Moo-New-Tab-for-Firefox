@@ -1,16 +1,24 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState, useEffect } from 'react';
 import { useT } from 'contexts/TranslationContext';
 import { MdRefresh } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
 import EventBus from 'utils/eventbus';
-import variables from 'config/variables';
 
 function Refresh() {
+  useTranslationVersion();
   const t = useT();
   const [refreshText, setRefreshText] = useState('');
   const [refreshOption, setRefreshOption] = useState(localStorage.getItem('refreshOption') || '');
 
   useEffect(() => {
+    const updateRefreshText = () => {
+      const key =
+        localStorage.getItem('refreshOption') === 'background'
+          ? 'modals.main.settings.sections.background.title'
+          : 'modals.main.settings.sections.appearance.navbar.refresh_options.page';
+      setRefreshText(t(key));
+    };
     const handleRefresh = (data) => {
       if (data === 'navbar' || data === 'background' || data === 'language') {
         setRefreshOption(localStorage.getItem('refreshOption'));
@@ -25,20 +33,6 @@ function Refresh() {
       EventBus.off('refresh', handleRefresh);
     };
   }, [t]);
-
-  function updateRefreshText() {
-    let text;
-    switch (localStorage.getItem('refreshOption')) {
-      case 'background':
-        text = t('modals.main.settings.sections.background.title');
-        break;
-      default:
-        text = t('modals.main.settings.sections.appearance.navbar.refresh_options.page');
-        break;
-    }
-
-    setRefreshText(text);
-  }
 
   function refresh() {
     switch (refreshOption) {

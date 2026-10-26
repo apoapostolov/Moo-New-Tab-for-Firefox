@@ -1,7 +1,10 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 
 function DateSkeleton() {
-  return <span className="date">Thursday January 1st</span>;
+  useTranslationVersion();
+  return <span className="date">{uiText('thursday_january_1st_157956')}</span>;
 }
 
 export default memo(DateSkeleton);

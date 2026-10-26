@@ -1,5 +1,7 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
-import { memo, useState, useCallback, useRef } from 'react';
+import { memo, useState, useCallback, useRef, useEffect, useContext } from 'react';
+import { RowLabelContext } from 'components/Layout/Settings/Item/SettingsItem';
 import { toast } from 'react-toastify';
 import { MdRefresh } from 'react-icons/md';
 
@@ -8,8 +10,11 @@ import EventBus from 'utils/eventbus';
 import './Slider.scss';
 
 const SliderComponent = memo((props) => {
+  useTranslationVersion();
+  const rowLabel = useContext(RowLabelContext);
   const [value, setValue] = useState(localStorage.getItem(props.name) || props.default);
   const animationRef = useRef(null);
+  useEffect(() => () => cancelAnimationFrame(animationRef.current), []);
 
   const handleChange = useCallback(
     (e) => {
@@ -56,7 +61,8 @@ const SliderComponent = memo((props) => {
       const easeOutCubic = 1 - Math.pow(1 - progress, 3);
 
       const currentValue = startValue + (endValue - startValue) * easeOutCubic;
-      const roundedValue = Math.round(currentValue / (Number(props.step) || 1)) * (Number(props.step) || 1);
+      const roundedValue =
+        Math.round(currentValue / (Number(props.step) || 1)) * (Number(props.step) || 1);
 
       localStorage.setItem(props.name, roundedValue);
       setValue(roundedValue);
@@ -81,10 +87,10 @@ const SliderComponent = memo((props) => {
     <div className="slider-container">
       <div className="slider-header">
         <span className="slider-value">{Number(value)}</span>
-        <span className="slider-reset" onClick={resetItem}>
+        <button type="button" className="slider-reset" onClick={resetItem}>
           <MdRefresh />
           {variables.getMessage('modals.main.settings.buttons.reset')}
-        </span>
+        </button>
       </div>
       <div className="slider-wrapper">
         <input
@@ -96,7 +102,8 @@ const SliderComponent = memo((props) => {
           max={Number(props.max)}
           step={Number(props.step) || 1}
           style={{ '--slider-percentage': `${percentage}%` }}
-          aria-label={props.title}
+          aria-label={props.title || props.name}
+          aria-labelledby={!props.title && rowLabel ? rowLabel : undefined}
           aria-valuemin={Number(props.min)}
           aria-valuemax={Number(props.max)}
           aria-valuenow={Number(value)}

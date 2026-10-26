@@ -1,9 +1,11 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 import { Checkbox } from 'components/Form/Settings';
 import { Header, Content } from '../Layout';
 
 function OfflineMode() {
+  useTranslationVersion();
   return (
     <>
       <Checkbox
@@ -19,6 +21,7 @@ function OfflineMode() {
 }
 
 function Links() {
+  useTranslationVersion();
   return (
     <>
       <span className="title">
@@ -48,6 +51,7 @@ function Links() {
 }
 
 function PrivacyOptions() {
+  useTranslationVersion();
   return (
     <Content>
       <Header

@@ -1,8 +1,10 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import languages from '@/i18n/languages.json';
 import { Header, Content } from '../Layout';
 
 function Final(props) {
+  useTranslationVersion();
   return (
     <Content>
       <Header

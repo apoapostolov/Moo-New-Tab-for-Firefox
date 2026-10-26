@@ -13,7 +13,7 @@
     }
   }
 
-  animation: $animations;
+  animation: #{$animations};
 }
 
 @mixin keyframes($animationName) {

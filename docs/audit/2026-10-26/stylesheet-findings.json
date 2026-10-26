@@ -1,0 +1,2585 @@
+[
+  {
+    "file": "src/scss/index.scss",
+    "line": 80,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 211,
+    "severity": "error",
+    "rule": "font-family-name-quotes",
+    "text": "Unexpected quotes around \"Inter\" (font-family-name-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 223,
+    "severity": "error",
+    "rule": "font-family-name-quotes",
+    "text": "Unexpected quotes around \"Inter\" (font-family-name-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 233,
+    "severity": "error",
+    "rule": "font-family-name-quotes",
+    "text": "Unexpected quotes around \"Inter\" (font-family-name-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 244,
+    "severity": "error",
+    "rule": "font-family-name-quotes",
+    "text": "Unexpected quotes around \"Inter\" (font-family-name-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 257,
+    "severity": "error",
+    "rule": "font-family-name-quotes",
+    "text": "Unexpected quotes around \"Inter\" (font-family-name-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 189,
+    "severity": "error",
+    "rule": "function-url-quotes",
+    "text": "Expected quotes around \"url\" function argument (function-url-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 202,
+    "severity": "error",
+    "rule": "function-url-quotes",
+    "text": "Expected quotes around \"url\" function argument (function-url-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 216,
+    "severity": "error",
+    "rule": "function-url-quotes",
+    "text": "Expected quotes around \"url\" function argument (function-url-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 228,
+    "severity": "error",
+    "rule": "function-url-quotes",
+    "text": "Expected quotes around \"url\" function argument (function-url-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 238,
+    "severity": "error",
+    "rule": "function-url-quotes",
+    "text": "Expected quotes around \"url\" function argument (function-url-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 249,
+    "severity": "error",
+    "rule": "function-url-quotes",
+    "text": "Expected quotes around \"url\" function argument (function-url-quotes)"
+  },
+  {
+    "file": "src/scss/index.scss",
+    "line": 262,
+    "severity": "error",
+    "rule": "function-url-quotes",
+    "text": "Expected quotes around \"url\" function argument (function-url-quotes)"
+  },
+  {
+    "file": "src/scss/_error.scss",
+    "line": 1,
+    "severity": "error",
+    "rule": "no-empty-source",
+    "text": "Unexpected empty source (no-empty-source)"
+  },
+  {
+    "file": "src/scss/_mixins.scss",
+    "line": 16,
+    "severity": "error",
+    "rule": "scss/dollar-variable-no-missing-interpolation",
+    "text": "Expected variable $animations to be interpolated when using it with animation (scss/dollar-variable-no-missing-interpolation)"
+  },
+  {
+    "file": "src/scss/_signature.scss",
+    "line": 11,
+    "severity": "error",
+    "rule": "color-hex-length",
+    "text": "Expected \"#ffffff\" to be \"#fff\" (color-hex-length)"
+  },
+  {
+    "file": "src/scss/_signature.scss",
+    "line": 8,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/scss/_signature.scss",
+    "line": 10,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/scss/_toast.scss",
+    "line": 11,
+    "severity": "error",
+    "rule": "scss/at-mixin-argumentless-call-parentheses",
+    "text": "Unexpected parentheses in argumentless mixin \"themed\" call (scss/at-mixin-argumentless-call-parentheses)"
+  },
+  {
+    "file": "src/scss/_toast.scss",
+    "line": 41,
+    "severity": "error",
+    "rule": "scss/at-mixin-argumentless-call-parentheses",
+    "text": "Unexpected parentheses in argumentless mixin \"themed\" call (scss/at-mixin-argumentless-call-parentheses)"
+  },
+  {
+    "file": "src/scss/_toast.scss",
+    "line": 47,
+    "severity": "error",
+    "rule": "scss/at-mixin-argumentless-call-parentheses",
+    "text": "Unexpected parentheses in argumentless mixin \"themed\" call (scss/at-mixin-argumentless-call-parentheses)"
+  },
+  {
+    "file": "src/scss/_toast.scss",
+    "line": 66,
+    "severity": "error",
+    "rule": "scss/at-mixin-argumentless-call-parentheses",
+    "text": "Unexpected parentheses in argumentless mixin \"themed\" call (scss/at-mixin-argumentless-call-parentheses)"
+  },
+  {
+    "file": "src/scss/_toast.scss",
+    "line": 90,
+    "severity": "error",
+    "rule": "scss/at-mixin-argumentless-call-parentheses",
+    "text": "Unexpected parentheses in argumentless mixin \"themed\" call (scss/at-mixin-argumentless-call-parentheses)"
+  },
+  {
+    "file": "src/scss/_toast.scss",
+    "line": 18,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-backdrop-filter\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 346,
+    "severity": "error",
+    "rule": "scss/at-mixin-pattern",
+    "text": "Expected mixin name \"basicIconButton\" to be kebab-case (scss/at-mixin-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 433,
+    "severity": "error",
+    "rule": "scss/at-mixin-pattern",
+    "text": "Expected mixin name \"legacyIconButton\" to be kebab-case (scss/at-mixin-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 100,
+    "severity": "error",
+    "rule": "scss/dollar-variable-empty-line-before",
+    "text": "Unexpected empty line before $-variable (scss/dollar-variable-empty-line-before)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 6,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"glassBackground\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 7,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"glassBorder\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 8,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"glassShadow\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 9,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"boxShadow\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 10,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"borderRadius\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 13,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"btn-backgroundHover\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 14,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"subColor\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 18,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"modal-sidebarActive\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 21,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"modal-secondaryColour\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 22,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"slightGradient\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 158,
+    "severity": "error",
+    "rule": "scss/percent-placeholder-pattern",
+    "text": "Expected placeholder name \"widgetCard\" to be kebab-case (scss/percent-placeholder-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 230,
+    "severity": "error",
+    "rule": "scss/percent-placeholder-pattern",
+    "text": "Expected placeholder name \"tabText\" to be kebab-case (scss/percent-placeholder-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 250,
+    "severity": "error",
+    "rule": "scss/percent-placeholder-pattern",
+    "text": "Expected placeholder name \"tabText\" to be kebab-case (scss/percent-placeholder-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 284,
+    "severity": "error",
+    "rule": "scss/percent-placeholder-pattern",
+    "text": "Expected placeholder name \"tabText\" to be kebab-case (scss/percent-placeholder-pattern)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 196,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "line": 268,
+    "severity": "error",
+    "rule": "font-family-name-quotes",
+    "text": "Unexpected quotes around \"Inter\" (font-family-name-quotes)"
+  },
+  {
+    "file": "src/features/aiask/aiask.scss",
+    "line": 11,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/aiask/aiask.scss",
+    "line": 155,
+    "severity": "error",
+    "rule": "media-feature-range-notation",
+    "text": "Expected \"context\" media feature range notation (media-feature-range-notation)"
+  },
+  {
+    "file": "src/features/google/google.scss",
+    "line": 197,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/google/google.scss",
+    "line": 370,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/google/google.scss",
+    "line": 448,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/google/google.scss",
+    "line": 372,
+    "severity": "error",
+    "rule": "declaration-block-no-redundant-longhand-properties",
+    "text": "Expected shorthand property \"overflow\" (declaration-block-no-redundant-longhand-properties)"
+  },
+  {
+    "file": "src/features/google/google.scss",
+    "line": 7,
+    "severity": "error",
+    "rule": "keyframes-name-pattern",
+    "text": "Expected keyframe name \"googleWidgetIn\" to be kebab-case (keyframes-name-pattern)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.05\" to be \"5%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 114,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.4\" to be \"40%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 123,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.8\" to be \"80%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 124,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 418,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.03\" to be \"3%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 427,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.35\" to be \"35%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 432,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.08\" to be \"8%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 433,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.03\" to be \"3%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 434,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.01\" to be \"1%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 441,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.65\" to be \"65%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 453,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.9\" to be \"90%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 454,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.02\" to be \"2%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 471,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.6\" to be \"60%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 497,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.03\" to be \"3%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 498,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.08\" to be \"8%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 506,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.06\" to be \"6%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 507,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.12\" to be \"12%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 511,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.7\" to be \"70%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 524,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.4\" to be \"40%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 537,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.9\" to be \"90%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 545,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.08\" to be \"8%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 551,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 585,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.5\" to be \"50%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 604,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.15\" to be \"15%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 605,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.05\" to be \"5%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 618,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 619,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.25\" to be \"25%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 628,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.15\" to be \"15%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 629,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.4\" to be \"40%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 653,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.5\" to be \"50%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 657,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 658,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.2\" to be \"20%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 663,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.9\" to be \"90%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 687,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 708,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 719,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.9\" to be \"90%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 114,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 123,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 124,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 418,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 427,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 432,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 433,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 434,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 441,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 453,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 454,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 471,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 497,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 498,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 506,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 507,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 511,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 524,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 537,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 545,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 551,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 585,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 604,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 605,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 618,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 619,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 628,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 629,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 653,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 657,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 658,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 663,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 687,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 708,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 719,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 114,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 123,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 124,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 418,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 427,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 432,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 433,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 434,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 441,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 453,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 454,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 471,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 497,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 498,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 506,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 507,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 511,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 524,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 537,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 545,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 551,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 585,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 604,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 605,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 618,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 619,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 628,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 629,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 653,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 657,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 658,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 663,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 687,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 708,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 719,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 461,
+    "severity": "error",
+    "rule": "rule-empty-line-before",
+    "text": "Expected empty line before rule (rule-empty-line-before)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 469,
+    "severity": "error",
+    "rule": "rule-empty-line-before",
+    "text": "Expected empty line before rule (rule-empty-line-before)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 640,
+    "severity": "error",
+    "rule": "rule-empty-line-before",
+    "text": "Expected empty line before rule (rule-empty-line-before)"
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "line": 644,
+    "severity": "error",
+    "rule": "rule-empty-line-before",
+    "text": "Expected empty line before rule (rule-empty-line-before)"
+  },
+  {
+    "file": "src/features/scratch/scratchImages.scss",
+    "line": 45,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/scratch/scratchImages.scss",
+    "line": 57,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/scratch/scratchImages.scss",
+    "line": 5,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/scratch/scratchImages.scss",
+    "line": 6,
+    "severity": "error",
+    "rule": "keyframes-name-pattern",
+    "text": "Expected keyframe name \"scratchImageIn\" to be kebab-case (keyframes-name-pattern)"
+  },
+  {
+    "file": "src/features/scratch/scratchNotes.scss",
+    "line": 65,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/scratch/scratchNotes.scss",
+    "line": 18,
+    "severity": "error",
+    "rule": "keyframes-name-pattern",
+    "text": "Expected keyframe name \"scratchNoteIn\" to be kebab-case (keyframes-name-pattern)"
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "line": 37,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "line": 44,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "line": 64,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "line": 67,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "line": 126,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "line": 115,
+    "severity": "error",
+    "rule": "keyframes-name-pattern",
+    "text": "Expected keyframe name \"clockProgressFill\" to be kebab-case (keyframes-name-pattern)"
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "line": 53,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "line": 63,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/features/weather/weather.scss",
+    "line": 29,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/weather/weather.scss",
+    "line": 1,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-whitespace-inside",
+    "text": "Expected a space after // (scss/double-slash-comment-whitespace-inside)"
+  },
+  {
+    "file": "src/features/weather/weather.scss",
+    "line": 56,
+    "severity": "error",
+    "rule": "shorthand-property-no-redundant-values",
+    "text": "Expected \"10px 20px 6px 20px\" to be \"10px 20px 6px\" (shorthand-property-no-redundant-values)"
+  },
+  {
+    "file": "src/features/weather/weather.scss",
+    "line": 273,
+    "severity": "error",
+    "rule": "shorthand-property-no-redundant-values",
+    "text": "Expected \"0 20px 12px 20px\" to be \"0 20px 12px\" (shorthand-property-no-redundant-values)"
+  },
+  {
+    "file": "src/features/welcome/welcome.scss",
+    "line": 216,
+    "severity": "error",
+    "rule": "declaration-block-no-duplicate-properties",
+    "text": "Unexpected duplicate \"width\" (declaration-block-no-duplicate-properties)"
+  },
+  {
+    "file": "src/features/welcome/welcome.scss",
+    "line": 323,
+    "severity": "error",
+    "rule": "declaration-block-no-duplicate-properties",
+    "text": "Unexpected duplicate \"backdrop-filter\" (declaration-block-no-duplicate-properties)"
+  },
+  {
+    "file": "src/features/welcome/welcome.scss",
+    "line": 33,
+    "severity": "error",
+    "rule": "property-no-deprecated",
+    "text": "Expected \"grid-gap\" to be \"gap\" (property-no-deprecated)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 79,
+    "severity": "error",
+    "rule": "rule-empty-line-before",
+    "text": "Expected empty line before rule (rule-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 82,
+    "severity": "error",
+    "rule": "rule-empty-line-before",
+    "text": "Expected empty line before rule (rule-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 5,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#backgroundImage\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 16,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#backgroundOverlay\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 31,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#backgroundFilterOverlay\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 46,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#backgroundVideo\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 55,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#backgroundImage\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 56,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#backgroundOverlay\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 66,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#backgroundImage\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "line": 67,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#backgroundOverlay\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 56,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.08\" to be \"8%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 59,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.3\" to be \"30%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.2\" to be \"20%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 56,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 59,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 56,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 59,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 58,
+    "severity": "error",
+    "rule": "rule-empty-line-before",
+    "text": "Expected empty line before rule (rule-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 73,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#rbgcp-R-input-dark\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 74,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#rbgcp-G-input-dark\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 75,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#rbgcp-B-input-dark\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 76,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#rbgcp-A-input-dark\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 135,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#rbgcp-R-input-wrapper-dark\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 136,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#rbgcp-G-input-wrapper-dark\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 137,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#rbgcp-B-input-wrapper-dark\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "line": 138,
+    "severity": "error",
+    "rule": "selector-id-pattern",
+    "text": "Expected id selector \"#rbgcp-A-input-wrapper-dark\" to be kebab-case (selector-id-pattern)"
+  },
+  {
+    "file": "src/features/background/scss/_photoinformation.scss",
+    "line": 225,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/_photoinformation.scss",
+    "line": 325,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/_photoinformation.scss",
+    "line": 350,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/_photoinformation.scss",
+    "line": 517,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/_photoinformation.scss",
+    "line": 539,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/_photoinformation.scss",
+    "line": 238,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/features/background/scss/_photoinformation.scss",
+    "line": 474,
+    "severity": "error",
+    "rule": "keyframes-name-pattern",
+    "text": "Expected keyframe name \"fadeIn\" to be kebab-case (keyframes-name-pattern)"
+  },
+  {
+    "file": "src/features/misc/sections/Appearance.scss",
+    "line": 7,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/features/misc/sections/Appearance.scss",
+    "line": 18,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/features/navbar/scss/index.scss",
+    "line": 22,
+    "severity": "error",
+    "rule": "keyframes-name-pattern",
+    "text": "Expected keyframe name \"fadeIn\" to be kebab-case (keyframes-name-pattern)"
+  },
+  {
+    "file": "src/features/navbar/scss/_apps.scss",
+    "line": 3,
+    "severity": "error",
+    "rule": "scss/dollar-variable-pattern",
+    "text": "Expected variable name \"appsWidth\" to be kebab-case (scss/dollar-variable-pattern)"
+  },
+  {
+    "file": "src/features/navbar/scss/_apps.scss",
+    "line": 9,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/index.scss",
+    "line": 44,
+    "severity": "error",
+    "rule": "declaration-block-no-shorthand-property-overrides",
+    "text": "Unexpected shorthand \"transition\" after \"transition-timing-function\" (declaration-block-no-shorthand-property-overrides)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/index.scss",
+    "line": 107,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/index.scss",
+    "line": 107,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-backdrop-filter\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/components/Form/Settings/Checkbox/Checkbox.scss",
+    "line": 77,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Checkbox/Checkbox.scss",
+    "line": 77,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Checkbox/Checkbox.scss",
+    "line": 77,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/ChipSelect.scss",
+    "line": 89,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/ChipSelect.scss",
+    "line": 127,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.15\" to be \"15%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/ChipSelect.scss",
+    "line": 89,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/ChipSelect.scss",
+    "line": 127,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/ChipSelect.scss",
+    "line": 89,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/ChipSelect.scss",
+    "line": 127,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Dropdown/Dropdown.scss",
+    "line": 159,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.15\" to be \"15%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Dropdown/Dropdown.scss",
+    "line": 142,
+    "severity": "error",
+    "rule": "at-rule-empty-line-before",
+    "text": "Expected empty line before at-rule (at-rule-empty-line-before)"
+  },
+  {
+    "file": "src/components/Form/Settings/Dropdown/Dropdown.scss",
+    "line": 153,
+    "severity": "error",
+    "rule": "at-rule-empty-line-before",
+    "text": "Expected empty line before at-rule (at-rule-empty-line-before)"
+  },
+  {
+    "file": "src/components/Form/Settings/Dropdown/Dropdown.scss",
+    "line": 159,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Dropdown/Dropdown.scss",
+    "line": 159,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Radio/Radio.scss",
+    "line": 123,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Radio/Radio.scss",
+    "line": 132,
+    "severity": "error",
+    "rule": "at-rule-empty-line-before",
+    "text": "Expected empty line before at-rule (at-rule-empty-line-before)"
+  },
+  {
+    "file": "src/components/Form/Settings/Radio/Radio.scss",
+    "line": 123,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Radio/Radio.scss",
+    "line": 123,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 79,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.2\" to be \"20%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.3\" to be \"30%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 98,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.2\" to be \"20%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 108,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.3\" to be \"30%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 118,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.2\" to be \"20%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 128,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.2\" to be \"20%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 79,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 98,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 108,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 118,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 128,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 79,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 88,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 98,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 108,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 118,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 128,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 52,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-appearance\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "line": 72,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-appearance\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/components/Form/Settings/Switch/Switch.scss",
+    "line": 52,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.2\" to be \"20%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Switch/Switch.scss",
+    "line": 52,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Form/Settings/Switch/Switch.scss",
+    "line": 52,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 51,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.04\" to be \"4%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 55,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.04\" to be \"4%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 59,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.06\" to be \"6%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 86,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.06\" to be \"6%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 91,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.06\" to be \"6%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 96,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.1\" to be \"10%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 51,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 55,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 59,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 86,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 91,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 96,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 51,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 55,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 59,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 86,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 91,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "line": 96,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_modalTabContent.scss",
+    "line": 15,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_modalTabContent.scss",
+    "line": 32,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_modalTabContent.scss",
+    "line": 99,
+    "severity": "error",
+    "rule": "media-feature-range-notation",
+    "text": "Expected \"context\" media feature range notation (media-feature-range-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_modalTabContent.scss",
+    "line": 121,
+    "severity": "error",
+    "rule": "property-no-deprecated",
+    "text": "Expected \"grid-gap\" to be \"gap\" (property-no-deprecated)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_sidebar.scss",
+    "line": 11,
+    "severity": "error",
+    "rule": "declaration-block-no-redundant-longhand-properties",
+    "text": "Expected shorthand property \"overflow\" (declaration-block-no-redundant-longhand-properties)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_topBar.scss",
+    "line": 12,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_topBar.scss",
+    "line": 82,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Expected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_topBar.scss",
+    "line": 99,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Expected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_topBar.scss",
+    "line": 108,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Expected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_topBar.scss",
+    "line": 12,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-backdrop-filter\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_topBar.scss",
+    "line": 10,
+    "severity": "error",
+    "rule": "shorthand-property-no-redundant-values",
+    "text": "Expected \"1.5rem 1.5rem\" to be \"1.5rem\" (shorthand-property-no-redundant-values)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 120,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.5\" to be \"50%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 130,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.9\" to be \"90%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 144,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.4\" to be \"40%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 145,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.3\" to be \"30%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 163,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.9\" to be \"90%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 221,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.9\" to be \"90%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 417,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.15\" to be \"15%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 435,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.5\" to be \"50%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 120,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 130,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 144,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 145,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 163,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 221,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 417,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 435,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 120,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 130,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 144,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 145,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 163,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 221,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 417,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 435,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 7,
+    "severity": "error",
+    "rule": "property-no-deprecated",
+    "text": "Expected \"grid-gap\" to be \"gap\" (property-no-deprecated)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 209,
+    "severity": "error",
+    "rule": "property-no-deprecated",
+    "text": "Expected \"word-wrap\" to be \"overflow-wrap\" (property-no-deprecated)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 254,
+    "severity": "error",
+    "rule": "property-no-deprecated",
+    "text": "Expected \"grid-gap\" to be \"gap\" (property-no-deprecated)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 285,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-user-select\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "line": 407,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-user-select\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/_main.scss",
+    "line": 98,
+    "severity": "error",
+    "rule": "shorthand-property-no-redundant-values",
+    "text": "Expected \"25px 0 15px 0\" to be \"25px 0 15px\" (shorthand-property-no-redundant-values)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_about.scss",
+    "line": 43,
+    "severity": "error",
+    "rule": "keyframes-name-pattern",
+    "text": "Expected keyframe name \"fadeIn\" to be kebab-case (keyframes-name-pattern)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_about.scss",
+    "line": 48,
+    "severity": "error",
+    "rule": "rule-empty-line-before",
+    "text": "Expected empty line before rule (rule-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 733,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 736,
+    "severity": "error",
+    "rule": "scss/double-slash-comment-empty-line-before",
+    "text": "Expected empty line before comment (scss/double-slash-comment-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 84,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.15\" to be \"15%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 114,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.6\" to be \"60%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 118,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.3\" to be \"30%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 202,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.6\" to be \"60%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 217,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.8\" to be \"80%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 272,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.9\" to be \"90%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 281,
+    "severity": "error",
+    "rule": "alpha-value-notation",
+    "text": "Expected \"0.3\" to be \"30%\" (alpha-value-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 84,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 114,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 118,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 202,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 217,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 272,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 281,
+    "severity": "error",
+    "rule": "color-function-alias-notation",
+    "text": "Expected \"rgba\" to be \"rgb\" (color-function-alias-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 84,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 114,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 118,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 202,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 217,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 272,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 281,
+    "severity": "error",
+    "rule": "color-function-notation",
+    "text": "Expected modern color-function notation (color-function-notation)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 690,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 757,
+    "severity": "error",
+    "rule": "comment-empty-line-before",
+    "text": "Expected empty line before comment (comment-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 13,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Unexpected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 64,
+    "severity": "error",
+    "rule": "declaration-empty-line-before",
+    "text": "Expected empty line before declaration (declaration-empty-line-before)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 7,
+    "severity": "error",
+    "rule": "property-no-deprecated",
+    "text": "Expected \"grid-gap\" to be \"gap\" (property-no-deprecated)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 115,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-backdrop-filter\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 203,
+    "severity": "error",
+    "rule": "property-no-vendor-prefix",
+    "text": "Unexpected vendor-prefixed property \"-webkit-backdrop-filter\" (property-no-vendor-prefix)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 617,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 619,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 771,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 779,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 792,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 793,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 807,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 827,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 849,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "line": 864,
+    "severity": "error",
+    "rule": "value-keyword-case",
+    "text": "Expected \"currentColor\" to be \"currentcolor\" (value-keyword-case)"
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_stats.scss",
+    "line": 19,
+    "severity": "error",
+    "rule": "property-no-deprecated",
+    "text": "Expected \"grid-gap\" to be \"gap\" (property-no-deprecated)"
+  }
+]

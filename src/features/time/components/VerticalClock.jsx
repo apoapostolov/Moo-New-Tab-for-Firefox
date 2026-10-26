@@ -1,4 +1,6 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 function VerticalClock({ finalHour, finalMinute, finalSeconds, onDoubleClick }) {
+  useTranslationVersion();
   const hourColour = localStorage.getItem('hourColour') || '#fff';
   const minuteColour = localStorage.getItem('minuteColour') || '#fff';
   const secondColour = localStorage.getItem('secondColour') || '#fff';

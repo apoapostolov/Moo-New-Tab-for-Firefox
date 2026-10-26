@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState, useMemo } from 'react';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 import languages from '@/i18n/languages.json';
@@ -9,6 +11,7 @@ import { Radio, SearchInput } from 'components/Form/Settings';
 import { Header, Content } from '../Layout';
 
 function ChooseLanguage() {
+  useTranslationVersion();
   const t = useT();
   const { language: currentLanguage, changeLanguage } = useTranslation();
   const title = t('modals.welcome.sections.language.title');
@@ -83,13 +86,14 @@ function ChooseLanguage() {
           <>
             {description}{' '}
             <a
-              href={variables.constants.TRANSLATIONS_URL}
+              href={`${variables.constants.REPO_URL}/tree/main/src/i18n/locales`}
               className="link"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2em' }}
             >
-              GitHub <MdOutlineOpenInNew />
+              {uiText('github_5442e2')}
+              <MdOutlineOpenInNew />
             </a>
           </>
         }

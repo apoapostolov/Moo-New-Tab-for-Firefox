@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState } from 'react';
 import ColorPicker from 'react-best-gradient-color-picker';
@@ -9,6 +10,7 @@ import EventBus from 'utils/eventbus';
 import '../scss/_colourpicker.scss';
 
 const ColourOptions = () => {
+  useTranslationVersion();
   const [colour, setColour] = useState(
     localStorage.getItem('customBackgroundColour') || 'rgba(0, 0, 0, 100)',
   );
@@ -25,7 +27,6 @@ const ColourOptions = () => {
     toast(variables.getMessage('toasts.reset'));
     EventBus.emit('refresh', 'background');
   };
-
 
   return (
     <Row final={true}>

@@ -1,16 +1,14 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
-import { FileUpload } from 'components/Form/Settings';
-import { MdCloudUpload } from 'react-icons/md';
-import { importSettings as importSettingsFunction } from 'utils/settings';
+import BackupImport from 'features/misc/sections/BackupImport';
 import { Header, Content } from '../Layout';
 import default_settings from 'utils/data/default_settings.json';
 
 function ImportSettings(props) {
-  const importSettings = (e) => {
-    importSettingsFunction(e, true);
-
+  useTranslationVersion();
+  const imported = (backup) => {
     const settings = [];
-    const data = JSON.parse(e);
+    const data = backup.settings;
     Object.keys(data).forEach((setting) => {
       // Language and theme are shown in the first step; the rest are internal only.
       if (
@@ -45,16 +43,7 @@ function ImportSettings(props) {
         title={variables.getMessage('modals.welcome.sections.settings.title')}
         subtitle={variables.getMessage('modals.welcome.sections.settings.description')}
       />
-      <button className="upload" onClick={() => document.getElementById('file-input').click()}>
-        <MdCloudUpload />
-        <span>{variables.getMessage('modals.main.settings.buttons.import')}</span>
-      </button>
-      <FileUpload
-        id="file-input"
-        accept="application/json"
-        type="settings"
-        loadFunction={(e) => importSettings(e)}
-      />
+      <BackupImport onImported={imported} />
       <span className="title">{variables.getMessage('modals.welcome.tip')}</span>
       <span className="subtitle">
         {variables.getMessage('modals.welcome.sections.settings.tip')}

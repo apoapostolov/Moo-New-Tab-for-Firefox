@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo, useState, useEffect } from 'react';
 import { useT } from 'contexts';
@@ -12,10 +13,13 @@ import { saveFile } from 'utils/saveFile';
 import EventBus from 'utils/eventbus';
 
 const Notes = ({ notesRef, floatRef, position, xPosition, yPosition }) => {
+  useTranslationVersion();
   const t = useT();
   const [notes, setNotes] = useState(localStorage.getItem('notes') || '');
   const [showNotes, setShowNotes] = useState(localStorage.getItem('notesPinned') === 'true');
-  const [zoomFontSize, setZoomFontSize] = useState('1.2rem');
+  const [zoomFontSize, setZoomFontSize] = useState(
+    () => `${(1.2 * Number(localStorage.getItem('zoomNavbar') || 100)) / 100}rem`,
+  );
 
   useEffect(() => {
     const handleRefresh = (data) => {
@@ -24,11 +28,9 @@ const Notes = ({ notesRef, floatRef, position, xPosition, yPosition }) => {
       }
     };
 
-    setZoomFontSize(Number(((localStorage.getItem('zoomNavbar') || 100) / 100) * 1.2) + 'rem');
-
     EventBus.on('refresh', handleRefresh);
     return () => {
-      EventBus.off('refresh');
+      EventBus.off('refresh', handleRefresh);
     };
   }, []);
 
@@ -126,6 +128,7 @@ const Notes = ({ notesRef, floatRef, position, xPosition, yPosition }) => {
 };
 
 function NotesWrapper() {
+  useTranslationVersion();
   const [reference, setReference] = useState(null);
 
   const { x, y, refs, strategy } = useFloating({

@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState } from 'react';
 
 /**
@@ -6,6 +7,7 @@ import { useState } from 'react';
  */
 
 const ConnectPrompt = ({ label, onConnect, error }) => {
+  useTranslationVersion();
   const [busy, setBusy] = useState(false);
 
   const connectNow = async () => {
@@ -21,7 +23,7 @@ const ConnectPrompt = ({ label, onConnect, error }) => {
   };
 
   return (
-    <div className="googleWidget googleWidgetEmpty">
+    <div className="googleWidget googleWidgetEmpty" role="region" aria-label={label}>
       <span className="gwLabel">{label}</span>
       <button type="button" className="gwButton primary" onClick={connectNow} disabled={busy}>
         {busy ? 'Waiting for Google…' : 'Connect Google'}

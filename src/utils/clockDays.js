@@ -66,12 +66,7 @@ export function offClockType() {
 /**
  * The clock type to render, after the day restriction is applied.
  */
-/**
- * Where Progress stands at `now`, or null when it has nothing to report and the page
- * should draw `percentageOffType` instead: a day it is not set for, or a time outside
- * the shift. Before the start of the shift and after its end the day has no progress
- * to show, and a bar held at 0% or at full said otherwise.
- */
+/** Progress within the active shift, or null outside its days and hours. */
 export function progressPosition(now = new Date()) {
   const position = shiftPosition(
     now,

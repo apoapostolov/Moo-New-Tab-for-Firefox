@@ -7,15 +7,15 @@ import { parseNatural } from './natural';
  * other fields can follow. The delay keeps it from filling a date mid-word.
  */
 export const useNaturalTitle = (text, kind, apply) => {
-  const [parsed, setParsed] = useState(null);
+  const [parsed, setParsed] = useState({ text: '', value: null });
   const applyRef = useRef(apply);
 
-  applyRef.current = apply;
+  useEffect(() => {
+    applyRef.current = apply;
+  }, [apply]);
 
   useEffect(() => {
     if (!text || text.trim().length < 3) {
-      setParsed(null);
-
       return undefined;
     }
 
@@ -23,17 +23,17 @@ export const useNaturalTitle = (text, kind, apply) => {
       const result = parseNatural(text, { kind });
 
       if (!result.understood) {
-        setParsed(null);
+        setParsed({ text, value: null });
 
         return;
       }
 
-      setParsed(result);
+      setParsed({ text, value: result });
       applyRef.current(result);
     }, 700);
 
     return () => clearTimeout(timer);
   }, [text, kind]);
 
-  return parsed;
+  return parsed.text === text ? parsed.value : null;
 };

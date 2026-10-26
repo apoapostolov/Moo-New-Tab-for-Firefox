@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { TAB_TYPES } from '../constants/tabConfig';
 
 // Divider positions mirror the real sidebar per tab.
@@ -10,6 +11,7 @@ const TAB_CONFIGS = {
 };
 
 const SidebarSkeleton = ({ currentTab = TAB_TYPES.SETTINGS }) => {
+  useTranslationVersion();
   const config = TAB_CONFIGS[currentTab] || TAB_CONFIGS[TAB_TYPES.SETTINGS];
 
   // The Library tab has no sidebar.

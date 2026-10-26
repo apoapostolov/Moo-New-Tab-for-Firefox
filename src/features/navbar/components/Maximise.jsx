@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo, useState, useCallback } from 'react';
 import { useT } from 'contexts';
@@ -7,6 +8,7 @@ import { MdCropFree } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
 
 const Maximise = memo(({ fontSize }) => {
+  useTranslationVersion();
   const t = useT();
   const [hidden, setHidden] = useState(false);
 
@@ -22,6 +24,7 @@ const Maximise = memo(({ fontSize }) => {
     }
 
     const element = document.getElementById('backgroundImage');
+    if (!element) return;
 
     let backgroundFilter;
     if (filter === true) {
@@ -61,9 +64,7 @@ const Maximise = memo(({ fontSize }) => {
   }, [hidden, setAttribute]);
 
   return (
-    <Tooltip
-      title={t('modals.main.settings.sections.background.buttons.view')}
-    >
+    <Tooltip title={t('modals.main.settings.sections.background.buttons.view')}>
       <button
         className="navbarButton"
         style={{ fontSize }}

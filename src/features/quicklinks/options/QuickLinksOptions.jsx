@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState, useEffect, useRef } from 'react';
 import { MdAddLink, MdLinkOff } from 'react-icons/md';
@@ -23,6 +24,7 @@ import EventBus from 'utils/eventbus';
 import { getTitleFromUrl, isValidUrl } from 'utils/links';
 
 const QuickLinksOptions = () => {
+  useTranslationVersion();
   const [items, setItems] = useState(readQuicklinks());
   const [showAddModal, setShowAddModal] = useState(false);
   const [urlError, setUrlError] = useState('');
@@ -106,6 +108,11 @@ const QuickLinksOptions = () => {
   };
 
   const editLink = async (og, name, url, icon) => {
+    url = url.trim();
+    if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
+    if (!isValidUrl(url)) return setUrlError(variables.getMessage('widgets.quicklinks.url_error'));
+    if (icon && !isValidUrl(icon))
+      return setIconError(variables.getMessage('widgets.quicklinks.url_error'));
     const data = readQuicklinks();
     const dataobj = data.find((i) => i.key === og.key);
     if (!dataobj) return;
@@ -261,11 +268,11 @@ const QuickLinksOptions = () => {
         zoomSetting="zoomQuicklinks"
       >
         <Group>
-          <AdditionalSettings />
-          <StylingOptions />
+          {AdditionalSettings()}
+          {StylingOptions()}
           <WidgetSurface setting="surfaceQuicklinks" category="quicklinks" />
         </Group>
-        <AddLink />
+        {AddLink()}
 
         {items.length === 0 && (
           <div className="photosEmpty">
@@ -313,10 +320,11 @@ const QuickLinksOptions = () => {
         isOpen={showAddModal}
         className="Modal resetmodal mainModal"
         overlayClassName="Overlay resetoverlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
       >
         <AddModal
           urlError={urlError}
+          iconError={iconError}
           addLink={(name, url, icon) => addLink(name, url, icon)}
           editLink={(og, name, url, icon) => editLink(og, name, url, icon)}
           edit={edit}

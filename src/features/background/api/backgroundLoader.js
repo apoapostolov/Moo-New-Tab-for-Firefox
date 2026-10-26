@@ -1,3 +1,4 @@
+import { fetchWithTimeout as fetch, settingsStamp, withLock, online } from 'utils/requests';
 import variables from 'config/variables';
 import { supportsAVIF } from './avifSupport';
 import { getOfflineImage } from './offlineImage';
@@ -8,8 +9,12 @@ import { fetchMixkitVideo } from './mixkit';
 import { fetchPixabayVideo } from './pixabay';
 import { fetchPexelsVideo } from './pexels';
 import { getLiveBackground } from './live';
-import { getAllBackgrounds, getAllBackgroundsWithMetadata } from 'utils/customBackgroundDB';
+import { getAllBackgroundsWithMetadata } from 'utils/customBackgroundDB';
 
+export const backgroundStamp = () =>
+  settingsStamp(
+    /^(background(Type|API|Exclude)|api|unsplash|pixabayKey|pexelsKey|videoQuality|offlineMode|favourite|liveChannel)/,
+  );
 const parseJSON = (key, fallback = null) => {
   const item = localStorage.getItem(key);
   if (item === null || item === 'null') {
@@ -169,7 +174,13 @@ function getColourBackground() {
 }
 
 /** Serves the prefetched queue first, then refills it in the background. */
-async function getAPIBackground(isOffline) {
+async function getAPIBackgroundUnlocked(isOffline) {
+  const stamp = backgroundStamp();
+  const valid = () => online() && stamp === backgroundStamp();
+  if (localStorage.getItem('imageQueueConfig') !== stamp) {
+    localStorage.removeItem('imageQueue');
+    localStorage.setItem('imageQueueConfig', stamp);
+  }
   if (isOffline) return getOfflineImage('api');
 
   const cachedQueue = parseJSON('imageQueue', []);
@@ -182,6 +193,7 @@ async function getAPIBackground(isOffline) {
     data = await fetchAPIImageData();
   }
 
+  if (!valid()) return null;
   if (!data) return getOfflineImage('api');
 
   localStorage.setItem('currentBackground', JSON.stringify(data));
@@ -199,17 +211,26 @@ async function getAPIBackground(isOffline) {
       Array.from({ length: targetQueueSize - currentQueueSize }, (_, i) =>
         fetchAPIImageData(excludedPuns[i] || currentKey),
       ),
-    ).then((newImages) => {
-      const validImages = newImages.filter(Boolean);
-      if (validImages.length > 0) {
-        const updatedQueue = [...cachedQueue, ...validImages];
-        localStorage.setItem('imageQueue', JSON.stringify(updatedQueue));
-      }
-    });
+    )
+      .then((newImages) =>
+        withLock('moo-background-queue', () => {
+          if (!valid()) return;
+          const validImages = newImages.filter(Boolean);
+          if (validImages.length > 0) {
+            const updatedQueue = [...parseJSON('imageQueue', []), ...validImages].slice(
+              0,
+              targetQueueSize,
+            );
+            localStorage.setItem('imageQueue', JSON.stringify(updatedQueue));
+          }
+        }),
+      )
+      .catch(() => {});
   }
-
   return data;
 }
+const getAPIBackground = (isOffline) =>
+  withLock('moo-background-queue', () => getAPIBackgroundUnlocked(isOffline));
 
 const VIDEO_QUEUE_KEY = 'videoQueue';
 const VIDEO_QUEUE_SIZE = 2;
@@ -225,13 +246,40 @@ const readVideoQueue = (api) =>
  * becomes the background; the media element fetches whatever this misses.
  */
 const warmVideo = (url) => {
-  fetch(url, { headers: { Range: `bytes=0-${VIDEO_WARMUP_BYTES}` } }).catch(() => {});
+  if (localStorage.getItem('offlineMode') === 'true') return;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
+  (async () => {
+    try {
+      const response = await fetch(url, {
+        headers: { Range: `bytes=0-${VIDEO_WARMUP_BYTES - 1}` },
+        signal: controller.signal,
+      });
+      const reader = response.body?.getReader();
+      if (!reader) return;
+      let received = 0;
+      try {
+        while (received < VIDEO_WARMUP_BYTES) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          received += value.byteLength;
+        }
+      } finally {
+        await reader.cancel();
+      }
+    } catch {
+      // Warming is optional; playback can still load the direct URL.
+    } finally {
+      clearTimeout(timer);
+    }
+  })();
 };
 
 /**
  * Keeps a short queue of resolved clips so the next tab needs no API call.
  */
 function refillVideoQueue(api, fetchVideo) {
+  const stamp = backgroundStamp();
   if (videoRefillRunning) return;
 
   const queued = readVideoQueue(api);
@@ -246,7 +294,7 @@ function refillVideoQueue(api, fetchVideo) {
 
   // Sequential: each source records what it served, so parallel calls would
   // race on that list and could return the same clip twice.
-  (async () => {
+  withLock('moo-background-queue', async () => {
     const fresh = [];
 
     for (let index = 0; index < missing; index++) {
@@ -254,8 +302,10 @@ function refillVideoQueue(api, fetchVideo) {
       if (clip) fresh.push(clip);
     }
 
-    const seen = new Set(queued.map((clip) => clip.photoInfo?.id));
-    const merged = [...queued, ...fresh.filter((clip) => !seen.has(clip.photoInfo?.id))].slice(
+    if (!online() || stamp !== backgroundStamp()) return;
+    const latest = readVideoQueue(api);
+    const seen = new Set(latest.map((clip) => clip.photoInfo?.id));
+    const merged = [...latest, ...fresh.filter((clip) => !seen.has(clip.photoInfo?.id))].slice(
       0,
       VIDEO_QUEUE_SIZE,
     );
@@ -264,14 +314,19 @@ function refillVideoQueue(api, fetchVideo) {
       localStorage.setItem(VIDEO_QUEUE_KEY, JSON.stringify(merged));
       warmVideo(merged[0].url);
     }
-  })()
+  })
     .catch(() => {})
     .finally(() => {
       videoRefillRunning = false;
     });
 }
 
-async function getVideoBackground(isOffline, api, fetchVideo) {
+async function getVideoBackgroundUnlocked(isOffline, api, fetchVideo) {
+  const stamp = backgroundStamp();
+  if (localStorage.getItem('videoQueueConfig') !== stamp) {
+    localStorage.removeItem('videoQueue');
+    localStorage.setItem('videoQueueConfig', stamp);
+  }
   if (isOffline) return getOfflineImage('api');
 
   // A queued clip is used straight away, so no API round trip delays the new tab.
@@ -284,6 +339,7 @@ async function getVideoBackground(isOffline, api, fetchVideo) {
     data = await fetchVideo();
   }
 
+  if (!online() || stamp !== backgroundStamp()) return null;
   if (!data) return getOfflineImage('api');
 
   localStorage.setItem('currentBackground', JSON.stringify(data));
@@ -293,8 +349,16 @@ async function getVideoBackground(isOffline, api, fetchVideo) {
   return data;
 }
 
+const getVideoBackground = (offline, api, fetchVideo) =>
+  withLock('moo-background-queue', () => getVideoBackgroundUnlocked(offline, api, fetchVideo));
+
 async function getCustomBackground(isOffline) {
-  let backgrounds = await getAllBackgroundsWithMetadata();
+  let backgrounds;
+  try {
+    backgrounds = await getAllBackgroundsWithMetadata();
+  } catch {
+    return getOfflineImage('custom');
+  }
 
   // Profiles that predate IndexedDB keep bare URLs in localStorage.
   if (!backgrounds || backgrounds.length === 0) {

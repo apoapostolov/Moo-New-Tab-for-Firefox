@@ -1,10 +1,20 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { requestOwner, settingsStamp } from 'utils/requests';
 import EventBus from 'utils/eventbus';
-import { getSurface } from 'utils/widgetSurface';
+import WidgetCard, { WidgetHeader } from 'components/Elements/WidgetCard/WidgetCard';
+import { calendarDate } from 'utils/date';
 
 import { useGoogleAuth } from './hooks/useGoogleAuth';
-import { listCalendars, listEvents, rangeBounds } from './services/calendar';
+import {
+  listCalendars,
+  listEvents,
+  rangeBounds,
+  eventKey,
+  canEditCalendar,
+} from './services/calendar';
 import { getCalendarSettings, refreshMs } from './settings';
 import ConnectPrompt, { describeError } from './components/ConnectPrompt';
 import EventDialog from './components/EventDialog';
@@ -12,7 +22,7 @@ import EventDialog from './components/EventDialog';
 import './google.scss';
 
 const dayLabel = (value, today, tomorrow) => {
-  const date = new Date(value);
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(value) ? calendarDate(value) : new Date(value);
 
   if (date.toDateString() === today.toDateString()) return 'Today';
   if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
@@ -37,7 +47,17 @@ const shortNotes = (value) => {
 };
 
 const GoogleCalendar = () => {
+  useTranslationVersion();
   const { auth, loading, error, connectAccount } = useGoogleAuth();
+  const owner = useRef(requestOwner());
+  const listOwner = useRef(requestOwner());
+  useEffect(
+    () => () => {
+      owner.current.cancel();
+      listOwner.current.cancel();
+    },
+    [auth],
+  );
   const [settings, setSettings] = useState(getCalendarSettings);
   const [calendars, setCalendars] = useState([]);
   const [events, setEvents] = useState([]);
@@ -50,6 +70,9 @@ const GoogleCalendar = () => {
   const calendarsRef = useRef([]);
 
   const load = useCallback(async () => {
+    const request = owner.current.start();
+    const stamp = settingsStamp(/^(google|offlineMode)/);
+    const valid = () => request.current() && stamp === settingsStamp(/^(google|offlineMode)/);
     const current = getCalendarSettings();
     setSettings(current);
     setBusy(true);
@@ -58,28 +81,34 @@ const GoogleCalendar = () => {
     try {
       const list = calendarsRef.current.length
         ? calendarsRef.current
-        : await listCalendars().catch(() => []);
+        : await listCalendars(request.signal).catch(() => []);
 
+      if (!valid()) return;
       calendarsRef.current = list;
       setCalendars(list);
 
-      setEvents(
-        await listEvents({
-          ...rangeBounds(current.rangeDays),
-          maxResults: current.maxEvents,
-          calendarIds: current.calendarIds,
-          calendars: list,
-        }),
-      );
+      const result = await listEvents({
+        signal: request.signal,
+        ...rangeBounds(current.rangeDays),
+        maxResults: current.maxEvents,
+        calendarIds: current.calendarIds,
+        calendars: list,
+        hideAllDay: current.hideAllDay,
+        includeDeclined: current.includeDeclined,
+      });
+      if (valid()) setEvents(result);
     } catch (loadError) {
-      setFetchError(loadError.message);
+      if (valid()) setFetchError(loadError.message);
     } finally {
-      setBusy(false);
-      setReady(true);
+      if (valid()) {
+        setBusy(false);
+        setReady(true);
+      }
     }
   }, []);
 
   useEffect(() => {
+    const effectOwner = owner.current;
     if (!auth) return undefined;
 
     load();
@@ -97,6 +126,7 @@ const GoogleCalendar = () => {
     EventBus.on('refresh', onRefresh);
 
     return () => {
+      effectOwner.cancel();
       clearInterval(timer);
       EventBus.off('refresh', onRefresh);
     };
@@ -118,30 +148,28 @@ const GoogleCalendar = () => {
     [visible],
   );
 
-  const onSaved = useCallback((saved) => {
-    setEvents((current) => {
-      const exists = current.some((event) => event.id === saved.id);
-
-      return exists
-        ? current.map((event) => (event.id === saved.id ? saved : event))
-        : [...current, saved];
-    });
-  }, []);
-
-  const onDeleted = useCallback((id) => {
-    setEvents((current) => current.filter((event) => event.id !== id));
-  }, []);
-
+  const onSaved = useCallback(() => {
+    load();
+  }, [load]);
+  const onDeleted = useCallback(
+    (id, calendarId) => {
+      setEvents((current) => current.filter((event) => eventKey(event) !== `${calendarId}:${id}`));
+      load();
+    },
+    [load],
+  );
   if (loading) return null;
 
   if (!auth) {
-    return <ConnectPrompt label="Calendar" onConnect={connectAccount} error={error} />;
+    return (
+      <ConnectPrompt label={uiText('calendar_adab50')} onConnect={connectAccount} error={error} />
+    );
   }
 
   if (!ready) return null;
 
   const byDay = visible.reduce((groups, event) => {
-    const key = new Date(event.start).toDateString();
+    const key = (event.allDay ? calendarDate(event.start) : new Date(event.start)).toDateString();
 
     groups[key] = groups[key] ?? [];
     groups[key].push(event);
@@ -150,7 +178,7 @@ const GoogleCalendar = () => {
   }, {});
 
   const item = (event) => (
-    <li key={event.id}>
+    <li key={eventKey(event)}>
       <button type="button" className="gwItem" onClick={() => setEditing(event)}>
         <span className="gwItemTop">
           <span className="gwItemTitle">
@@ -178,19 +206,20 @@ const GoogleCalendar = () => {
   );
 
   return (
-    <div className={`googleWidget ${getSurface('calendar')}`}>
-      <header className="gwHead">
-        <span className="gwLabel">Calendar</span>
+    <WidgetCard widget="calendar" className="googleWidget" aria-busy={busy}>
+      <WidgetHeader className="gwHead">
+        <span className="gwLabel">{uiText('calendar_adab50')}</span>
         <button
           type="button"
           className="gwIconButton"
+          disabled={!calendars.some(canEditCalendar)}
           onClick={() => setEditing({})}
-          aria-label="New event"
-          title="New event"
+          aria-label={uiText('new_event_2ef379')}
+          title={uiText('new_event_2ef379')}
         >
           +
         </button>
-      </header>
+      </WidgetHeader>
 
       {fetchError && <p className="gwError">{describeError(fetchError)}</p>}
 
@@ -200,14 +229,16 @@ const GoogleCalendar = () => {
         </p>
       )}
 
-      {settings.groupByDay
-        ? Object.entries(byDay).map(([day, dayEvents]) => (
-            <div className="gwDay" key={day}>
-              <span className="gwDayLabel">{dayEvents[0].day}</span>
-              <ul className="gwList">{dayEvents.map(item)}</ul>
-            </div>
-          ))
-        : <ul className="gwList">{visible.map(item)}</ul>}
+      {settings.groupByDay ? (
+        Object.entries(byDay).map(([day, dayEvents]) => (
+          <div className="gwDay" key={day}>
+            <span className="gwDayLabel">{dayEvents[0].day}</span>
+            <ul className="gwList">{dayEvents.map(item)}</ul>
+          </div>
+        ))
+      ) : (
+        <ul className="gwList">{visible.map(item)}</ul>
+      )}
 
       {editing && (
         <EventDialog
@@ -219,8 +250,7 @@ const GoogleCalendar = () => {
           onDeleted={onDeleted}
         />
       )}
-
-    </div>
+    </WidgetCard>
   );
 };
 

@@ -1,3 +1,4 @@
+import { fetchWithTimeout as fetch, online } from 'utils/requests';
 import { parseFeed } from './parseFeed';
 
 /**
@@ -50,6 +51,7 @@ export function normaliseUrl(raw) {
   if (!text) return null;
 
   text = text.replace(/^feed:\/\//i, 'https://');
+  if (/^[a-z][a-z\d+.-]*:\/\//i.test(text) && !/^https?:\/\//i.test(text)) return null;
 
   if (!/^https?:\/\//i.test(text)) text = `https://${text}`;
 
@@ -130,8 +132,8 @@ const HEADERS = {
     'application/rss+xml, application/atom+xml, application/rdf+xml, application/xml, text/xml, */*',
 };
 
-async function fetchFeed(feed) {
-  const response = await fetch(feed.url, { headers: HEADERS });
+async function fetchFeed(feed, signal) {
+  const response = await fetch(feed.url, { headers: HEADERS, signal });
 
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
@@ -143,10 +145,17 @@ const unique = (items) => {
   const seen = new Set();
 
   return items.filter((item) => {
-    const key = String(item.link || item.id)
-      .replace(/[#?].*$/, '')
-      .replace(/\/+$/, '')
-      .toLowerCase();
+    let key = String(item.link || item.id || '');
+    try {
+      const url = new URL(key);
+      url.hash = '';
+      for (const name of [...url.searchParams.keys()]) {
+        if (/^(utm_|fbclid$|gclid$)/i.test(name)) url.searchParams.delete(name);
+      }
+      key = url.href.replace(/\/$/, '');
+    } catch {
+      /* Keep non-URL item ids as supplied. */
+    }
 
     if (!key || seen.has(key)) return false;
 
@@ -158,7 +167,7 @@ const unique = (items) => {
 
 export function mergeItems(items) {
   return unique(items)
-    .map((item) => ({ ...item, excerpt: item.excerpt.slice(0, EXCERPT_LIMIT) }))
+    .map((item) => ({ ...item, excerpt: String(item.excerpt || '').slice(0, EXCERPT_LIMIT) }))
     .sort((a, b) => (b.date || 0) - (a.date || 0));
 }
 
@@ -174,18 +183,22 @@ const readCache = () => {
  * `{ at, items, errors, cached }`. A feed that fails does not take the others with
  * it: what answered is still worth showing, so the error travels beside the list.
  */
-export async function loadItems({ force = false } = {}) {
+export async function loadItems({ force = false, signal } = {}) {
   const feeds = readFeeds();
+  const key = JSON.stringify(feeds);
   const cached = readCache();
+  if (localStorage.getItem('offlineMode') === 'true') {
+    return { at: cached?.at || 0, items: cached?.items || [], errors: [], cached: true };
+  }
 
-  if (!force && cached && Date.now() - cached.at < readRefresh() * 60000) {
+  if (!force && cached?.key === key && Date.now() - cached.at < readRefresh() * 60000) {
     return { at: cached.at, items: cached.items, errors: cached.errors || [], cached: true };
   }
 
   const results = await Promise.all(
     feeds.map(async (feed) => {
       try {
-        return { feed, ...(await fetchFeed(feed)) };
+        return { feed, ...(await fetchFeed(feed, signal)) };
       } catch (error) {
         return { feed, error: error?.message || 'failed' };
       }
@@ -203,7 +216,10 @@ export async function loadItems({ force = false } = {}) {
 
   const at = Date.now();
 
-  localStorage.setItem(CACHE_KEY, JSON.stringify({ at, items, errors }));
+  signal?.throwIfAborted();
+  if (!online() || key !== JSON.stringify(readFeeds()))
+    throw new DOMException('Feed settings changed', 'AbortError');
+  localStorage.setItem(CACHE_KEY, JSON.stringify({ key, at, items, errors }));
 
   return { at, items, errors, cached: false };
 }

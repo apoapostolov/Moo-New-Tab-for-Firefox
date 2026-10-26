@@ -655,10 +655,10 @@
               "title": "Lülita kallutamine välja",
               "subtitle": "Märkmed ja pildid seisavad sirgelt ning lohistamine ei anna neile enam kallet."
             },
-        "scratch_bare": {
-          "title": "Raamideta märkmed",
-          "subtitle": "Märkmed seisavad taustapildil palja tekstina ja saavad oma raami tagasi, kui ühele neist klõpsad."
-        },
+            "scratch_bare": {
+              "title": "Raamideta märkmed",
+              "subtitle": "Märkmed seisavad taustapildil palja tekstina ja saavad oma raami tagasi, kui ühele neist klõpsad."
+            },
             "cinema": {
               "title": "Kasutajaliidese peitmiseks kolmekordne klõps",
               "subtitle": "Kolm klõpsu peidavad kõik peale video; üks klõps või Escape toob selle tagasi."

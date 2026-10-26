@@ -1,8 +1,10 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 import { FaDiscord } from 'react-icons/fa';
 import { SiGithubsponsors, SiX } from 'react-icons/si';
 
 function QuicklinksSkeleton() {
+  useTranslationVersion();
   return (
     <div className="quickLinksSkeleton">
       <div className="circles">

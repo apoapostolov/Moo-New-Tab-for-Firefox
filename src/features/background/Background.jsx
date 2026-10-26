@@ -1,10 +1,15 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import BackgroundImage from './components/BackgroundImage';
 import BackgroundVideo from './components/BackgroundVideo';
 
 import { useBackgroundState } from './hooks/useBackgroundState';
 import { setCurrentPhoto } from './photoStore';
 import { useBackgroundLoader } from './hooks/useBackgroundLoader';
-import { useBackgroundRenderer, useBackgroundFilters, useBackgroundOverlayFilters } from './hooks/useBackgroundRenderer';
+import {
+  useBackgroundRenderer,
+  useBackgroundFilters,
+  useBackgroundOverlayFilters,
+} from './hooks/useBackgroundRenderer';
 import { useBackgroundEvents } from './hooks/useBackgroundEvents';
 import { useCinemaMode } from './hooks/useCinemaMode';
 
@@ -21,6 +26,7 @@ const MIXKIT_RETRIES = 2;
 import './scss/index.scss';
 
 export default function Background() {
+  useTranslationVersion();
   const { backgroundData, updateBackground, resetBackground } = useBackgroundState();
   const { refreshBackground } = useBackgroundLoader(updateBackground, resetBackground);
   const filterStyle = useBackgroundFilters();
@@ -29,6 +35,7 @@ export default function Background() {
   useBackgroundRenderer(backgroundData);
   useBackgroundEvents(backgroundData, refreshBackground);
   useCinemaMode(backgroundData.video);
+  useEffect(() => () => setCurrentPhoto({ photoInfo: null, api: '', url: '' }), []);
 
   // The credit card is a separate widget, so it needs to know which photo is
   // behind the page without living inside the element that draws it.
@@ -90,16 +97,20 @@ export default function Background() {
   const startAutoChange = useCallback(() => {
     const enabled = localStorage.getItem('backgroundAutoChange') === 'true';
     const mins = Number(localStorage.getItem('backgroundAutoChangeInterval') || 60);
-    if (enabled === prevSettingsRef.current.enabled && mins === prevSettingsRef.current.mins) return;
+    if (enabled === prevSettingsRef.current.enabled && mins === prevSettingsRef.current.mins)
+      return;
     prevSettingsRef.current = { enabled, mins };
     if (autoChangeTimerRef.current) {
       clearInterval(autoChangeTimerRef.current);
       autoChangeTimerRef.current = null;
     }
     if (!enabled || !mins || mins <= 0) return;
-    autoChangeTimerRef.current = setInterval(() => {
-      refreshBackground();
-    }, mins * 60 * 1000);
+    autoChangeTimerRef.current = setInterval(
+      () => {
+        refreshBackground();
+      },
+      mins * 60 * 1000,
+    );
   }, [refreshBackground]);
 
   useEffect(() => {

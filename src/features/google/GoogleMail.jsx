@@ -1,7 +1,10 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { requestOwner, settingsStamp } from 'utils/requests';
 import EventBus from 'utils/eventbus';
-import { getSurface } from 'utils/widgetSurface';
+import WidgetCard, { WidgetHeader } from 'components/Elements/WidgetCard/WidgetCard';
 
 import { useGoogleAuth } from './hooks/useGoogleAuth';
 import { getMessageUrl, listMessages } from './services/gmail';
@@ -32,7 +35,17 @@ const formatTime = (value) => {
 const anchorFor = (node) => (node && node.closest('.googleWidget')) || node;
 
 const GoogleMail = () => {
+  useTranslationVersion();
   const { auth, loading, error, connectAccount } = useGoogleAuth();
+  const owner = useRef(requestOwner());
+  const listOwner = useRef(requestOwner());
+  useEffect(
+    () => () => {
+      owner.current.cancel();
+      listOwner.current.cancel();
+    },
+    [auth],
+  );
   const [settings, setSettings] = useState(getMailSettings);
   const [state, setState] = useState({ messages: [], unreadCount: 0, unreadOverflow: false });
   const [fetchError, setFetchError] = useState('');
@@ -46,14 +59,16 @@ const GoogleMail = () => {
   // while the pointer does not; without this there is nothing to hit-test after a scroll.
   const pointer = useRef(null);
   const followFrame = useRef(0);
+  useEffect(() => () => clearTimeout(hoverTimer.current), []);
 
   // A short intent delay, so sweeping the pointer across the list does not fire a fetch for
   // every row it crosses.
   const openPreview = (message) => (hoverEvent) => {
     const anchor = anchorFor(hoverEvent.currentTarget);
+    const trigger = hoverEvent.currentTarget.querySelector('a');
 
     clearTimeout(hoverTimer.current);
-    hoverTimer.current = setTimeout(() => setPreview({ message, anchor }), 280);
+    hoverTimer.current = setTimeout(() => setPreview({ message, anchor, trigger }), 280);
   };
 
   const keepPreview = () => clearTimeout(hoverTimer.current);
@@ -159,30 +174,36 @@ const GoogleMail = () => {
   }, [followHoveredRow, preview]);
 
   const load = useCallback(async () => {
+    const request = owner.current.start();
+    const stamp = settingsStamp(/^(google|offlineMode)/);
+    const valid = () => request.current() && stamp === settingsStamp(/^(google|offlineMode)/);
     const current = getMailSettings();
     setSettings(current);
     setBusy(true);
     setFetchError('');
 
     try {
-      setState(
-        await listMessages({
-          query: current.query,
-          maxResults: current.maxMessages,
-          categories: current.categories,
-          categoryIds: MAIL_CATEGORIES.map((category) => category.id),
-          folders: current.folders,
-        }),
-      );
+      const result = await listMessages({
+        signal: request.signal,
+        query: current.query,
+        maxResults: current.maxMessages,
+        categories: current.categories,
+        categoryIds: MAIL_CATEGORIES.map((category) => category.id),
+        folders: current.folders,
+      });
+      if (valid()) setState(result);
     } catch (loadError) {
-      setFetchError(loadError.message);
+      if (valid()) setFetchError(loadError.message);
     } finally {
-      setBusy(false);
-      setReady(true);
+      if (valid()) {
+        setBusy(false);
+        setReady(true);
+      }
     }
   }, []);
 
   useEffect(() => {
+    const effectOwner = owner.current;
     if (!auth) return undefined;
 
     load();
@@ -196,6 +217,7 @@ const GoogleMail = () => {
     EventBus.on('refresh', onRefresh);
 
     return () => {
+      effectOwner.cancel();
       clearInterval(timer);
       EventBus.off('refresh', onRefresh);
     };
@@ -204,7 +226,7 @@ const GoogleMail = () => {
   if (loading) return null;
 
   if (!auth) {
-    return <ConnectPrompt label="Mail" onConnect={connectAccount} error={error} />;
+    return <ConnectPrompt label={uiText('mail_92379c')} onConnect={connectAccount} error={error} />;
   }
 
   if (!ready) return null;
@@ -212,9 +234,9 @@ const GoogleMail = () => {
   const title = settings.query.trim() || 'is:unread';
 
   return (
-    <div className={`googleWidget ${getSurface('mail')}`}>
-      <header className="gwHead">
-        <span className="gwLabel">Mail</span>
+    <WidgetCard widget="mail" className="googleWidget">
+      <WidgetHeader className="gwHead">
+        <span className="gwLabel">{uiText('mail_92379c')}</span>
         {settings.badge === 'count' && (
           <span className="gwBadge">
             {state.unreadCount}
@@ -227,12 +249,12 @@ const GoogleMail = () => {
           className="gwIconButton"
           onClick={load}
           disabled={busy}
-          aria-label="Refresh mail"
+          aria-label={uiText('refresh_mail_8661d3')}
           title={title}
         >
           ↻
         </button>
-      </header>
+      </WidgetHeader>
 
       {fetchError && <p className="gwError">{describeError(fetchError)}</p>}
 
@@ -256,6 +278,10 @@ const GoogleMail = () => {
               key={message.id}
               data-message-id={message.id}
               onMouseEnter={openPreview(message)}
+              onFocus={openPreview(message)}
+              onKeyDown={(event) => {
+                if (event.key === 'Escape') setPreview(null);
+              }}
               onMouseLeave={closePreview}
             >
               <a
@@ -282,12 +308,18 @@ const GoogleMail = () => {
         <MailPreview
           key={preview.message.id}
           message={preview.message}
+          account={`${auth.email}:${auth.connectedAt}`}
           anchor={preview.anchor}
+          onClose={() => {
+            preview.trigger?.focus();
+            clearTimeout(hoverTimer.current);
+            setPreview(null);
+          }}
           onEnter={keepPreview}
           onLeave={closePreview}
         />
       )}
-    </div>
+    </WidgetCard>
   );
 };
 

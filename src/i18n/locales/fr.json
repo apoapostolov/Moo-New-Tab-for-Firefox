@@ -655,10 +655,10 @@
               "title": "Désactiver l'inclinaison",
               "subtitle": "Les notes et les images restent droites, et les faire glisser ne les incline plus."
             },
-        "scratch_bare": {
-          "title": "Notes sans cadre",
-          "subtitle": "Les notes restent en simple texte sur le fond d'écran et retrouvent leur cadre dès que vous cliquez sur l'une d'elles."
-        },
+            "scratch_bare": {
+              "title": "Notes sans cadre",
+              "subtitle": "Les notes restent en simple texte sur le fond d'écran et retrouvent leur cadre dès que vous cliquez sur l'une d'elles."
+            },
             "cinema": {
               "title": "Triple clic pour masquer l'interface",
               "subtitle": "Trois clics masquent tout sauf la vidéo ; un clic, ou Échap, fait tout revenir."

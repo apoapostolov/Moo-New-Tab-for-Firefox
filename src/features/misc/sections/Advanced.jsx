@@ -1,80 +1,64 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState } from 'react';
 import Modal from 'react-modal';
-import {
-  MdUpload as ImportIcon,
-  MdDownload as ExportIcon,
-  MdRestartAlt as ResetIcon,
-  MdDataUsage,
-  MdError,
-} from 'react-icons/md';
+import { MdDataUsage } from 'react-icons/md';
 
-import { exportSettings, importSettings } from 'utils/settings';
+import { exportSettings } from 'utils/settings';
 
-import { FileUpload, Text, Switch, Dropdown } from 'components/Form/Settings';
+import { Text, Switch, Dropdown } from 'components/Form/Settings';
 import { ResetModal, Button } from 'components/Elements';
 
 import { Header, Section, Row, Content, Action } from 'components/Layout/Settings';
+import BackupImport from './BackupImport';
+import StorageManagement from './StorageManagement';
 import { SHOW_EXPERIMENTAL } from 'config/constants';
 
 import time_zones from 'features/time/timezones.json';
 
 function AdvancedOptions({ currentSubSection, onSubSectionChange, sectionName }) {
+  useTranslationVersion();
   const [resetModal, setResetModal] = useState(false);
   const ADVANCED_SECTION = 'modals.main.settings.sections.advanced';
 
-  const Data = () => {
-    return localStorage.getItem('welcomePreview') !== 'true' ? (
-      <Row final={true}>
-        <Content
-          title={variables.getMessage('modals.main.settings.sections.advanced.data')}
-          subtitle={variables.getMessage('modals.main.settings.sections.advanced.data_description')}
-        />
+  const [includeImages, setIncludeImages] = useState(false);
+  const [dataError, setDataError] = useState('');
+  const Data = () =>
+    localStorage.getItem('welcomePreview') !== 'true' ? (
+      <div className="backupData">
+        <p>{uiText('save_your_settings_and_notes_or_bring_them_ba_f30abc')}</p>
+        <label>
+          <input
+            type="checkbox"
+            checked={includeImages}
+            onChange={(event) => setIncludeImages(event.target.checked)}
+          />
+          {uiText('include_uploaded_pictures_66d00b')}
+        </label>
         <div className="resetDataButtonsLayout">
           <Button
-            onClick={() => setResetModal(true)}
-            icon={<ResetIcon />}
-            label={variables.getMessage('modals.main.settings.buttons.reset')}
+            label={uiText('save_a_backup_5835d2')}
+            onClick={() =>
+              exportSettings(includeImages).catch((error) => setDataError(error.message))
+            }
           />
           <Button
-            onClick={() => exportSettings()}
-            icon={<ExportIcon />}
-            label={variables.getMessage('modals.main.settings.buttons.export')}
+            label={uiText('restore_settings_6562d0')}
+            onClick={() => setResetModal('settings')}
           />
           <Button
-            onClick={() => document.getElementById('file-input').click()}
-            icon={<ImportIcon />}
-            label={variables.getMessage('modals.main.settings.buttons.import')}
+            label={uiText('erase_all_local_data_e70015')}
+            onClick={() => setResetModal('all')}
           />
         </div>
-        <FileUpload
-          id="file-input"
-          accept="application/json"
-          type="settings"
-          loadFunction={(e) => importSettings(e)}
-        />
-      </Row>
-    ) : (
-      <div className="emptyItems">
-        <div className="emptyMessage">
-          <div className="loaderHolder">
-            <MdError />
-
-            <span className="title">
-              {variables.getMessage(
-                'modals.main.settings.sections.advanced.preview_data_disabled.title',
-              )}
-            </span>
-            <span className="subtitle">
-              {variables.getMessage(
-                'modals.main.settings.sections.advanced.preview_data_disabled.description',
-              )}
-            </span>
-          </div>
-        </div>
+        <BackupImport />
+        <StorageManagement />
+        {dataError && <p role="alert">{dataError}</p>}
       </div>
+    ) : (
+      <p>{uiText('backups_and_reset_are_available_after_setup_37f176')}</p>
     );
-  };
 
   const isDataSection = currentSubSection === 'data';
 
@@ -97,16 +81,17 @@ function AdvancedOptions({ currentSubSection, onSubSectionChange, sectionName })
       {header}
       {isDataSection ? (
         <>
-          <Data />
+          {Data()}
           <Modal
             closeTimeoutMS={100}
             onRequestClose={() => setResetModal(false)}
-            isOpen={resetModal}
+            isOpen={Boolean(resetModal)}
+            contentLabel={resetModal === 'all' ? 'Erase all local data' : 'Restore settings'}
             className="Modal resetmodal mainModal"
             overlayClassName="Overlay resetoverlay"
-            ariaHideApp={false}
+            ariaHideApp={true}
           >
-            <ResetModal modalClose={() => setResetModal(false)} />
+            <ResetModal scope={resetModal} modalClose={() => setResetModal(false)} />
           </Modal>
         </>
       ) : (

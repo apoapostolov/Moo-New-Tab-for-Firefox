@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 
 /**
@@ -5,15 +6,18 @@ import { memo } from 'react';
  * rather than cloned for the cards that cannot render inside the settings panel.
  */
 
-const LAYOUT = {
+export const THUMB_LAYOUT = {
   mail: { icon: 'dot', lines: ['wide', 'medium'] },
   calendar: { icon: 'square', lines: ['medium', 'wide'] },
   tasks: { icon: 'check', lines: ['wide'] },
   photoinfo: { icon: null, lines: ['medium', 'short'] },
+  rss: { icon: 'article', lines: ['wide', 'medium', 'short'] },
+  weather: { icon: 'weather', lines: ['medium', 'short'] },
 };
 
 function WidgetThumb({ type, label }) {
-  const layout = LAYOUT[type];
+  useTranslationVersion();
+  const layout = THUMB_LAYOUT[type];
 
   if (!layout) return null;
 
@@ -24,6 +28,7 @@ function WidgetThumb({ type, label }) {
         <span className="gwSkeletonBar gwSkeletonBar-short" />
         <span className="gwSkeletonDot gwSkeletonDot-small" />
       </div>
+      {type === 'weather' && <span className="weatherThumbReading">☁ 18°</span>}
       <div className="gwSkeletonEntry">
         {layout.icon ? <span className={`gwSkeletonIcon gwSkeletonIcon-${layout.icon}`} /> : null}
         <span className="gwSkeletonLines">
@@ -32,6 +37,15 @@ function WidgetThumb({ type, label }) {
           ))}
         </span>
       </div>
+      {type === 'rss' && (
+        <div className="gwSkeletonEntry">
+          <span className="gwSkeletonIcon gwSkeletonIcon-article" />
+          <span className="gwSkeletonLines">
+            <span className="gwSkeletonBar gwSkeletonBar-medium" />
+            <span className="gwSkeletonBar gwSkeletonBar-wide" />
+          </span>
+        </div>
+      )}
     </div>
   );
 }

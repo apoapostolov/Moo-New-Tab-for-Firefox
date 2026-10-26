@@ -1,5 +1,7 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
-import { useState, memo } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useT } from 'contexts';
 import Favourite from './Favourite';
 import { getSurface } from 'utils/widgetSurface';
@@ -30,7 +32,10 @@ const toDataURL = async (url) => {
 };
 
 const formatText = (text) => {
-  return text.toLowerCase().replaceAll(',', '').replaceAll(' ', '-');
+  return String(text || 'photo')
+    .toLowerCase()
+    .replaceAll(',', '')
+    .replaceAll(' ', '-');
 };
 
 const downloadImage = async (info) => {
@@ -42,10 +47,12 @@ const downloadImage = async (info) => {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
   variables.stats.postEvent('feature', 'Background download');
 };
 
 function PhotoInformation({ info, url, api }) {
+  useTranslationVersion();
   const t = useT();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -55,9 +62,19 @@ function PhotoInformation({ info, url, api }) {
   const [other, setOther] = useState(false);
   const [shareModal, openShareModal] = useState(false);
   const [excludeModal, openExcludeModal] = useState(false);
-  const [favouriteTooltipText, setFavouriteTooltipText] = useState(
-    t('widgets.quote.favourite'),
-  );
+  const [favouriteTooltipText, setFavouriteTooltipText] = useState(t('widgets.quote.favourite'));
+
+  useEffect(() => {
+    const image = new Image();
+    image.onload = () => {
+      setWidth(image.naturalWidth);
+      setHeight(image.naturalHeight);
+    };
+    if (url) image.src = url;
+    return () => {
+      image.onload = null;
+    };
+  }, [url]);
 
   if (info.hidden === true || !info.credit) {
     return null;
@@ -69,12 +86,7 @@ function PhotoInformation({ info, url, api }) {
   // Only link the credit when the source provides a page to link to.
   if (info.photographerURL && info.photographerURL !== '' && !info.offline && api) {
     photo = (
-      <a
-        href={info.photoURL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="creditSource"
-      >
+      <a href={info.photoURL} target="_blank" rel="noopener noreferrer" className="creditSource">
         {photo}
       </a>
     );
@@ -86,14 +98,6 @@ function PhotoInformation({ info, url, api }) {
       </>
     );
   }
-
-  // Measured by loading the URL, so width and height arrive a render later.
-  const img = new Image();
-  img.onload = (event) => {
-    setWidth(event.target.width);
-    setHeight(event.target.height);
-  };
-  img.src = url;
 
   // Hidden but still rendered: the favourite button reads these fields from the DOM.
   if (localStorage.getItem('photoInformation') === 'false') {
@@ -109,12 +113,11 @@ function PhotoInformation({ info, url, api }) {
     );
   }
 
-  let showingPhotoMap = false;
   const photoMap = () => {
     if (
       localStorage.getItem('photoMap') !== 'true' ||
-      !info.latitude ||
-      !info.longitude ||
+      info.latitude == null ||
+      info.longitude == null ||
       usePhotoMap === false
     ) {
       return null;
@@ -122,7 +125,6 @@ function PhotoInformation({ info, url, api }) {
 
     const tile =
       variables.constants.API_URL + `/map?latitude=${info.latitude}&longitude=${info.longitude}`;
-    showingPhotoMap = true;
 
     return (
       <a
@@ -136,6 +138,7 @@ function PhotoInformation({ info, url, api }) {
   };
 
   const InformationItems = () => {
+    useTranslationVersion();
     return (
       <div className="extra-content">
         {info.location && info.location !== 'N/A' ? (
@@ -183,6 +186,7 @@ function PhotoInformation({ info, url, api }) {
   };
 
   const ActionButtons = () => {
+    useTranslationVersion();
     return (
       <div className="buttons">
         {!info.offline && (
@@ -195,26 +199,18 @@ function PhotoInformation({ info, url, api }) {
             pun={info.pun}
             offline={info.offline}
             credit={info.credit}
-            photoURL={info.url}
+            photoURL={url}
             photoInfo={info}
             tooltipText={(text) => setFavouriteTooltipText(text)}
           />
         </Tooltip>
         {!info.offline && (
-          <Tooltip
-            title={t('widgets.background.download')}
-            key="download"
-            placement="top"
-          >
+          <Tooltip title={t('widgets.background.download')} key="download" placement="top">
             <Download onClick={() => downloadImage(info)} />
           </Tooltip>
         )}
         {info.pun && info.category && (
-          <Tooltip
-            title={t('widgets.background.exclude')}
-            key="exclude"
-            placement="top"
-          >
+          <Tooltip title={t('widgets.background.exclude')} key="exclude" placement="top">
             <VisibilityOff onClick={() => openExcludeModal(true)} />
           </Tooltip>
         )}
@@ -223,6 +219,7 @@ function PhotoInformation({ info, url, api }) {
   };
 
   const UnsplashStats = () => {
+    useTranslationVersion();
     return (
       <div className="unsplashStats">
         <div title={t('widgets.background.views')}>
@@ -243,22 +240,8 @@ function PhotoInformation({ info, url, api }) {
     );
   };
 
-  let photoMapClassList = 'map-concept';
-  if (photoMap() !== null) {
-    photoMapClassList += ' photoMap';
-  }
-
-  // The map image is only requested on hover, to keep API calls down.
-  try {
-    document.getElementsByClassName('photoInformation')[0].onmouseover = () => {
-      try {
-        setPhotoMap(true);
-        setMapIcon(false);
-      } catch {
-      }
-    };
-  } catch {
-  }
+  const map = photoMap();
+  const photoMapClassList = `map-concept${map ? ' photoMap' : ''}`;
 
   const widgetStyle = localStorage.getItem('widgetStyle');
 
@@ -273,7 +256,7 @@ function PhotoInformation({ info, url, api }) {
         isOpen={shareModal}
         className="Modal mainModal"
         overlayClassName="Overlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
         onRequestClose={() => openShareModal(false)}
       >
         <ShareModal data={info.photoURL || info.url} modalClose={() => openShareModal(false)} />
@@ -283,7 +266,7 @@ function PhotoInformation({ info, url, api }) {
         isOpen={excludeModal}
         className="Modal mainModal"
         overlayClassName="Overlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
         onRequestClose={() => openExcludeModal(false)}
       >
         <ExcludeModal info={info} modalClose={() => openExcludeModal(false)} />
@@ -300,14 +283,18 @@ function PhotoInformation({ info, url, api }) {
         <div
           className={`photoInformation orHover ${getSurface('background')}`}
           style={{ padding: widgetStyle === 'legacy' && '20px' }}
-          onMouseEnter={() => setshowExtraInfo(true)}
+          onMouseEnter={() => {
+            setshowExtraInfo(true);
+            setPhotoMap(true);
+            setMapIcon(false);
+          }}
           onMouseLeave={() => setshowExtraInfo(false)}
         >
           <div className={photoMapClassList}>
-            {useMapIcon || photoMap() === null ? <MdLocationOn /> : ''}
-            {photoMap()}
+            {useMapIcon || !map ? <MdLocationOn /> : ''}
+            {map}
           </div>
-          {showingPhotoMap && (
+          {map && (
             <div className="copyright">
               <a
                 href="https://www.mapbox.com/about/maps/"
@@ -315,7 +302,7 @@ function PhotoInformation({ info, url, api }) {
                 rel="noopener noreferrer"
               >
                 {' '}
-                © Mapbox{' '}
+                {uiText('_mapbox_f422d2')}{' '}
               </a>{' '}
               •{' '}
               <a
@@ -324,7 +311,7 @@ function PhotoInformation({ info, url, api }) {
                 rel="noopener noreferrer"
               >
                 {' '}
-                © OpenStreetMap{' '}
+                {uiText('_openstreetmap_b9eafa')}{' '}
               </a>{' '}
               •{' '}
               <a
@@ -333,7 +320,7 @@ function PhotoInformation({ info, url, api }) {
                 rel="noopener noreferrer"
               >
                 {' '}
-                Improve this map{' '}
+                {uiText('improve_this_map_0df9ff')}{' '}
               </a>
             </div>
           )}
@@ -355,16 +342,14 @@ function PhotoInformation({ info, url, api }) {
                 {photo} {credit}
               </span>
             </div>
-            {info.views && info.downloads !== null ? <UnsplashStats /> : null}
+            {info.views != null && info.downloads != null ? UnsplashStats() : null}
           </div>
 
           {(showExtraInfo || other) && excludeModal === false ? (
             <>
-              <span className="subtitle">
-                {t('widgets.background.information')}
-              </span>
-              <InformationItems />
-              <ActionButtons />
+              <span className="subtitle">{t('widgets.background.information')}</span>
+              {InformationItems()}
+              {ActionButtons()}
             </>
           ) : null}
         </div>

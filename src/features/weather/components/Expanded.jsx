@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo, useMemo } from 'react';
 
 import { WiHumidity, WiWindy, WiBarometer, WiCloud } from 'react-icons/wi';
@@ -48,6 +49,7 @@ const weatherTypes = {
 };
 
 function Expanded({ state: { weather, icon }, weatherType, variables }) {
+  useTranslationVersion();
   const enabled = useMemo(() => {
     return (setting) => {
       return (localStorage.getItem(setting) === 'true' && weatherType >= 3) || weatherType === '3';
@@ -55,6 +57,7 @@ function Expanded({ state: { weather, icon }, weatherType, variables }) {
   }, [weatherType]);
 
   const WeatherTooltip = ({ type }) => {
+    useTranslationVersion();
     const { icon: Icon, key, unit, title, extra } = weatherTypes[type];
     return (
       enabled(type) && (

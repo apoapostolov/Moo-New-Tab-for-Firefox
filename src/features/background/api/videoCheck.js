@@ -1,9 +1,7 @@
 /** True for `data:video/` URLs and `.mp4`, `.webm` or `.ogg` filenames. */
 export default function videoCheck(url) {
   return (
-    url.startsWith('data:video/') ||
-    url.endsWith('.mp4') ||
-    url.endsWith('.webm') ||
-    url.endsWith('.ogg')
+    typeof url === 'string' &&
+    (/^(?:data:)?video\//i.test(url) || /\.(?:mp4|webm|ogg|ogv)(?:[?#].*)?$/i.test(url))
   );
 }

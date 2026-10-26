@@ -1,7 +1,10 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 
 function QuickWeatherSkeleton() {
-  return <span className="quickweather">Weather Now</span>;
+  useTranslationVersion();
+  return <span className="quickweather">{uiText('weather_now_69ed32')}</span>;
 }
 
 export default memo(QuickWeatherSkeleton);

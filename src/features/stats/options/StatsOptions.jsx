@@ -1,10 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import {
-  MdShowChart,
-  MdRestartAlt,
-  MdDownload,
-  MdError,
-} from 'react-icons/md';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { useState } from 'react';
+import { MdShowChart, MdRestartAlt, MdDownload, MdError } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import Modal from 'react-modal';
 
@@ -16,7 +12,15 @@ import { saveFile } from 'utils/saveFile';
 import { formatNumber } from 'utils/formatNumber';
 import variables from 'config/variables';
 
+const StatsElement = ({ title, value }) => (
+  <div>
+    <span className="subtitle">{title}</span>
+    <span>{formatNumber(value)}</span>
+  </div>
+);
+
 const Stats = () => {
+  useTranslationVersion();
   const isPreviewMode = localStorage.getItem('welcomePreview') === 'true';
   const [stats, setStats] = useState(() => JSON.parse(localStorage.getItem('statsData')) || {});
   const [clearmodal, setClearmodal] = useState(false);
@@ -35,13 +39,6 @@ const Stats = () => {
     const filename = `mue_stats_${formattedDate}.json`;
     saveFile(JSON.stringify(stats, null, 2), filename);
   };
-
-  const StatsElement = ({ title, value }) => (
-    <div>
-      <span className="subtitle">{title}</span>
-      <span>{formatNumber(value)}</span>
-    </div>
-  );
 
   const STATS_SECTION = 'modals.main.settings.sections.stats';
 
@@ -94,7 +91,7 @@ const Stats = () => {
         isOpen={clearmodal}
         className="Modal ClearModal mainModal"
         overlayClassName="Overlay resetoverlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
       >
         <ClearModal modalClose={() => setClearmodal(false)} resetStats={resetStats} />
       </Modal>

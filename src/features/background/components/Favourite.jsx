@@ -1,9 +1,11 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo, useState, useCallback, useEffect, useRef } from 'react';
 import { MdStar, MdStarBorder } from 'react-icons/md';
 import { recordHeartOnce } from '../api/imageCounters';
 
-const Favourite = memo(({ tooltipText, credit, offline, pun, photoInfo }) => {
+const Favourite = memo(({ tooltipText, credit, offline, pun, photoInfo, photoURL }) => {
+  useTranslationVersion();
   const getInitialButton = () => {
     return localStorage.getItem('favourite') ? 'favourited' : 'unfavourited';
   };
@@ -34,10 +36,12 @@ const Favourite = memo(({ tooltipText, credit, offline, pun, photoInfo }) => {
           );
           break;
         default: {
-          let url = document
-            .getElementById('backgroundImage')
-            .style.backgroundImage.replace('url("', '')
-            .replace('")', '');
+          let url =
+            photoURL ||
+            document
+              .getElementById('backgroundImage')
+              ?.style.backgroundImage.replace('url("', '')
+              .replace('")', '');
 
           if (!url) {
             return;
@@ -68,7 +72,7 @@ const Favourite = memo(({ tooltipText, credit, offline, pun, photoInfo }) => {
                 credit: credit || '',
                 location: location?.innerText,
                 camera: camera?.innerText,
-                resolution: document.getElementById('infoResolution').textContent || '',
+                resolution: document.getElementById('infoResolution')?.textContent || '',
                 offline,
                 pun,
               }),
@@ -83,7 +87,7 @@ const Favourite = memo(({ tooltipText, credit, offline, pun, photoInfo }) => {
       tooltipText(variables.getMessage('widgets.quote.unfavourite'));
       variables.stats.postEvent('feature', 'Background unfavourite');
     }
-  }, [tooltipText, credit, offline, pun, photoInfo]);
+  }, [tooltipText, credit, offline, pun, photoInfo, photoURL]);
 
   const updateTooltip = useCallback(() => {
     if (tooltipText) {

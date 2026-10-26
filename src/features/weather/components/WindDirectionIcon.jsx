@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 
 import {
@@ -12,6 +13,7 @@ import {
 } from 'react-icons/wi';
 
 function WindDirectionIcon({ degrees }) {
+  useTranslationVersion();
   // 45° per entry, from north and counter-clockwise: 90° maps to West.
   const directions = [
     {

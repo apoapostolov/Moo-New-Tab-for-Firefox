@@ -38,3 +38,7 @@ yarn.lock
 keys.json
 .DS_Store
 *.zip
+
+# Offscreen captures and source media
+output/
+.playwright-cli/

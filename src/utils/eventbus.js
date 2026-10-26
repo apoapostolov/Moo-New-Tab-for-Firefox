@@ -1,85 +1,52 @@
 export default class EventBus {
-  static listeners = {};
+  static listeners = Object.create(null);
 
-  /**
-   * The callback receives `event.detail`, not the event.
-   */
-  static on(event, callback) {
-    document.addEventListener(event, (e) => {
+  static subscribe(event, callback, capture = false, once = false) {
+    const entry = { callback, capture, listener: null };
+    entry.listener = (e) => {
+      // Remove first so a callback that emits again still runs only once.
+      if (once) this.remove(event, entry);
       callback(e.detail);
-    });
-    if (!this.listeners[event]) {
-      this.listeners[event] = [];
-    }
-    this.listeners[event].push(callback);
+    };
+    (this.listeners[event] ??= []).push(entry);
+    document.addEventListener(event, entry.listener, { capture });
+  }
+
+  static on(event, callback) {
+    this.subscribe(event, callback);
   }
 
   static emit(event, data) {
-    document.dispatchEvent(
-      new CustomEvent(event, {
-        detail: data,
-      }),
-    );
+    document.dispatchEvent(new CustomEvent(event, { detail: data }));
+  }
+
+  static remove(event, entry) {
+    document.removeEventListener(event, entry.listener, { capture: entry.capture });
+    this.listeners[event] = (this.listeners[event] || []).filter((item) => item !== entry);
+    if (!this.listeners[event].length) delete this.listeners[event];
   }
 
   static off(event, callback) {
-    document.removeEventListener(event, callback);
-    if (this.listeners[event]) {
-      this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
+    for (const entry of this.listeners[event] || []) {
+      if (entry.callback === callback) this.remove(event, entry);
     }
   }
 
   static once(event, callback) {
-    const listener = (e) => {
-      callback(e.detail);
-      this.off(event, listener);
-    };
-    document.addEventListener(event, listener);
-    if (!this.listeners[event]) {
-      this.listeners[event] = [];
-    }
-    this.listeners[event].push({ callback, listener });
+    this.subscribe(event, callback, false, true);
   }
 
-  /**
-   * Runs before bubbling listeners by registering in the capture phase.
-   */
+  // Capture listeners run before bubbling listeners.
   static prepend(event, callback) {
-    const listener = (e) => {
-      callback(e.detail);
-    };
-    document.addEventListener(
-      event,
-      listener,
-      true, // set `useCapture` to `true` to insert the listener at the beginning
-    );
-    if (!this.listeners[event]) {
-      this.listeners[event] = [];
-    }
-    this.listeners[event].unshift({ callback, listener });
+    this.subscribe(event, callback, true);
   }
 
   static prependOnce(event, callback) {
-    const listener = (e) => {
-      callback(e.detail);
-      this.off(event, listener);
-    };
-    document.addEventListener(
-      event,
-      listener,
-      true, // set `useCapture` to `true` to insert the listener at the beginning
-    );
-    if (!this.listeners[event]) {
-      this.listeners[event] = [];
-    }
-    this.listeners[event].unshift({ callback, listener });
+    this.subscribe(event, callback, true, true);
   }
 
   static getListeners(event) {
-    if (this.listeners[event]) {
-      return this.listeners[event];
-    }
-    return [];
+    return (this.listeners[event] || []).map((entry) => entry.callback);
   }
 
   static eventNames() {
@@ -87,11 +54,8 @@ export default class EventBus {
   }
 
   static removeAllListeners() {
-    Object.keys(this.listeners).forEach((event) => {
-      this.listeners[event].forEach(({ listener }) => {
-        document.removeEventListener(event, listener);
-      });
-    });
-    this.listeners = {};
+    for (const event of this.eventNames()) {
+      for (const entry of this.listeners[event]) this.remove(event, entry);
+    }
   }
 }

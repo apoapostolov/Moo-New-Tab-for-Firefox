@@ -1,54 +1,59 @@
-import { memo } from 'react';
-import variables from 'config/variables';
-import { MdClose, MdRestartAlt } from 'react-icons/md';
-import { setDefaultSettings } from 'utils/settings';
-import { Tooltip, Button } from 'components/Elements';
-
-function ResetModal({ modalClose }) {
-  const reset = () => {
-    variables.stats.postEvent('setting', 'Reset');
-    setDefaultSettings('reset');
-    window.location.reload();
-  };
-
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { useState } from 'react';
+import { Button } from 'components/Elements';
+import { resetProfile } from 'utils/settings/profile';
+function ResetModal({ modalClose, scope = 'settings' }) {
+  useTranslationVersion();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const erase = scope === 'all';
+  async function reset() {
+    setBusy(true);
+    try {
+      await resetProfile(erase);
+      window.location.reload();
+    } catch (error) {
+      setError(error.message);
+      setBusy(false);
+    }
+  }
   return (
     <div className="smallModal">
       <div className="shareHeader">
         <span className="title">
-          {variables.getMessage('modals.main.settings.sections.advanced.reset_modal.title')}
+          {erase ? 'Erase all local data?' : 'Restore the default settings?'}
         </span>
-        <Tooltip
-          title={variables.getMessage('modals.main.settings.sections.advanced.reset_modal.cancel')}
+        <button
+          type="button"
+          className="close"
+          aria-label={uiText('close_bbfa77')}
+          disabled={busy}
+          onClick={modalClose}
         >
-          <div className="close" onClick={modalClose}>
-            <MdClose />
-          </div>
-        </Tooltip>
+          ×
+        </button>
       </div>
-      <span className="title">
-        {variables.getMessage('modals.main.settings.sections.advanced.reset_modal.question')}
-      </span>
-      <span className="subtitle">
-        {variables.getMessage('modals.main.settings.sections.advanced.reset_modal.information')}
-      </span>
+      <p>
+        {erase
+          ? 'This removes your settings, notes, pictures, links and Google sign-in from this browser. Save a backup first if you want to keep them.'
+          : 'This restores the default appearance and widget settings. Your notes, pictures, links, feeds and sign-in will stay.'}
+      </p>
+      {error && <p role="alert">{error}</p>}
       <div className="resetFooter">
         <Button
           type="secondary"
+          label={uiText('cancel_77dfd2')}
+          disabled={busy}
           onClick={modalClose}
-          icon={<MdClose />}
-          label={variables.getMessage('modals.main.settings.sections.advanced.reset_modal.cancel')}
         />
         <Button
-          type="settings"
-          onClick={() => reset()}
-          icon={<MdRestartAlt />}
-          label={variables.getMessage('modals.main.settings.buttons.reset')}
+          label={busy ? 'Please wait…' : erase ? 'Erase all local data' : 'Restore settings'}
+          disabled={busy}
+          onClick={reset}
         />
       </div>
     </div>
   );
 }
-
-const MemoizedResetModal = memo(ResetModal);
-
-export { MemoizedResetModal as default, MemoizedResetModal as ResetModal };
+export { ResetModal as default, ResetModal };

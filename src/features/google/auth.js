@@ -1,12 +1,22 @@
-/**
- * Google OAuth in an extension. Google refuses `*.extensions.allizom.org`, so the redirect cannot
- * be `identity.getRedirectURL()`. Firefox accepts a loopback redirect
- * `http://127.0.0.1/mozoauth2/<subdomain>` (RFC 8252, Firefox 86+) and a Desktop app client
- * accepts any loopback port; Firefox cancels that request before it leaves, so the flow resolves
- * with the code. The client secret of a Desktop app client is not confidential and never leaves
- * the browser.
- */
+import { fetchWithTimeout, withLock } from 'utils/requests';
 
+// Firefox uses a loopback redirect for the Desktop OAuth client. The secret is sent to Google's token endpoint.
+const revision = () => localStorage.getItem('googleAuthRevision') || '';
+export const authRevision = revision;
+let authController = new AbortController();
+export const authSignal = () => authController.signal;
+const invalidate = () => {
+  authController.abort();
+  authController = new AbortController();
+};
+if (globalThis.window?.addEventListener)
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'googleAuthRevision') invalidate();
+  });
+const changeRevision = () => {
+  localStorage.setItem('googleAuthRevision', `${Date.now()}-${Math.random()}`);
+  invalidate();
+};
 const AUTH_KEY = 'googleAuth';
 
 export const SCOPES = [
@@ -59,6 +69,7 @@ export const getRedirectUri = () => {
 };
 
 export const getAuth = async () => {
+  if (typeof browser === 'undefined' || !browser.storage) return null;
   const stored = await browser.storage.local.get(AUTH_KEY);
 
   return stored?.[AUTH_KEY] ?? null;
@@ -84,7 +95,8 @@ const readIdToken = (idToken) => {
 };
 
 const tokenRequest = async (params) => {
-  const response = await fetch(TOKEN_ENDPOINT, {
+  const response = await fetchWithTimeout(TOKEN_ENDPOINT, {
+    signal: authSignal(),
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams(params),
@@ -105,6 +117,8 @@ const tokenRequest = async (params) => {
  * Returns the stored auth record so the caller can show which account connected.
  */
 export const connect = async () => {
+  changeRevision();
+  const generation = revision();
   const { clientId, clientSecret } = getCredentials();
 
   if (!clientId || !clientSecret) throw new Error('MISSING_CREDENTIALS');
@@ -166,16 +180,22 @@ export const connect = async () => {
     connectedAt: Date.now(),
   };
 
-  await saveAuth(auth);
+  if (generation !== revision()) throw new Error('Connection was cancelled.');
+  await withLock('moo-google-auth', async () => {
+    if (generation !== revision()) throw new Error('Connection was cancelled.');
+    await saveAuth(auth);
+  });
 
   return auth;
 };
 
-export const refresh = async () => {
+const refreshTokens = async (force = false) => {
+  const generation = revision();
   const { clientId, clientSecret } = getCredentials();
   const auth = await getAuth();
 
   if (!auth?.refreshToken) throw new Error('NOT_CONNECTED');
+  if (!force && auth.expiresAt - 60000 > Date.now()) return auth;
 
   const tokens = await tokenRequest({
     client_id: clientId,
@@ -193,9 +213,20 @@ export const refresh = async () => {
     scope: tokens.scope ?? auth.scope,
   };
 
+  if (generation !== revision() || (await getAuth())?.refreshToken !== auth.refreshToken)
+    throw new Error('NOT_CONNECTED');
   await saveAuth(next);
 
   return next;
+};
+
+let refreshing;
+export const refresh = (force = false) => {
+  if (!refreshing)
+    refreshing = withLock('moo-google-auth', () => refreshTokens(force)).finally(() => {
+      refreshing = null;
+    });
+  return refreshing;
 };
 
 /**
@@ -215,15 +246,15 @@ export const getAccessToken = async () => {
 };
 
 export const disconnect = async () => {
+  changeRevision();
   const auth = await getAuth();
+  await withLock('moo-google-auth', clearAuth);
 
   if (auth?.refreshToken) {
     // Best effort: revoking is a courtesy to the account, and the local record
     // has to disappear even when the request fails.
-    await fetch(`${REVOKE_ENDPOINT}?token=${encodeURIComponent(auth.refreshToken)}`, {
+    await fetchWithTimeout(`${REVOKE_ENDPOINT}?token=${encodeURIComponent(auth.refreshToken)}`, {
       method: 'POST',
     }).catch(() => {});
   }
-
-  await clearAuth();
 };

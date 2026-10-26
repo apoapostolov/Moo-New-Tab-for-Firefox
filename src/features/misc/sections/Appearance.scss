@@ -1,25 +1,9 @@
+// Fixed swatch tracks prevent the colour buttons from shrinking into ovals.
 @use 'scss/variables' as *;
 
-/*
- * The signature colour picker: fixed choices, one free picker, and a button that
- * reads a colour out of the wallpaper. Each swatch is drawn from its own colour,
- * so the strip is the palette rather than a description of it.
- */
-/* Three circles to a row, two rows, then the wallpaper button across the
-   column. A flex line squeezed five colours and the free picker into the 300px
-   action column and the browser shrank the swatches into ovals; a fixed grid
-   track keeps every one of them a circle of the same size. */
 .signaturePicker {
   display: grid;
-  /* Seven fixed tracks in one row: six colours and the free picker. Seven circles
-     of 34px and six 10px gaps come to 298px, inside the 300px action column, so
-     none of them can be squeezed into an oval again. The box stretches to the
-     column so the button below can take the full width, and the tracks are
-     centred inside it. */
   grid-template-columns: repeat(7, 34px);
-  // The six come to 266px of the 300px action column. Centred, the spare width is
-  // shared, and the strip sits over the middle of the button underneath it instead
-  // of hugging the left edge with all the slack on one side.
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -29,7 +13,6 @@
 .signatureSwatch {
   width: 34px;
   height: 34px;
-  /* The action column adds a top margin to its buttons; a grid cell must not. */
   margin: 0;
   padding: 0;
   border-radius: 50%;
@@ -92,14 +75,6 @@
   }
 }
 
-/* Row three: the whole width of the four circles above it. Two classes deep
-   because `.action button` gives every button in the column a top margin, which
-   would otherwise push each row taller than the circles in it. */
-/* The settings column gives every button a 10px top margin from inside a theme
-   class (`.dark .modalTabContent .settingsRow .action button`), so an override
-   has to name the same path and go one level deeper, or each grid row stays 10px
-   taller than the circles standing in it. */
-/* Row three: one button the width of the column, under the circles. */
 .modalTabContent .settingsGroup .action .signatureSample {
   align-self: stretch;
   margin: 4px 0 0;

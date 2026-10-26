@@ -655,10 +655,10 @@
               "title": "Əyilməni söndür",
               "subtitle": "Qeydlər və şəkillər düz dayanır, birini dartdıqda artıq əyilmir."
             },
-        "scratch_bare": {
-          "title": "Çərçivəsiz qeydlər",
-          "subtitle": "Qeydlər fon üzərində sadə mətn kimi dayanır və birinə kliklədikdə öz çərçivəsini geri alır."
-        },
+            "scratch_bare": {
+              "title": "Çərçivəsiz qeydlər",
+              "subtitle": "Qeydlər fon üzərində sadə mətn kimi dayanır və birinə kliklədikdə öz çərçivəsini geri alır."
+            },
             "cinema": {
               "title": "İnterfeysi gizlətmək üçün üç dəfə klikləyin",
               "subtitle": "Üç klik videodan başqa hər şeyi gizlədir; bir klik və ya Escape onu geri qaytarır."

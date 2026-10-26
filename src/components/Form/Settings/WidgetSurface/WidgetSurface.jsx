@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
 import { Dropdown } from 'components/Form/Settings';
@@ -8,6 +9,7 @@ const SECTION = 'modals.main.settings.surface';
 /** The panel style switch. Sections pass their own setting name and refresh category, so a
  * change repaints that widget only; `title` lets one section carry a row per widget. */
 function WidgetSurface({ setting, category = 'all', title, subtitle, final }) {
+  useTranslationVersion();
   return (
     <Row final={final}>
       <Content

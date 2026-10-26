@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import { isBrandIcon } from 'utils/brandIcons';
 import { useSortable } from '@dnd-kit/sortable';
@@ -5,6 +7,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { DragHandle } from './DragHandle';
 
 export const SortableItem = ({ value, enabled, startEditLink, deleteLink }) => {
+  useTranslationVersion();
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: value.key,
     disabled: !enabled,
@@ -53,12 +56,12 @@ export const SortableItem = ({ value, enabled, startEditLink, deleteLink }) => {
             e.stopPropagation();
             startEditLink(value);
           }}
-          title="Edit"
+          title={uiText('edit_530164')}
           disabled={!enabled}
           aria-disabled={!enabled}
         >
           <MdEdit />
-          <span>Edit</span>
+          <span>{uiText('edit_530164')}</span>
         </button>
         <button
           className="quicklink-action-btn quicklink-remove-btn"
@@ -67,12 +70,12 @@ export const SortableItem = ({ value, enabled, startEditLink, deleteLink }) => {
             e.stopPropagation();
             deleteLink(value.key, e);
           }}
-          title="Remove"
+          title={uiText('remove_e96390')}
           disabled={!enabled}
           aria-disabled={!enabled}
         >
           <MdDelete />
-          <span>Remove</span>
+          <span>{uiText('remove_e96390')}</span>
         </button>
       </div>
     </div>

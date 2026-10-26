@@ -101,7 +101,12 @@
     }
 
     svg {
-      background: linear-gradient(238.7deg, var(--signature) 13.8%, var(--signature-strong) 49.49%, var(--signature-light) 87.48%);
+      background: linear-gradient(
+        238.7deg,
+        var(--signature) 13.8%,
+        var(--signature-strong) 49.49%,
+        var(--signature-light) 87.48%
+      );
       padding: 5px;
       border-radius: 100%;
 

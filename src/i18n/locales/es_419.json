@@ -655,10 +655,10 @@
               "title": "Desactivar la inclinación",
               "subtitle": "Las notas y las imágenes se quedan rectas, y al arrastrarlas ya no se inclinan."
             },
-        "scratch_bare": {
-          "title": "Notas sin marco",
-          "subtitle": "Las notas se quedan como texto a secas sobre el fondo y recuperan su marco cuando haces clic en una."
-        },
+            "scratch_bare": {
+              "title": "Notas sin marco",
+              "subtitle": "Las notas se quedan como texto a secas sobre el fondo y recuperan su marco cuando haces clic en una."
+            },
             "cinema": {
               "title": "Tres clics para ocultar la interfaz",
               "subtitle": "Tres clics ocultan todo menos el video; un clic, o Escape, lo devuelve."

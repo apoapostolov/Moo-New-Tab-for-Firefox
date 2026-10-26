@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { MdOpenInNew } from 'react-icons/md';
@@ -31,6 +33,7 @@ const CREDENTIALS_URL = 'https://console.cloud.google.com/apis/credentials';
 const Step = ({ number }) => <span className="googleStepNumber">{number}</span>;
 
 const GoogleOptions = () => {
+  useTranslationVersion();
   const { auth, loading, error, connectAccount, disconnectAccount } = useGoogleAuth();
   const [busy, setBusy] = useState(false);
   const [redirectUri, setRedirectUri] = useState('');
@@ -90,10 +93,10 @@ const GoogleOptions = () => {
             title={
               <>
                 <Step number="1" />
-                Register Moo in Google Cloud
+                {uiText('register_moo_in_google_cloud_a4d4d0')}
               </>
             }
-            subtitle="Google only answers apps it knows about, and Moo isn't one yet. In your own Cloud project, enable the Gmail, Calendar and Tasks APIs, then create an OAuth client of type Desktop app."
+            subtitle={uiText('google_only_answers_apps_it_knows_about_and_m_283a79')}
           />
           <Action>
             <a
@@ -102,15 +105,16 @@ const GoogleOptions = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Open Google Cloud <MdOpenInNew />
+              {uiText('open_google_cloud_e03ae9')}
+              <MdOpenInNew />
             </a>
           </Action>
         </Row>
 
         <Row>
           <Content
-            title="Paste this Redirect URI when Google asks"
-            subtitle="Copy it exactly as it is. It belongs to this installation and Google rejects anything else."
+            title={uiText('paste_this_redirect_uri_when_google_asks_5e50cd')}
+            subtitle={uiText('copy_it_exactly_as_it_is_it_belongs_to_this_i_ac6486')}
           />
           <Action>
             <code className="googleRedirect">
@@ -121,8 +125,8 @@ const GoogleOptions = () => {
 
         <Row>
           <Content
-            title="Scopes Moo will ask for"
-            subtitle="The permissions the app requests. Nothing is read until you connect."
+            title={uiText('scopes_moo_will_ask_for_418c5c')}
+            subtitle={uiText('the_permissions_the_app_requests_nothing_is_r_c5eb60')}
           />
           <Action>
             <ul className="googleScopeList">
@@ -138,22 +142,22 @@ const GoogleOptions = () => {
             title={
               <>
                 <Step number="2" />
-                Paste the client ID and secret
+                {uiText('paste_the_client_id_and_secret_498adb')}
               </>
             }
-            subtitle="Both come from the client you made in step 1. They stay in this browser profile."
+            subtitle={uiText('both_come_from_the_app_you_made_in_step_1_moo_a79123')}
           />
           <Action>
             <Text
               name="googleClientId"
-              title="Client ID"
-              placeholder="…apps.googleusercontent.com"
+              title={uiText('client_id_a766cd')}
+              placeholder={uiText('_apps_googleusercontent_com_f76874')}
               onChange={setClientId}
             />
             <Text
               name="googleClientSecret"
-              title="Client secret"
-              placeholder="GOCSPX-…"
+              title={uiText('client_secret_4b468e')}
+              placeholder={uiText('gocspx_9dfa73')}
               onChange={setClientSecret}
             />
           </Action>
@@ -164,7 +168,7 @@ const GoogleOptions = () => {
             title={
               <>
                 <Step number="3" />
-                Connect
+                {uiText('connect_b65463')}
               </>
             }
             subtitle={
@@ -174,7 +178,7 @@ const GoogleOptions = () => {
                   ? `Connected${auth.email ? ` as ${auth.email}` : ''}. Disconnect only forgets the tokens here; your Google account stays as it is.`
                   : ready
                     ? 'Google opens its own window and you approve the permissions there.'
-                    : 'Locked until step 2 is done. Without the client ID and secret Google has no app to talk to.'
+                    : 'Add both values in step 2 before connecting.'
             }
           />
           <Action>
@@ -192,7 +196,7 @@ const GoogleOptions = () => {
 
       {error && (
         <Row>
-          <Content title="Last error" subtitle={describeError(error)} />
+          <Content title={uiText('last_error_5e4df8')} subtitle={describeError(error)} />
         </Row>
       )}
 
@@ -202,9 +206,21 @@ const GoogleOptions = () => {
           so the panel style is stored per widget like the other sections. */}
       {auth && (
         <Group>
-          <WidgetSurface setting="surfaceMail" category="google" title="Mail panel" />
-          <WidgetSurface setting="surfaceCalendar" category="google" title="Calendar panel" />
-          <WidgetSurface setting="surfaceTasks" category="google" title="Tasks panel" />
+          <WidgetSurface
+            setting="surfaceMail"
+            category="google"
+            title={uiText('mail_panel_a50e62')}
+          />
+          <WidgetSurface
+            setting="surfaceCalendar"
+            category="google"
+            title={uiText('calendar_panel_a9c143')}
+          />
+          <WidgetSurface
+            setting="surfaceTasks"
+            category="google"
+            title={uiText('tasks_panel_b2f973')}
+          />
         </Group>
       )}
     </>

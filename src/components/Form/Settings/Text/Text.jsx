@@ -1,5 +1,7 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
-import { memo, useState, useCallback } from 'react';
+import { memo, useState, useCallback, useId, useContext } from 'react';
+import { RowLabelContext } from 'components/Layout/Settings/Item/SettingsItem';
 import { toast } from 'react-toastify';
 import { MdRefresh } from 'react-icons/md';
 
@@ -8,8 +10,21 @@ import EventBus from 'utils/eventbus';
 import './Text.scss';
 
 const Text = memo((props) => {
-  const { name, upperCaseFirst, element, category, onChange, title, textarea, customcss, placeholder } = props;
+  useTranslationVersion();
+  const rowLabel = useContext(RowLabelContext);
+  const {
+    name,
+    upperCaseFirst,
+    element,
+    category,
+    onChange,
+    title,
+    textarea,
+    customcss,
+    placeholder,
+  } = props;
   const defaultValue = props.default;
+  const inputId = useId();
   const [value, setValue] = useState(localStorage.getItem(name) || '');
 
   const handleChange = useCallback(
@@ -54,14 +69,19 @@ const Text = memo((props) => {
         <div className={`text-field ${customcss ? 'customcss' : ''}`}>
           {title && (
             <div className="text-field-header">
-              <label className="text-field-label">{title}</label>
-              <span className="text-field-reset" onClick={resetItem}>
+              <label className="text-field-label" htmlFor={inputId}>
+                {title}
+              </label>
+              <button type="button" className="text-field-reset" onClick={resetItem}>
                 <MdRefresh />
                 {variables.getMessage('modals.main.settings.buttons.reset')}
-              </span>
+              </button>
             </div>
           )}
           <textarea
+            aria-labelledby={!title && rowLabel ? rowLabel : undefined}
+            id={inputId}
+            aria-label={title || placeholder || name}
             value={value}
             onChange={handleChange}
             spellCheck={false}
@@ -73,14 +93,19 @@ const Text = memo((props) => {
         <div className="text-field">
           {title && (
             <div className="text-field-header">
-              <label className="text-field-label">{title}</label>
-              <span className="text-field-reset" onClick={resetItem}>
+              <label className="text-field-label" htmlFor={inputId}>
+                {title}
+              </label>
+              <button type="button" className="text-field-reset" onClick={resetItem}>
                 <MdRefresh />
                 {variables.getMessage('modals.main.settings.buttons.reset')}
-              </span>
+              </button>
             </div>
           )}
           <input
+            aria-labelledby={!title && rowLabel ? rowLabel : undefined}
+            id={inputId}
+            aria-label={title || placeholder || name}
             type="text"
             value={value}
             onChange={handleChange}

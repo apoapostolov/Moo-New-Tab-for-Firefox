@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { MdArchive, MdOutlineWhatshot } from 'react-icons/md';
 import { useState } from 'react';
@@ -9,6 +10,7 @@ const STYLES = {
 };
 
 const StyleSelection = () => {
+  useTranslationVersion();
   const widgetStyle = localStorage.getItem('widgetStyle') || STYLES.NEW;
   const [style, setStyle] = useState(widgetStyle);
 

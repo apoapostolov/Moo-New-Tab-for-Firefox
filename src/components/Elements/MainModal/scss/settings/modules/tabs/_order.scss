@@ -4,12 +4,11 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   padding: 20px;
-  grid-gap: 20px;
+  gap: 20px;
 
   @include themed {
     div {
       border-radius: t($borderRadius);
-
       display: flex;
       align-items: center;
       justify-content: center;
@@ -61,6 +60,7 @@
       opacity: 1;
     }
   }
+
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 
@@ -81,7 +81,7 @@
 
       &:hover {
         transform: translateY(-4px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 6px 20px rgb(0 0 0 / 15%);
 
         .image-nav-buttons {
           opacity: 1;
@@ -111,11 +111,10 @@
           appearance: none;
           border: 2px solid #fff;
           border-radius: 4px;
-          background: rgba(0, 0, 0, 0.6);
-          -webkit-backdrop-filter: blur(4px);
+          background: rgb(0 0 0 / 60%);
           backdrop-filter: blur(4px);
           transition: all 0.2s;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
           position: relative;
 
           &:checked {
@@ -199,8 +198,7 @@
             height: 36px;
             border-radius: 50%;
             border: none;
-            background: rgba(0, 0, 0, 0.6);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgb(0 0 0 / 60%);
             backdrop-filter: blur(8px);
             color: #fff;
             display: flex;
@@ -214,7 +212,7 @@
             }
 
             &:hover:not(:disabled) {
-              background: rgba(0, 0, 0, 0.8);
+              background: rgb(0 0 0 / 80%);
               transform: scale(1.1);
             }
 
@@ -269,7 +267,7 @@
         height: 32px;
         border-radius: 50%;
         border: none;
-        background: rgba(255, 71, 87, 0.9);
+        background: rgb(255 71 87 / 90%);
         color: #fff;
         display: flex;
         align-items: center;
@@ -278,7 +276,7 @@
         opacity: 0;
         transition: all 0.2s;
         z-index: 11;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
 
         svg {
           font-size: 20px;
@@ -536,7 +534,6 @@
   width: calc(50% - (var(--card-gap) / 2));
 }
 
-
 .zoneCard {
   display: flex;
   align-items: center;
@@ -579,6 +576,9 @@
   padding-right: 2px;
   opacity: 0.55;
   cursor: grab;
+  border: 0;
+  background: transparent;
+  color: inherit;
 
   svg {
     font-size: 18px;
@@ -598,7 +598,10 @@
   margin: -8px 0;
   border-radius: 8px;
   background: transparent;
-  transition: height 0.12s ease, margin 0.12s ease, background 0.12s ease;
+  transition:
+    height 0.12s ease,
+    margin 0.12s ease,
+    background 0.12s ease;
 }
 
 /* The opening a drag makes: a dim, bordered space the size of a card. */
@@ -609,9 +612,9 @@
   min-height: 46px;
   box-sizing: border-box;
   padding: 0 10px;
-  border: 1px dashed color-mix(in srgb, currentColor 38%, transparent);
+  border: 1px dashed color-mix(in srgb, currentcolor 38%, transparent);
   border-radius: 8px;
-  background: color-mix(in srgb, currentColor 5%, transparent);
+  background: color-mix(in srgb, currentcolor 5%, transparent);
   opacity: 0.8;
 }
 
@@ -682,6 +685,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     align-items: center;
+
     /* The middle column clones the real widgets, so its own type decides how
        wide it comes out: at page size the clock and the date made the centre
        twice as wide as the cards on the rails. One card size for the whole
@@ -691,7 +695,6 @@
     .aiAskSkeleton {
       width: 66px;
     }
-
   }
 
   /* The clock, the date, the one-line weather and the query line run across the
@@ -726,9 +729,11 @@
     display: flex;
     flex-flow: column;
     align-items: center;
+
     // One card size across the preview, so the three columns read as columns rather than the
     // middle one being twice the width of a rail.
     width: 66px;
+
     // A widget on its own line needs air: the cards draw their own edges and would otherwise
     // touch into one tall block.
     gap: 6px;
@@ -750,6 +755,7 @@
   // content, and left alone it escapes into the corner of the settings panel.
   // Mail, Calendar and Tasks are drawn, not written: one entry per card, bars for text, dots for
   // glyphs, all in currentColor so one card reads in both themes. Drawn as a thumbnail.
+
   /* AI Ask is a line, not a card, so its preview is a hint and a hairline drawn
      in the same tints of currentColor as the widget skeletons beside it. */
   .aiAskSkeleton {
@@ -764,7 +770,7 @@
     width: 62%;
     height: 5px;
     border-radius: 3px;
-    background: currentColor;
+    background: currentcolor;
     opacity: 0.3;
   }
 
@@ -772,7 +778,7 @@
     width: 100%;
     height: 2px;
     border-radius: 999px;
-    background: currentColor;
+    background: currentcolor;
     opacity: 0.28;
   }
 
@@ -785,8 +791,8 @@
     padding: 3px 4px 4px;
     border-radius: 4px;
     text-shadow: none;
-    background: color-mix(in srgb, currentColor 6%, transparent);
-    border: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+    background: color-mix(in srgb, currentcolor 6%, transparent);
+    border: 1px solid color-mix(in srgb, currentcolor 10%, transparent);
   }
 
   .gwSkeletonHead {
@@ -800,7 +806,7 @@
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background: currentColor;
+    background: currentcolor;
     opacity: 0.5;
 
     &.gwSkeletonDot-small {
@@ -820,7 +826,7 @@
   // A dot for an avatar, a square where a date sits, a tick box where the row can be done.
   .gwSkeletonIcon {
     flex: 0 0 auto;
-    background: currentColor;
+    background: currentcolor;
     opacity: 0.3;
 
     &.gwSkeletonIcon-dot {
@@ -842,7 +848,7 @@
       height: 5px;
       border-radius: 1px;
       background: transparent;
-      border: 1px solid currentColor;
+      border: 1px solid currentcolor;
       opacity: 0.45;
     }
   }
@@ -857,7 +863,7 @@
   .gwSkeletonBar {
     height: 2px;
     border-radius: 999px;
-    background: currentColor;
+    background: currentcolor;
     opacity: 0.22;
 
     &.gwSkeletonBar-wide {
@@ -909,4 +915,29 @@
     border-radius: t($borderRadius);
     box-shadow: t($boxShadow);
   }
+}
+
+.gwSkeleton-rss .gwSkeletonIcon-article {
+  width: 14px;
+  height: 17px;
+  border-radius: 2px;
+  border: 1px solid currentcolor;
+  opacity: 0.45;
+}
+
+.gwSkeleton-rss .gwSkeletonEntry + .gwSkeletonEntry {
+  margin-top: 9px;
+}
+
+.weatherThumbReading {
+  font-size: 12px;
+  display: block;
+  text-align: left;
+  padding: 3px 0;
+}
+
+.gwSkeleton-weather .gwSkeletonIcon-weather {
+  width: 18px;
+  height: 10px;
+  border-radius: 8px;
 }

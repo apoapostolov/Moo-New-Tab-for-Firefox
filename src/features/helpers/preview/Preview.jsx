@@ -1,8 +1,10 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 import variables from 'config/variables';
 import './preview.scss';
 
 function Preview(props) {
+  useTranslationVersion();
   return (
     <div className="preview-mode">
       <span className="title">{variables.getMessage('modals.main.settings.reminder.title')}</span>

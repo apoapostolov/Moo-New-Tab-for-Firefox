@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
 import { Switch } from 'components/Form/Settings';
@@ -15,6 +16,7 @@ const Section = ({ title, subtitle }) => (
  * the page rather than a thing on it.
  */
 const MiscOptions = () => {
+  useTranslationVersion();
   const MISC_SECTION = 'modals.main.settings.sections.misc';
 
   return (

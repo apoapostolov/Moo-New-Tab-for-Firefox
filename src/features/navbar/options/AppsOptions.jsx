@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
 import { useState } from 'react';
@@ -16,6 +17,7 @@ import { getTitleFromUrl, isValidUrl } from 'utils/links';
 import { QuickLink } from 'features/quicklinks/options/QuickLink';
 
 function AppsOptions({ appsEnabled }) {
+  useTranslationVersion();
   const t = useT();
   const [appsModalInfo, setAppsModalInfo] = useState({
     newLink: false,
@@ -116,9 +118,7 @@ function AppsOptions({ appsEnabled }) {
       <Row final={true} inactive={!appsEnabled}>
         <Content
           title={t('widgets.navbar.apps.title')}
-          subtitle={t(
-            'modals.main.settings.sections.appearance.navbar.apps_subtitle',
-          )}
+          subtitle={t('modals.main.settings.sections.appearance.navbar.apps_subtitle')}
         />
         <Action>
           <Button
@@ -149,7 +149,7 @@ function AppsOptions({ appsEnabled }) {
         isOpen={appsModalInfo.edit || appsModalInfo.newLink}
         className="Modal resetmodal mainModal"
         overlayClassName="Overlay resetoverlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
       >
         <AddModal
           urlError={appsModalInfo.urlError}

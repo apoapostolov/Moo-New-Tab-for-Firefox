@@ -1,3 +1,9 @@
+import { durableWriter, registerDraft } from 'utils/durableWriter';
+import { saveFile } from 'utils/saveFile';
+import { withProfileLock } from 'utils/settings/profile';
+import { readScratchAssets, patchScratchAssets } from 'utils/customBackgroundDB';
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import EventBus from 'utils/eventbus';
@@ -25,7 +31,6 @@ import './scratchImages.scss';
  */
 
 const NOTES_STORE = 'scratchNotesData';
-const IMAGES_STORE = 'scratchImagesData';
 const NOTES_FLAG = 'scratchNotes';
 const IMAGES_FLAG = 'scratchImages';
 // Off by default: the lean is part of the feel. Turning it on keeps everything straight.
@@ -36,9 +41,6 @@ const NO_TILT_FLAG = 'scratchNoTilt';
 const BARE_FLAG = 'scratchNotesBare';
 const TOP_Z = 'scratchTopZ';
 const ARM_TIMEOUT = 4000;
-// A picture is stored whole, so the store has a ceiling: past it the oldest picture gives way.
-const IMAGE_BUDGET = 4.2 * 1024 * 1024;
-
 const NOT_BACKGROUND =
   '.scratchNote, .scratchImage, #widgets, #navbar, .navbar, .modal, dialog, .ReactModal__Overlay, label, button, a, input, textarea, select, [contenteditable="true"], [role="button"], .Toastify, .reminder-info';
 
@@ -73,61 +75,7 @@ const readNotes = () => {
   }
 };
 
-const readImages = () => {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(IMAGES_STORE) || '[]');
-
-    if (!Array.isArray(parsed)) return [];
-
-    return parsed
-      .filter((image) => image && typeof image.src === 'string' && Number.isFinite(image.x))
-      .map((image) => ({
-        id: String(image.id || `i${Math.random().toString(36).slice(2)}`),
-        x: image.x,
-        y: Number.isFinite(image.y) ? image.y : 60,
-        width: Number.isFinite(image.width) ? image.width : NOTE_WIDTH,
-        ratio: Number.isFinite(image.ratio) && image.ratio > 0 ? image.ratio : 1,
-        angle: Number.isFinite(image.angle) ? image.angle : 1.5,
-        z: Number.isFinite(image.z) ? image.z : 1,
-        src: image.src,
-      }));
-  } catch {
-    return [];
-  }
-};
-
 const saveNotes = (notes) => localStorage.setItem(NOTES_STORE, JSON.stringify(notes));
-
-/**
- * A picture dwarfs a note, so the write can run out of room: the oldest picture
- * pays for the new one, and a paste that still does not fit is dropped rather
- * than thrown from the paste handler.
- */
-const saveImages = (images) => {
-  const keep = [...images];
-
-  for (let attempt = 0; attempt < 8; attempt += 1) {
-    const payload = JSON.stringify(keep);
-    // Checked before the write, so an over-full store shrinks even if the browser would accept it.
-    const fits = payload.length <= IMAGE_BUDGET;
-
-    if (fits) {
-      try {
-        localStorage.setItem(IMAGES_STORE, payload);
-
-        return keep;
-      } catch {
-        // A full origin refuses the write outright; drop the oldest and retry.
-      }
-    }
-
-    if (keep.length <= 1) break;
-
-    keep.shift();
-  }
-
-  throw new Error('There is no room left for another picture.');
-};
 
 const loadImage = (url) =>
   new Promise((resolve, reject) => {
@@ -208,23 +156,80 @@ const toPngBlob = async (src) => {
   });
 };
 
-/* The page arrives in an order. The middle column fades in over a second
- * (`#widgets { animation: fadeIn 1s }` in src/scss/index.scss), and the notes and pictures
- * follow it rather than racing it: arriving alongside a slower fade made them look like
- * they snapped into place while the page was still coming up. One number is derived from
- * the other, so a change to the fade drags the entrance with it. */
+// Match the widget fade before staggering the scratch layer entrance.
 const WIDGET_FADE = 1000;
 const SCRATCH_ENTRANCE = WIDGET_FADE + 120; // a beat after the page settles
 const SCRATCH_STAGGER = 60; // between one note and the next
 const SCRATCH_WINDOW = 1600; // how long after arriving the entrance still counts
 
 const Scratch = () => {
+  useTranslationVersion();
   const [notesOn, setNotesOn] = useState(() => localStorage.getItem(NOTES_FLAG) === 'true');
   const [imagesOn, setImagesOn] = useState(() => localStorage.getItem(IMAGES_FLAG) === 'true');
   const [noTilt, setNoTilt] = useState(() => localStorage.getItem(NO_TILT_FLAG) === 'true');
   const [bare, setBare] = useState(() => localStorage.getItem(BARE_FLAG) === 'true');
-  const [notes, setNotes] = useState(readNotes);
-  const [images, setImages] = useState(readImages);
+  const [notesProblem] = useState(() => {
+    try {
+      const value = JSON.parse(localStorage.getItem(NOTES_STORE) || '[]');
+      return !Array.isArray(value) || value.some((note) => !note || !Number.isFinite(note.x))
+        ? 'Some saved notes could not be read. Their original data has been kept.'
+        : '';
+    } catch {
+      return 'Some saved notes could not be read. Their original data has been kept.';
+    }
+  });
+  const [notes, setNotesState] = useState(readNotes);
+  const [images, setImages] = useState([]);
+  const [saveState, setSaveState] = useState('Saved');
+  const [imageError, setImageError] = useState('');
+  const imagesRef = useRef([]);
+  const imageWrites = useRef(Promise.resolve());
+  const notesRef = useRef(notes);
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    readScratchAssets()
+      .then((value) => {
+        if (mounted.current) {
+          imagesRef.current = value;
+          setImages(value);
+        }
+      })
+      .catch((error) => setImageError(error.message));
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+  const [noteWriter] = useState(() => {
+    const revision = localStorage.getItem('profileRevision');
+    return durableWriter((notes) => {
+      if (notesProblem) throw new Error(notesProblem);
+      if (revision !== localStorage.getItem('profileRevision'))
+        throw new Error('The profile changed in another tab. Reload to continue.');
+      saveNotes(notes);
+    }, setSaveState);
+  });
+  const setNotes = useCallback(
+    (update) => {
+      const next = typeof update === 'function' ? update(notesRef.current) : update;
+      notesRef.current = next;
+      noteWriter.schedule(next);
+      setNotesState(next);
+    },
+    [noteWriter],
+  );
+  useEffect(() => {
+    const unregister = registerDraft(NOTES_STORE, noteWriter);
+    const flush = () => noteWriter.flush();
+    window.addEventListener('pagehide', flush);
+    document.addEventListener('visibilitychange', flush);
+    return () => {
+      window.removeEventListener('pagehide', flush);
+      document.removeEventListener('visibilitychange', flush);
+      flush();
+      unregister();
+    };
+  }, [noteWriter]);
   const [editingId, setEditingId] = useState(null);
   const [armedId, setArmedId] = useState(null);
   const [drag, setDrag] = useState(null);
@@ -291,43 +296,53 @@ const Scratch = () => {
     };
   }, []);
 
-  const commitNotes = useCallback((next) => {
-    setNotes(next);
-    saveNotes(next);
+  const commitNotes = setNotes;
+  const commitImages = useCallback((update) => {
+    const revision = localStorage.getItem('profileRevision');
+    const write = async () => {
+      if (revision !== localStorage.getItem('profileRevision')) return;
+      const previous = imagesRef.current;
+      const next = typeof update === 'function' ? update(previous) : update;
+      const removed = previous
+        .filter((image) => !next.some((item) => item.id === image.id))
+        .map((image) => image.id);
+      const upserts = next.filter(
+        (image) =>
+          JSON.stringify(previous.find((item) => item.id === image.id)) !== JSON.stringify(image),
+      );
+      try {
+        const saved = await patchScratchAssets({ upserts, removed });
+        imagesRef.current = saved;
+        if (mounted.current) {
+          setImages(saved);
+          setImageError('');
+        }
+      } catch (error) {
+        if (mounted.current)
+          setImageError(
+            `The picture change was not saved. Remove pictures you no longer need, or save a backup. ${error.message}`,
+          );
+      }
+    };
+    imageWrites.current = imageWrites.current.then(
+      () => withProfileLock(write),
+      () => withProfileLock(write),
+    );
+    return imageWrites.current;
   }, []);
-
-  const commitImages = useCallback((next) => {
-    try {
-      setImages(saveImages(next));
-    } catch {
-      // Out of room even after dropping the oldest: keep the change on screen.
-      setImages([...next]);
-    }
-  }, []);
-
-  const lift = useCallback((id, kind) => {
-    const z = nextZ();
-
-    if (kind === 'image') {
-      setImages((current) => {
-        const next = current.map((image) => (image.id === id ? { ...image, z } : image));
-
-        saveImages(next);
-
-        return next;
-      });
-
-      return;
-    }
-
-    setNotes((current) => {
-      const next = current.map((note) => (note.id === id ? { ...note, z } : note));
-
-      saveNotes(next);
-
-      return next;
-    });
-  }, []);
+  const lift = useCallback(
+    (id, kind) => {
+      const z = nextZ();
+      if (kind === 'image') {
+        commitImages((current) =>
+          current.map((image) => (image.id === id ? { ...image, z } : image)),
+        );
+        return;
+      }
+      setNotes((current) => current.map((note) => (note.id === id ? { ...note, z } : note)));
+    },
+    [commitImages, setNotes],
+  );
 
   // Notes
 
@@ -346,7 +361,7 @@ const Scratch = () => {
       setEditingId(note.id);
       setFocused(note.id);
     },
-    [commitNotes, notes],
+    [commitNotes, notes, noTilt],
   );
 
   useEffect(() => {
@@ -479,34 +494,33 @@ const Scratch = () => {
 
   // Images
 
-  const addImage = useCallback(async (file) => {
-    const { src, ratio, transparent } = await prepareImage(file);
-    const at = pointer.current ?? {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-    };
-    // Wide and tall pictures both start at note width, so the first sight is a card, not a wall.
-    const width = NOTE_WIDTH;
-    const height = width / ratio;
+  const addImage = useCallback(
+    async (file) => {
+      const { src, ratio, transparent } = await prepareImage(file);
+      const at = pointer.current ?? {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+      };
+      // Wide and tall pictures both start at note width, so the first sight is a card, not a wall.
+      const width = NOTE_WIDTH;
+      const height = width / ratio;
 
-    const image = {
-      id: `i${Date.now()}${Math.random().toString(36).slice(2, 6)}`,
-      x: clamp(at.x - width / 2, 8, Math.max(8, window.innerWidth - width - 8)),
-      y: clamp(at.y - height / 2, 8, Math.max(8, window.innerHeight - height - 8)),
-      width,
-      ratio,
-      angle: noTilt ? 0 : randomTilt(),
-      z: nextZ(),
-      src,
-      transparent,
-    };
+      const image = {
+        id: `i${Date.now()}${Math.random().toString(36).slice(2, 6)}`,
+        x: clamp(at.x - width / 2, 8, Math.max(8, window.innerWidth - width - 8)),
+        y: clamp(at.y - height / 2, 8, Math.max(8, window.innerHeight - height - 8)),
+        width,
+        ratio,
+        angle: noTilt ? 0 : randomTilt(),
+        z: nextZ(),
+        src,
+        transparent,
+      };
 
-    setImages((current) => {
-      const next = [...current, image];
-
-      return saveImages(next);
-    });
-  }, []);
+      await commitImages((current) => [...current, image]);
+    },
+    [noTilt, commitImages],
+  );
 
   // A left click anywhere that is not a note or a picture takes the controls off the one
   // in hand: the page, a widget, its buttons, the AI ask box, the photo credit.
@@ -525,7 +539,7 @@ const Scratch = () => {
     document.addEventListener('pointerdown', onPointerDown, true);
 
     return () => document.removeEventListener('pointerdown', onPointerDown, true);
-  }, [imagesOn, notesOn]);
+  }, [imagesOn, notesOn, setNotes]);
 
   // Pictures stored before the sticker rule carry no flag: read the pixels once, then keep it.
   useEffect(() => {
@@ -672,7 +686,7 @@ const Scratch = () => {
               ...image,
               x: clamp(current.baseX + dx, 4, Math.max(4, window.innerWidth - 60)),
               y: clamp(current.baseY + dy, 4, Math.max(4, window.innerHeight - 40)),
-              angle: settleAngle(image.angle + tiltRef.current),
+              angle: noTilt ? 0 : settleAngle(image.angle + tiltRef.current),
             }
           : image,
       ),
@@ -762,14 +776,49 @@ const Scratch = () => {
     window.addEventListener('resize', fit);
 
     return () => window.removeEventListener('resize', fit);
-  }, [imagesOn, notesOn]);
+  }, [imagesOn, notesOn, setNotes]);
 
-  useEffect(() => () => window.clearTimeout(disarmTimer.current), []);
+  useEffect(
+    () => () => {
+      window.clearTimeout(disarmTimer.current);
+      window.clearTimeout(copyTimer.current);
+    },
+    [],
+  );
 
   if (!notesOn && !imagesOn) return null;
 
   return (
     <div className="scratchLayer">
+      {(notesOn || imagesOn) && (
+        <span className="scratchSaveState" role="status">
+          {notesProblem || imageError || saveState}
+        </span>
+      )}
+      {notesOn && (
+        <button
+          type="button"
+          className="scratchCreate"
+          disabled={Boolean(notesProblem)}
+          onClick={() => createNote(window.innerWidth / 2, 100)}
+        >
+          {uiText('new_note_2b7b05')}
+        </button>
+      )}
+      {notesProblem && (
+        <button
+          type="button"
+          className="scratchRecovery"
+          onClick={() =>
+            saveFile(
+              { scratchNotesData: localStorage.getItem(NOTES_STORE) },
+              'moo-notes-recovery.json',
+            )
+          }
+        >
+          Save original notes
+        </button>
+      )}
       {notesOn &&
         notes.map((note, index) => {
           const editing = editingId === note.id;
@@ -816,8 +865,9 @@ const Scratch = () => {
                     inputs.current[note.id] = element;
                   }}
                   className="scratchNoteInput"
+                  readOnly={Boolean(notesProblem)}
                   value={note.text}
-                  placeholder="Write here. Markdown supported."
+                  placeholder={uiText('write_here_markdown_supported_e2bd9d')}
                   autoFocus
                   onChange={(event) => changeText(note.id, event.target.value)}
                   onBlur={() => finishEditing(note)}
@@ -826,7 +876,56 @@ const Scratch = () => {
                   }}
                 />
               ) : (
-                <div className="scratchNoteBody">
+                <div
+                  className="scratchNoteBody"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={uiText('edit_note_9751b2')}
+                  onClick={() => {
+                    setEditingId(note.id);
+                    setFocused(note.id);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setEditingId(note.id);
+                      setFocused(note.id);
+                    }
+                    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+                      event.preventDefault();
+                      const step = event.shiftKey ? 20 : 5;
+                      commitNotes(
+                        notes.map((item) =>
+                          item.id === note.id
+                            ? {
+                                ...item,
+                                x: clamp(
+                                  item.x +
+                                    (event.key === 'ArrowLeft'
+                                      ? -step
+                                      : event.key === 'ArrowRight'
+                                        ? step
+                                        : 0),
+                                  8,
+                                  Math.max(8, window.innerWidth - NOTE_WIDTH),
+                                ),
+                                y: clamp(
+                                  item.y +
+                                    (event.key === 'ArrowUp'
+                                      ? -step
+                                      : event.key === 'ArrowDown'
+                                        ? step
+                                        : 0),
+                                  8,
+                                  Math.max(8, window.innerHeight - 100),
+                                ),
+                              }
+                            : item,
+                        ),
+                      );
+                    }
+                  }}
+                >
                   <Markdown text={note.text} />
                 </div>
               )}
@@ -838,9 +937,7 @@ const Scratch = () => {
         images.map((image, index) => {
           const active = imageDrag?.id === image.id;
           const width = active && imageDrag.mode === 'resize' ? imageDrag.width : image.width;
-          const angle = noTilt
-            ? 0
-            : image.angle + (active && imageDrag.tilt ? imageDrag.tilt : 0);
+          const angle = noTilt ? 0 : image.angle + (active && imageDrag.tilt ? imageDrag.tilt : 0);
 
           return (
             <div
@@ -874,7 +971,7 @@ const Scratch = () => {
                     ? 'The clipboard refused this picture'
                     : 'Copy to the clipboard'
                 }
-                aria-label="Copy this picture"
+                aria-label={uiText('copy_this_picture_72ef7d')}
                 onClick={() => copyImage(image)}
               >
                 {copiedId === image.id ? '✓' : copyFailed === image.id ? '!' : '⧉'}
@@ -895,8 +992,8 @@ const Scratch = () => {
               <button
                 type="button"
                 className="scratchImageButton scratchImageDownload"
-                title="Save to a file"
-                aria-label="Download this picture"
+                title={uiText('save_to_a_file_5bb648')}
+                aria-label={uiText('download_this_picture_623817')}
                 onClick={() => downloadImage(image)}
               >
                 ↓
@@ -905,8 +1002,28 @@ const Scratch = () => {
                 className="scratchImageResize"
                 role="button"
                 tabIndex={0}
-                title="Drag to resize"
-                aria-label="Resize this picture"
+                title={uiText('drag_to_resize_or_use_the_arrow_keys_44c451')}
+                onKeyDown={(event) => {
+                  if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key))
+                    return;
+                  event.preventDefault();
+                  const change = ['ArrowLeft', 'ArrowDown'].includes(event.key) ? -10 : 10;
+                  commitImages(
+                    images.map((item) =>
+                      item.id === image.id
+                        ? {
+                            ...item,
+                            width: clamp(
+                              item.width + change,
+                              80,
+                              Math.max(80, window.innerWidth - 16),
+                            ),
+                          }
+                        : item,
+                    ),
+                  );
+                }}
+                aria-label={uiText('resize_this_picture_4a327d')}
                 onPointerDown={(event) => startResize(event, image)}
                 onPointerMove={moveImageDrag}
                 onPointerUp={endImageDrag}

@@ -1,117 +1,59 @@
+import variables from 'config/variables';
 import I18n from '@eartharoid/i18n';
-
-import ar from 'translations/ar.json';
-import arz from 'translations/arz.json';
-import az from 'translations/az.json';
-import azb from 'translations/azb.json';
-import bg from 'translations/bg.json';
-import bn from 'translations/bn.json';
-import de_DE from 'translations/de_DE.json';
-import el from 'translations/el.json';
-import en_GB from 'translations/en_GB.json';
-import en_US from 'translations/en_US.json';
-import es from 'translations/es.json';
-import es_419 from 'translations/es_419.json';
-import et from 'translations/et.json';
-import fa from 'translations/fa.json';
-import fr from 'translations/fr.json';
-import hu from 'translations/hu.json';
-import id_ID from 'translations/id_ID.json';
-import ja from 'translations/ja.json';
-import lt from 'translations/lt.json';
-import lv from 'translations/lv.json';
-import nl from 'translations/nl.json';
-import no from 'translations/no.json';
-import peo from 'translations/peo.json';
-import pt from 'translations/pt.json';
-import pt_BR from 'translations/pt_BR.json';
-import ru from 'translations/ru.json';
-import sl from 'translations/sl.json';
-import sv from 'translations/sv.json';
-import ta from 'translations/ta.json';
-import tr_TR from 'translations/tr_TR.json';
-import uk from 'translations/uk.json';
-import vi from 'translations/vi.json';
-import zh_CN from 'translations/zh_CN.json';
-import zh_Hant from 'translations/zh_Hant.json';
-
-/**
- * Builds the i18n object for a locale.
- */
-export function initTranslations(locale) {
-  const i18n = new I18n('en_GB', {
-    ar,
-    arz,
-    az,
-    azb,
-    bg,
-    bn,
-    de_DE,
-    el,
-    en_GB,
-    en_US,
-    es,
-    es_419,
-    et,
-    fa,
-    fr,
-    hu,
-    id_ID,
-    ja,
-    lt,
-    lv,
-    nl,
-    no,
-    peo,
-    pt,
-    pt_BR,
-    ru,
-    sl,
-    sv,
-    ta,
-    tr_TR,
-    uk,
-    vi,
-    zh_CN,
-    zh_Hant
-  });
-
-  return i18n;
+const loaders = import.meta.glob('../i18n/locales/*.json');
+const aliases = { pt_PT: 'pt' };
+const loaded = new Map();
+const loading = new Map();
+export const localeCodes = Object.keys(loaders)
+  .map((path) => path.split('/').pop().replace('.json', ''))
+  .concat(Object.keys(aliases));
+export const normalizeLocale = (locale) => {
+  const exact = String(locale || 'en_GB').replaceAll('-', '_');
+  return localeCodes.includes(exact) ? exact : 'en_GB';
+};
+async function loadLocale(locale) {
+  if (aliases[locale]) return loadLocale(aliases[locale]);
+  if (loaded.has(locale)) return loaded.get(locale);
+  if (!loading.has(locale))
+    loading.set(
+      locale,
+      loaders[`../i18n/locales/${locale}.json`]()
+        .then((module) => {
+          loaded.set(locale, module.default);
+          loading.delete(locale);
+          return module.default;
+        })
+        .catch((error) => {
+          loading.delete(locale);
+          throw error;
+        }),
+    );
+  return loading.get(locale);
+}
+export async function initTranslations(locale) {
+  const code = normalizeLocale(locale);
+  const [fallback, selected] = await Promise.all([loadLocale('en_GB'), loadLocale(code)]);
+  return new I18n('en_GB', { en_GB: fallback, [code]: selected });
+}
+let snapshot = { language: 'en_GB', instance: null };
+const listeners = new Set();
+let generation = 0;
+export const translationSnapshot = () => snapshot;
+export const subscribeTranslations = (callback) => {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
+};
+export async function selectLanguage(locale) {
+  const current = ++generation;
+  const language = normalizeLocale(locale);
+  const instance = await initTranslations(language);
+  if (current !== generation) return null;
+  variables.language = instance;
+  variables.languagecode = language;
+  variables.getMessage = (key, optional = {}) => instance.getMessage(language, key, optional);
+  snapshot = { language, instance };
+  for (const callback of listeners) callback();
+  return snapshot;
 }
 
-export const translations = {
-  ar,
-  arz,
-  az,
-  azb,
-  bg,
-  bn,
-  de_DE,
-  el,
-  en_GB,
-  en_US,
-  es,
-  es_419,
-  et,
-  fa,
-  fr,
-  hu,
-  id_ID,
-  ja,
-  lt,
-  lv,
-  nl,
-  no,
-  peo,
-  pt,
-  pt_BR,
-  ru,
-  sl,
-  sv,
-  ta,
-  tr_TR,
-  uk,
-  vi,
-  zh_CN,
-  zh_Hant
-};
+export const uiText = (key, optional = {}) => variables.getMessage(`ui.${key}`, optional);

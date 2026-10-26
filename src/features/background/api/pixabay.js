@@ -1,3 +1,4 @@
+import { fetchWithTimeout as fetch } from 'utils/requests';
 import { readRecent, rememberClip, pickUnseen } from './videoHistory';
 
 const ENDPOINT = 'https://pixabay.com/api/videos/';

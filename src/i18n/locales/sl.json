@@ -655,10 +655,10 @@
               "title": "Izklopi nagib",
               "subtitle": "Zapiski in slike stojijo ravno, vlečenje pa jim ne da več nagiba."
             },
-        "scratch_bare": {
-          "title": "Zapiski brez okvirja",
-          "subtitle": "Zapiski ležijo kot golo besedilo na sliki ozadja in dobijo svoj okvir nazaj, ko kliknete enega."
-        },
+            "scratch_bare": {
+              "title": "Zapiski brez okvirja",
+              "subtitle": "Zapiski ležijo kot golo besedilo na sliki ozadja in dobijo svoj okvir nazaj, ko kliknete enega."
+            },
             "cinema": {
               "title": "Trije kliki za skritje vmesnika",
               "subtitle": "Trije kliki skrijejo vse razen videoposnetka; en klik ali Escape ga vrne."

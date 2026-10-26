@@ -48,15 +48,15 @@
 
   &:hover {
     @include themed {
-      background: rgba(0, 0, 0, 0.04) !important;
+      background: rgb(0 0 0 / 4%) !important;
     }
 
     .light & {
-      background: rgba(0, 0, 0, 0.04) !important;
+      background: rgb(0 0 0 / 4%) !important;
     }
 
     .dark & {
-      background: rgba(255, 255, 255, 0.06) !important;
+      background: rgb(255 255 255 / 6%) !important;
     }
   }
 
@@ -83,17 +83,17 @@
 
 .btn-navigation-active {
   @include themed {
-    background: rgba(0, 0, 0, 0.06) !important;
+    background: rgb(0 0 0 / 6%) !important;
     box-shadow: none !important;
   }
 
   .light & {
-    background: rgba(0, 0, 0, 0.06) !important;
+    background: rgb(0 0 0 / 6%) !important;
     border: none !important;
   }
 
   .dark & {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgb(255 255 255 / 10%) !important;
     border: none !important;
   }
 }

@@ -2,6 +2,7 @@
  * A scratch image is a window in the page: the picture fills it corner to corner
  * and the card takes the picture's own proportions.
  */
+
 /* Pictures arrive like the notes, one after another. */
 @keyframes scratchImageIn {
   from {
@@ -42,6 +43,7 @@
     display: block;
     width: 100%;
     height: 100%;
+
     // Cover rather than contain: no letterboxing inside the card.
     object-fit: cover;
     pointer-events: none;
@@ -54,6 +56,7 @@
 .scratchImage .scratchImageButton,
 .scratchImage .scratchImageResize {
   opacity: 0;
+
   // Not just invisible: a hidden button must not swallow the drag that lands on it.
   pointer-events: none;
 }

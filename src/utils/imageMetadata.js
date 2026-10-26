@@ -18,7 +18,10 @@ export async function getImageDimensions(source) {
       }
     };
 
-    img.onerror = () => reject(new Error('Failed to load image'));
+    img.onerror = () => {
+      if (typeof source !== 'string') URL.revokeObjectURL(img.src);
+      reject(new Error('Failed to load image'));
+    };
 
     if (typeof source === 'string') {
       img.src = source;
@@ -43,8 +46,8 @@ export async function generateBlurHash(source, componentX = 4, componentY = 3) {
         // Encoding cost grows with pixel count, so cap the sampled size.
         const maxSize = 64;
         const scale = Math.min(maxSize / img.width, maxSize / img.height);
-        canvas.width = Math.floor(img.width * scale);
-        canvas.height = Math.floor(img.height * scale);
+        canvas.width = Math.max(1, Math.floor(img.width * scale));
+        canvas.height = Math.max(1, Math.floor(img.height * scale));
 
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -57,18 +60,19 @@ export async function generateBlurHash(source, componentX = 4, componentY = 3) {
           componentY,
         );
 
-        // Object URLs leak unless revoked.
-        if (typeof source !== 'string') {
-          URL.revokeObjectURL(img.src);
-        }
-
         resolve(blurHash);
       } catch (error) {
         reject(error);
+      } finally {
+        if (typeof source !== 'string') URL.revokeObjectURL(img.src);
       }
     };
 
-    img.onerror = () => reject(new Error('Failed to load image for blur hash'));
+    img.onerror = () => {
+      if (typeof source !== 'string') URL.revokeObjectURL(img.src);
+      reject(new Error('Failed to load image for blur hash'));
+    };
+    img.crossOrigin = 'anonymous';
 
     if (typeof source === 'string') {
       img.src = source;

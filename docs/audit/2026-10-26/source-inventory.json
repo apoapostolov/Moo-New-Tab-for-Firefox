@@ -1,0 +1,1902 @@
+[
+  {
+    "file": "src/App.jsx",
+    "lines": 86,
+    "bytes": 2310
+  },
+  {
+    "file": "src/components/Elements/AddModal/AddModal.jsx",
+    "lines": 125,
+    "bytes": 4266
+  },
+  {
+    "file": "src/components/Elements/AddModal/index.jsx",
+    "lines": 2,
+    "bytes": 29
+  },
+  {
+    "file": "src/components/Elements/Button/Button.jsx",
+    "lines": 126,
+    "bytes": 2497
+  },
+  {
+    "file": "src/components/Elements/Button/index.jsx",
+    "lines": 2,
+    "bytes": 27
+  },
+  {
+    "file": "src/components/Elements/index.jsx",
+    "lines": 7,
+    "bytes": 176
+  },
+  {
+    "file": "src/components/Elements/MainModal/backend/Tab.jsx",
+    "lines": 34,
+    "bytes": 1173
+  },
+  {
+    "file": "src/components/Elements/MainModal/backend/Tabs.jsx",
+    "lines": 145,
+    "bytes": 4046
+  },
+  {
+    "file": "src/components/Elements/MainModal/components/index.js",
+    "lines": 4,
+    "bytes": 173
+  },
+  {
+    "file": "src/components/Elements/MainModal/components/ModalLoader.jsx",
+    "lines": 23,
+    "bytes": 700
+  },
+  {
+    "file": "src/components/Elements/MainModal/components/ModalNavbar.jsx",
+    "lines": 21,
+    "bytes": 582
+  },
+  {
+    "file": "src/components/Elements/MainModal/components/ModalTopBar.jsx",
+    "lines": 203,
+    "bytes": 6803
+  },
+  {
+    "file": "src/components/Elements/MainModal/components/ReminderInfo.jsx",
+    "lines": 29,
+    "bytes": 838
+  },
+  {
+    "file": "src/components/Elements/MainModal/components/SidebarSkeleton.jsx",
+    "lines": 41,
+    "bytes": 1265
+  },
+  {
+    "file": "src/components/Elements/MainModal/constants/tabConfig.js",
+    "lines": 151,
+    "bytes": 5889
+  },
+  {
+    "file": "src/components/Elements/MainModal/index.jsx",
+    "lines": 2,
+    "bytes": 48
+  },
+  {
+    "file": "src/components/Elements/MainModal/Main.jsx",
+    "lines": 215,
+    "bytes": 6819
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/index.scss",
+    "lines": 426,
+    "bytes": 6984
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/modules/_lightbox.scss",
+    "lines": 19,
+    "bytes": 292
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/marketplace/_main.scss",
+    "lines": 440,
+    "bytes": 7670
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_buttons.scss",
+    "lines": 168,
+    "bytes": 3074
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_links.scss",
+    "lines": 26,
+    "bytes": 362
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_modalTabContent.scss",
+    "lines": 345,
+    "bytes": 5828
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_navbar.scss",
+    "lines": 13,
+    "bytes": 187
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_scrollbars.scss",
+    "lines": 32,
+    "bytes": 493
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_sidebar.scss",
+    "lines": 127,
+    "bytes": 2387
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/modules/_topBar.scss",
+    "lines": 140,
+    "bytes": 2539
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_about.scss",
+    "lines": 71,
+    "bytes": 960
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_changelog.scss",
+    "lines": 31,
+    "bytes": 390
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_order.scss",
+    "lines": 917,
+    "bytes": 19321
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/tabs/_stats.scss",
+    "lines": 72,
+    "bytes": 1229
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/modules/_material-ui.scss",
+    "lines": 192,
+    "bytes": 3246
+  },
+  {
+    "file": "src/components/Elements/MainModal/scss/settings/_main.scss",
+    "lines": 312,
+    "bytes": 5495
+  },
+  {
+    "file": "src/components/Elements/ResetModal/index.jsx",
+    "lines": 2,
+    "bytes": 31
+  },
+  {
+    "file": "src/components/Elements/ResetModal/ResetModal.jsx",
+    "lines": 55,
+    "bytes": 1836
+  },
+  {
+    "file": "src/components/Elements/ShareModal/index.jsx",
+    "lines": 2,
+    "bytes": 31
+  },
+  {
+    "file": "src/components/Elements/ShareModal/ShareModal.jsx",
+    "lines": 137,
+    "bytes": 3713
+  },
+  {
+    "file": "src/components/Elements/ShareModal/sharemodal.scss",
+    "lines": 110,
+    "bytes": 1934
+  },
+  {
+    "file": "src/components/Elements/Tooltip/index.jsx",
+    "lines": 2,
+    "bytes": 28
+  },
+  {
+    "file": "src/components/Elements/Tooltip/Tooltip.jsx",
+    "lines": 110,
+    "bytes": 2845
+  },
+  {
+    "file": "src/components/Elements/Tooltip/tooltip.scss",
+    "lines": 168,
+    "bytes": 2938
+  },
+  {
+    "file": "src/components/Form/index.jsx",
+    "lines": 2,
+    "bytes": 29
+  },
+  {
+    "file": "src/components/Form/Settings/Checkbox/Checkbox.jsx",
+    "lines": 64,
+    "bytes": 1763
+  },
+  {
+    "file": "src/components/Form/Settings/Checkbox/Checkbox.scss",
+    "lines": 119,
+    "bytes": 2099
+  },
+  {
+    "file": "src/components/Form/Settings/Checkbox/index.jsx",
+    "lines": 2,
+    "bytes": 29
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/ChipSelect.jsx",
+    "lines": 103,
+    "bytes": 3479
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/ChipSelect.scss",
+    "lines": 179,
+    "bytes": 3488
+  },
+  {
+    "file": "src/components/Form/Settings/ChipSelect/index.jsx",
+    "lines": 2,
+    "bytes": 31
+  },
+  {
+    "file": "src/components/Form/Settings/Dropdown/Dropdown.jsx",
+    "lines": 281,
+    "bytes": 8967
+  },
+  {
+    "file": "src/components/Form/Settings/Dropdown/Dropdown.scss",
+    "lines": 239,
+    "bytes": 4400
+  },
+  {
+    "file": "src/components/Form/Settings/Dropdown/index.jsx",
+    "lines": 2,
+    "bytes": 29
+  },
+  {
+    "file": "src/components/Form/Settings/FileUpload/FileUpload.jsx",
+    "lines": 97,
+    "bytes": 2888
+  },
+  {
+    "file": "src/components/Form/Settings/FileUpload/index.jsx",
+    "lines": 2,
+    "bytes": 31
+  },
+  {
+    "file": "src/components/Form/Settings/index.jsx",
+    "lines": 11,
+    "bytes": 286
+  },
+  {
+    "file": "src/components/Form/Settings/Radio/index.jsx",
+    "lines": 2,
+    "bytes": 26
+  },
+  {
+    "file": "src/components/Form/Settings/Radio/Radio.jsx",
+    "lines": 92,
+    "bytes": 2763
+  },
+  {
+    "file": "src/components/Form/Settings/Radio/Radio.scss",
+    "lines": 160,
+    "bytes": 2896
+  },
+  {
+    "file": "src/components/Form/Settings/SearchInput/index.jsx",
+    "lines": 2,
+    "bytes": 32
+  },
+  {
+    "file": "src/components/Form/Settings/SearchInput/SearchInput.jsx",
+    "lines": 25,
+    "bytes": 641
+  },
+  {
+    "file": "src/components/Form/Settings/SearchInput/SearchInput.scss",
+    "lines": 49,
+    "bytes": 852
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/index.jsx",
+    "lines": 2,
+    "bytes": 27
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.jsx",
+    "lines": 133,
+    "bytes": 4236
+  },
+  {
+    "file": "src/components/Form/Settings/Slider/Slider.scss",
+    "lines": 179,
+    "bytes": 3352
+  },
+  {
+    "file": "src/components/Form/Settings/Switch/index.jsx",
+    "lines": 2,
+    "bytes": 27
+  },
+  {
+    "file": "src/components/Form/Settings/Switch/Switch.jsx",
+    "lines": 59,
+    "bytes": 1782
+  },
+  {
+    "file": "src/components/Form/Settings/Switch/Switch.scss",
+    "lines": 75,
+    "bytes": 1219
+  },
+  {
+    "file": "src/components/Form/Settings/Text/index.jsx",
+    "lines": 2,
+    "bytes": 25
+  },
+  {
+    "file": "src/components/Form/Settings/Text/Text.jsx",
+    "lines": 122,
+    "bytes": 3484
+  },
+  {
+    "file": "src/components/Form/Settings/Text/Text.scss",
+    "lines": 112,
+    "bytes": 2093
+  },
+  {
+    "file": "src/components/Form/Settings/Textarea/index.jsx",
+    "lines": 2,
+    "bytes": 29
+  },
+  {
+    "file": "src/components/Form/Settings/Textarea/Textarea.jsx",
+    "lines": 59,
+    "bytes": 1889
+  },
+  {
+    "file": "src/components/Form/Settings/Textarea/Textarea.scss",
+    "lines": 35,
+    "bytes": 615
+  },
+  {
+    "file": "src/components/Form/Settings/WidgetSurface/WidgetSurface.jsx",
+    "lines": 32,
+    "bytes": 1061
+  },
+  {
+    "file": "src/components/Layout/index.jsx",
+    "lines": 3,
+    "bytes": 63
+  },
+  {
+    "file": "src/components/Layout/Settings/Header/Header.jsx",
+    "lines": 78,
+    "bytes": 2165
+  },
+  {
+    "file": "src/components/Layout/Settings/Header/index.jsx",
+    "lines": 2,
+    "bytes": 27
+  },
+  {
+    "file": "src/components/Layout/Settings/index.jsx",
+    "lines": 5,
+    "bytes": 119
+  },
+  {
+    "file": "src/components/Layout/Settings/Item/index.jsx",
+    "lines": 2,
+    "bytes": 33
+  },
+  {
+    "file": "src/components/Layout/Settings/Item/SettingsItem.jsx",
+    "lines": 48,
+    "bytes": 1380
+  },
+  {
+    "file": "src/components/Layout/Settings/PreferencesWrapper/index.jsx",
+    "lines": 2,
+    "bytes": 39
+  },
+  {
+    "file": "src/components/Layout/Settings/PreferencesWrapper/PreferencesWrapper.jsx",
+    "lines": 49,
+    "bytes": 1530
+  },
+  {
+    "file": "src/components/Layout/Settings/Section/index.jsx",
+    "lines": 2,
+    "bytes": 28
+  },
+  {
+    "file": "src/components/Layout/Settings/Section/Section.jsx",
+    "lines": 33,
+    "bytes": 883
+  },
+  {
+    "file": "src/components/Layout/WidgetsLayout/index.jsx",
+    "lines": 2,
+    "bytes": 34
+  },
+  {
+    "file": "src/components/Layout/WidgetsLayout/WidgetsLayout.jsx",
+    "lines": 10,
+    "bytes": 227
+  },
+  {
+    "file": "src/config/constants.js",
+    "lines": 33,
+    "bytes": 1421
+  },
+  {
+    "file": "src/config/variables.js",
+    "lines": 12,
+    "bytes": 220
+  },
+  {
+    "file": "src/contexts/index.js",
+    "lines": 2,
+    "bytes": 83
+  },
+  {
+    "file": "src/contexts/TranslationContext.jsx",
+    "lines": 120,
+    "bytes": 3686
+  },
+  {
+    "file": "src/ErrorBoundary.jsx",
+    "lines": 60,
+    "bytes": 1691
+  },
+  {
+    "file": "src/features/aiask/AIAsk.jsx",
+    "lines": 317,
+    "bytes": 9072
+  },
+  {
+    "file": "src/features/aiask/aiask.scss",
+    "lines": 220,
+    "bytes": 5779
+  },
+  {
+    "file": "src/features/background/api/avifSupport.js",
+    "lines": 13,
+    "bytes": 1158
+  },
+  {
+    "file": "src/features/background/api/backgroundFilters.js",
+    "lines": 43,
+    "bytes": 1720
+  },
+  {
+    "file": "src/features/background/api/backgroundLoader.js",
+    "lines": 409,
+    "bytes": 12019
+  },
+  {
+    "file": "src/features/background/api/blobUrl.js",
+    "lines": 20,
+    "bytes": 467
+  },
+  {
+    "file": "src/features/background/api/blurHash.js",
+    "lines": 19,
+    "bytes": 688
+  },
+  {
+    "file": "src/features/background/api/coverr.js",
+    "lines": 78,
+    "bytes": 2101
+  },
+  {
+    "file": "src/features/background/api/imageCounters.js",
+    "lines": 64,
+    "bytes": 1585
+  },
+  {
+    "file": "src/features/background/api/live.js",
+    "lines": 413,
+    "bytes": 11498
+  },
+  {
+    "file": "src/features/background/api/mixkit.js",
+    "lines": 163,
+    "bytes": 4816
+  },
+  {
+    "file": "src/features/background/api/offlineImage.js",
+    "lines": 25,
+    "bytes": 724
+  },
+  {
+    "file": "src/features/background/api/pexels.js",
+    "lines": 112,
+    "bytes": 3069
+  },
+  {
+    "file": "src/features/background/api/pixabay.js",
+    "lines": 98,
+    "bytes": 2590
+  },
+  {
+    "file": "src/features/background/api/randomColour.js",
+    "lines": 30,
+    "bytes": 776
+  },
+  {
+    "file": "src/features/background/api/videoCheck.js",
+    "lines": 8,
+    "bytes": 256
+  },
+  {
+    "file": "src/features/background/api/videoHistory.js",
+    "lines": 29,
+    "bytes": 699
+  },
+  {
+    "file": "src/features/background/Background.jsx",
+    "lines": 152,
+    "bytes": 5392
+  },
+  {
+    "file": "src/features/background/components/BackgroundImage.jsx",
+    "lines": 89,
+    "bytes": 2870
+  },
+  {
+    "file": "src/features/background/components/BackgroundVideo.jsx",
+    "lines": 190,
+    "bytes": 6306
+  },
+  {
+    "file": "src/features/background/components/ExcludeModal.jsx",
+    "lines": 54,
+    "bytes": 1799
+  },
+  {
+    "file": "src/features/background/components/Favourite.jsx",
+    "lines": 126,
+    "bytes": 3989
+  },
+  {
+    "file": "src/features/background/components/PhotoInformation.jsx",
+    "lines": 356,
+    "bytes": 11399
+  },
+  {
+    "file": "src/features/background/components/PhotoInfoWidget.jsx",
+    "lines": 31,
+    "bytes": 956
+  },
+  {
+    "file": "src/features/background/hooks/useBackgroundEvents.js",
+    "lines": 77,
+    "bytes": 3198
+  },
+  {
+    "file": "src/features/background/hooks/useBackgroundLoader.js",
+    "lines": 67,
+    "bytes": 2026
+  },
+  {
+    "file": "src/features/background/hooks/useBackgroundRenderer.js",
+    "lines": 145,
+    "bytes": 4971
+  },
+  {
+    "file": "src/features/background/hooks/useBackgroundState.js",
+    "lines": 55,
+    "bytes": 1042
+  },
+  {
+    "file": "src/features/background/hooks/useCinemaMode.js",
+    "lines": 106,
+    "bytes": 3555
+  },
+  {
+    "file": "src/features/background/index.jsx",
+    "lines": 2,
+    "bytes": 28
+  },
+  {
+    "file": "src/features/background/offline_images.json",
+    "lines": 18,
+    "bytes": 228
+  },
+  {
+    "file": "src/features/background/options/BackgroundOptions.jsx",
+    "lines": 276,
+    "bytes": 8521
+  },
+  {
+    "file": "src/features/background/options/Colour.jsx",
+    "lines": 61,
+    "bytes": 1819
+  },
+  {
+    "file": "src/features/background/options/Custom.jsx",
+    "lines": 950,
+    "bytes": 32931
+  },
+  {
+    "file": "src/features/background/options/CustomURLModal.jsx",
+    "lines": 48,
+    "bytes": 1582
+  },
+  {
+    "file": "src/features/background/options/FolderTaggingModal.jsx",
+    "lines": 66,
+    "bytes": 2076
+  },
+  {
+    "file": "src/features/background/options/index.jsx",
+    "lines": 2,
+    "bytes": 38
+  },
+  {
+    "file": "src/features/background/options/optionTypes/APIQualityOptions.js",
+    "lines": 21,
+    "bytes": 619
+  },
+  {
+    "file": "src/features/background/options/optionTypes/backgroundImageEffects.js",
+    "lines": 33,
+    "bytes": 933
+  },
+  {
+    "file": "src/features/background/options/optionTypes/getBackgroundOptionItems.js",
+    "lines": 86,
+    "bytes": 2720
+  },
+  {
+    "file": "src/features/background/options/optionTypes/index.js",
+    "lines": 4,
+    "bytes": 126
+  },
+  {
+    "file": "src/features/background/options/sections/APISettings.jsx",
+    "lines": 249,
+    "bytes": 8297
+  },
+  {
+    "file": "src/features/background/options/sections/DisplaySettings.jsx",
+    "lines": 88,
+    "bytes": 2845
+  },
+  {
+    "file": "src/features/background/options/sections/EffectsSettings.jsx",
+    "lines": 87,
+    "bytes": 2629
+  },
+  {
+    "file": "src/features/background/options/sections/LiveChannels.jsx",
+    "lines": 214,
+    "bytes": 6055
+  },
+  {
+    "file": "src/features/background/options/sections/liveChannels.scss",
+    "lines": 178,
+    "bytes": 2829
+  },
+  {
+    "file": "src/features/background/options/sections/NavigationCard.jsx",
+    "lines": 35,
+    "bytes": 895
+  },
+  {
+    "file": "src/features/background/options/sections/SourceSection.jsx",
+    "lines": 31,
+    "bytes": 1058
+  },
+  {
+    "file": "src/features/background/photoStore.js",
+    "lines": 36,
+    "bytes": 895
+  },
+  {
+    "file": "src/features/background/scss/index.scss",
+    "lines": 118,
+    "bytes": 2663
+  },
+  {
+    "file": "src/features/background/scss/_cinema.scss",
+    "lines": 11,
+    "bytes": 362
+  },
+  {
+    "file": "src/features/background/scss/_colourpicker.scss",
+    "lines": 217,
+    "bytes": 4893
+  },
+  {
+    "file": "src/features/background/scss/_photoinformation.scss",
+    "lines": 551,
+    "bytes": 9402
+  },
+  {
+    "file": "src/features/google/api.js",
+    "lines": 48,
+    "bytes": 1444
+  },
+  {
+    "file": "src/features/google/auth.js",
+    "lines": 240,
+    "bytes": 6870
+  },
+  {
+    "file": "src/features/google/components/ConnectPrompt.jsx",
+    "lines": 50,
+    "bytes": 1308
+  },
+  {
+    "file": "src/features/google/components/Dialog.jsx",
+    "lines": 69,
+    "bytes": 1932
+  },
+  {
+    "file": "src/features/google/components/EventDialog.jsx",
+    "lines": 297,
+    "bytes": 8706
+  },
+  {
+    "file": "src/features/google/components/MailPreview.jsx",
+    "lines": 294,
+    "bytes": 8964
+  },
+  {
+    "file": "src/features/google/components/TaskDialog.jsx",
+    "lines": 172,
+    "bytes": 4749
+  },
+  {
+    "file": "src/features/google/examples.js",
+    "lines": 56,
+    "bytes": 2206
+  },
+  {
+    "file": "src/features/google/google.scss",
+    "lines": 804,
+    "bytes": 13920
+  },
+  {
+    "file": "src/features/google/GoogleCalendar.jsx",
+    "lines": 230,
+    "bytes": 6978
+  },
+  {
+    "file": "src/features/google/GoogleMail.jsx",
+    "lines": 297,
+    "bytes": 9681
+  },
+  {
+    "file": "src/features/google/GoogleTasks.jsx",
+    "lines": 343,
+    "bytes": 10166
+  },
+  {
+    "file": "src/features/google/hooks/useGoogleAuth.js",
+    "lines": 60,
+    "bytes": 1604
+  },
+  {
+    "file": "src/features/google/index.jsx",
+    "lines": 5,
+    "bytes": 240
+  },
+  {
+    "file": "src/features/google/natural.js",
+    "lines": 638,
+    "bytes": 18349
+  },
+  {
+    "file": "src/features/google/options/GoogleOptions.jsx",
+    "lines": 215,
+    "bytes": 7064
+  },
+  {
+    "file": "src/features/google/options/WidgetSettings.jsx",
+    "lines": 491,
+    "bytes": 15585
+  },
+  {
+    "file": "src/features/google/services/calendar.js",
+    "lines": 173,
+    "bytes": 5411
+  },
+  {
+    "file": "src/features/google/services/gmail.js",
+    "lines": 227,
+    "bytes": 7512
+  },
+  {
+    "file": "src/features/google/services/tasks.js",
+    "lines": 72,
+    "bytes": 2199
+  },
+  {
+    "file": "src/features/google/settings.js",
+    "lines": 205,
+    "bytes": 6645
+  },
+  {
+    "file": "src/features/google/useNaturalTitle.js",
+    "lines": 42,
+    "bytes": 916
+  },
+  {
+    "file": "src/features/helpers/preview/Preview.jsx",
+    "lines": 18,
+    "bytes": 563
+  },
+  {
+    "file": "src/features/helpers/preview/preview.scss",
+    "lines": 25,
+    "bytes": 387
+  },
+  {
+    "file": "src/features/misc/modals/ErrorBoundary.jsx",
+    "lines": 80,
+    "bytes": 2183
+  },
+  {
+    "file": "src/features/misc/modals/Modals.jsx",
+    "lines": 150,
+    "bytes": 4600
+  },
+  {
+    "file": "src/features/misc/sections/About.jsx",
+    "lines": 136,
+    "bytes": 4368
+  },
+  {
+    "file": "src/features/misc/sections/Advanced.jsx",
+    "lines": 201,
+    "bytes": 6756
+  },
+  {
+    "file": "src/features/misc/sections/Appearance.jsx",
+    "lines": 366,
+    "bytes": 11352
+  },
+  {
+    "file": "src/features/misc/sections/Appearance.scss",
+    "lines": 118,
+    "bytes": 2298
+  },
+  {
+    "file": "src/features/misc/sections/Changelog.jsx",
+    "lines": 128,
+    "bytes": 3247
+  },
+  {
+    "file": "src/features/misc/sections/Changelog.scss",
+    "lines": 143,
+    "bytes": 2832
+  },
+  {
+    "file": "src/features/misc/sections/Experimental.jsx",
+    "lines": 93,
+    "bytes": 3051
+  },
+  {
+    "file": "src/features/misc/sections/index.jsx",
+    "lines": 9,
+    "bytes": 231
+  },
+  {
+    "file": "src/features/misc/sections/Language.jsx",
+    "lines": 165,
+    "bytes": 5742
+  },
+  {
+    "file": "src/features/misc/sections/Misc.jsx",
+    "lines": 106,
+    "bytes": 3156
+  },
+  {
+    "file": "src/features/misc/sections/Overview.jsx",
+    "lines": 625,
+    "bytes": 18321
+  },
+  {
+    "file": "src/features/misc/sections/overview_skeletons/Clock.jsx",
+    "lines": 32,
+    "bytes": 1064
+  },
+  {
+    "file": "src/features/misc/sections/overview_skeletons/Date.jsx",
+    "lines": 8,
+    "bytes": 163
+  },
+  {
+    "file": "src/features/misc/sections/overview_skeletons/QuickLinks.jsx",
+    "lines": 24,
+    "bytes": 503
+  },
+  {
+    "file": "src/features/misc/sections/overview_skeletons/QuickWeather.jsx",
+    "lines": 8,
+    "bytes": 171
+  },
+  {
+    "file": "src/features/misc/sections/overview_skeletons/WidgetThumb.jsx",
+    "lines": 40,
+    "bytes": 1277
+  },
+  {
+    "file": "src/features/misc/signature.js",
+    "lines": 190,
+    "bytes": 5451
+  },
+  {
+    "file": "src/features/misc/views/Settings.jsx",
+    "lines": 127,
+    "bytes": 3698
+  },
+  {
+    "file": "src/features/misc/views/Widgets.jsx",
+    "lines": 147,
+    "bytes": 5043
+  },
+  {
+    "file": "src/features/navbar/components/Apps.jsx",
+    "lines": 140,
+    "bytes": 4142
+  },
+  {
+    "file": "src/features/navbar/components/index.jsx",
+    "lines": 6,
+    "bytes": 133
+  },
+  {
+    "file": "src/features/navbar/components/Maximise.jsx",
+    "lines": 81,
+    "bytes": 2435
+  },
+  {
+    "file": "src/features/navbar/components/Notes.jsx",
+    "lines": 150,
+    "bytes": 4517
+  },
+  {
+    "file": "src/features/navbar/components/Refresh.jsx",
+    "lines": 58,
+    "bytes": 1689
+  },
+  {
+    "file": "src/features/navbar/components/Todo.jsx",
+    "lines": 256,
+    "bytes": 8051
+  },
+  {
+    "file": "src/features/navbar/index.jsx",
+    "lines": 3,
+    "bytes": 55
+  },
+  {
+    "file": "src/features/navbar/Navbar.jsx",
+    "lines": 88,
+    "bytes": 3392
+  },
+  {
+    "file": "src/features/navbar/options/AppsOptions.jsx",
+    "lines": 168,
+    "bytes": 4671
+  },
+  {
+    "file": "src/features/navbar/options/index.jsx",
+    "lines": 2,
+    "bytes": 34
+  },
+  {
+    "file": "src/features/navbar/options/NavbarOptions.jsx",
+    "lines": 165,
+    "bytes": 4593
+  },
+  {
+    "file": "src/features/navbar/scss/index.scss",
+    "lines": 156,
+    "bytes": 2786
+  },
+  {
+    "file": "src/features/navbar/scss/_apps.scss",
+    "lines": 80,
+    "bytes": 1293
+  },
+  {
+    "file": "src/features/navbar/scss/_notes.scss",
+    "lines": 126,
+    "bytes": 1971
+  },
+  {
+    "file": "src/features/navbar/scss/_todo.scss",
+    "lines": 72,
+    "bytes": 1136
+  },
+  {
+    "file": "src/features/quicklinks/index.jsx",
+    "lines": 3,
+    "bytes": 59
+  },
+  {
+    "file": "src/features/quicklinks/options/components/DragHandle.jsx",
+    "lines": 8,
+    "bytes": 203
+  },
+  {
+    "file": "src/features/quicklinks/options/components/index.jsx",
+    "lines": 4,
+    "bytes": 97
+  },
+  {
+    "file": "src/features/quicklinks/options/components/SortableItem.jsx",
+    "lines": 81,
+    "bytes": 2295
+  },
+  {
+    "file": "src/features/quicklinks/options/components/SortableList.jsx",
+    "lines": 40,
+    "bytes": 1196
+  },
+  {
+    "file": "src/features/quicklinks/options/index.jsx",
+    "lines": 2,
+    "bytes": 38
+  },
+  {
+    "file": "src/features/quicklinks/options/QuickLink.jsx",
+    "lines": 96,
+    "bytes": 2506
+  },
+  {
+    "file": "src/features/quicklinks/options/QuickLinksOptions.jsx",
+    "lines": 343,
+    "bytes": 10426
+  },
+  {
+    "file": "src/features/quicklinks/options/utils/quicklinksUtils.js",
+    "lines": 12,
+    "bytes": 336
+  },
+  {
+    "file": "src/features/quicklinks/QuickLinks.jsx",
+    "lines": 153,
+    "bytes": 4310
+  },
+  {
+    "file": "src/features/quicklinks/quicklinks.scss",
+    "lines": 727,
+    "bytes": 12866
+  },
+  {
+    "file": "src/features/rss/articleCache.js",
+    "lines": 102,
+    "bytes": 2689
+  },
+  {
+    "file": "src/features/rss/extractArticle.js",
+    "lines": 155,
+    "bytes": 3948
+  },
+  {
+    "file": "src/features/rss/feedStore.js",
+    "lines": 225,
+    "bytes": 6183
+  },
+  {
+    "file": "src/features/rss/index.jsx",
+    "lines": 6,
+    "bytes": 159
+  },
+  {
+    "file": "src/features/rss/options/index.jsx",
+    "lines": 4,
+    "bytes": 85
+  },
+  {
+    "file": "src/features/rss/options/RssOptions.jsx",
+    "lines": 253,
+    "bytes": 7270
+  },
+  {
+    "file": "src/features/rss/parseFeed.js",
+    "lines": 188,
+    "bytes": 5245
+  },
+  {
+    "file": "src/features/rss/Rss.jsx",
+    "lines": 372,
+    "bytes": 11640
+  },
+  {
+    "file": "src/features/rss/rss.scss",
+    "lines": 411,
+    "bytes": 8347
+  },
+  {
+    "file": "src/features/scratch/Markdown.jsx",
+    "lines": 117,
+    "bytes": 3588
+  },
+  {
+    "file": "src/features/scratch/Scratch.jsx",
+    "lines": 927,
+    "bytes": 29107
+  },
+  {
+    "file": "src/features/scratch/scratchImages.scss",
+    "lines": 193,
+    "bytes": 4429
+  },
+  {
+    "file": "src/features/scratch/scratchNotes.scss",
+    "lines": 332,
+    "bytes": 6715
+  },
+  {
+    "file": "src/features/scratch/shared.js",
+    "lines": 55,
+    "bytes": 1603
+  },
+  {
+    "file": "src/features/stats/api/stats.js",
+    "lines": 29,
+    "bytes": 920
+  },
+  {
+    "file": "src/features/stats/index.jsx",
+    "lines": 2,
+    "bytes": 28
+  },
+  {
+    "file": "src/features/stats/options/ClearModal.jsx",
+    "lines": 48,
+    "bytes": 1643
+  },
+  {
+    "file": "src/features/stats/options/index.jsx",
+    "lines": 2,
+    "bytes": 33
+  },
+  {
+    "file": "src/features/stats/options/StatsOptions.jsx",
+    "lines": 130,
+    "bytes": 4691
+  },
+  {
+    "file": "src/features/time/Clock.jsx",
+    "lines": 260,
+    "bytes": 8353
+  },
+  {
+    "file": "src/features/time/clock.scss",
+    "lines": 168,
+    "bytes": 3360
+  },
+  {
+    "file": "src/features/time/components/AnalogClock.jsx",
+    "lines": 29,
+    "bytes": 853
+  },
+  {
+    "file": "src/features/time/components/VerticalClock.jsx",
+    "lines": 22,
+    "bytes": 770
+  },
+  {
+    "file": "src/features/time/Date.jsx",
+    "lines": 155,
+    "bytes": 4452
+  },
+  {
+    "file": "src/features/time/date.scss",
+    "lines": 9,
+    "bytes": 138
+  },
+  {
+    "file": "src/features/time/index.jsx",
+    "lines": 2,
+    "bytes": 28
+  },
+  {
+    "file": "src/features/time/options/DateOptions.jsx",
+    "lines": 138,
+    "bytes": 4134
+  },
+  {
+    "file": "src/features/time/options/index.jsx",
+    "lines": 3,
+    "bytes": 64
+  },
+  {
+    "file": "src/features/time/options/TimeOptions.jsx",
+    "lines": 433,
+    "bytes": 13852
+  },
+  {
+    "file": "src/features/time/options/timeOptions.scss",
+    "lines": 64,
+    "bytes": 1678
+  },
+  {
+    "file": "src/features/time/timezones.json",
+    "lines": 351,
+    "bytes": 7869
+  },
+  {
+    "file": "src/features/weather/api/getWeather.js",
+    "lines": 114,
+    "bytes": 3472
+  },
+  {
+    "file": "src/features/weather/components/Expanded.jsx",
+    "lines": 97,
+    "bytes": 2862
+  },
+  {
+    "file": "src/features/weather/components/Forecast.jsx",
+    "lines": 126,
+    "bytes": 3965
+  },
+  {
+    "file": "src/features/weather/components/WeatherIcon.jsx",
+    "lines": 45,
+    "bytes": 844
+  },
+  {
+    "file": "src/features/weather/components/WeatherSkeleton.jsx",
+    "lines": 43,
+    "bytes": 1364
+  },
+  {
+    "file": "src/features/weather/components/WindDirectionIcon.jsx",
+    "lines": 57,
+    "bytes": 1187
+  },
+  {
+    "file": "src/features/weather/index.jsx",
+    "lines": 3,
+    "bytes": 56
+  },
+  {
+    "file": "src/features/weather/options/index.jsx",
+    "lines": 2,
+    "bytes": 35
+  },
+  {
+    "file": "src/features/weather/options/WeatherOptions.jsx",
+    "lines": 222,
+    "bytes": 6744
+  },
+  {
+    "file": "src/features/weather/QuickWeather.jsx",
+    "lines": 96,
+    "bytes": 2562
+  },
+  {
+    "file": "src/features/weather/quickweather.scss",
+    "lines": 19,
+    "bytes": 251
+  },
+  {
+    "file": "src/features/weather/Weather.jsx",
+    "lines": 148,
+    "bytes": 4651
+  },
+  {
+    "file": "src/features/weather/weather.scss",
+    "lines": 299,
+    "bytes": 4910
+  },
+  {
+    "file": "src/features/welcome/components/Elements/AsideImage/AsideImage.jsx",
+    "lines": 32,
+    "bytes": 835
+  },
+  {
+    "file": "src/features/welcome/components/Elements/AsideImage/index.jsx",
+    "lines": 2,
+    "bytes": 31
+  },
+  {
+    "file": "src/features/welcome/components/Elements/index.jsx",
+    "lines": 3,
+    "bytes": 63
+  },
+  {
+    "file": "src/features/welcome/components/Elements/ProgressBar/index.jsx",
+    "lines": 2,
+    "bytes": 32
+  },
+  {
+    "file": "src/features/welcome/components/Elements/ProgressBar/ProgressBar.jsx",
+    "lines": 34,
+    "bytes": 800
+  },
+  {
+    "file": "src/features/welcome/components/index.jsx",
+    "lines": 3,
+    "bytes": 56
+  },
+  {
+    "file": "src/features/welcome/components/Layout/Content.jsx",
+    "lines": 6,
+    "bytes": 137
+  },
+  {
+    "file": "src/features/welcome/components/Layout/Header.jsx",
+    "lines": 16,
+    "bytes": 316
+  },
+  {
+    "file": "src/features/welcome/components/Layout/index.jsx",
+    "lines": 5,
+    "bytes": 109
+  },
+  {
+    "file": "src/features/welcome/components/Layout/Layout.jsx",
+    "lines": 6,
+    "bytes": 92
+  },
+  {
+    "file": "src/features/welcome/components/Layout/Panel.jsx",
+    "lines": 4,
+    "bytes": 126
+  },
+  {
+    "file": "src/features/welcome/components/Layout/Wrapper.jsx",
+    "lines": 4,
+    "bytes": 128
+  },
+  {
+    "file": "src/features/welcome/components/Sections/ChooseLanguage.jsx",
+    "lines": 122,
+    "bytes": 4039
+  },
+  {
+    "file": "src/features/welcome/components/Sections/Final.jsx",
+    "lines": 44,
+    "bytes": 1737
+  },
+  {
+    "file": "src/features/welcome/components/Sections/ImportSettings.jsx",
+    "lines": 67,
+    "bytes": 2095
+  },
+  {
+    "file": "src/features/welcome/components/Sections/index.jsx",
+    "lines": 8,
+    "bytes": 227
+  },
+  {
+    "file": "src/features/welcome/components/Sections/Intro.jsx",
+    "lines": 92,
+    "bytes": 2913
+  },
+  {
+    "file": "src/features/welcome/components/Sections/PrivacyOptions.jsx",
+    "lines": 64,
+    "bytes": 1726
+  },
+  {
+    "file": "src/features/welcome/components/Sections/StyleSelection.jsx",
+    "lines": 54,
+    "bytes": 1683
+  },
+  {
+    "file": "src/features/welcome/components/Sections/ThemeSelection.jsx",
+    "lines": 73,
+    "bytes": 2544
+  },
+  {
+    "file": "src/features/welcome/Welcome.jsx",
+    "lines": 126,
+    "bytes": 3448
+  },
+  {
+    "file": "src/features/welcome/welcome.scss",
+    "lines": 336,
+    "bytes": 5529
+  },
+  {
+    "file": "src/i18n/languages.json",
+    "lines": 142,
+    "bytes": 2116
+  },
+  {
+    "file": "src/i18n/locales/ar.json",
+    "lines": 872,
+    "bytes": 43993
+  },
+  {
+    "file": "src/i18n/locales/arz.json",
+    "lines": 872,
+    "bytes": 37568
+  },
+  {
+    "file": "src/i18n/locales/az.json",
+    "lines": 872,
+    "bytes": 39427
+  },
+  {
+    "file": "src/i18n/locales/azb.json",
+    "lines": 872,
+    "bytes": 39595
+  },
+  {
+    "file": "src/i18n/locales/bg.json",
+    "lines": 872,
+    "bytes": 49300
+  },
+  {
+    "file": "src/i18n/locales/bn.json",
+    "lines": 872,
+    "bytes": 49197
+  },
+  {
+    "file": "src/i18n/locales/de_DE.json",
+    "lines": 872,
+    "bytes": 39190
+  },
+  {
+    "file": "src/i18n/locales/el.json",
+    "lines": 872,
+    "bytes": 39776
+  },
+  {
+    "file": "src/i18n/locales/en_GB.json",
+    "lines": 872,
+    "bytes": 35132
+  },
+  {
+    "file": "src/i18n/locales/en_US.json",
+    "lines": 872,
+    "bytes": 35358
+  },
+  {
+    "file": "src/i18n/locales/es.json",
+    "lines": 872,
+    "bytes": 38712
+  },
+  {
+    "file": "src/i18n/locales/es_419.json",
+    "lines": 872,
+    "bytes": 38018
+  },
+  {
+    "file": "src/i18n/locales/et.json",
+    "lines": 872,
+    "bytes": 36719
+  },
+  {
+    "file": "src/i18n/locales/fa.json",
+    "lines": 872,
+    "bytes": 38767
+  },
+  {
+    "file": "src/i18n/locales/fr.json",
+    "lines": 872,
+    "bytes": 39921
+  },
+  {
+    "file": "src/i18n/locales/hu.json",
+    "lines": 872,
+    "bytes": 36530
+  },
+  {
+    "file": "src/i18n/locales/id_ID.json",
+    "lines": 872,
+    "bytes": 36810
+  },
+  {
+    "file": "src/i18n/locales/ja.json",
+    "lines": 872,
+    "bytes": 37526
+  },
+  {
+    "file": "src/i18n/locales/lt.json",
+    "lines": 872,
+    "bytes": 38929
+  },
+  {
+    "file": "src/i18n/locales/lv.json",
+    "lines": 872,
+    "bytes": 38959
+  },
+  {
+    "file": "src/i18n/locales/nl.json",
+    "lines": 872,
+    "bytes": 37456
+  },
+  {
+    "file": "src/i18n/locales/no.json",
+    "lines": 872,
+    "bytes": 36260
+  },
+  {
+    "file": "src/i18n/locales/peo.json",
+    "lines": 872,
+    "bytes": 36049
+  },
+  {
+    "file": "src/i18n/locales/pt.json",
+    "lines": 872,
+    "bytes": 38608
+  },
+  {
+    "file": "src/i18n/locales/pt_BR.json",
+    "lines": 872,
+    "bytes": 38612
+  },
+  {
+    "file": "src/i18n/locales/ru.json",
+    "lines": 872,
+    "bytes": 48329
+  },
+  {
+    "file": "src/i18n/locales/sl.json",
+    "lines": 872,
+    "bytes": 37123
+  },
+  {
+    "file": "src/i18n/locales/sv.json",
+    "lines": 872,
+    "bytes": 36194
+  },
+  {
+    "file": "src/i18n/locales/ta.json",
+    "lines": 872,
+    "bytes": 67736
+  },
+  {
+    "file": "src/i18n/locales/tr_TR.json",
+    "lines": 872,
+    "bytes": 39233
+  },
+  {
+    "file": "src/i18n/locales/uk.json",
+    "lines": 872,
+    "bytes": 50788
+  },
+  {
+    "file": "src/i18n/locales/vi.json",
+    "lines": 872,
+    "bytes": 36849
+  },
+  {
+    "file": "src/i18n/locales/zh_CN.json",
+    "lines": 872,
+    "bytes": 35666
+  },
+  {
+    "file": "src/i18n/locales/zh_Hant.json",
+    "lines": 872,
+    "bytes": 35720
+  },
+  {
+    "file": "src/i18n/translationPercentages.json",
+    "lines": 142,
+    "bytes": 3099
+  },
+  {
+    "file": "src/index.jsx",
+    "lines": 35,
+    "bytes": 1074
+  },
+  {
+    "file": "src/lib/translations.js",
+    "lines": 118,
+    "bytes": 2158
+  },
+  {
+    "file": "src/scss/index.scss",
+    "lines": 390,
+    "bytes": 9077
+  },
+  {
+    "file": "src/scss/_error.scss",
+    "lines": 1,
+    "bytes": 0
+  },
+  {
+    "file": "src/scss/_mixins.scss",
+    "lines": 32,
+    "bytes": 602
+  },
+  {
+    "file": "src/scss/_mobile.scss",
+    "lines": 19,
+    "bytes": 192
+  },
+  {
+    "file": "src/scss/_signature.scss",
+    "lines": 19,
+    "bytes": 641
+  },
+  {
+    "file": "src/scss/_toast.scss",
+    "lines": 95,
+    "bytes": 2216
+  },
+  {
+    "file": "src/scss/_variables.scss",
+    "lines": 444,
+    "bytes": 10057
+  },
+  {
+    "file": "src/utils/brandIcons.js",
+    "lines": 463,
+    "bytes": 14785
+  },
+  {
+    "file": "src/utils/clockDays.js",
+    "lines": 99,
+    "bytes": 2601
+  },
+  {
+    "file": "src/utils/customBackgroundDB.js",
+    "lines": 156,
+    "bytes": 4724
+  },
+  {
+    "file": "src/utils/data/default_settings.json",
+    "lines": 362,
+    "bytes": 41971
+  },
+  {
+    "file": "src/utils/data/other_contributors.json",
+    "lines": 7,
+    "bytes": 118
+  },
+  {
+    "file": "src/utils/data/slider_values.json",
+    "lines": 37,
+    "bytes": 1105
+  },
+  {
+    "file": "src/utils/date/index.js",
+    "lines": 41,
+    "bytes": 979
+  },
+  {
+    "file": "src/utils/deepLinking.js",
+    "lines": 159,
+    "bytes": 4211
+  },
+  {
+    "file": "src/utils/eventbus.js",
+    "lines": 62,
+    "bytes": 1789
+  },
+  {
+    "file": "src/utils/experimental.js",
+    "lines": 33,
+    "bytes": 743
+  },
+  {
+    "file": "src/utils/formatNumber.js",
+    "lines": 79,
+    "bytes": 2265
+  },
+  {
+    "file": "src/utils/imageMetadata.js",
+    "lines": 145,
+    "bytes": 3727
+  },
+  {
+    "file": "src/utils/links/getTitleFromUrl.js",
+    "lines": 18,
+    "bytes": 394
+  },
+  {
+    "file": "src/utils/links/index.js",
+    "lines": 5,
+    "bytes": 141
+  },
+  {
+    "file": "src/utils/links/isValidUrl.js",
+    "lines": 9,
+    "bytes": 169
+  },
+  {
+    "file": "src/utils/saveFile.js",
+    "lines": 23,
+    "bytes": 637
+  },
+  {
+    "file": "src/utils/settings/default.js",
+    "lines": 18,
+    "bytes": 488
+  },
+  {
+    "file": "src/utils/settings/export.js",
+    "lines": 21,
+    "bytes": 815
+  },
+  {
+    "file": "src/utils/settings/import.js",
+    "lines": 28,
+    "bytes": 750
+  },
+  {
+    "file": "src/utils/settings/index.js",
+    "lines": 8,
+    "bytes": 311
+  },
+  {
+    "file": "src/utils/settings/load.js",
+    "lines": 122,
+    "bytes": 4991
+  },
+  {
+    "file": "src/utils/settings/migrations.js",
+    "lines": 95,
+    "bytes": 3311
+  },
+  {
+    "file": "src/utils/settings/move.js",
+    "lines": 24,
+    "bytes": 552
+  },
+  {
+    "file": "src/utils/timeShift.js",
+    "lines": 93,
+    "bytes": 2800
+  },
+  {
+    "file": "src/utils/updates.js",
+    "lines": 137,
+    "bytes": 4010
+  },
+  {
+    "file": "src/utils/useLocalStorageState.js",
+    "lines": 12,
+    "bytes": 316
+  },
+  {
+    "file": "src/utils/widgets.js",
+    "lines": 218,
+    "bytes": 5365
+  },
+  {
+    "file": "src/utils/widgetSurface.js",
+    "lines": 24,
+    "bytes": 641
+  },
+  {
+    "file": "scripts/updateTranslationPercentages.cjs",
+    "lines": 92,
+    "bytes": 2498
+  },
+  {
+    "file": "scripts/updatetranslations.cjs",
+    "lines": 86,
+    "bytes": 2552
+  },
+  {
+    "file": "manifest/background.js",
+    "lines": 16,
+    "bytes": 414
+  },
+  {
+    "file": "manifest/firefox.json",
+    "lines": 35,
+    "bytes": 859
+  },
+  {
+    "file": "manifest/_locales/bn/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/de/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/en/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/en_GB/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/en_US/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/es/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/es_419/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/fr/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/id_ID/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/nl/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/no/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/pt_BR/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/pt_PT/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/ru/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/tr_TR/messages.json",
+    "lines": 9,
+    "bytes": 179
+  },
+  {
+    "file": "manifest/_locales/zh_CN/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "manifest/_locales/zh_Hant/messages.json",
+    "lines": 9,
+    "bytes": 151
+  },
+  {
+    "file": "safari/Mue/Assets.xcassets/AccentColor.colorset/Contents.json",
+    "lines": 12,
+    "bytes": 134
+  },
+  {
+    "file": "safari/Mue/Assets.xcassets/AppIcon.appiconset/Contents.json",
+    "lines": 69,
+    "bytes": 1369
+  },
+  {
+    "file": "safari/Mue/Assets.xcassets/Contents.json",
+    "lines": 7,
+    "bytes": 69
+  },
+  {
+    "file": "safari/Mue/Assets.xcassets/LargeIcon.imageset/Contents.json",
+    "lines": 21,
+    "bytes": 291
+  },
+  {
+    "file": "safari/Mue/Resources/Script.js",
+    "lines": 23,
+    "bytes": 1071
+  },
+  {
+    "file": "safari/Mue Extension/Resources/manifest.json",
+    "lines": 24,
+    "bytes": 531
+  }
+]

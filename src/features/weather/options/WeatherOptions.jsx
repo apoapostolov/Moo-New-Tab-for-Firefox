@@ -1,4 +1,6 @@
-import { useCallback } from 'react';
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { useCallback, useState } from 'react';
 import { MdAutoAwesome } from 'react-icons/md';
 import {
   Header,
@@ -60,9 +62,10 @@ const useWeatherSettings = () => {
 };
 
 const WeatherOptions = () => {
+  useTranslationVersion();
   const { location, windSpeed, setWindSpeed, changeLocation, getAutoLocation } =
     useWeatherSettings();
-  const weatherType = localStorage.getItem('weatherType');
+  const [weatherType, setWeatherType] = useState(() => localStorage.getItem('weatherType'));
   const WEATHER_SECTION = 'modals.main.settings.sections.weather';
 
   const WidgetType = () => (
@@ -73,7 +76,7 @@ const WeatherOptions = () => {
           label={variables.getMessage('modals.main.settings.sections.time.type')}
           name="weatherType"
           category="weather"
-          onChange={() => this.forceUpdate()}
+          onChange={setWeatherType}
           items={[
             { value: '1', text: variables.getMessage(`${WEATHER_SECTION}.options.basic`) },
             { value: '2', text: variables.getMessage(`${WEATHER_SECTION}.options.standard`) },
@@ -92,20 +95,21 @@ const WeatherOptions = () => {
         <div className="text-field-container">
           <div className="text-field">
             <div className="text-field-header">
-              <label className="text-field-label">
+              <label className="text-field-label" htmlFor="weather-location">
                 {variables.getMessage(`${WEATHER_SECTION}.location`)}
               </label>
-              <span className="text-field-reset" onClick={getAutoLocation}>
+              <button type="button" className="text-field-reset" onClick={getAutoLocation}>
                 <MdAutoAwesome />
                 {variables.getMessage(`${WEATHER_SECTION}.auto`)}
-              </span>
+              </button>
             </div>
             <input
+              id="weather-location"
               type="text"
               className="text-field-input"
               value={location}
               onChange={changeLocation}
-              placeholder="London"
+              placeholder={uiText('london_4c57f0')}
             />
           </div>
         </div>
@@ -140,6 +144,7 @@ const WeatherOptions = () => {
   );
 
   const CustomOptions = () => {
+    useTranslationVersion();
     const weatherOptions = [
       {
         name: 'weatherdescription',
@@ -206,11 +211,10 @@ const WeatherOptions = () => {
         visibilityToggle={true}
       >
         <Group>
-          <WidgetType />
-          {/* https://stackoverflow.com/a/65328486 when using inputs it may defocus so we do the {} instead of <> */}
+          {WidgetType()}
           {LocationSetting()}
-          <TemperatureFormat />
-          {weatherType === '4' && <CustomOptions />}
+          {TemperatureFormat()}
+          {weatherType === '4' && CustomOptions()}
           <WidgetSurface setting="surfaceWeather" category="weather" />
         </Group>
       </PreferencesWrapper>

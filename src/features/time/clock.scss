@@ -34,6 +34,7 @@
 .clockProgressTrack {
   position: relative;
   display: block;
+
   // Four fifths of the width the number sets, so the bar is a mark under the time
   // rather than a second line of text.
   width: 67%;
@@ -41,6 +42,7 @@
   margin-top: clamp(7px, 0.13em, 18px);
   border-radius: 999px;
   overflow: hidden;
+
   // Width follows the number, so it steps when a digit is added; easing hides the snap.
   transition: width 0.4s ease-out;
 
@@ -50,7 +52,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: currentColor;
+    background: currentcolor;
     opacity: 0.13;
   }
 }
@@ -60,10 +62,12 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: currentColor;
+  background: currentcolor;
+
   // Full strength: the bar is the one thing on the page that should read at a
   // glance, at the same weight as the time above it rather than a tint of it.
   opacity: 1;
+
   // The spring overshoots briefly; the track clips it, but cap the bar too.
   max-width: 100%;
   transition: width 0.6s ease-out;
@@ -122,7 +126,6 @@
 .react-clock__face {
   margin: 0 auto;
   border-radius: 100%;
-
   border: none !important;
 
   @include themed {
@@ -138,7 +141,6 @@
   @include themed {
     background: t($color) !important;
   }
-
 }
 
 /*

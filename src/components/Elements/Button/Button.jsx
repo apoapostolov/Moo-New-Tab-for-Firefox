@@ -1,11 +1,25 @@
-import React, { forwardRef } from 'react';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { forwardRef } from 'react';
 import Tooltip from 'components/Elements/Tooltip/Tooltip';
 
 const Button = forwardRef(
   (
-    { icon, label, type, iconPlacement, onClick, active, disabled, tooltipTitle, tooltipKey, href, style },
+    {
+      icon,
+      label,
+      type,
+      iconPlacement,
+      onClick,
+      active,
+      disabled,
+      tooltipTitle,
+      tooltipKey,
+      href,
+      style,
+    },
     ref,
   ) => {
+    useTranslationVersion();
     let className;
 
     switch (type) {
@@ -43,16 +57,30 @@ const Button = forwardRef(
     }
 
     const button = (
-      <button className={className} onClick={onClick} ref={ref} disabled={disabled} style={style}>
+      <button
+        type="button"
+        className={className}
+        onClick={onClick}
+        ref={ref}
+        disabled={disabled}
+        style={style}
+        aria-label={typeof label === 'string' ? label : tooltipTitle}
+      >
         {icon}
         {label}
       </button>
     );
 
     const linkButton = (
-      <a className={className} onClick={onClick} ref={ref} disabled={disabled} href={href} style={style} 
-                   target="_blank"
-              rel="noopener noreferrer"
+      <a
+        className={className}
+        onClick={onClick}
+        ref={ref}
+        disabled={disabled}
+        href={href}
+        style={style}
+        target="_blank"
+        rel="noopener noreferrer"
       >
         {icon}
         {label}

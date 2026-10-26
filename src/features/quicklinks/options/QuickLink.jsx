@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
 import { MdEdit, MdCancel, MdDragHandle } from 'react-icons/md';
@@ -15,6 +16,7 @@ const QuickLink = ({
   isDragOver = false,
   isDragging = false,
 }) => {
+  useTranslationVersion();
   let target,
     rel = null;
   if (localStorage.getItem('quicklinksnewtab') === 'true') {
@@ -39,9 +41,7 @@ const QuickLink = ({
     );
   }
 
-  const img =
-    item.icon ||
-    'https://icon.horse/icon/ ' + item.url.replace('https://', '').replace('http://', '');
+  const img = item.icon || 'https://icon.horse/icon/' + new URL(item.url).hostname;
 
   const rootClass = `messageMap ${isDragging ? 'dragging' : ''} ${isDragOver ? 'drag-over' : ''}`;
 

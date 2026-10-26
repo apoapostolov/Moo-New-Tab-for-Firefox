@@ -1,9 +1,17 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState } from 'react';
 
 import Dialog from './Dialog';
 import { useNaturalTitle } from '../useNaturalTitle';
 import { describe } from '../natural';
-import { createTask, deleteTask, setTaskCompleted, toDueInput, updateTask } from '../services/tasks';
+import {
+  createTask,
+  deleteTask,
+  setTaskCompleted,
+  toDueInput,
+  updateTask,
+} from '../services/tasks';
 import { examplePlaceholder } from '../examples';
 
 /**
@@ -11,6 +19,7 @@ import { examplePlaceholder } from '../examples';
  * dialog handles both directions.
  */
 const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
+  useTranslationVersion();
   const isEditing = Boolean(task?.id);
 
   // One example per opening, so the title box keeps the same sentence while it is being read.
@@ -64,7 +73,7 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
         ? await updateTask(listId, task.id, payload)
         : await createTask(listId, payload);
 
-      onSaved(saved);
+      onSaved(saved, listId);
       onClose();
     } catch (saveError) {
       setError(saveError.message);
@@ -79,7 +88,7 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
 
     try {
       const saved = await setTaskCompleted(listId, task.id, !(task.status === 'completed'));
-      onSaved(saved);
+      onSaved(saved, listId);
       onClose();
     } catch (toggleError) {
       setError(toggleError.message);
@@ -94,7 +103,7 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
 
     try {
       await deleteTask(listId, task.id);
-      onDeleted(task.id);
+      onDeleted(task.id, listId);
       onClose();
     } catch (deleteError) {
       setError(deleteError.message);
@@ -112,7 +121,7 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
           {isEditing && (
             <>
               <button type="button" className="gwButton danger" onClick={remove} disabled={busy}>
-                Delete
+                {uiText('delete_f6fdbe')}
               </button>
               <button type="button" className="gwButton" onClick={toggleCompleted} disabled={busy}>
                 {task.status === 'completed' ? 'Reopen' : 'Complete'}
@@ -121,7 +130,7 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
           )}
           <span className="gwSpacer" />
           <button type="button" className="gwButton" onClick={onClose} disabled={busy}>
-            Cancel
+            {uiText('cancel_77dfd2')}
           </button>
           <button type="submit" form="taskForm" className="gwButton primary" disabled={busy}>
             {busy ? 'Saving…' : 'Save'}
@@ -131,7 +140,7 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
     >
       <form id="taskForm" className="gwForm" onSubmit={save}>
         <label>
-          Task
+          {uiText('task_7bb0dd')}
           <input
             value={form.title}
             onChange={update('title')}
@@ -153,12 +162,12 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
         )}
 
         <label>
-          Due
+          {uiText('due_145caf')}
           <input type="date" value={form.due} onChange={update('due')} />
         </label>
 
         <label>
-          Notes
+          {uiText('notes_704400')}
           <textarea value={form.notes} onChange={update('notes')} rows={3} />
         </label>
 

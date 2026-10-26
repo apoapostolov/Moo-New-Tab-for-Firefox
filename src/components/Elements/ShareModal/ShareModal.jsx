@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 import variables from 'config/variables';
 import { MdClose, MdEmail, MdContentCopy } from 'react-icons/md';
@@ -12,6 +14,7 @@ import { Button } from 'components/Elements';
 import './sharemodal.scss';
 
 function ShareModal({ modalClose, data }) {
+  useTranslationVersion();
   if (data.startsWith('https://cdn.')) {
     data = {
       url: data,
@@ -32,7 +35,7 @@ function ShareModal({ modalClose, data }) {
   const copyLink = () => {
     navigator.clipboard.writeText(data.url);
     toast(
-      data.startsWith('"')
+      data.url.startsWith('"')
         ? variables.getMessage('toasts.quote')
         : variables.getMessage('toasts.link_copied'),
     );
@@ -52,11 +55,8 @@ function ShareModal({ modalClose, data }) {
         <Button
           onClick={() =>
             window
-              .open(
-                `https://x.com/intent/tweet?text=Check out ${data.name} on @getmue: ${data.url}`,
-                '_blank',
-              )
-              .focus()
+              .open(`https://x.com/intent/tweet?text=${encodeURIComponent(data.url)}`, '_blank')
+              ?.focus()
           }
           icon={<SiX />}
           tooltipTitle="X (Twitter)"
@@ -65,8 +65,11 @@ function ShareModal({ modalClose, data }) {
         <Button
           onClick={() =>
             window
-              .open(`https://www.facebook.com/sharer/sharer.php?u=${data.url}`, '_blank')
-              .focus()
+              .open(
+                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data.url)}`,
+                '_blank',
+              )
+              ?.focus()
           }
           icon={<FaFacebookF />}
           tooltipTitle="Facebook"
@@ -76,13 +79,10 @@ function ShareModal({ modalClose, data }) {
           onClick={() =>
             window
               .open(
-                'mailto:email@example.com?subject=Check%20out%20this%20%on%20%Moo!&body=' +
-                  data.name +
-                  'on Moo: ' +
-                  data.url,
+                `mailto:?subject=${encodeURIComponent('Shared from Moo')}&body=${encodeURIComponent(data.url)}`,
                 '_blank',
               )
-              .focus()
+              ?.focus()
           }
           icon={<MdEmail />}
           tooltipTitle="Email"
@@ -92,10 +92,10 @@ function ShareModal({ modalClose, data }) {
           onClick={() =>
             window
               .open(
-                `https://api.qrserver.com/v1/create-qr-code/?size=154x154&data=${data.url}`,
+                `https://api.qrserver.com/v1/create-qr-code/?size=154x154&data=${encodeURIComponent(data.url)}`,
                 '_blank',
               )
-              .focus()
+              ?.focus()
           }
           icon={<AiFillWechat />}
           tooltipTitle="WeChat"
@@ -104,8 +104,11 @@ function ShareModal({ modalClose, data }) {
         <Button
           onClick={() =>
             window
-              .open(`https://connect.qq.com/widget/shareqq/index.html?url=${data.url}`, '_blank')
-              .focus()
+              .open(
+                `https://connect.qq.com/widget/shareqq/index.html?url=${encodeURIComponent(data.url)}`,
+                '_blank',
+              )
+              ?.focus()
           }
           icon={<SiTencentqq />}
           tooltipTitle="Tencent QQ"
@@ -113,7 +116,13 @@ function ShareModal({ modalClose, data }) {
         />
       </div>
       <div className="copy">
-        <input type="text" value={data.url} className="left field" readOnly />
+        <input
+          type="text"
+          value={data.url}
+          className="left field"
+          readOnly
+          aria-label={uiText('link_to_share_ed943d')}
+        />
         <Button
           onClick={() => copyLink()}
           icon={<MdContentCopy />}

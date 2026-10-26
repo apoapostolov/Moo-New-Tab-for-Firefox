@@ -1,9 +1,11 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState } from 'react';
 import variables from 'config/variables';
 import { MdClose } from 'react-icons/md';
 import { Button } from 'components/Elements';
 
 const FolderTaggingModal = ({ files, onConfirm, onCancel }) => {
+  useTranslationVersion();
   const [folderName, setFolderName] = useState('');
 
   const handleConfirm = () => {

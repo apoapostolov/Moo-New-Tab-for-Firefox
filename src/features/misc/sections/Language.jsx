@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState, useMemo } from 'react';
 import { useT, useTranslation } from 'contexts/TranslationContext';
 
@@ -9,6 +11,7 @@ import languages from '@/i18n/languages.json';
 import translationPercentages from '@/i18n/translationPercentages.json';
 
 const LanguageOptions = () => {
+  useTranslationVersion();
   const t = useT();
   const { language: currentLanguage, changeLanguage } = useTranslation();
   const languageTitle = t('modals.main.settings.sections.language.title');
@@ -87,11 +90,11 @@ const LanguageOptions = () => {
         <div className="headerActions">
           <a
             className="link"
-            href="https://hosted.weblate.org/new-lang/mue/mue-tab/"
+            href="https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/blob/main/docs/TRANSLATING.md"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Add translation
+            {uiText('add_translation_7a4982')}
             <MdOutlineOpenInNew />
           </a>
         </div>

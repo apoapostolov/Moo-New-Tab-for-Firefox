@@ -1,10 +1,13 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { fetchWithTimeout as fetch, requestOwner, settingsStamp } from 'utils/requests';
 import variables from 'config/variables';
-import { memo, useState, useEffect, useCallback } from 'react';
+import { memo, useState, useEffect, useCallback, useRef, useEffectEvent } from 'react';
 import { formatNumber } from 'utils/formatNumber';
 
 import WeatherIcon from './components/WeatherIcon';
 import { getSurface } from 'utils/widgetSurface';
 import Forecast from './components/Forecast';
+import Expanded from './components/Expanded';
 import WeatherSkeleton from './components/WeatherSkeleton';
 
 import EventBus from 'utils/eventbus';
@@ -14,21 +17,34 @@ import { getWeather } from './api/getWeather.js';
 import './weather.scss';
 
 const WeatherWidget = memo(({ compact = false }) => {
+  useTranslationVersion();
+  const owner = useRef(requestOwner());
+  const geoOwner = useRef(requestOwner());
   const [location, setLocation] = useState(localStorage.getItem('location') || '');
   const [done, setDone] = useState(false);
   const [weatherData, setWeatherData] = useState({});
 
   const autoFindLocation = useCallback(() => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation || localStorage.getItem('offlineMode') === 'true') return;
+    const request = geoOwner.current.start();
+    const stamp = settingsStamp(/^(location|offlineMode)$/);
     navigator.geolocation.getCurrentPosition(
       async (position) => {
+        if (!request.current()) return;
         try {
           const data = await (
             await fetch(
               `${variables.constants.API_URL}/gps?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`,
+              { signal: request.signal },
             )
           ).json();
-          if (data && data[0] && data[0].name) {
+          if (
+            request.current() &&
+            stamp === settingsStamp(/^(location|offlineMode)$/) &&
+            data &&
+            data[0] &&
+            data[0].name
+          ) {
             localStorage.setItem('location', data[0].name);
             setLocation(data[0].name);
           }
@@ -47,9 +63,18 @@ const WeatherWidget = memo(({ compact = false }) => {
     if (!location) {
       autoFindLocation();
     }
+    const geo = geoOwner.current;
+    return () => geo.cancel();
   }, [location, autoFindLocation]);
   const updateWeather = useCallback(async () => {
+    const request = owner.current.start();
+    const stamp = settingsStamp(/^(location|tempformat|language|offlineMode)$/);
     const data = await getWeather(location);
+    if (
+      !request.current() ||
+      stamp !== settingsStamp(/^(location|tempformat|language|offlineMode)$/)
+    )
+      return;
     if (data) {
       setWeatherData(data);
       setDone(data.done);
@@ -65,22 +90,29 @@ const WeatherWidget = memo(({ compact = false }) => {
     }
   }, [location]);
 
+  const refreshWeather = useEffectEvent(updateWeather);
   useEffect(() => {
+    const effectOwner = owner.current;
     const handleRefresh = async (data) => {
       if (data === 'weather') {
+        setLocation(localStorage.getItem('location') || '');
         await updateWeather();
       }
     };
 
     EventBus.on('refresh', handleRefresh);
-    updateWeather();
+    const first = setTimeout(refreshWeather, 0);
+    const timer = setInterval(updateWeather, 300000);
 
     return () => {
+      effectOwner.cancel();
+      clearTimeout(first);
+      clearInterval(timer);
       EventBus.off('refresh', handleRefresh);
     };
   }, [updateWeather]);
 
-  const weatherType = compact ? 1 : (localStorage.getItem('weatherType') || 1);
+  const weatherType = compact ? 1 : localStorage.getItem('weatherType') || 1;
 
   if (done === false) {
     return <WeatherSkeleton weatherType={weatherType} />;
@@ -131,8 +163,9 @@ const WeatherWidget = memo(({ compact = false }) => {
           </div>
         )}
       </div>
-      {weatherType >= 3 && (
-        <Forecast location={location} />
+      {weatherType >= 3 && <Forecast location={location} />}
+      {Number(weatherType) === 4 && (
+        <Expanded state={weatherData} weatherType={weatherType} variables={variables} />
       )}
     </div>
   );

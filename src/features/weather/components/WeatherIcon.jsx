@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 
 import {
@@ -37,6 +38,7 @@ const iconMap = {
 };
 
 function WeatherIcon({ name }) {
+  useTranslationVersion();
   const IconComponent = iconMap[name];
   return IconComponent ? <IconComponent className="weatherIcon" /> : null;
 }

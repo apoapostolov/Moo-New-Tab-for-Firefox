@@ -26,8 +26,14 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const prepareBuilds = () => ({
   name: 'prepareBuilds',
+  buildStart() {
+    this.mooBuildFailed = false;
+  },
+  buildEnd(error) {
+    this.mooBuildFailed = Boolean(error);
+  },
   closeBundle() {
-    if (isProd) {
+    if (isProd && !this.mooBuildFailed) {
       console.log('📦 Building Firefox extension package...');
 
       // Ensure base directories exist

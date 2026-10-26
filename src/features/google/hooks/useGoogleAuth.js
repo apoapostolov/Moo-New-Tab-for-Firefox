@@ -18,12 +18,21 @@ export const useGoogleAuth = () => {
       .then((stored) => {
         if (!cancelled) setAuth(stored);
       })
+      .catch((readError) => {
+        if (!cancelled) setError(readError.message);
+      })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
 
+    const changed = (changes, area) => {
+      if (area === 'local' && changes.googleAuth) setAuth(changes.googleAuth.newValue ?? null);
+    };
+    const storage = typeof browser !== 'undefined' ? browser.storage?.onChanged : null;
+    storage?.addListener(changed);
     return () => {
       cancelled = true;
+      storage?.removeListener(changed);
     };
   }, []);
 

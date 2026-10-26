@@ -1,5 +1,8 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 function Layout() {
-  return <h1>Cheese</h1>;
+  useTranslationVersion();
+  return <h1>{uiText('cheese_d48b39')}</h1>;
 }
 
 export { Layout as default, Layout };

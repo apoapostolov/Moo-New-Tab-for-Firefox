@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 const images = [
   '/src/assets/icons/undraw_celebration.svg',
   '/src/assets/icons/undraw_around_the_world_modified.svg',
@@ -9,6 +10,7 @@ const images = [
 ];
 
 function AsideImage({ currentTab }) {
+  useTranslationVersion();
   const altTexts = [
     'Celebration icon',
     'Around the world icon',

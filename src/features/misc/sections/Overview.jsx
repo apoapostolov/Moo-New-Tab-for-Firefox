@@ -1,9 +1,10 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MdOutlineDragIndicator } from 'react-icons/md';
 import {
   DndContext,
   DragOverlay,
-  KeyboardSensor,
   PointerSensor,
   useDraggable,
   useSensor,
@@ -11,11 +12,7 @@ import {
 } from '@dnd-kit/core';
 
 import variables from 'config/variables';
-import Clock from './overview_skeletons/Clock';
-import QuickLinks from './overview_skeletons/QuickLinks';
-import Date from './overview_skeletons/Date';
-import QuickWeather from './overview_skeletons/QuickWeather';
-import WidgetThumb from './overview_skeletons/WidgetThumb';
+import WidgetPreview from './overview_skeletons/WidgetPreview';
 import {
   WIDGETS,
   ZONES,
@@ -244,13 +241,21 @@ const sameTarget = (a, b) => {
 };
 
 const Card = ({ id, enabled, onToggle }) => {
+  useTranslationVersion();
   const { attributes, listeners, setNodeRef } = useDraggable({ id });
 
   return (
-    <div ref={setNodeRef} className="zoneCard" data-widget-id={id} {...attributes}>
-      <span className="dragHandle" {...listeners} aria-label={`Move ${widgetLabel(id)}`}>
+    <div ref={setNodeRef} className="zoneCard" data-widget-id={id}>
+      <button
+        type="button"
+        className="dragHandle"
+        {...attributes}
+        {...listeners}
+        tabIndex={-1}
+        aria-label={`Drag ${widgetLabel(id)}`}
+      >
         <MdOutlineDragIndicator />
-      </span>
+      </button>
       <span className="zoneCardLabel">{widgetLabel(id)}</span>
       <input
         type="checkbox"
@@ -278,6 +283,7 @@ const Slot = ({ label, wide }) => (
 const Gap = () => <div className="dropGap" />;
 
 const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide }) => {
+  useTranslationVersion();
   // Only the middle column needs lines between rows: on a rail the halves of a card
   // already mean before and after.
   const gaps = zone === 'center' && activeId !== null;
@@ -289,11 +295,11 @@ const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide })
       <div className="zoneCards">
         {rows.length === 0 ? (
           <span className={`dropSlot${slotOpen ? ' dropSlotOver' : ''}`}>
-            <span className="dropSlotLabel">Drop a widget here</span>
+            <span className="dropSlotLabel">{uiText('drop_a_widget_here_94afdc')}</span>
           </span>
         ) : null}
 
-        {rows.map((row, index) => {
+        {rows.map((row) => {
           const key = row.find((id) => id !== SLOT) || `slot-${zone}`;
 
           return (
@@ -326,6 +332,7 @@ const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide })
 };
 
 const Overview = () => {
+  useTranslationVersion();
   const [groups, setGroups] = useState(() => groupByZone(readOrder(), readPlacement()));
   const [secondLane, setSecondLane] = useState(readSecondLane);
   const [activeId, setActiveId] = useState(null);
@@ -334,10 +341,7 @@ const Overview = () => {
   const pointer = useRef({ x: 0, y: 0 });
   const geometry = useRef(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
-    useSensor(KeyboardSensor),
-  );
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
   const findZone = useCallback((id) => ZONES.find((zone) => groups[zone].includes(id)), [groups]);
 
@@ -423,7 +427,7 @@ const Overview = () => {
 
     if (!widget) return;
 
-    const current = localStorage.getItem(widget.setting) === 'true';
+    const current = isWidgetEnabled(id);
 
     localStorage.setItem(widget.setting, String(!current));
     variables.stats.postEvent('setting', 'Widget toggle');
@@ -441,34 +445,7 @@ const Overview = () => {
     EventBus.emit('refresh', 'widgets');
   }, [groups, secondLane]);
 
-  const previewItem = (id) => {
-    switch (id) {
-      case 'time':
-        return <Clock />;
-      case 'date':
-        return <Date />;
-      case 'quickweather':
-        return <QuickWeather />;
-      case 'quicklinks':
-        return <QuickLinks />;
-      case 'aiask':
-        // The query line is a hint and a hairline, so the preview draws that and no card.
-        return (
-          <div className="aiAskSkeleton" aria-hidden="true">
-            <span className="aiAskSkeletonText" />
-            <span className="aiAskSkeletonLine" />
-          </div>
-        );
-      // Weather Full is the page's own corner card and the zone list already names it.
-      case 'photoinfo':
-      case 'mail':
-      case 'calendar':
-      case 'tasks':
-        return <WidgetThumb type={id} label={widgetLabel(id)} />;
-      default:
-        return null;
-    }
-  };
+  const previewItem = (id) => <WidgetPreview id={id} label={widgetLabel(id)} />;
 
   // `wide` for the lines that read across the middle column: two cards wide, as on the page.
   const previewCard = ({ id, node }, wide = false) => (
@@ -504,8 +481,12 @@ const Overview = () => {
       <div className={`previewZone previewZone-${zone}`}>
         {lines.map((item) => previewCard(item, true))}
         <div className="previewLanes">
-          <div className="previewLane">{first.map(({ id, node }) => previewCard({ id, node }))}</div>
-          <div className="previewLane">{second.map(({ id, node }) => previewCard({ id, node }))}</div>
+          <div className="previewLane">
+            {first.map(({ id, node }) => previewCard({ id, node }))}
+          </div>
+          <div className="previewLane">
+            {second.map(({ id, node }) => previewCard({ id, node }))}
+          </div>
         </div>
       </div>
     );
@@ -531,6 +512,79 @@ const Overview = () => {
         {variables.getMessage('modals.main.marketplace.product.overview')}
       </span>
 
+      <details className="widgetMoveControls">
+        <summary>{uiText('move_widgets_with_buttons_453b33')}</summary>
+        {ZONES.flatMap((zone) =>
+          groups[zone].map((id, index) => (
+            <div key={id} className="widgetMoveRow">
+              <span>{widgetLabel(id)}</span>
+              <select
+                aria-label={`Place ${widgetLabel(id)}`}
+                value={zone}
+                onChange={(event) => {
+                  const destination = event.target.value;
+                  setGroups((current) => ({
+                    ...current,
+                    [zone]: current[zone].filter((item) => item !== id),
+                    [destination]: [...current[destination], id],
+                  }));
+                  setSecondLane((current) => current.filter((item) => item !== id));
+                }}
+              >
+                {ZONES.map((value) => (
+                  <option key={value} value={value}>
+                    {ZONE_TITLES[value]}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                aria-label={`Move ${widgetLabel(id)} up`}
+                disabled={index === 0}
+                onClick={() =>
+                  setGroups((current) => {
+                    const items = [...current[zone]];
+                    [items[index - 1], items[index]] = [items[index], items[index - 1]];
+                    return { ...current, [zone]: items };
+                  })
+                }
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                aria-label={`Move ${widgetLabel(id)} down`}
+                disabled={index === groups[zone].length - 1}
+                onClick={() =>
+                  setGroups((current) => {
+                    const items = [...current[zone]];
+                    [items[index + 1], items[index]] = [items[index], items[index + 1]];
+                    return { ...current, [zone]: items };
+                  })
+                }
+              >
+                ↓
+              </button>
+              {zone === 'center' && !isFullWidth(id) && (
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={secondLane.includes(id)}
+                    onChange={(event) =>
+                      setSecondLane((current) =>
+                        event.target.checked
+                          ? [...current, id]
+                          : current.filter((item) => item !== id),
+                      )
+                    }
+                  />
+                  {uiText('second_column_7620f0')}
+                </label>
+              )}
+            </div>
+          )),
+        )}
+      </details>
       <DndContext
         sensors={sensors}
         onDragStart={({ active }) => {

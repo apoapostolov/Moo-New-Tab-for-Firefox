@@ -1,7 +1,9 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { Suspense, lazy, memo } from 'react';
 const Analog = lazy(() => import('react-clock'));
 
 function ClockSkeleton() {
+  useTranslationVersion();
   if (localStorage.getItem('timeType') === 'analogue') {
     return (
       <Suspense fallback={<></>}>

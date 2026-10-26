@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 
 import PhotoInformation from './PhotoInformation';
@@ -16,6 +17,7 @@ import '../scss/_photoinformation.scss';
 const hasLocation = (info) => Boolean(info?.location && info.location !== 'N/A');
 
 function PhotoInfoWidget() {
+  useTranslationVersion();
   const { photoInfo, api, url } = useCurrentPhoto();
 
   if (!photoInfo?.credit || photoInfo.hidden) return null;

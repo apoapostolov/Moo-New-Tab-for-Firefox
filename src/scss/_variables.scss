@@ -96,7 +96,6 @@ $themes: (
     'slightGradient': linear-gradient(#0e1013, #322a2a),
   ),
 );
-
 $theme-map: null;
 
 @mixin themed() {
@@ -151,16 +150,14 @@ $theme-map: null;
   }
 }
 
-// The Google cards put a heavier, uniform scrim behind themselves, because a thinner one
-// lets each card's own photo tint it a different colour. It is a fixed look rather than
-// the theme's card, so it lives here: any card that belongs to that set extends this and
-// cannot drift away from the others.
+// Shared widget card surface.
 %widgetCard {
   box-sizing: border-box;
-  width: 340px;
-  padding: 12px 14px;
+  width: var(--widget-card-width, 340px);
+  max-width: 100%;
+  padding: var(--widget-card-padding, 12px 14px);
   text-align: left;
-  border-radius: 14px;
+  border-radius: var(--widget-card-radius, 14px);
   color: #fff;
   font-size: 13px;
   line-height: 1.4;
@@ -193,6 +190,7 @@ $theme-map: null;
     background: t($glassBackground);
     border: 1px solid t($glassBorder);
     box-shadow: t($glassShadow);
+
     /* The panel states the colour of its own text. A widget built for the dark
        scrim paints white type, and on the light panel white type is invisible:
        glass in the light theme is paper, so the text is the theme's ink. */
@@ -265,7 +263,7 @@ $theme-map: null;
 
   .subtitle {
     font-size: 16px;
-    font-family: 'Inter', sans-serif !important;
+    font-family: Inter, sans-serif !important;
 
     @include themed {
       color: t($subColor);
@@ -440,4 +438,29 @@ $theme-map: null;
       background: t($btn-background);
     }
   }
+}
+
+%widgetLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+%readerSurface {
+  @extend %basic;
+
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  font-size: 12.5px;
+  line-height: 1.5;
+  user-select: text;
 }

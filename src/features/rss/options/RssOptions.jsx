@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useEffect, useState } from 'react';
 import { MdAdd, MdDeleteOutline } from 'react-icons/md';
 
@@ -59,6 +61,7 @@ const Section = ({ title, subtitle }) => (
  * access to that host, since a feed on a host the page cannot reach answers nothing.
  */
 const RssOptions = () => {
+  useTranslationVersion();
   const [feeds, setFeeds] = useState(readFeeds());
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
@@ -110,8 +113,8 @@ const RssOptions = () => {
   };
 
   const allow = async (url) => {
-    await grantAccess(url);
-    setAccess((previous) => ({ ...previous, [url]: 'granted' }));
+    const granted = await grantAccess(url);
+    setAccess((previous) => ({ ...previous, [url]: granted ? 'granted' : 'missing' }));
     forgetItems();
     EventBus.emit('refresh', 'rss');
   };
@@ -120,12 +123,12 @@ const RssOptions = () => {
 
   return (
     <>
-      <Header title="RSS" />
+      <Header title={uiText('rss_fcae0f')} />
 
       <Group>
         <Section
-          title="Feeds"
-          subtitle="Every feed here is merged into one list, newest first. A duplicate story is shown once."
+          title={uiText('feeds_ffe8e9')}
+          subtitle={uiText('see_stories_from_all_your_feeds_in_one_list_n_0f4b60')}
         />
 
         {feeds.map((feed) => (
@@ -134,7 +137,7 @@ const RssOptions = () => {
             <Action>
               {access[feed.url] === 'missing' ? (
                 <button className="rssOptionButton" type="button" onClick={() => allow(feed.url)}>
-                  Allow
+                  {uiText('allow_3ad0e3')}
                 </button>
               ) : null}
               <button
@@ -151,8 +154,8 @@ const RssOptions = () => {
 
         <Row>
           <Content
-            title="Add a feed"
-            subtitle="Any RSS or Atom address. Adding it asks the browser to let the page read that site."
+            title={uiText('add_a_feed_f00cf4')}
+            subtitle={uiText('any_rss_or_atom_address_adding_it_asks_the_br_d4723c')}
           />
         </Row>
 
@@ -164,8 +167,8 @@ const RssOptions = () => {
               className="rssOptionInput"
               type="url"
               value={draft}
-              placeholder="example.com/feed.xml"
-              aria-label="Feed address"
+              placeholder={uiText('example_com_feed_xml_098287')}
+              aria-label={uiText('feed_address_3d4c56')}
               onChange={(event) => {
                 setDraft(event.target.value);
                 setError('');
@@ -174,7 +177,13 @@ const RssOptions = () => {
                 if (event.key === 'Enter') add();
               }}
             />
-            <button className="rssOptionGlyph" type="button" onClick={add} aria-label="Add feed" title="Add feed">
+            <button
+              className="rssOptionGlyph"
+              type="button"
+              onClick={add}
+              aria-label={uiText('add_feed_6aa1f2')}
+              title={uiText('add_feed_6aa1f2')}
+            >
               <MdAdd />
             </button>
           </div>
@@ -189,12 +198,15 @@ const RssOptions = () => {
 
       <Group>
         <Section
-          title="Reading"
-          subtitle="What the card draws and how often it looks for new stories."
+          title={uiText('reading_cffa2a')}
+          subtitle={uiText('choose_how_many_stories_to_show_and_when_to_c_3ab1a2')}
         />
 
         <Row>
-          <Content title="Headlines shown" subtitle="How many of the merged stories the card lists." />
+          <Content
+            title={uiText('headlines_shown_a65e5c')}
+            subtitle={uiText('the_number_of_stories_shown_on_your_page_8534f1')}
+          />
           <Action>
             <Dropdown
               name="rssItemCount"
@@ -205,7 +217,10 @@ const RssOptions = () => {
         </Row>
 
         <Row>
-          <Content title="Check for new stories every" subtitle="In minutes." />
+          <Content
+            title={uiText('check_for_new_stories_every_04beb9')}
+            subtitle={uiText('in_minutes_952e8d')}
+          />
           <Action>
             <Dropdown
               name="rssRefreshMinutes"
@@ -217,8 +232,8 @@ const RssOptions = () => {
 
         <Row>
           <Content
-            title="Full articles"
-            subtitle="The page reads the story behind each headline while it stands, so hovering opens the article itself rather than a request. Turned off, the reader shows the feed's own summary."
+            title={uiText('full_articles_7f2177')}
+            subtitle={uiText('load_articles_in_advance_so_you_can_read_them_cb2d13')}
           />
           <Action>
             <Checkbox name="rssFullArticle" category="rss" text="Full Articles on Hover" />
@@ -227,15 +242,15 @@ const RssOptions = () => {
 
         <Row>
           <Content
-            title="Keep full articles for"
-            subtitle="A story the card still lists is kept as long as it is listed. Past this age it is read again when it is next shown."
+            title={uiText('keep_full_articles_for_c11890')}
+            subtitle={uiText('save_articles_for_this_long_before_loading_th_c0a27c')}
           />
           <Action>
             <Dropdown name="rssArticleTtl" category="rss" items={KEEP} />
           </Action>
         </Row>
 
-        <WidgetSurface setting="surfaceRss" category="rss" title="RSS panel" />
+        <WidgetSurface setting="surfaceRss" category="rss" title={uiText('rss_panel_07f858')} />
       </Group>
     </>
   );

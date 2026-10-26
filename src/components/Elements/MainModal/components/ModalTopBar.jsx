@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useT } from 'contexts/TranslationContext';
 import { MdClose, MdChevronRight, MdArrowBack, MdArrowForward } from 'react-icons/md';
 import { Tooltip } from 'components/Elements';
@@ -29,6 +31,7 @@ function ModalTopBar({
   canGoBack,
   canGoForward,
 }) {
+  useTranslationVersion();
   const t = useT();
 
   const currentTabButton = NAVBAR_BUTTONS.find(({ tab }) => tab === currentTab);
@@ -120,22 +123,22 @@ function ModalTopBar({
     <div className="modalTopBar">
       <div className="topBarLeft">
         <div className="navigationButtons">
-          <Tooltip title="Back" key="backTooltip">
+          <Tooltip title={uiText('back_b52b36')} key="backTooltip">
             <button
               className="navButton"
               onClick={onBack}
               disabled={!canGoBack}
-              aria-label="Navigate back"
+              aria-label={uiText('navigate_back_dc4aac')}
             >
               <MdArrowBack />
             </button>
           </Tooltip>
-          <Tooltip title="Forward" key="forwardTooltip">
+          <Tooltip title={uiText('forward_ba4e72')} key="forwardTooltip">
             <button
               className="navButton"
               onClick={onForward}
               disabled={!canGoForward}
-              aria-label="Navigate forward"
+              aria-label={uiText('navigate_forward_7248fb')}
             >
               <MdArrowForward />
             </button>
@@ -143,7 +146,7 @@ function ModalTopBar({
         </div>
         <img src={mueAboutIcon} alt="Moo" className="topBarLogo" draggable={false} />
         {breadcrumbPath.length > 0 && (
-          <nav className="breadcrumbs" aria-label="Breadcrumb navigation">
+          <nav className="breadcrumbs" aria-label={uiText('breadcrumb_navigation_fceec8')}>
             {breadcrumbPath.map((item, index) => {
               const isLast = index === breadcrumbPath.length - 1;
               const isClickable = item.onClick !== null;
@@ -185,9 +188,14 @@ function ModalTopBar({
       </div>
       <div className="topBarRight">
         <Tooltip title={t('modals.welcome.buttons.close')} key="closeTooltip">
-          <span className="closeModal" onClick={onClose}>
+          <button
+            type="button"
+            className="closeModal"
+            onClick={onClose}
+            aria-label={t('modals.welcome.buttons.close')}
+          >
             <MdClose />
-          </span>
+          </button>
         </Tooltip>
       </div>
     </div>

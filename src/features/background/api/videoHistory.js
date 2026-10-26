@@ -10,10 +10,7 @@ export function readRecent(storageKey) {
 }
 
 export function rememberClip(storageKey, id) {
-  localStorage.setItem(
-    storageKey,
-    JSON.stringify([id, ...readRecent(storageKey)].slice(0, LIMIT)),
-  );
+  localStorage.setItem(storageKey, JSON.stringify([id, ...readRecent(storageKey)].slice(0, LIMIT)));
 }
 
 /**

@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
 import { useState, memo } from 'react';
@@ -9,6 +11,7 @@ import { brandIconFor } from 'utils/brandIcons';
 /** Add and edit a quick link. Fields carry their own labels, and their styling lives in
  * quicklinks.scss: the settings `.text-field-input` is scoped elsewhere. */
 function AddModal({ urlError, iconError, addLink, closeModal, edit, editData, editLink }) {
+  useTranslationVersion();
   const [name, setName] = useState(edit ? editData.name : '');
   const [url, setUrl] = useState(edit ? editData.url : '');
   const [icon, setIcon] = useState(edit ? editData.icon : '');
@@ -63,7 +66,7 @@ function AddModal({ urlError, iconError, addLink, closeModal, edit, editData, ed
           <input
             type="text"
             autoFocus
-            placeholder="Sofia news"
+            placeholder={uiText('sofia_news_a79eb0')}
             value={name}
             onChange={(e) => setName(stripNewlines(e.target.value))}
           />

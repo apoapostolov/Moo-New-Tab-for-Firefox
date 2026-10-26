@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo, useRef, useState, useEffect, useCallback } from 'react';
 import { Tooltip } from 'components/Elements';
 
@@ -21,19 +22,20 @@ const readQuicklinks = () => {
 };
 
 const QuickLinks = memo(() => {
+  useTranslationVersion();
   const [items, setItems] = useState(readQuicklinks());
   const [forceUpdate, setForceUpdate] = useState(0); // Used to force complete re-render
   const quicklinksContainer = useRef(null);
 
   const setZoom = useCallback((element) => {
     if (!element) return;
-    
+
     const zoom = localStorage.getItem('zoomQuicklinks') || 100;
     for (const link of element.getElementsByTagName('span')) {
       link.style.fontSize = `${14 * Number(zoom / 100)}px`;
     }
 
-    if (localStorage.getItem('quickLinksStyle') !== 'text') {
+    if (!['text', 'text_only'].includes(localStorage.getItem('quickLinksStyle'))) {
       for (const img of element.getElementsByTagName('img')) {
         img.style.height = `${30 * Number(zoom / 100)}px`;
       }
@@ -53,7 +55,7 @@ const QuickLinks = memo(() => {
         if (quicklinksContainer.current) {
           quicklinksContainer.current.style.display = 'flex';
         }
-        
+
         setItems(readQuicklinks());
         setForceUpdate(Date.now());
       }
@@ -72,7 +74,8 @@ const QuickLinks = memo(() => {
     setZoom(quicklinksContainer.current);
   }, [items, forceUpdate, setZoom]);
 
-  let target, rel = null;
+  let target,
+    rel = null;
   if (localStorage.getItem('quicklinksnewtab') === 'true') {
     target = '_blank';
     rel = 'noopener noreferrer';
@@ -81,7 +84,7 @@ const QuickLinks = memo(() => {
   const tooltipEnabled = localStorage.getItem('quicklinkstooltip');
 
   const quickLink = (item, index) => {
-    if (localStorage.getItem('quickLinksStyle') === 'text') {
+    if (['text', 'text_only'].includes(localStorage.getItem('quickLinksStyle'))) {
       return (
         <a
           className="quicklinkstext"
@@ -119,7 +122,13 @@ const QuickLinks = memo(() => {
     }
 
     const link = (
-      <a key={`quicklink-${item.key}-${index}`} href={item.url} target={target} rel={rel} draggable={false}>
+      <a
+        key={`quicklink-${item.key}-${index}`}
+        href={item.url}
+        target={target}
+        rel={rel}
+        draggable={false}
+      >
         <img src={img} alt={item.name} className={imgClass} draggable={false} />
       </a>
     );
@@ -134,10 +143,7 @@ const QuickLinks = memo(() => {
   };
 
   return (
-    <div 
-      className="quicklinkscontainer" 
-      ref={quicklinksContainer}
-    >
+    <div className="quicklinkscontainer" ref={quicklinksContainer}>
       {items && items.map((item, index) => quickLink(item, index))}
     </div>
   );

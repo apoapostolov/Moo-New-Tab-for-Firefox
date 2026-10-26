@@ -5,10 +5,12 @@
 
 :root {
   --signature: #6b86a8;
+
   /* Filled shapes need a shade that white text still sits on. */
   --signature-strong: color-mix(in srgb, var(--signature) 72%, #0b1622);
+
   /* The lighter end of the ring and the toast bar. */
-  --signature-light: color-mix(in srgb, var(--signature) 58%, #ffffff);
+  --signature-light: color-mix(in srgb, var(--signature) 58%, #fff);
   --signature-link: var(--signature);
 }
 

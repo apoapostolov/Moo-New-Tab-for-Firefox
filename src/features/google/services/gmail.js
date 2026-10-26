@@ -44,7 +44,7 @@ export const listLabels = async () => {
  */
 const COUNT_CAP = 1000;
 
-const countMatching = async (sources, cap = COUNT_CAP) => {
+const countMatching = async (sources, cap = COUNT_CAP, signal) => {
   const seen = new Set();
 
   for (const source of sources) {
@@ -55,7 +55,7 @@ const countMatching = async (sources, cap = COUNT_CAP) => {
         pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : ''
       }`;
       // One source failing should not zero a count the other sources answered.
-      const page = await googleFetch(query).catch(() => null);
+      const page = await googleFetch(query, { signal }).catch(() => null);
 
       if (!page) break;
 
@@ -92,12 +92,13 @@ const folderQuery = (folder) => {
   return `label:${/\s/.test(name) ? `"${name}"` : name}`;
 };
 
-const searchIds = async (query, maxResults) => {
+const searchIds = async (query, maxResults, signal) => {
   // `maxResults` is the display limit; the badge counts the whole search in a separate pass
   // over the same sources.
 
   const list = await googleFetch(
     `/gmail/v1/users/me/messages?q=${encodeURIComponent(query)}&maxResults=${maxResults}`,
+    { signal },
   );
 
   return (list?.messages ?? []).map((message) => message.id);
@@ -109,6 +110,7 @@ const searchIds = async (query, maxResults) => {
  * except promotions", so switched-off categories are never asked for and the answers are merged.
  */
 export const listMessages = async ({
+  signal,
   query = 'is:unread',
   maxResults = 6,
   categories = [],
@@ -132,7 +134,7 @@ export const listMessages = async ({
   if (!sources.length) return { messages: [], unreadCount: 0, unreadOverflow: false };
 
   const pages = await Promise.all(
-    sources.map((source) => searchIds(source, maxResults).catch(() => [])),
+    sources.map((source) => searchIds(source, maxResults, signal).catch(() => [])),
   );
 
   // Sources overlap often, so the same message can arrive twice.
@@ -140,17 +142,22 @@ export const listMessages = async ({
 
   if (!ids.length) return { messages: [], unreadCount: 0, unreadOverflow: false };
 
-    // A little slack over the limit, because the merged order only becomes exact once the
-    // dates are known.
+  // A little slack over the limit, because the merged order only becomes exact once the
+  // dates are known.
   const wanted = ids.slice(0, maxResults * 2);
 
   const [messages, counted] = await Promise.all([
     Promise.all(
       wanted.map((id) =>
-        googleFetch(`/gmail/v1/users/me/messages/${id}?format=metadata&${MESSAGE_HEADERS}`),
+        googleFetch(`/gmail/v1/users/me/messages/${id}?format=metadata&${MESSAGE_HEADERS}`, {
+          signal,
+        }),
       ),
     ),
-    countMatching(sources).catch(() => ({ unreadCount: 0, unreadOverflow: false })),
+    countMatching(sources, COUNT_CAP, signal).catch(() => ({
+      unreadCount: 0,
+      unreadOverflow: false,
+    })),
   ]);
 
   const sorted = messages
@@ -206,9 +213,10 @@ const walkParts = (part, found = { text: '', html: '', attachments: 0 }) => {
 };
 
 /** One whole message, body included, for the hover preview. */
-export const getMessage = async (id) => {
+export const getMessage = async (id, { signal } = {}) => {
   const message = await googleFetch(
     `/gmail/v1/users/me/messages/${encodeURIComponent(id)}?format=full`,
+    { signal },
   );
 
   const parts = walkParts(message.payload);

@@ -655,10 +655,10 @@
               "title": "Tắt độ nghiêng",
               "subtitle": "Ghi chú và ảnh đứng thẳng, kéo chúng không còn bị nghiêng nữa."
             },
-        "scratch_bare": {
-          "title": "Ghi chú không khung",
-          "subtitle": "Ghi chú nằm trên hình nền như văn bản trần và có lại khung khi bạn nhấp vào."
-        },
+            "scratch_bare": {
+              "title": "Ghi chú không khung",
+              "subtitle": "Ghi chú nằm trên hình nền như văn bản trần và có lại khung khi bạn nhấp vào."
+            },
             "cinema": {
               "title": "Nhấp ba lần để ẩn giao diện",
               "subtitle": "Ba lần nhấp ẩn mọi thứ trừ video; một lần nhấp hoặc Escape đưa nó trở lại."

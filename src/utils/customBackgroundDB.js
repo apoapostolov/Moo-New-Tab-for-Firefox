@@ -1,303 +1,289 @@
-/**
- * IndexedDB store for custom background images, which localStorage cannot hold.
- */
-
+import { withLock } from './requests.js';
 const DB_NAME = 'MooCustomBackgrounds';
-const DB_VERSION = 1;
 const STORE_NAME = 'backgrounds';
 
-/**
- * Opens the database, creating the store on first run.
- */
 function openDB() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
-
+    const request = indexedDB.open(DB_NAME, 3);
     request.onerror = () => reject(request.error);
     request.onsuccess = () => resolve(request.result);
-
-    request.onupgradeneeded = (event) => {
-      const db = event.target.result;
-
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        const objectStore = db.createObjectStore(STORE_NAME, {
-          keyPath: 'id',
-          autoIncrement: true,
-        });
-        objectStore.createIndex('url', 'url', { unique: false });
-      }
-    };
-  });
-}
-
-/**
- * Every stored background, oldest first.
- */
-export async function getAllBackgroundsWithMetadata() {
-  try {
-    const db = await openDB();
-    const transaction = db.transaction(STORE_NAME, 'readonly');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.getAll();
-
-    return new Promise((resolve, reject) => {
-      request.onsuccess = () => {
-        const results = request.result;
-        // Rows written before the object format are bare URLs.
-        resolve(
-          results.map((item) => {
-            if (typeof item.url === 'string' && !item.name) {
-              return {
-                id: item.id,
-                url: item.url,
-                name: `Image ${item.id}`,
-                uploadDate: item.createdAt || Date.now(),
-                dimensions: null,
-                fileSize: null,
-                folder: '',
-                blurHash: null,
-              };
-            }
-            return item;
-          }),
-        );
-      };
-      request.onerror = () => reject(request.error);
-    });
-  } catch (error) {
-    console.error('Error getting backgrounds from IndexedDB:', error);
-    return [];
-  }
-}
-
-/**
- * Stored image URLs, oldest first.
- */
-export async function getAllBackgrounds() {
-  const backgrounds = await getAllBackgroundsWithMetadata();
-  return backgrounds.map((bg) => bg.url || bg);
-}
-
-/**
- * Stores a background and returns its id.
- */
-export async function addBackground(backgroundData) {
-  const db = await openDB();
-  const transaction = db.transaction(STORE_NAME, 'readwrite');
-  const store = transaction.objectStore(STORE_NAME);
-
-  // Legacy string rows.
-  const data =
-    typeof backgroundData === 'string'
-      ? { url: backgroundData, name: 'Image', uploadDate: Date.now(), folder: '' }
-      : { ...backgroundData, uploadDate: backgroundData.uploadDate || Date.now() };
-
-  const request = store.add(data);
-
-  return new Promise((resolve, reject) => {
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-}
-
-/**
- * Replaces the background at a 0-based index.
- */
-export async function updateBackground(index, backgroundData) {
-  const db = await openDB();
-  const transaction = db.transaction(STORE_NAME, 'readwrite');
-  const store = transaction.objectStore(STORE_NAME);
-
-  const getAllRequest = store.getAll();
-
-  return new Promise((resolve, reject) => {
-    getAllRequest.onsuccess = () => {
-      const items = getAllRequest.result;
-      if (items[index]) {
-        const item = items[index];
-
-        // Legacy string input.
-        if (typeof backgroundData === 'string') {
-          item.url = backgroundData;
-        } else {
-          Object.assign(item, backgroundData);
-        }
-        item.updatedAt = Date.now();
-
-        const updateRequest = store.put(item);
-        updateRequest.onsuccess = () => resolve();
-        updateRequest.onerror = () => reject(updateRequest.error);
-      } else {
-        addBackground(backgroundData).then(resolve).catch(reject);
-      }
-    };
-    getAllRequest.onerror = () => reject(getAllRequest.error);
-  });
-}
-
-/**
- * Deletes the background at a 0-based index.
- */
-export async function deleteBackground(index) {
-  const db = await openDB();
-  const transaction = db.transaction(STORE_NAME, 'readwrite');
-  const store = transaction.objectStore(STORE_NAME);
-
-  const getAllRequest = store.getAll();
-
-  return new Promise((resolve, reject) => {
-    getAllRequest.onsuccess = () => {
-      const items = getAllRequest.result;
-      if (items[index]) {
-        const deleteRequest = store.delete(items[index].id);
-        deleteRequest.onsuccess = () => resolve();
-        deleteRequest.onerror = () => reject(deleteRequest.error);
-      } else {
-        resolve(); // Index doesn't exist, nothing to delete
-      }
-    };
-    getAllRequest.onerror = () => reject(getAllRequest.error);
-  });
-}
-
-/**
- * Deletes every background at the given 0-based indices.
- */
-export async function deleteMultipleBackgrounds(indices) {
-  const db = await openDB();
-  const transaction = db.transaction(STORE_NAME, 'readwrite');
-  const store = transaction.objectStore(STORE_NAME);
-
-  const getAllRequest = store.getAll();
-
-  return new Promise((resolve, reject) => {
-    getAllRequest.onsuccess = () => {
-      const items = getAllRequest.result;
-      const idsToDelete = indices.filter((index) => items[index]).map((index) => items[index].id);
-
-      let completed = 0;
-      const total = idsToDelete.length;
-
-      if (total === 0) {
-        resolve();
-        return;
-      }
-
-      idsToDelete.forEach((id) => {
-        const deleteRequest = store.delete(id);
-        deleteRequest.onsuccess = () => {
-          completed++;
-          if (completed === total) {
-            resolve();
-          }
-        };
-        deleteRequest.onerror = () => reject(deleteRequest.error);
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains('scratchAssets'))
+        request.result.createObjectStore('scratchAssets', { keyPath: 'id' });
+      if (!request.result.objectStoreNames.contains('profileJournal'))
+        request.result.createObjectStore('profileJournal');
+      if (request.result.objectStoreNames.contains(STORE_NAME)) return;
+      const store = request.result.createObjectStore(STORE_NAME, {
+        keyPath: 'id',
+        autoIncrement: true,
       });
+      store.createIndex('url', 'url', { unique: false });
     };
-    getAllRequest.onerror = () => reject(getAllRequest.error);
   });
 }
 
-/**
- * Empties the store.
- */
-export async function clearAllBackgrounds() {
+// Resolve only after commit, and release the connection on success or failure.
+async function transactUnlocked(mode, operation) {
   const db = await openDB();
-  const transaction = db.transaction(STORE_NAME, 'readwrite');
-  const store = transaction.objectStore(STORE_NAME);
-  const request = store.clear();
-
   return new Promise((resolve, reject) => {
-    request.onsuccess = () => resolve();
-    request.onerror = () => reject(request.error);
-  });
-}
-
-/**
- * Number of stored backgrounds.
- */
-export async function getBackgroundCount() {
-  const db = await openDB();
-  const transaction = db.transaction(STORE_NAME, 'readonly');
-  const store = transaction.objectStore(STORE_NAME);
-  const request = store.count();
-
-  return new Promise((resolve, reject) => {
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-}
-
-/**
- * Merges metadata into the background with that id.
- */
-export async function updateBackgroundMetadata(id, metadata) {
-  const db = await openDB();
-  const transaction = db.transaction(STORE_NAME, 'readwrite');
-  const store = transaction.objectStore(STORE_NAME);
-  const request = store.get(id);
-
-  return new Promise((resolve, reject) => {
-    request.onsuccess = () => {
-      const item = request.result;
-      if (item) {
-        Object.assign(item, metadata);
-        item.updatedAt = Date.now();
-        const updateRequest = store.put(item);
-        updateRequest.onsuccess = () => resolve();
-        updateRequest.onerror = () => reject(updateRequest.error);
-      } else {
-        reject(new Error('Background not found'));
-      }
-    };
-    request.onerror = () => reject(request.error);
-  });
-}
-
-/**
- * Moves backgrounds out of localStorage once; true when it ran.
- */
-export async function migrateFromLocalStorage() {
-  try {
-    const stored = localStorage.getItem('customBackground');
-    if (!stored || stored === 'null' || stored === '[]') {
-      return false;
-    }
-
-    let backgrounds = [];
+    let result;
+    let transaction;
     try {
-      backgrounds = JSON.parse(stored);
-      if (!Array.isArray(backgrounds)) {
-        backgrounds = [stored];
+      transaction = db.transaction(STORE_NAME, mode);
+      transaction.oncomplete = () => {
+        db.close();
+        resolve(result);
+      };
+      transaction.onabort = transaction.onerror = () => {
+        db.close();
+        reject(transaction.error || new Error('The image could not be saved.'));
+      };
+      operation(transaction.objectStore(STORE_NAME), (value) => {
+        result = value;
+      });
+    } catch (error) {
+      transaction?.abort();
+      db.close();
+      reject(error);
+    }
+  });
+}
+
+function transact(mode, operation) {
+  if (mode !== 'readwrite') return transactUnlocked(mode, operation);
+  const revision = localStorage.getItem('profileRevision');
+  return withLock('moo-profile-write', () => {
+    if (revision !== localStorage.getItem('profileRevision'))
+      throw new Error('The profile changed in another tab. Reload to continue.');
+    return transactUnlocked(mode, operation);
+  });
+}
+
+const toRecord = (data) =>
+  typeof data === 'string'
+    ? { url: data, name: 'Image', uploadDate: Date.now(), folder: '' }
+    : { ...data, uploadDate: data.uploadDate || Date.now() };
+
+export async function getAllBackgroundsWithMetadata() {
+  // A failed read must reject: an empty result would hide a storage failure from callers.
+  return transact('readonly', (store, done) => {
+    const request = store.getAll();
+    request.onsuccess = () =>
+      done(
+        request.result.map((item) => ({
+          ...item,
+          name: item.name || `Image ${item.id}`,
+          uploadDate: item.uploadDate || item.createdAt || 0,
+        })),
+      );
+  });
+}
+
+export async function getAllBackgrounds() {
+  return (await getAllBackgroundsWithMetadata()).map((background) => background.url);
+}
+
+export async function addBackground(data) {
+  return transact('readwrite', (store, done) => {
+    const request = store.add(toRecord(data));
+    request.onsuccess = () => done(request.result);
+  });
+}
+
+export async function updateBackground(index, data) {
+  return transact('readwrite', (store) => {
+    const request = store.getAll();
+    request.onsuccess = () => {
+      const item = request.result[index];
+      if (item) {
+        store.put({
+          ...item,
+          ...(typeof data === 'string' ? { url: data } : data),
+          updatedAt: Date.now(),
+        });
+      } else {
+        store.add(toRecord(data));
       }
-    } catch (e) {
-      backgrounds = [stored];
-    }
+    };
+  });
+}
 
-    // Filter out null/empty values
-    backgrounds = backgrounds.filter((bg) => bg && bg.trim() !== '');
+export async function deleteBackground(index) {
+  return deleteMultipleBackgrounds([index]);
+}
 
-    if (backgrounds.length === 0) {
-      return false;
-    }
+export async function deleteMultipleBackgrounds(indices) {
+  return transact('readwrite', (store) => {
+    const request = store.getAll();
+    request.onsuccess = () => {
+      for (const index of new Set(indices)) {
+        if (request.result[index]) store.delete(request.result[index].id);
+      }
+    };
+  });
+}
 
-    const count = await getBackgroundCount();
-    if (count > 0) {
-      return false; // Already migrated
-    }
+export async function clearAllBackgrounds() {
+  return transact('readwrite', (store) => {
+    store.clear();
+  });
+}
 
-    for (const bg of backgrounds) {
-      await addBackground(bg);
-    }
+export async function getBackgroundCount() {
+  return transact('readonly', (store, done) => {
+    const request = store.count();
+    request.onsuccess = () => done(request.result);
+  });
+}
 
-    console.log(`Migrated ${backgrounds.length} backgrounds from localStorage to IndexedDB`);
+export async function updateBackgroundMetadata(id, metadata) {
+  return transact('readwrite', (store) => {
+    // Read and write in the same transaction, so concurrent metadata edits keep both changes.
+    const request = store.get(id);
+    request.onsuccess = () => {
+      if (request.result) store.put({ ...request.result, ...metadata, id, updatedAt: Date.now() });
+      else store.transaction.abort();
+    };
+  });
+}
 
-    // Kept as a backup; the mark stops the migration from running twice.
-    localStorage.setItem('customBackgroundMigrated', 'true');
+export async function migrateFromLocalStorage() {
+  if (localStorage.getItem('customBackgroundMigrated') === 'true') return false;
+  const stored = localStorage.getItem('customBackground');
+  if (!stored || stored === 'null') return false;
 
-    return true;
-  } catch (error) {
-    console.error('Error migrating backgrounds:', error);
-    return false;
+  let backgrounds;
+  try {
+    const parsed = JSON.parse(stored);
+    backgrounds = Array.isArray(parsed) ? parsed : [parsed];
+  } catch {
+    backgrounds = [stored];
   }
+  backgrounds = backgrounds.filter((url) => typeof url === 'string' && url.trim());
+  if (!backgrounds.length || (await getBackgroundCount())) return false;
+
+  // One transaction avoids a partially migrated collection after a failed write.
+  await transact('readwrite', (store) => {
+    for (const url of backgrounds) store.add(toRecord(url));
+  });
+  localStorage.setItem('customBackgroundMigrated', 'true');
+  return true;
+}
+
+async function journalTransaction(operation) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction([STORE_NAME, 'profileJournal', 'scratchAssets'], 'readwrite');
+    let result;
+    tx.oncomplete = () => {
+      db.close();
+      resolve(result);
+    };
+    tx.onabort = tx.onerror = () => {
+      db.close();
+      reject(tx.error || new Error('The backup could not be saved.'));
+    };
+    try {
+      operation(
+        tx.objectStore(STORE_NAME),
+        tx.objectStore('profileJournal'),
+        (value) => {
+          result = value;
+        },
+        tx.objectStore('scratchAssets'),
+      );
+    } catch (error) {
+      tx.abort();
+      reject(error);
+    }
+  });
+}
+export function beginProfileChange(storage, backgrounds, scratchImages) {
+  return journalTransaction((assets, journal, _done, scratch) => {
+    const request = assets.getAll();
+    request.onsuccess = () => {
+      const read = scratch.getAll();
+      read.onsuccess = () => {
+        journal.put(
+          { storage, backgrounds: request.result, scratchImages: read.result },
+          'pending',
+        );
+        if (backgrounds !== undefined) {
+          assets.clear();
+          for (const item of backgrounds) {
+            const record = { ...item };
+            delete record.id;
+            assets.add(record);
+          }
+        }
+        if (scratchImages !== undefined) {
+          scratch.clear();
+          for (const image of scratchImages) scratch.put(image);
+        }
+      };
+    };
+  });
+}
+export function finishProfileChange() {
+  return journalTransaction((_assets, journal) => journal.delete('pending'));
+}
+export function readProfileChange() {
+  return journalTransaction((_assets, journal, done) => {
+    const request = journal.get('pending');
+    request.onsuccess = () => done(request.result);
+  });
+}
+export function rollbackProfileAssets() {
+  return journalTransaction((assets, journal, _done, scratch) => {
+    const request = journal.get('pending');
+    request.onsuccess = () => {
+      if (!request.result) return;
+      assets.clear();
+      for (const item of request.result.backgrounds) assets.put(item);
+      if (request.result.scratchImages) {
+        scratch.clear();
+        for (const image of request.result.scratchImages) scratch.put(image);
+      }
+      journal.delete('pending');
+    };
+  });
+}
+
+export function readScratchAssets() {
+  return journalTransaction((_assets, _journal, done, scratch) => {
+    const request = scratch.getAll();
+    request.onsuccess = () => done(request.result);
+  });
+}
+export function patchScratchAssets({ upserts = [], removed = [] }) {
+  return journalTransaction((_assets, _journal, done, scratch) => {
+    for (const id of removed) scratch.delete(id);
+    for (const image of upserts) scratch.put(image);
+    const request = scratch.getAll();
+    request.onsuccess = () => done(request.result);
+  });
+}
+export async function migrateScratchAssets() {
+  const original = localStorage.getItem('scratchImagesData');
+  let images = [];
+  if (original) {
+    images = JSON.parse(original);
+    if (
+      !Array.isArray(images) ||
+      images.some(
+        (image) => !image || typeof image.id !== 'string' || typeof image.src !== 'string',
+      )
+    )
+      throw new Error('The saved scratch pictures need repair. Their original data has been kept.');
+  }
+  await journalTransaction((_assets, journal, _done, scratch) => {
+    const request = journal.get('scratchMigration');
+    request.onsuccess = () => {
+      if (request.result) return;
+      for (const image of images) scratch.put(image);
+      journal.put(true, 'scratchMigration');
+    };
+  });
+  if (original && localStorage.getItem('scratchImagesData') === original)
+    localStorage.removeItem('scratchImagesData');
 }

@@ -5,8 +5,8 @@ const testImage =
 export function supportsAVIF() {
   return new Promise((resolve) => {
     const image = new Image();
-    image.src = `data:image/avif;base64,${testImage}`;
     image.onload = () => resolve(true);
     image.onerror = () => resolve(false);
+    image.src = `data:image/avif;base64,${testImage}`;
   });
 }

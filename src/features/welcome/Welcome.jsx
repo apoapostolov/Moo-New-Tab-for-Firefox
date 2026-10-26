@@ -1,8 +1,7 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState, useEffect } from 'react';
 import variables from 'config/variables';
 import { MdArrowBackIosNew, MdArrowForwardIos, MdOutlinePreview } from 'react-icons/md';
-
-import EventBus from 'utils/eventbus';
 
 import { ProgressBar, AsideImage } from './components/Elements';
 import { Button } from 'components/Elements';
@@ -21,6 +20,7 @@ import {
 } from './components/Sections';
 
 function WelcomeModal({ modalClose, modalSkip }) {
+  useTranslationVersion();
   const [currentTab, setCurrentTab] = useState(0);
   const [buttonText, setButtonText] = useState(variables.getMessage('modals.welcome.buttons.next'));
   const [importedSettings, setImportedSettings] = useState([]);
@@ -68,6 +68,7 @@ function WelcomeModal({ modalClose, modalSkip }) {
   };
 
   const Navigation = () => {
+    useTranslationVersion();
     return (
       <div className="welcomeButtons">
         {currentTab !== 0 ? (
@@ -118,12 +119,7 @@ function WelcomeModal({ modalClose, modalSkip }) {
       </Panel>
       <Panel type="content">
         {CurrentTab}
-        <Navigation
-          currentTab={currentTab}
-          changeTab={switchToTab}
-          buttonText={buttonText}
-          modalSkip={modalSkip}
-        />
+        {Navigation()}
       </Panel>
     </Wrapper>
   );

@@ -1,3 +1,4 @@
+import { fetchWithTimeout as fetch } from 'utils/requests';
 import { readRecent, rememberClip, pickUnseen } from './videoHistory';
 
 const SEARCH_URL = 'https://api.pexels.com/videos/search';

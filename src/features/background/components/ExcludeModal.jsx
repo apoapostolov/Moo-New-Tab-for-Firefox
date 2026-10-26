@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo } from 'react';
 import EventBus from 'utils/eventbus';
@@ -6,6 +7,7 @@ import { Tooltip, Button } from 'components/Elements';
 import { MdClose, MdDone } from 'react-icons/md';
 
 function ExcludeModal({ modalClose, info }) {
+  useTranslationVersion();
   const excludeImage = async () => {
     let backgroundExclude = JSON.parse(localStorage.getItem('backgroundExclude'));
     backgroundExclude.push(info.pun);

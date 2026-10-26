@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import {
   DndContext,
   closestCenter,
@@ -14,6 +15,7 @@ import {
 import { SortableItem } from './SortableItem';
 
 export const SortableList = ({ items, enabled, onDragEnd, startEditLink, deleteLink }) => {
+  useTranslationVersion();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),

@@ -1,0 +1,312 @@
+async (page) => {
+  const seed = {
+    animations: 'true',
+    apiQuality: 'high',
+    applinks: '[]',
+    appsEnabled: 'false',
+    authorDetails: 'true',
+    authorImg: 'true',
+    authorLink: 'true',
+    autocompleteProvider: 'google',
+    background: 'true',
+    backgroundAPI: 'unsplash',
+    backgroundExclude: '[]',
+    backgroundFilter: 'none',
+    backgroundFilterAmount: '0',
+    backgroundStartTime: '1769853737499',
+    backgroundType: 'custom',
+    backgroundVideoLoop: 'true',
+    backgroundVideoMute: 'true',
+    bgtransition: 'false',
+    bgpanzoom: 'false',
+    backgroundAutoChange: 'false',
+    backgroundAutoChangeInterval: '60',
+    blur: '0',
+    brightness: '90',
+    copyButton: 'false',
+    currentBackground:
+      '{"url":"https://images.unsplash.com/photo-1520763185298-1b434c919102?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4NjIyMTV8&ixlib=rb-4.1.0&q=80&auto=format&w=3840","type":"api","currentAPI":"unsplash","photoInfo":{"hidden":false,"category":null,"credit":"RoonZ nl","location":null,"camera":"SLT-A58","url":"https://images.unsplash.com/photo-1520763185298-1b434c919102?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4NjIyMTV8&ixlib=rb-4.1.0&q=80&auto=format&w=3840","photographerURL":"https://unsplash.com/@roonz_nl?utm_source=mue&utm_medium=referral","photoURL":"https://unsplash.com/photos/pink-flower-ATgfRqpFfFI?utm_source=mue&utm_medium=referral","latitude":null,"longitude":null,"views":65001311,"downloads":358111,"likes":2284,"description":"Pink Tulip & window light","colour":"#f3c0d9","blur_hash":"LKRKwa?^.TX8$+ayb]R%%#bHMdnj"}}',
+    currentWeather:
+      '{"data":{"icon":"04n","temp_text":"°C","weather":{"temp":12,"description":"overcast clouds","temp_min":11,"temp_max":12,"feels_like":11,"humidity":69,"wind_speed":4.63,"wind_degrees":130,"cloudiness":97,"visibility":10000,"pressure":1017},"done":true},"cachedAt":1792868410314}',
+    customBackground: '',
+    customEvents:
+      '[{"id":"widgets.greeting.christmas","name":"Merry Christmas","month":12,"date":25},{"id":"widgets.greeting.newyear","name":"Happy New Year","month":1,"date":1},{"id":"widgets.greeting.halloween","name":"Happy Halloween","month":10,"date":31}]',
+    date: 'false',
+    dateFormat: 'DMY',
+    datezero: 'true',
+    debugtimeout: '0',
+    defaultGreetingMessage: 'true',
+    events: 'true',
+    experimental: 'true',
+    favouriteEnabled: 'true',
+    favouriteQuoteEnabled: 'false',
+    firstRun: 'true',
+    fontstyle: 'normal',
+    fontweight: '400',
+    greeting: 'false',
+    greetingName: '',
+    hourHand: 'true',
+    imageQueue:
+      '[{"url":"https://images.unsplash.com/photo-1488928741225-2aaf732c96cc?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4NjIyNzN8&ixlib=rb-4.1.0&q=80&auto=format&w=3840","type":"api","currentAPI":"unsplash","photoInfo":{"hidden":false,"category":null,"credit":"Ioann-Mark Kuznietsov","location":"Stryiskyi rynok, Lviv, Ukraine","camera":"Canon EOS REBEL T1i","url":"https://images.unsplash.com/photo-1488928741225-2aaf732c96cc?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4NjIyNzN8&ixlib=rb-4.1.0&q=80&auto=format&w=3840","photographerURL":"https://unsplash.com/@mrrrk_smith?utm_source=mue&utm_medium=referral","photoURL":"https://unsplash.com/photos/assorted-flowers-eHlVZcSrjfg?utm_source=mue&utm_medium=referral","latitude":49.8293259737366,"longitude":24.0322412833976,"views":33438260,"downloads":329084,"likes":1570,"description":"I made 2 beautiful photos of tulips one year ago. But uploaded only 1. So, let this one be here too.","colour":"#264026","blur_hash":"LHHAU=K^NNQ_17VuxsyB5kXAEK=Z"}},{"url":"https://images.unsplash.com/photo-1619104258277-2b0c1dba83b9?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4NjQ1NTh8&ixlib=rb-4.1.0&q=80&auto=format&w=3840","type":"api","currentAPI":"unsplash","photoInfo":{"hidden":false,"category":null,"credit":"Hilbert Simonse","location":"Zeelandbrug, Zierikzee, Nederland","camera":"Canon EOS 80D","url":"https://images.unsplash.com/photo-1619104258277-2b0c1dba83b9?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4NjQ1NTh8&ixlib=rb-4.1.0&q=80&auto=format&w=3840","photographerURL":"https://unsplash.com/@hilbertsim?utm_source=mue&utm_medium=referral","photoURL":"https://unsplash.com/photos/white-bridge-over-body-of-water-TCv4X4BYm9s?utm_source=mue&utm_medium=referral","latitude":51.625004,"longitude":3.908557,"views":1965199,"downloads":5816,"likes":31,"description":"Bridge at sunset in Zeeland, the Netherlands","colour":"#8c8ca6","blur_hash":"LNDvpQMwNyoz.AROVraxJARiVqWA"}},{"url":"https://images.unsplash.com/photo-1597884770028-f74274645379?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4Njg0MDl8&ixlib=rb-4.1.0&q=80&auto=format&w=3840","type":"api","currentAPI":"unsplash","photoInfo":{"hidden":false,"category":null,"credit":"Jordyn G","location":"Michigan, USA","camera":"NIKON D3100","url":"https://images.unsplash.com/photo-1597884770028-f74274645379?ixid=M3w1NDc5MTF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTI4Njg0MDl8&ixlib=rb-4.1.0&q=80&auto=format&w=3840","photographerURL":"https://unsplash.com/@jordynalison?utm_source=mue&utm_medium=referral","photoURL":"https://unsplash.com/photos/pink-flowers-in-tilt-shift-lens-OcCmQwvlj6A?utm_source=mue&utm_medium=referral","latitude":44.314844,"longitude":-85.602364,"views":305746,"downloads":2696,"likes":48,"description":null,"colour":"#f3f3f3","blur_hash":"LWKS@wpc5iMK_NNtRPVsTcw0enXR"}}]',
+    installed:
+      '[{"display_name":"Default Quotes","name":"default_quotes","description":"Motivational and inspirational quotes included in Moo.","type":"quotes","version":"1.0.0","author":"The Moo Authors","quotes":[{"quote":"If you look at what you have in life, you\'ll always have more.","author":"Oprah Winfrey","occupation":"American talk show host"},{"quote":"The key responsibility of leadership is to think about the future.","author":"Brian Tracy","occupation":"Canadian motivational speaker"},{"quote":"The bad news is time flies. The good news, is you\'re the pilot.","author":"Michael Altshuler","occupation":null},{"quote":"Hard times don\'t create heroes. It is during the hard times when the \'hero\' within us is revealed.","author":"Bob Riley","occupation":"Former Governor of Alabama"},{"quote":"Step by step the thing is done.","author":"Charles Atlas","occupation":"Italian-American bodybuilder"},{"quote":"Nothing is impossible, the word itself says \'I\'m possible\'!","author":"Audrey Hepburn","occupation":"British actress"},{"quote":"If opportunity doesn\'t knock, build a door.","author":"Kurt Cobain","occupation":"American singer-songwriter"},{"quote":"The hard days are what make you stronger.","author":"Aly Raisman","occupation":"American gymnast"},{"quote":"Focus on being productive instead of busy.","author":"Tim Ferriss","occupation":"American entrepreneur"},{"quote":"Be kind whenever possible. It is always possible","author":"Dalai Lama","occupation":null},{"quote":"Don\'t let yesterday take up too much of today.","author":"Will Rogers","occupation":"American actor"},{"quote":"Success is walking from failure to failure with no loss of enthusiasm.","author":"Winston Churchill","occupation":"Former Prime Minister of the United Kingdom"},{"quote":"Don\'t wish it were easier. Wish you were better.","author":"Jim Rohn","occupation":"American entrepreneur"},{"quote":"However difficult life may seem, there is always something you can do and succeed at.","author":"Stephen Hawking","occupation":"English theoretical physicist"},{"quote":"Success doesn\'t come to you; you go to it.","author":"T. Scott McLeod","occupation":"Rugby union player"},{"quote":"If it scares you, it might be a good thing to try.","author":"Seth Godin","occupation":"American author"},{"quote":"What\'s on the other side of fear? Nothing.","author":"Jamie Foxx","occupation":"American actor"},{"quote":"Whatever the mind can conceive and believe, it can achieve.","author":"Napoleon Hill","occupation":"American author"},{"quote":"With the right kind of coaching and determination you can accomplish anything.","author":"Reese Witherspoon","occupation":"American actress"},{"quote":"Those who can\'t change their minds, can\'t change anything.","author":"George Shaw","occupation":"English artist"},{"quote":"Set your goals high, and don\'t stop till you get there.","author":"Bo Jackson","occupation":"American former American football player"},{"quote":"Life\'s like a movie, write your own ending. Keep believing, keep pretending.","author":"Jim Hensen","occupation":"American puppeteer"},{"quote":"Be the change that you wish to see in the world.","author":"Mahatma Gandhi","occupation":"Indian lawyer"},{"quote":"Only do what your heart tells you.","author":"Princess Diana","occupation":"Princess of Wales"},{"quote":"Opportunities don\'t happen. You create them.","author":"Chris Grosser","occupation":"Entrepreneur"},{"quote":"The best project you\'ll ever work on is you.","author":"Sonny Franco","occupation":null},{"quote":"It seems impossible until it\'s done.","author":"Nelson Mandela","occupation":"Former President of South Africa"},{"quote":"A champion is defined not by their wins but by how they can recover when they fall.","author":"Serena Williams","occupation":"American tennis player"},{"quote":"If you can tune into your purpose and really align with it, setting goals so that your vision is an expression of that purpose, then life flows much more easily.","author":"Jack Canfield","occupation":"American author"},{"quote":"The true success is the person who invented himself.","author":"Al Goldstein","occupation":"American critic"},{"quote":"If you are working on something that you really care about, you don\'t have to be pushed. The vision pulls you.","author":"Steve Jobs","occupation":"American business magnate"},{"quote":"Don\'t limit your challenges. Challenge your limits.","author":"Martonek Jr","occupation":"Author"},{"quote":"You can find a better you inside of you. Why don\'t you search for that?","author":"Munia Khan","occupation":"Author"},{"quote":"Start where you are. Use what you have. Do what you can.","author":"Arthur Ashe","occupation":"American tennis player"},{"quote":"Well done is better than well said.","author":"Benjamin Franklin","occupation":"Founding Father of the United States"},{"quote":"Time goes on. So whatever you\'re going to do, do it. Do it now. Don\'t wait.","author":"Robert De Niro","occupation":"American actor"},{"quote":"Always keep your eyes open. Keep watching. Because whatever you see can inspire you.","author":"Grace Coddington","occupation":"Welsh former model"},{"quote":"If you don\'t ask, you don\'t get.","author":"Stevie Wonder","occupation":"American singer-songwriter"},{"quote":"No bird soars too high if he soars with his own wings.","author":"William Blake","occupation":"English poet"},{"quote":"It does not matter how slowly you go as long as you do not stop.","author":"Confucius","occupation":"Chinese philosopher"},{"quote":"If you can dream it, you can achieve it.","author":"Zig Ziglar","occupation":"American author"},{"quote":"Everything you\'ve ever wanted is on the other side of fear","author":"George Addair","occupation":"real-estate developer"},{"quote":"If you don\'t like how things are, change it!","author":"Jim Rohn","occupation":"American entrepreneur"},{"quote":"The control center of your life is your attitude.","author":"Norman Cousins","occupation":"American political journalist"},{"quote":"It takes courage to grow up and become who you really are.","author":"E.E Cummings","occupation":"American poet"},{"quote":"Your true success in life begins only when you make the commitment to become excellent at what you do.","author":"Brian Tracy","occupation":"Canadian motivational speaker"},{"quote":"Always do what you are afraid to do.","author":"Ralph Waldo Emerson","occupation":"American essayist"},{"quote":"I would rather die of passion than of boredom.","author":"Vincent van Gogh","occupation":"Dutch painter"},{"quote":"A will finds a way.","author":"Orison Marden","occupation":"American author"},{"quote":"I\'m taking all the negatives in my life, and turning them into a positive.","author":"Pitbull","occupation":"American rapper"},{"quote":"All we can do is the best we can do.","author":"David Axelrod","occupation":"Former Senior Advisor to the President of the United States"},{"quote":"If you can dream it, you can do it.","author":"Walt Disney","occupation":"American entrepreneur"},{"quote":"Problems are not stop signs, they are guidelines.","author":"Robert H. Schuller","occupation":"American Televangelist"},{"quote":"Either I will find a way, or I will make one.","author":"Phillip Sidney","occupation":"English Poet"},{"quote":"There\'s a way to do it better - find it.","author":"Thomas Edison","occupation":"American Inventor"},{"quote":"Do the best you can. No one can do more than that.","author":"John Wooden","occupation":"American Basketball Coach"},{"quote":"Motivation comes from working on things we care about.","author":"Sheryl Sandberg","occupation":"COO of Facebook"},{"quote":"Believe in yourself, take on your challenges, dig deep within yourself to conquer fears. Never let anyone bring you down. You got to keep going","author":"Chantal Sutherland","occupation":"Canadian Model"},{"quote":"Keep your face to the sunshine and you cannot see a shadow.","author":"Helen Keller","occupation":"American Author"},{"quote":"Dream big and dare to fail.","author":"Norman Vaughan","occupation":"Comedian"},{"quote":"Hope never abandons you, you abandon it.","author":"George Weinberg","occupation":null},{"quote":"Life is like riding a bicycle. To keep your balance, you must keep moving.","author":"Albert Einstein","occupation":"Theoretical physicist"},{"quote":"Don\'t watch the clock; do what it does. Keep going.","author":"Sam Levenson","occupation":"American Actor"},{"quote":"If the plan doesn\'t work, change the plan, but never the goal.","author":null,"occupation":null},{"quote":"If something is important enough, even if the odds are stacked against you, you should still do it.","author":"Elon Musk","occupation":"CEO of Tesla"},{"quote":"Give up on being perfect and start working on becoming yourself.","author":"Anna Quindlen","occupation":"American Author"},{"quote":"Be a voice not an echo.","author":"Albert Einstein","occupation":"Theoretical physicist"},{"quote":"Dreaming, after all, is a form of planning.","author":"Gloria Steinem","occupation":"American Journalist"},{"quote":"Life is 10% what happens to you and 90% how you react to it.","author":"Charles R. Swindoll","occupation":null},{"quote":"In the middle of every difficulty lies opportunity.","author":"Albert Einstein","occupation":"Theoretical physicist"},{"quote":"I never lose. Either I win or learn.","author":"Nelson Mandela","occupation":"Former President of South Africa"},{"quote":"It always seems impossible until it\'s done.","author":"Nelson Mandela","occupation":"Former President of South Africa"},{"quote":"You gotta water your plants. Nobody can water them for you.","author":"DJ Khaled","occupation":"American DJ"},{"quote":"Work hard, be kind and amazing things will happen.","author":"Conan O\'Brien","occupation":"American television host"},{"quote":"A winner is a dreamer who never gives up.","author":"Nelson Mandela","occupation":"Former President of South Africa"},{"quote":"Make the most of yourself...for that is all there is of you","author":"Ralph Waldo Emerson","occupation":"American essayist"},{"quote":"Believe you can and you\'re halfway there.","author":"Theodore Roosevelt","occupation":"26th U.S. President"},{"quote":"Eighty percent of success is showing up.","author":"Woody Allen","occupation":"American film director"},{"quote":"Some people look for a beautiful place. Others make a place beautiful.","author":"Hazrat Inayat Khan","occupation":"Professor"},{"quote":"Either you run the day, or the day runs you.","author":"Jim Rohn","occupation":"American entrepreneur"},{"quote":"Sometimes later becomes never. Do it now.","author":null,"occupation":null},{"quote":"Never regret anything that made you smile.","author":"Mark Twain","occupation":"American writer"},{"quote":"Go the extra mile. It\'s never crowded there.","author":"Wayne Dyer","occupation":"American author"},{"quote":"Whatever you are, be a good one.","author":"Abraham Lincoln","occupation":"16th U.S. President"},{"quote":"If you can dream it, you can do it.","author":"Walt Disney","occupation":"American entrepreneur"},{"quote":"A goal is a dream with a deadline.","author":"Napoleon Hill","occupation":"American author"},{"quote":"There are no traffic jams along the extra mile.","author":"Roger Staubach","occupation":"American football player"},{"quote":"Too many of us are not living our dreams because we are living our fears.","author":"Les Brown","occupation":"Former Ohio State Representative"},{"quote":"Life is what happens to you while you\'re busy making other plans.","author":"John Lennon","occupation":"Singer-songwriter"},{"quote":"Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.","author":"Roy T. Bennett","occupation":"Author"},{"quote":"In a gentle way, you can shake the world.","author":"Mahatma Gandhi","occupation":"Indian lawyer"},{"quote":"There is only one thing that makes a dream impossible to achieve: the fear of failure.","author":"Paulo Coelho","occupation":"Brazilian lyricist"},{"quote":"Learn to enjoy every minute of your life.","author":"Earl Nightingale","occupation":"American author"},{"quote":"If you don\'t have a competitive advantage, don\'t compete.","author":"Jack Welch","occupation":"American executive"},{"quote":"Work until your rivals become idols.","author":"Drake","occupation":"Canadian rapper"},{"quote":"It is never too late to be what you might have been.","author":"George Eliot","occupation":"English novelist"},{"quote":"Accomplishing the impossible is all about seeing the invisible.","author":"Steven Furtick","occupation":"American pastor"},{"quote":"The two most important days in your life are the day you are born and the day you find out why.","author":"Mark Twain","occupation":"American writer"},{"quote":"In order to succeed, we must first believe that we can.","author":"Nikos Kazantzakis","occupation":"Greek writer"},{"quote":"Impossible is just an opinion.","author":"Paulo Coelho","occupation":"Brazilian lyricist"},{"quote":"The man who does not read has no advantage over the man who cannot read.","author":"Mark Twain","occupation":"American writer"},{"quote":"A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty.","author":"Winston Churchill","occupation":"Former Prime Minister of the United Kingdom"},{"quote":"It\'s not whether you get knocked down, it\'s whether you get up.","author":"Vince Lombardi","occupation":"American football coach"},{"quote":"Make each day your masterpiece.","author":"John Wooden","occupation":"American basketball coach"},{"quote":"You are the only one who can limit your greatness","author":null,"occupation":null},{"quote":"If you believe it will work out, you\'ll see opportunities. If you believe it won\'t, you will see obstacles.","author":"Wayne Dyer","occupation":"American author"},{"quote":"Success is not final, failure is not fatal: it is the courage to continue that counts.","author":"Winston Churchill","occupation":"Former Prime Minister of the United Kingdom"},{"quote":"All our dreams can come true, if we have the courage to pursue them.","author":"Walt Disney","occupation":"American entrepreneur"},{"quote":"The way to get started is to quit talking and begin doing.","author":"Walt Disney","occupation":"American entrepreneur"}],"created_at":"2025-10-03T23:29:20.000Z","updated_at":"2026-03-20T13:31:21.000Z","id":"0c8a5bdebd13","canonical_path":"quote_packs/default_quotes","in_collections":[]}]',
+    language: 'en_GB',
+    localeFormatting: 'true',
+    location: 'Bergen, Norway',
+    minuteHand: 'true',
+    navbarHover: 'true',
+    nextImage: 'null',
+    notesEnabled: 'false',
+    offlineMode: 'false',
+    order:
+      '["time", "aiask", "rss", "mail", "calendar", "tasks", "weather", "date", "quickweather", "quicklinks", "photoinfo"]',
+    percentageFallback: 'true',
+    photoInfoRequiresLocation: 'true',
+    photoInformation: 'false',
+    photoMap: 'false',
+    quicklinks: '[]',
+    quicklinksenabled: 'false',
+    quicklinkstooltip: 'true',
+    quote: 'false',
+    quoteShareButton: 'false',
+    quoteStartTime: '1774888163380',
+    quoteType: 'quote_pack',
+    quote_packs:
+      '[{"quote":"If you look at what you have in life, you\'ll always have more.","author":"Oprah Winfrey","occupation":"American talk show host"},{"quote":"The key responsibility of leadership is to think about the future.","author":"Brian Tracy","occupation":"Canadian motivational speaker"},{"quote":"The bad news is time flies. The good news, is you\'re the pilot.","author":"Michael Altshuler","occupation":null},{"quote":"Hard times don\'t create heroes. It is during the hard times when the \'hero\' within us is revealed.","author":"Bob Riley","occupation":"Former Governor of Alabama"},{"quote":"Step by step the thing is done.","author":"Charles Atlas","occupation":"Italian-American bodybuilder"},{"quote":"Nothing is impossible, the word itself says \'I\'m possible\'!","author":"Audrey Hepburn","occupation":"British actress"},{"quote":"If opportunity doesn\'t knock, build a door.","author":"Kurt Cobain","occupation":"American singer-songwriter"},{"quote":"The hard days are what make you stronger.","author":"Aly Raisman","occupation":"American gymnast"},{"quote":"Focus on being productive instead of busy.","author":"Tim Ferriss","occupation":"American entrepreneur"},{"quote":"Be kind whenever possible. It is always possible","author":"Dalai Lama","occupation":null},{"quote":"Don\'t let yesterday take up too much of today.","author":"Will Rogers","occupation":"American actor"},{"quote":"Success is walking from failure to failure with no loss of enthusiasm.","author":"Winston Churchill","occupation":"Former Prime Minister of the United Kingdom"},{"quote":"Don\'t wish it were easier. Wish you were better.","author":"Jim Rohn","occupation":"American entrepreneur"},{"quote":"However difficult life may seem, there is always something you can do and succeed at.","author":"Stephen Hawking","occupation":"English theoretical physicist"},{"quote":"Success doesn\'t come to you; you go to it.","author":"T. Scott McLeod","occupation":"Rugby union player"},{"quote":"If it scares you, it might be a good thing to try.","author":"Seth Godin","occupation":"American author"},{"quote":"What\'s on the other side of fear? Nothing.","author":"Jamie Foxx","occupation":"American actor"},{"quote":"Whatever the mind can conceive and believe, it can achieve.","author":"Napoleon Hill","occupation":"American author"},{"quote":"With the right kind of coaching and determination you can accomplish anything.","author":"Reese Witherspoon","occupation":"American actress"},{"quote":"Those who can\'t change their minds, can\'t change anything.","author":"George Shaw","occupation":"English artist"},{"quote":"Set your goals high, and don\'t stop till you get there.","author":"Bo Jackson","occupation":"American former American football player"},{"quote":"Life\'s like a movie, write your own ending. Keep believing, keep pretending.","author":"Jim Hensen","occupation":"American puppeteer"},{"quote":"Be the change that you wish to see in the world.","author":"Mahatma Gandhi","occupation":"Indian lawyer"},{"quote":"Only do what your heart tells you.","author":"Princess Diana","occupation":"Princess of Wales"},{"quote":"Opportunities don\'t happen. You create them.","author":"Chris Grosser","occupation":"Entrepreneur"},{"quote":"The best project you\'ll ever work on is you.","author":"Sonny Franco","occupation":null},{"quote":"It seems impossible until it\'s done.","author":"Nelson Mandela","occupation":"Former President of South Africa"},{"quote":"A champion is defined not by their wins but by how they can recover when they fall.","author":"Serena Williams","occupation":"American tennis player"},{"quote":"If you can tune into your purpose and really align with it, setting goals so that your vision is an expression of that purpose, then life flows much more easily.","author":"Jack Canfield","occupation":"American author"},{"quote":"The true success is the person who invented himself.","author":"Al Goldstein","occupation":"American critic"},{"quote":"If you are working on something that you really care about, you don\'t have to be pushed. The vision pulls you.","author":"Steve Jobs","occupation":"American business magnate"},{"quote":"Don\'t limit your challenges. Challenge your limits.","author":"Martonek Jr","occupation":"Author"},{"quote":"You can find a better you inside of you. Why don\'t you search for that?","author":"Munia Khan","occupation":"Author"},{"quote":"Start where you are. Use what you have. Do what you can.","author":"Arthur Ashe","occupation":"American tennis player"},{"quote":"Well done is better than well said.","author":"Benjamin Franklin","occupation":"Founding Father of the United States"},{"quote":"Time goes on. So whatever you\'re going to do, do it. Do it now. Don\'t wait.","author":"Robert De Niro","occupation":"American actor"},{"quote":"Always keep your eyes open. Keep watching. Because whatever you see can inspire you.","author":"Grace Coddington","occupation":"Welsh former model"},{"quote":"If you don\'t ask, you don\'t get.","author":"Stevie Wonder","occupation":"American singer-songwriter"},{"quote":"No bird soars too high if he soars with his own wings.","author":"William Blake","occupation":"English poet"},{"quote":"It does not matter how slowly you go as long as you do not stop.","author":"Confucius","occupation":"Chinese philosopher"},{"quote":"If you can dream it, you can achieve it.","author":"Zig Ziglar","occupation":"American author"},{"quote":"Everything you\'ve ever wanted is on the other side of fear","author":"George Addair","occupation":"real-estate developer"},{"quote":"If you don\'t like how things are, change it!","author":"Jim Rohn","occupation":"American entrepreneur"},{"quote":"The control center of your life is your attitude.","author":"Norman Cousins","occupation":"American political journalist"},{"quote":"It takes courage to grow up and become who you really are.","author":"E.E Cummings","occupation":"American poet"},{"quote":"Your true success in life begins only when you make the commitment to become excellent at what you do.","author":"Brian Tracy","occupation":"Canadian motivational speaker"},{"quote":"Always do what you are afraid to do.","author":"Ralph Waldo Emerson","occupation":"American essayist"},{"quote":"I would rather die of passion than of boredom.","author":"Vincent van Gogh","occupation":"Dutch painter"},{"quote":"A will finds a way.","author":"Orison Marden","occupation":"American author"},{"quote":"I\'m taking all the negatives in my life, and turning them into a positive.","author":"Pitbull","occupation":"American rapper"},{"quote":"All we can do is the best we can do.","author":"David Axelrod","occupation":"Former Senior Advisor to the President of the United States"},{"quote":"If you can dream it, you can do it.","author":"Walt Disney","occupation":"American entrepreneur"},{"quote":"Problems are not stop signs, they are guidelines.","author":"Robert H. Schuller","occupation":"American Televangelist"},{"quote":"Either I will find a way, or I will make one.","author":"Phillip Sidney","occupation":"English Poet"},{"quote":"There\'s a way to do it better - find it.","author":"Thomas Edison","occupation":"American Inventor"},{"quote":"Do the best you can. No one can do more than that.","author":"John Wooden","occupation":"American Basketball Coach"},{"quote":"Motivation comes from working on things we care about.","author":"Sheryl Sandberg","occupation":"COO of Facebook"},{"quote":"Believe in yourself, take on your challenges, dig deep within yourself to conquer fears. Never let anyone bring you down. You got to keep going","author":"Chantal Sutherland","occupation":"Canadian Model"},{"quote":"Keep your face to the sunshine and you cannot see a shadow.","author":"Helen Keller","occupation":"American Author"},{"quote":"Dream big and dare to fail.","author":"Norman Vaughan","occupation":"Comedian"},{"quote":"Hope never abandons you, you abandon it.","author":"George Weinberg","occupation":null},{"quote":"Life is like riding a bicycle. To keep your balance, you must keep moving.","author":"Albert Einstein","occupation":"Theoretical physicist"},{"quote":"Don\'t watch the clock; do what it does. Keep going.","author":"Sam Levenson","occupation":"American Actor"},{"quote":"If the plan doesn\'t work, change the plan, but never the goal.","author":null,"occupation":null},{"quote":"If something is important enough, even if the odds are stacked against you, you should still do it.","author":"Elon Musk","occupation":"CEO of Tesla"},{"quote":"Give up on being perfect and start working on becoming yourself.","author":"Anna Quindlen","occupation":"American Author"},{"quote":"Be a voice not an echo.","author":"Albert Einstein","occupation":"Theoretical physicist"},{"quote":"Dreaming, after all, is a form of planning.","author":"Gloria Steinem","occupation":"American Journalist"},{"quote":"Life is 10% what happens to you and 90% how you react to it.","author":"Charles R. Swindoll","occupation":null},{"quote":"In the middle of every difficulty lies opportunity.","author":"Albert Einstein","occupation":"Theoretical physicist"},{"quote":"I never lose. Either I win or learn.","author":"Nelson Mandela","occupation":"Former President of South Africa"},{"quote":"It always seems impossible until it\'s done.","author":"Nelson Mandela","occupation":"Former President of South Africa"},{"quote":"You gotta water your plants. Nobody can water them for you.","author":"DJ Khaled","occupation":"American DJ"},{"quote":"Work hard, be kind and amazing things will happen.","author":"Conan O\'Brien","occupation":"American television host"},{"quote":"A winner is a dreamer who never gives up.","author":"Nelson Mandela","occupation":"Former President of South Africa"},{"quote":"Make the most of yourself...for that is all there is of you","author":"Ralph Waldo Emerson","occupation":"American essayist"},{"quote":"Believe you can and you\'re halfway there.","author":"Theodore Roosevelt","occupation":"26th U.S. President"},{"quote":"Eighty percent of success is showing up.","author":"Woody Allen","occupation":"American film director"},{"quote":"Some people look for a beautiful place. Others make a place beautiful.","author":"Hazrat Inayat Khan","occupation":"Professor"},{"quote":"Either you run the day, or the day runs you.","author":"Jim Rohn","occupation":"American entrepreneur"},{"quote":"Sometimes later becomes never. Do it now.","author":null,"occupation":null},{"quote":"Never regret anything that made you smile.","author":"Mark Twain","occupation":"American writer"},{"quote":"Go the extra mile. It\'s never crowded there.","author":"Wayne Dyer","occupation":"American author"},{"quote":"Whatever you are, be a good one.","author":"Abraham Lincoln","occupation":"16th U.S. President"},{"quote":"If you can dream it, you can do it.","author":"Walt Disney","occupation":"American entrepreneur"},{"quote":"A goal is a dream with a deadline.","author":"Napoleon Hill","occupation":"American author"},{"quote":"There are no traffic jams along the extra mile.","author":"Roger Staubach","occupation":"American football player"},{"quote":"Too many of us are not living our dreams because we are living our fears.","author":"Les Brown","occupation":"Former Ohio State Representative"},{"quote":"Life is what happens to you while you\'re busy making other plans.","author":"John Lennon","occupation":"Singer-songwriter"},{"quote":"Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.","author":"Roy T. Bennett","occupation":"Author"},{"quote":"In a gentle way, you can shake the world.","author":"Mahatma Gandhi","occupation":"Indian lawyer"},{"quote":"There is only one thing that makes a dream impossible to achieve: the fear of failure.","author":"Paulo Coelho","occupation":"Brazilian lyricist"},{"quote":"Learn to enjoy every minute of your life.","author":"Earl Nightingale","occupation":"American author"},{"quote":"If you don\'t have a competitive advantage, don\'t compete.","author":"Jack Welch","occupation":"American executive"},{"quote":"Work until your rivals become idols.","author":"Drake","occupation":"Canadian rapper"},{"quote":"It is never too late to be what you might have been.","author":"George Eliot","occupation":"English novelist"},{"quote":"Accomplishing the impossible is all about seeing the invisible.","author":"Steven Furtick","occupation":"American pastor"},{"quote":"The two most important days in your life are the day you are born and the day you find out why.","author":"Mark Twain","occupation":"American writer"},{"quote":"In order to succeed, we must first believe that we can.","author":"Nikos Kazantzakis","occupation":"Greek writer"},{"quote":"Impossible is just an opinion.","author":"Paulo Coelho","occupation":"Brazilian lyricist"},{"quote":"The man who does not read has no advantage over the man who cannot read.","author":"Mark Twain","occupation":"American writer"},{"quote":"A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty.","author":"Winston Churchill","occupation":"Former Prime Minister of the United Kingdom"},{"quote":"It\'s not whether you get knocked down, it\'s whether you get up.","author":"Vince Lombardi","occupation":"American football coach"},{"quote":"Make each day your masterpiece.","author":"John Wooden","occupation":"American basketball coach"},{"quote":"You are the only one who can limit your greatness","author":null,"occupation":null},{"quote":"If you believe it will work out, you\'ll see opportunities. If you believe it won\'t, you will see obstacles.","author":"Wayne Dyer","occupation":"American author"},{"quote":"Success is not final, failure is not fatal: it is the courage to continue that counts.","author":"Winston Churchill","occupation":"Former Prime Minister of the United Kingdom"},{"quote":"All our dreams can come true, if we have the courage to pursue them.","author":"Walt Disney","occupation":"American entrepreneur"},{"quote":"The way to get started is to quit talking and begin doing.","author":"Walt Disney","occupation":"American entrepreneur"}]',
+    refresh: 'false',
+    searchEngine: 'duckduckgo',
+    shortFormat: 'dots',
+    showReminder: 'false',
+    showWelcome: 'false',
+    showlocation: 'true',
+    stats: 'true',
+    statsData: '{}',
+    tabName: 'New Tab',
+    tempformat: 'celsius',
+    textBorder: 'new',
+    theme: 'dark',
+    time: 'true',
+    timeType: 'digital',
+    timeformat: 'twentyfourhour',
+    toastDisplayTime: '2500',
+    view: 'false',
+    weatherEnabled: 'true',
+    quickWeatherEnabled: 'false',
+    weatherType: '2',
+    widgetStyle: 'new',
+    windspeed: 'true',
+    zero: 'true',
+    cinemaMode: 'true',
+    rssEnabled: 'false',
+    backgroundchange: 'refresh',
+    clock: '24',
+    seconds: 'false',
+    aiAskEnabled: 'true',
+    googleMailEnabled: 'true',
+    googleCalendarEnabled: 'true',
+    googleTasksEnabled: 'true',
+    googleMailSnippet: 'true',
+    googleMailMax: '3',
+    googleMailPrimary: 'sender',
+    googleCalendarMax: '3',
+    googleCalendar24Hour: 'true',
+    googleTasksMax: '3',
+    googleTasksList: 'demo-list',
+    rssCenteredDefaultOff: 'true',
+    scratchNotes: 'false',
+    scratchImages: 'false',
+    signatureColour: '#6ba8a0',
+    widgetPlacement: '{"weather": "right", "photoinfo": "left", "rss": "center"}',
+    widgetSecondLane: '["calendar", "tasks"]',
+    surfaceMail: '',
+    surfaceCalendar: '',
+    surfaceTasks: '',
+    todoEnabled: 'false',
+    refreshEnabled: 'false',
+    viewEnabled: 'false',
+  };
+  await page.addInitScript(
+    ({ seed }) => {
+      if (!location.href.startsWith('http://127.0.0.1:5173')) return;
+      const now = new Date('2026-10-26T09:41:00Z').getTime();
+      const RealDate = Date;
+      window.Date = class extends RealDate {
+        constructor(...args) {
+          super(...(args.length ? args : [now]));
+        }
+        static now() {
+          return now;
+        }
+      };
+      localStorage.clear();
+      for (const [key, value] of Object.entries(seed)) localStorage.setItem(key, value);
+      localStorage.setItem(
+        'customBackground',
+        JSON.stringify([location.origin + '/output/playwright/media/forest.mp4']),
+      );
+      const auth = {
+        accessToken: 'fictional-capture-token',
+        refreshToken: null,
+        expiresAt: now + 3600000,
+        email: 'demo@example.invalid',
+        name: 'Demo',
+        connectedAt: 1,
+      };
+      window.browser = {
+        storage: {
+          local: {
+            get: async () => ({ googleAuth: auth }),
+            set: async () => {},
+            remove: async () => {},
+          },
+          onChanged: { addListener() {}, removeListener() {} },
+        },
+      };
+    },
+    { seed },
+  );
+  const messages = [
+    {
+      id: 'demo1',
+      from: 'Lena Brooks',
+      subject: 'A quiet weekend by the coast',
+      snippet: 'Found a little cabin with a view of the water. Saturday looks clear.',
+      date: 'Mon, 26 Oct 2026 09:18:00 +0000',
+    },
+    {
+      id: 'demo2',
+      from: 'Northfield Studio',
+      subject: 'The first sketches are ready',
+      snippet: 'The latest drawings are in the shared folder whenever you have a moment.',
+      date: 'Mon, 26 Oct 2026 08:52:00 +0000',
+    },
+    {
+      id: 'demo3',
+      from: 'Sam Rivera',
+      subject: 'Coffee after the walk?',
+      snippet: 'I can meet you at the corner café around three.',
+      date: 'Mon, 26 Oct 2026 08:30:00 +0000',
+    },
+  ];
+  await page.route('**/*', async (route) => {
+    const url = new URL(route.request().url());
+    if (url.hostname === '127.0.0.1' || url.hostname === 'localhost') return route.continue();
+    let data;
+    if (url.hostname === 'www.googleapis.com') {
+      if (url.pathname.endsWith('/calendarList'))
+        data = {
+          items: [
+            {
+              id: 'primary',
+              summary: 'Personal',
+              primary: true,
+              accessRole: 'owner',
+              backgroundColor: '#6ba8a0',
+            },
+          ],
+        };
+      else if (url.pathname.includes('/calendar/'))
+        data = {
+          items: [
+            {
+              id: 'event1',
+              summary: 'Morning planning',
+              start: { dateTime: '2026-10-26T10:00:00Z' },
+              end: { dateTime: '2026-10-26T10:30:00Z' },
+              location: 'Home office',
+            },
+            {
+              id: 'event2',
+              summary: 'A walk by the river',
+              start: { dateTime: '2026-10-26T12:30:00Z' },
+              end: { dateTime: '2026-10-26T13:15:00Z' },
+              location: 'Riverside path',
+            },
+            {
+              id: 'event3',
+              summary: 'Design catch-up',
+              start: { dateTime: '2026-10-26T15:00:00Z' },
+              end: { dateTime: '2026-10-26T15:30:00Z' },
+              location: 'Northfield Studio',
+            },
+          ],
+        };
+      else if (url.pathname.endsWith('/users/@me/lists'))
+        data = { items: [{ id: 'demo-list', title: 'Today' }] };
+      else if (url.pathname.includes('/tasks/'))
+        data = {
+          items: [
+            {
+              id: 'task1',
+              title: 'Finish the reading list',
+              status: 'needsAction',
+              due: '2026-10-26T00:00:00Z',
+            },
+            {
+              id: 'task2',
+              title: 'Pick up coffee beans',
+              status: 'needsAction',
+              due: '2026-10-26T00:00:00Z',
+            },
+            {
+              id: 'task3',
+              title: 'Plan a weekend outside',
+              status: 'needsAction',
+              due: '2026-10-27T00:00:00Z',
+            },
+          ],
+        };
+      else if (url.pathname.match(/\/messages\/[^/]+$/)) {
+        const item = messages.find((item) => url.pathname.endsWith('/' + item.id));
+        data = {
+          id: item.id,
+          threadId: item.id,
+          labelIds: ['UNREAD'],
+          snippet: item.snippet,
+          payload: {
+            headers: ['From', 'Subject', 'Date'].map((name) => ({
+              name,
+              value: item[name.toLowerCase()],
+            })),
+          },
+        };
+      } else
+        data = {
+          messages: messages.map(({ id }) => ({ id, threadId: id })),
+          resultSizeEstimate: 3,
+        };
+    } else if (url.hostname === 'api.muetab.com' && url.pathname.includes('/weather')) {
+      data = {
+        main: {
+          temp: 286.15,
+          temp_min: 283.15,
+          temp_max: 288.15,
+          feels_like: 285.15,
+          humidity: 77,
+          pressure: 1016,
+        },
+        weather: [{ icon: '04d', description: 'Cloudy' }],
+        wind: { speed: 2.1, deg: 220 },
+        clouds: { all: 80 },
+        visibility: 10000,
+      };
+    } else return route.abort();
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(data),
+    });
+  });
+  await page.goto('http://127.0.0.1:5173/');
+  await page.getByText('A quiet weekend by the coast', { exact: true }).waitFor();
+  await page.getByText('Morning planning', { exact: true }).waitFor();
+  await page.getByText('Pick up coffee beans', { exact: true }).waitFor();
+  await page.waitForFunction(() => {
+    const video = document.querySelector('video');
+    return video && video.readyState >= 2 && !video.paused;
+  });
+  await page.locator('input.aiAskInput').evaluate((element) => element.blur());
+  await page.waitForTimeout(1800);
+  await page.screenshot({ path: 'output/playwright/demo-forest.png' });
+  return { viewport: page.viewportSize(), title: await page.title(), sampleData: true };
+}

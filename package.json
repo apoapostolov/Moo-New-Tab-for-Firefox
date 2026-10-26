@@ -24,8 +24,6 @@
     "@floating-ui/react-dom": "2.1.8",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/lexend-deca": "5.0.14",
-    "@fontsource/montserrat": "5.0.19",
-    "@sentry/react": "^10.36.0",
     "blurhash": "^2.0.5",
     "fast-blurhash": "^1.1.4",
     "hls.js": "^1.7.3",
@@ -37,21 +35,21 @@
     "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",
     "react-modal": "3.16.3",
-    "react-toastify": "11.1.0",
-    "use-debounce": "^10.1.0"
+    "react-toastify": "11.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
     "@eartharoid/deep-merge": "^0.0.2",
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.39.0",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "adm-zip": "0.5.17",
-    "eslint": "^10.2.0",
+    "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "fake-indexeddb": "^6.2.6",
     "husky": "^9.1.7",
     "prettier": "^3.8.1",
     "sass": "^1.97.3",
@@ -68,9 +66,11 @@
     "translations:percentages": "node scripts/updateTranslationPercentages.cjs",
     "build": "vite build",
     "pretty": "prettier --write \"./**/*.{js,jsx,json,scss,css}\"",
-    "lint": "eslint \"./src/**/*.{js,jsx}\" && stylelint \"./src/**/*.{scss,css}\"",
+    "lint": "eslint \"./src/**/*.{js,jsx}\" --max-warnings 0 && stylelint \"./src/**/*.{scss,css}\"",
     "lint:fix": "eslint \"./src/**/*.{js,jsx}\" --fix && stylelint \"./src/**/*.{scss,css}\" --fix",
     "postinstall": "husky",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "node --test tests/*.test.mjs",
+    "validate:firefox": "node scripts/validateFirefox.cjs"
   }
 }

@@ -222,6 +222,7 @@
   @extend %basic;
 
   animation: fadeIn 2s;
+
   /* Capped so a long credit cannot reach the middle column: 22rem, or half the
    * window less a wide margin. The text ellipses rather than widening the card. */
   min-width: min(300px, calc(50vw - 6rem));
@@ -234,7 +235,6 @@
   flex-flow: row;
   align-items: center;
   transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
-
   padding: 10px;
 
   .link {
@@ -322,6 +322,7 @@
     background: none;
     box-shadow: none;
     border-radius: 0;
+
     /* %basic blurs what is behind the element, which over a transparent 24px
      * box reads as a dark square behind the pin. */
     backdrop-filter: none;
@@ -347,6 +348,7 @@
     align-items: center;
     justify-content: center;
     border: none !important;
+
     /* The map is 450x200 and the tile is a square: clip it to the shape instead of
      * letting the oversize crop hang over the card. */
     overflow: hidden;
@@ -514,6 +516,7 @@
   display: none;
   flex-flow: column;
   justify-content: space-between;
+
   /* Fixed size: inherited from the card, the counts would outgrow the location
    * they belong to. */
   flex: 0 0 auto;
@@ -536,6 +539,7 @@
   display: flex;
   flex-flow: column;
   flex: 1 1 auto;
+
   /* A flex child will not shrink below its content unless told to, and a long
    * location or credit would push the card past its cap. */
   min-width: 0;

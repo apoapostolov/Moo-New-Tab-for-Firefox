@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 
 import { useState, memo } from 'react';
@@ -14,6 +15,7 @@ import { Header } from 'components/Layout/Settings';
 import AppsOptions from './AppsOptions';
 
 function NavbarOptions() {
+  useTranslationVersion();
   const t = useT();
   const [showRefreshOptions, setShowRefreshOptions] = useState(
     localStorage.getItem('refresh') === 'true',
@@ -25,6 +27,7 @@ function NavbarOptions() {
   const NAVBAR_SECTION = 'modals.main.settings.sections.appearance.navbar';
 
   const AdditionalSettings = () => {
+    useTranslationVersion();
     return (
       <Row final={false}>
         <Content
@@ -39,7 +42,9 @@ function NavbarOptions() {
   };
 
   const NavbarOptions = () => {
+    useTranslationVersion();
     const NavbarButton = ({ icon, messageKey, settingName }) => {
+      useTranslationVersion();
       const [isDisabled, setIsDisabled] = useState(localStorage.getItem(settingName) !== 'true');
       const handleClick = () => {
         localStorage.setItem(settingName, isDisabled);
@@ -114,6 +119,7 @@ function NavbarOptions() {
   };
 
   const RefreshOptions = () => {
+    useTranslationVersion();
     return (
       <Row final={false} inactive={!showRefreshOptions}>
         <Content

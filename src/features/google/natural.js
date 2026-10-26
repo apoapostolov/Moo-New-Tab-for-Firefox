@@ -284,7 +284,10 @@ export const parseNatural = (text, { now = new Date(), kind = 'event' } = {}) =>
   // A length: "for 2 hours", "for 30 min", "lasting 3 days".
   const length = firstOf(state, [
     [
-      new RegExp(`\\b(?:for|lasting)\\s+(${NUM_PATTERN})\\s*(hours?|hrs?|h|minutes?|mins?|m|days?)\\b`, 'i'),
+      new RegExp(
+        `\\b(?:for|lasting)\\s+(${NUM_PATTERN})\\s*(hours?|hrs?|h|minutes?|mins?|m|days?)\\b`,
+        'i',
+      ),
       (match) => {
         const amount = toNumber(match[1]);
 
@@ -361,7 +364,7 @@ export const parseNatural = (text, { now = new Date(), kind = 'event' } = {}) =>
             const startMonth = MONTHS[match[2].toLowerCase()];
             const endMonth = match[4] ? MONTHS[match[4].toLowerCase()] : startMonth;
             const start = forwardDate(now, startMonth, Number(match[1]));
-            let end = forwardDate(now, endMonth, Number(match[3]));
+            const end = forwardDate(now, endMonth, Number(match[3]));
 
             // "24 dec to 3 jan" crosses the new year.
             if (end < start) end.setFullYear(end.getFullYear() + 1);
@@ -396,7 +399,8 @@ export const parseNatural = (text, { now = new Date(), kind = 'event' } = {}) =>
           (match) => {
             const date = atMidnight(now);
 
-            if (match[2].toLowerCase() === 'next') date.setMonth(date.getMonth() + 1, Number(match[1]));
+            if (match[2].toLowerCase() === 'next')
+              date.setMonth(date.getMonth() + 1, Number(match[1]));
             else date.setDate(Number(match[1]));
 
             return { start: date, end: null };
@@ -413,83 +417,83 @@ export const parseNatural = (text, { now = new Date(), kind = 'event' } = {}) =>
     isoDate ||
     result.date ||
     firstOf(state, [
-    [
-      /\b(\d{1,2})[/.](\d{1,2})(?:[/.](\d{2,4}))?\b/,
-      (match) => {
-        const day = Number(match[1]);
-        const month = Number(match[2]);
+      [
+        /\b(\d{1,2})[/.](\d{1,2})(?:[/.](\d{2,4}))?\b/,
+        (match) => {
+          const day = Number(match[1]);
+          const month = Number(match[2]);
 
-        if (day < 1 || day > 31 || month < 1 || month > 12) return null;
+          if (day < 1 || day > 31 || month < 1 || month > 12) return null;
 
-        if (!match[3]) return forwardDate(now, month - 1, day);
+          if (!match[3]) return forwardDate(now, month - 1, day);
 
-        const year = Number(match[3]) < 100 ? 2000 + Number(match[3]) : Number(match[3]);
+          const year = Number(match[3]) < 100 ? 2000 + Number(match[3]) : Number(match[3]);
 
-        return atMidnight(new Date(year, month - 1, day));
-      },
-    ],
-    [
-      new RegExp(
-        `\\b(?:on\\s+)?(?:the\\s+)?(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_PATTERN})\\b`,
-        'i',
-      ),
-      (match) => forwardDate(now, MONTHS[match[2].toLowerCase()], Number(match[1])),
-    ],
-    [
-      new RegExp(`\\b(${MONTH_PATTERN})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`, 'i'),
-      (match) => forwardDate(now, MONTHS[match[1].toLowerCase()], Number(match[2])),
-    ],
-    [
-      /\b(?:on\s+)?(?:the\s+)?(\d{1,2})(?:st|nd|rd|th)\b/i,
-      (match) =>
-        Number(match[1]) >= 1 && Number(match[1]) <= 31
-          ? nextDayOfMonth(now, Number(match[1]))
-          : null,
-    ],
-    [
-      /\bon\s+(\d{1,2})\b/i,
-      (match) =>
-        Number(match[1]) >= 1 && Number(match[1]) <= 31
-          ? nextDayOfMonth(now, Number(match[1]))
-          : null,
-    ],
-    [
-      new RegExp(`\\bin\\s+(${NUM_PATTERN})\\s*(day|week|month)s?\\b`, 'i'),
-      (match) => shiftDate(now, toNumber(match[1]) || 0, match[2].toLowerCase()),
-    ],
-    [
-      new RegExp(`\\b(${NUM_PATTERN})\\s+(day|week|month)s?\\s+from\\s+(?:now|today)\\b`, 'i'),
-      (match) => shiftDate(now, toNumber(match[1]) || 0, match[2].toLowerCase()),
-    ],
-    [/\b(?:today|tonight)\b/i, () => atMidnight(now)],
-    [/\b(?:tomorrow|tmrw|tmw)\b/i, () => addDays(now, 1)],
-    [/\b(?:the\s+)?day\s+after\s+tomorrow\b/i, () => addDays(now, 2)],
-    [/\bnext\s+week\b/i, () => addDays(now, 7)],
-    [
-      /\bnext\s+month\b/i,
-      () => {
-        const date = atMidnight(now);
+          return atMidnight(new Date(year, month - 1, day));
+        },
+      ],
+      [
+        new RegExp(
+          `\\b(?:on\\s+)?(?:the\\s+)?(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_PATTERN})\\b`,
+          'i',
+        ),
+        (match) => forwardDate(now, MONTHS[match[2].toLowerCase()], Number(match[1])),
+      ],
+      [
+        new RegExp(`\\b(${MONTH_PATTERN})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`, 'i'),
+        (match) => forwardDate(now, MONTHS[match[1].toLowerCase()], Number(match[2])),
+      ],
+      [
+        /\b(?:on\s+)?(?:the\s+)?(\d{1,2})(?:st|nd|rd|th)\b/i,
+        (match) =>
+          Number(match[1]) >= 1 && Number(match[1]) <= 31
+            ? nextDayOfMonth(now, Number(match[1]))
+            : null,
+      ],
+      [
+        /\bon\s+(\d{1,2})\b/i,
+        (match) =>
+          Number(match[1]) >= 1 && Number(match[1]) <= 31
+            ? nextDayOfMonth(now, Number(match[1]))
+            : null,
+      ],
+      [
+        new RegExp(`\\bin\\s+(${NUM_PATTERN})\\s*(day|week|month)s?\\b`, 'i'),
+        (match) => shiftDate(now, toNumber(match[1]) || 0, match[2].toLowerCase()),
+      ],
+      [
+        new RegExp(`\\b(${NUM_PATTERN})\\s+(day|week|month)s?\\s+from\\s+(?:now|today)\\b`, 'i'),
+        (match) => shiftDate(now, toNumber(match[1]) || 0, match[2].toLowerCase()),
+      ],
+      [/\b(?:today|tonight)\b/i, () => atMidnight(now)],
+      [/\b(?:the\s+)?day\s+after\s+tomorrow\b/i, () => addDays(now, 2)],
+      [/\b(?:tomorrow|tmrw|tmw)\b/i, () => addDays(now, 1)],
+      [/\bnext\s+week\b/i, () => addDays(now, 7)],
+      [
+        /\bnext\s+month\b/i,
+        () => {
+          const date = atMidnight(now);
 
-        date.setMonth(date.getMonth() + 1);
+          date.setMonth(date.getMonth() + 1);
 
-        return date;
-      },
-    ],
-    [
-      new RegExp(`\\b(next|this|coming|on)\\s+(${WEEKDAY_PATTERN})\\b`, 'i'),
-      (match) => {
-        const day = nextWeekday(now, WEEKDAYS[match[2].toLowerCase()]);
+          return date;
+        },
+      ],
+      [
+        new RegExp(`\\b(next|this|coming|on)\\s+(${WEEKDAY_PATTERN})\\b`, 'i'),
+        (match) => {
+          const day = nextWeekday(now, WEEKDAYS[match[2].toLowerCase()]);
 
-        // "next sunday" typed on a sunday means the one after, not today.
-        return match[1].toLowerCase() === 'next' && day.getTime() === atMidnight(now).getTime()
-          ? addDays(day, 7)
-          : day;
-      },
-    ],
-    [
-      new RegExp(`\\b(${WEEKDAY_PATTERN})\\b`, 'i'),
-      (match) => nextWeekday(now, WEEKDAYS[match[1].toLowerCase()]),
-    ],
+          // "next sunday" typed on a sunday means the one after, not today.
+          return match[1].toLowerCase() === 'next' && day.getTime() === atMidnight(now).getTime()
+            ? addDays(day, 7)
+            : day;
+        },
+      ],
+      [
+        new RegExp(`\\b(${WEEKDAY_PATTERN})\\b`, 'i'),
+        (match) => nextWeekday(now, WEEKDAYS[match[1].toLowerCase()]),
+      ],
     ]);
 
   // "in 2 hours" is a clock time today, not a date of its own.
@@ -528,11 +532,14 @@ export const parseNatural = (text, { now = new Date(), kind = 'event' } = {}) =>
   // Place: "@office", "at the office". Times are already gone, so "at" cannot be a clock.
   if (kind === 'event') {
     result.location = firstOf(state, [
-      [/\b@([\w'’ .&-]{2,40})/, (match) => match[1].trim().replace(/[.,;:]+$/, '')],
+      [/(?:^|\s)@([\w'’ .&-]{2,40})/, (match) => match[1].trim().replace(/[.,;:]+$/, '')],
       [
         /\bat\s+((?!\btoday\b|\btomorrow\b|\bthe\s+\d)[\w'’ .&-]{2,40})/i,
         (match) => {
-          const value = match[1].replace(/\s+/g, ' ').trim().replace(/[.,;:]+$/, '');
+          const value = match[1]
+            .replace(/\s+/g, ' ')
+            .trim()
+            .replace(/[.,;:]+$/, '');
 
           return value.length > 1 ? value : null;
         },

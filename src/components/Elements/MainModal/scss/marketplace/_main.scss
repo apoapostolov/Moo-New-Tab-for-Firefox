@@ -4,7 +4,7 @@
 .items {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 280px));
-  grid-gap: 1.5rem;
+  gap: 1.5rem;
   margin-top: 15px;
   margin-bottom: 30px;
 
@@ -117,7 +117,7 @@
       height: 28px;
       border-radius: 50%;
       border: none;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgb(0 0 0 / 50%);
       cursor: pointer;
       transition: background-color 0.2s ease;
 
@@ -127,7 +127,7 @@
       }
 
       &:hover {
-        background-color: rgba(220, 50, 50, 0.9);
+        background-color: rgb(220 50 50 / 90%);
       }
     }
 
@@ -141,8 +141,8 @@
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgb(255 255 255 / 40%);
+      box-shadow: 0 2px 6px rgb(0 0 0 / 30%);
       z-index: 2;
       pointer-events: none;
       will-change: transform;
@@ -160,7 +160,7 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background-color: rgba(100, 100, 100, 0.9);
+      background-color: rgb(100 100 100 / 90%);
       cursor: help;
 
       svg {
@@ -206,7 +206,7 @@
     table {
       table-layout: fixed;
       width: 100%;
-      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
       font-size: 16px;
       border-collapse: collapse;
     }
@@ -218,7 +218,7 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background-color: rgba(100, 100, 100, 0.9);
+      background-color: rgb(100 100 100 / 90%);
       cursor: help;
 
       svg {
@@ -251,7 +251,7 @@
 .emptyMessage {
   display: grid;
   place-items: center;
-  grid-gap: 5px;
+  gap: 5px;
   padding: 50px;
 
   .title,
@@ -282,7 +282,6 @@
   flex-flow: column;
   text-align: center;
   align-items: center;
-  -webkit-user-select: none;
   user-select: none;
 
   img {
@@ -404,7 +403,6 @@ p.author {
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
-    -webkit-user-select: none;
     user-select: none;
 
     @include themed {
@@ -414,7 +412,7 @@ p.author {
 
     &:hover {
       @include themed {
-        background-color: rgba(255, 255, 255, 0.15);
+        background-color: rgb(255 255 255 / 15%);
       }
     }
 
@@ -432,7 +430,7 @@ p.author {
     }
 
     &:focus-visible {
-      outline: 2px solid rgba(255, 255, 255, 0.5);
+      outline: 2px solid rgb(255 255 255 / 50%);
       outline-offset: 2px;
     }
   }

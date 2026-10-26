@@ -40,10 +40,7 @@ const decode = (value) =>
 
 /** Text only: tags removed, entities decoded, whitespace collapsed. */
 const plain = (value) =>
-  decode(
-    decode(String(value || '').replace(/<[^>]*>/g, ' '))
-      .replace(/<[^>]*>/g, ' '),
-  )
+  decode(decode(String(value || '').replace(/<[^>]*>/g, ' ')).replace(/<[^>]*>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim();
 
@@ -62,7 +59,13 @@ const childText = (element, ...names) => {
 
 /** Atom keeps the address in `href`, RSS and RDF keep it in the text. */
 const linkOf = (element) => {
-  const anchors = children(element).filter((node) => name(node) === 'link');
+  const anchors = children(element)
+    .filter((node) => name(node) === 'link')
+    .sort(
+      (a, b) =>
+        Number(b.getAttribute('rel') === 'alternate') -
+        Number(a.getAttribute('rel') === 'alternate'),
+    );
 
   for (const anchor of anchors) {
     const href = anchor.getAttribute('href');
@@ -75,6 +78,16 @@ const linkOf = (element) => {
   }
 
   return childText(element, 'id');
+};
+
+export const resolveFeedUrl = (value, base) => {
+  if (!value) return '';
+  try {
+    const url = new URL(value, base);
+    return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
+  } catch {
+    return '';
+  }
 };
 
 const dateOf = (element) => {
@@ -155,9 +168,8 @@ export function parseFeed(xml, feedUrl) {
 
   const items = entries
     .map((entry, index) => {
-      const html =
-        child(entry, 'encoded', 'content', 'summary', 'description')?.textContent || '';
-      const link = linkOf(entry);
+      const html = child(entry, 'encoded', 'content', 'summary', 'description')?.textContent || '';
+      const link = resolveFeedUrl(linkOf(entry), feedUrl);
 
       return {
         id: childText(entry, 'guid', 'id') || link || `${feedUrl}#${index}`,
@@ -165,7 +177,7 @@ export function parseFeed(xml, feedUrl) {
         link,
         date: dateOf(entry),
         excerpt: plain(html),
-        image: imageOf(entry, html),
+        image: resolveFeedUrl(imageOf(entry, html), feedUrl) || null,
         source,
       };
     })

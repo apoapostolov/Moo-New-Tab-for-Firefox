@@ -9,7 +9,7 @@ export async function getTitleFromUrl(url) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     title = doc.title;
-  } catch (e) {
+  } catch {
     title = url;
   }
 

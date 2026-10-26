@@ -10,8 +10,10 @@
 </p>
 
 <p align="center">
-  <img src="assets/moo-newtab.gif" alt="Moo new tab page with a looping video background" width="800" />
+  <img src="assets/moo-newtab.gif" alt="Moo with an alpine clouds video background and fictional mail, calendar and tasks" width="800" />
 </p>
+
+The preview uses fictional mail, events, tasks and weather. [Compare the three video backgrounds](assets/previews/README.md).
 
 Bugs and requests: [issues](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/issues).
 
@@ -28,32 +30,34 @@ weather, backgrounds and a configurable navbar — all customisable.
 
 ## Features
 
-- Firefox-focused build (Manifest V3, `browser_specific_settings.gecko`)
-- Beautiful and minimalist design
-- Customisable layout and widget order
-- Widgets: clock, date, quick links, notes, todo, weather
-- Privacy-focused — does not track your browsing activity
-- Open source under the BSD-3-Clause License
-- Bulgarian (bg) locale included
+- Clock, date, weather, quick links, RSS, notes and pictures on the page
+- Optional Google mail, calendar and task widgets
+- Local pictures, stock video and live backgrounds
+- Widget placement, compact layouts and panel/glass surfaces
+- Versioned backups, optional pictures, validated import preview and separate reset scopes
+- Local settings and counters; optional services make the connections described in [Data and connections](docs/PRIVACY.md)
 
-## Installation (sideload)
+## Installation
 
-Moo is not published to the Firefox Add-ons store. Sideload the built `.xpi`:
+For development, install Bun 1.3.1 and Node 22, then run:
 
-1. `bun install`
-2. `bun run build`
-3. Open Firefox (or Zen) and go to `about:debugging` → **This Firefox** → **Load Temporary Add-on** → select `build/firefox/manifest.json`
+```sh
+bun install --frozen-lockfile
+bun run build
+node scripts/validateFirefox.cjs
+```
 
-For a permanent install in Zen/Firefox, copy `build/firefox-1.0.0.zip` (renamed to
-`moo@apoapostolov.xpi`) into your profile's `extensions/` folder and set
-`xpinstall.signatures.required = false` in `about:config` (unsigned extensions).
+In Firefox or Zen, open `about:debugging` → **This Firefox** → **Load Temporary Add-on** and select `build/firefox/manifest.json`. This is a temporary development installation. The browser preview at localhost covers layout but cannot exercise Google sign-in or extension permission prompts.
+
+The ZIP in `build/` is unsigned. A normal permanent Firefox installation requires a Mozilla-signed XPI; renaming the ZIP does not sign it. See the [release process](docs/RELEASE_PROCESS.md) and Mozilla's [signing overview](https://www.extensionworkshop.com/documentation/publish/signing-and-distribution-overview/). Zen installation behavior should be checked against the installed Zen version.
 
 ## Development
 
-- `bun install` — install dependencies
-- `bun run dev` — development server with HMR
-- `bun run build` — production build for Firefox (`build/firefox/`, `firefox-1.0.0.zip`)
-- `bun run lint` / `bun run pretty` — lint / format
+- `bun run dev` starts the local preview.
+- `bun run test` runs regression fixtures; `bun run lint` checks JavaScript and styles.
+- `bun run build` writes `build/firefox/` and `build/firefox-<version>.zip`.
+- `node scripts/validateFirefox.cjs` checks package references and versions.
+- [Translation guide](docs/TRANSLATING.md), [release process](docs/RELEASE_PROCESS.md) and [audit](docs/AUDIT-2026-10-26.md).
 
 ## Credits
 

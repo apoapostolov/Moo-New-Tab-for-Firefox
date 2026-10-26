@@ -1,14 +1,12 @@
-import { memo, useState, useEffect } from 'react';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { memo, createElement } from 'react';
 import { useT } from 'contexts/TranslationContext';
 import { getIconComponent, DIVIDER_LABELS } from '../constants/tabConfig';
 
 function Tab({ label, currentTab, onClick, navbarTab }) {
+  useTranslationVersion();
   const t = useT();
-  const [isExperimental, setIsExperimental] = useState(true);
-
-  useEffect(() => {
-    setIsExperimental(localStorage.getItem('experimental') !== 'false');
-  }, []);
+  const isExperimental = localStorage.getItem('experimental') !== 'false';
 
   const IconComponent = getIconComponent(label, { getMessage: t });
 
@@ -27,7 +25,7 @@ function Tab({ label, currentTab, onClick, navbarTab }) {
   return (
     <>
       <button className={className} onClick={() => onClick(label)}>
-        {IconComponent && <IconComponent />} <span>{label}</span>
+        {IconComponent && createElement(IconComponent)} <span>{label}</span>
       </button>
       {hasDivider && <hr />}
     </>

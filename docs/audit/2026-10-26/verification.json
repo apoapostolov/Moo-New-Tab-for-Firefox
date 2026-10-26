@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-26",
+  "scope": {
+    "files": 380,
+    "modules": 258,
+    "lines": 67401,
+    "unresolvedImports": []
+  },
+  "tests": {
+    "cases": 19,
+    "timezones": [
+      "Europe/Kyiv",
+      "America/Los_Angeles"
+    ],
+    "result": "passed"
+  },
+  "build": "passed",
+  "zip": "manifest references and versions verified",
+  "lint": {
+    "javascriptErrors": 18,
+    "javascriptWarnings": 14,
+    "styleFindings": 369
+  },
+  "bundle": {
+    "baseline": "first audit build, after initial repairs; not an untouched HEAD benchmark",
+    "before": {
+      "name": "index-B2o_5Mch.js",
+      "bytes": 1700841,
+      "gzip": 458295
+    },
+    "after": {
+      "name": "index-DkVO8Ez6.js",
+      "bytes": 1624179,
+      "gzip": 431840
+    },
+    "bytesRemoved": 76662,
+    "gzipBytesRemoved": 26455
+  },
+  "unreferenced": [
+    "src/components/Elements/MainModal/components/index.js",
+    "src/features/welcome/components/index.jsx",
+    "src/features/welcome/components/Layout/Layout.jsx"
+  ],
+  "preserved": [
+    "Discord UI and feature flag",
+    "Toast container and styles",
+    "Experimental UI",
+    "Marketplace and quote-related translations and styles",
+    "Welcome layout exports"
+  ]
+}

@@ -1,8 +1,10 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { Suspense, lazy } from 'react';
 
 const Analog = lazy(() => import('react-clock'));
 
 function AnalogClock({ time, onDoubleClick }) {
+  useTranslationVersion();
   const enabled = (setting) => {
     return localStorage.getItem(setting) === 'true';
   };

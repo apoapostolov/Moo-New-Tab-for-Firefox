@@ -1,6 +1,8 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 
 const Step = memo(({ isActive, index, onClick }) => {
+  useTranslationVersion();
   const className = isActive ? 'step active' : 'step';
 
   return (
@@ -13,6 +15,7 @@ const Step = memo(({ isActive, index, onClick }) => {
 Step.displayName = 'Step';
 
 function ProgressBar({ numberOfTabs, currentTab, switchTab }) {
+  useTranslationVersion();
   return (
     <div className="progressbar">
       {Array.from({ length: numberOfTabs }, (_, index) => (

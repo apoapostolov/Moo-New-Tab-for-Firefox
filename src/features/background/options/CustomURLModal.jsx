@@ -1,9 +1,11 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState, memo } from 'react';
 import { MdClose, MdOutlineAddLink } from 'react-icons/md';
 import { Tooltip, Button } from 'components/Elements';
 
 function CustomURLModal({ modalClose, urlError, modalCloseOnly }) {
+  useTranslationVersion();
   const [url, setURL] = useState();
 
   return (

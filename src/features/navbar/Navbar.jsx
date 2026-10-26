@@ -1,5 +1,5 @@
-import variables from 'config/variables';
-import { useState, useEffect, useRef } from 'react';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { useState, useEffect } from 'react';
 import { useT } from 'contexts';
 
 import { MdSettings } from 'react-icons/md';
@@ -12,31 +12,18 @@ import EventBus from 'utils/eventbus';
 import './scss/index.scss';
 
 const Navbar = ({ openModal }) => {
+  useTranslationVersion();
   const t = useT();
-  const navbarContainer = useRef();
   const [classList] = useState(
     localStorage.getItem('widgetStyle') === 'legacy' ? 'navbar old' : 'navbar new',
   );
-
-  const getRefreshText = () => {
-    switch (localStorage.getItem('refreshOption')) {
-      case 'background':
-        return t('modals.main.settings.sections.background.title');
-      default:
-        return t(
-          'modals.main.settings.sections.appearance.navbar.refresh_options.page',
-        );
-    }
-  };
 
   const getZoomFontSize = () => {
     return Number(((localStorage.getItem('zoomNavbar') || 100) / 100) * 1.2) + 'rem';
   };
 
-  const [refreshText, setRefreshText] = useState(getRefreshText());
   const [refreshEnabled, setRefreshEnabled] = useState(localStorage.getItem('refresh'));
   const [refreshOption, setRefreshOption] = useState(localStorage.getItem('refreshOption') || '');
-  const [appsOpen, setAppsOpen] = useState(false);
   const [zoomFontSize, setZoomFontSize] = useState(getZoomFontSize());
   const [navbarHover, setNavbarHover] = useState(localStorage.getItem('navbarHover') === 'true');
   const [viewEnabled, setViewEnabled] = useState(localStorage.getItem('view') === 'true');
@@ -54,34 +41,22 @@ const Navbar = ({ openModal }) => {
         setNotesEnabled(localStorage.getItem('notesEnabled') === 'true');
         setTodoEnabled(localStorage.getItem('todoEnabled') === 'true');
         setAppsEnabled(localStorage.getItem('appsEnabled') === 'true');
-        setRefreshText(getRefreshText());
         setZoomFontSize(getZoomFontSize());
       }
     };
 
     EventBus.on('refresh', handleRefresh);
     return () => {
-      EventBus.off('refresh');
+      EventBus.off('refresh', handleRefresh);
     };
   }, []);
-
-  const refresh = () => {
-    switch (refreshOption) {
-      case 'background':
-        return EventBus.emit('refresh', 'backgroundrefresh');
-      default:
-        window.location.reload();
-    }
-  };
 
   const backgroundEnabled = localStorage.getItem('background') === 'true';
 
   const navbar = (
     <div className="navbar-container">
       <div className={classList}>
-        {viewEnabled && backgroundEnabled ? (
-          <Maximise fontSize={zoomFontSize} />
-        ) : null}
+        {viewEnabled && backgroundEnabled ? <Maximise fontSize={zoomFontSize} /> : null}
         {notesEnabled && <Notes fontSize={zoomFontSize} />}
         {todoEnabled && <Todo fontSize={zoomFontSize} />}
         {appsEnabled && <Apps fontSize={zoomFontSize} />}
@@ -108,11 +83,7 @@ const Navbar = ({ openModal }) => {
     </div>
   );
 
-  return navbarHover ? (
-    <div className="navbar-hover">{navbar}</div>
-  ) : (
-    navbar
-  );
+  return navbarHover ? <div className="navbar-hover">{navbar}</div> : navbar;
 };
 
 export { Navbar as default, Navbar };

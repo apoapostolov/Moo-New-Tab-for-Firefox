@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-26",
+  "scopes": [
+    "R1",
+    "R3",
+    "R4",
+    "R5",
+    "R2",
+    "R6",
+    "R7",
+    "R8",
+    "R9",
+    "R10",
+    "R11"
+  ],
+  "checks": {
+    "regressions": {
+      "passed": 28,
+      "total": 28,
+      "timezones": [
+        "Europe/Kyiv",
+        "America/Los_Angeles"
+      ]
+    },
+    "lint": "passes: zero ESLint warnings and zero SCSS findings",
+    "build": "passes",
+    "firefoxArchive": "passes",
+    "frozenInstall": "passes",
+    "diffWhitespace": "passes"
+  },
+  "mainEntry": {
+    "path": "assets/index-CcsMBs4T.js",
+    "bytes": 668527,
+    "gzipBytes": 204561,
+    "earlierAuditEntryBytes": 1624179,
+    "earlierAuditGzipBytes": 431840,
+    "note": "Bundle measurement, not a startup-speed measurement."
+  },
+  "localization": {
+    "englishUiKeys": 209,
+    "missingUiKeys": [],
+    "languageSwitch": "UK → US → UK verified, dialog stays open"
+  },
+  "browserFixtures": {
+    "engine": "headless Chromium through Playwright CLI",
+    "viewports": [
+      [
+        1280,
+        720
+      ],
+      [
+        360,
+        800
+      ],
+      [
+        1280,
+        500
+      ],
+      [
+        960,
+        540
+      ]
+    ],
+    "zoomNote": "960 × 540 is a reflow equivalent; native browser zoom not tested",
+    "horizontalOverflow": false,
+    "connectButtonsCenteredAndSignature": 3,
+    "rssPreview": "verified after enabling RSS",
+    "twoPagesNativeWebLocks": "A-start,A-end,B"
+  },
+  "gifPreviews": [
+    {
+      "variant": "forest",
+      "path": "assets/previews/moo-forest.gif",
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 5.0,
+      "frames": 50,
+      "bytes": 52955429,
+      "sha256": "0697f7c819117ac90c82c4b09c9db95e1f54aff9bbface1845e0b158b4fc8355"
+    },
+    {
+      "variant": "clouds",
+      "path": "assets/previews/moo-clouds.gif",
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 5.0,
+      "frames": 50,
+      "bytes": 39191364,
+      "sha256": "e46d174d15e284355c92e702503c90c4bafd78a97b9edfb6f2e2206a509e67e1"
+    },
+    {
+      "variant": "meadow",
+      "path": "assets/previews/moo-meadow.gif",
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 5.0,
+      "frames": 50,
+      "bytes": 43056893,
+      "sha256": "f59d4509fb66b48a2179398b65fb8bb686156002ffd49530a5d6a9a2cc3a39cb"
+    }
+  ],
+  "remainingManualChecks": [
+    "Installed Firefox and Zen",
+    "Native 200% browser zoom",
+    "Screen reader",
+    "Real exhausted IndexedDB quota",
+    "Connected-account writes and real OAuth revocation",
+    "Live-stream reconnection",
+    "Sustained memory/CPU profiling"
+  ],
+  "publication": "Checks recorded before the subsequently authorized v1.0.0 commit and GitHub release; archive unsigned.",
+  "selectedPreview": {
+    "variant": "clouds",
+    "path": "assets/moo-newtab.gif",
+    "selection": "Apostol selected version 2 (middle)."
+  }
+}

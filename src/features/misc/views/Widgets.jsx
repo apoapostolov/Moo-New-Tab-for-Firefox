@@ -1,4 +1,5 @@
-import { useState, useEffect, Fragment, Suspense, lazy, useMemo } from 'react';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { useState, useEffect, Fragment, Suspense, lazy } from 'react';
 
 import Clock from '../../time/Clock';
 import QuickLinks from '../../quicklinks/QuickLinks';
@@ -15,6 +16,7 @@ import {
 } from 'utils/widgets';
 
 import EventBus from 'utils/eventbus';
+import useCompactLayout from 'utils/useCompactLayout';
 
 // Lazy loaded because the weather icon module is large enough to delay first paint.
 const Weather = lazy(() => import('../../weather/Weather'));
@@ -31,7 +33,9 @@ const Rss = lazy(() => import('../../rss/Rss'));
  */
 
 const Widgets = () => {
-  const online = localStorage.getItem('offlineMode') === 'false';
+  useTranslationVersion();
+  const compact = useCompactLayout();
+  const online = localStorage.getItem('offlineMode') !== 'true';
   const [layout, setLayout] = useState(() => ({
     order: readOrder(),
     placement: readPlacement(),
@@ -41,22 +45,19 @@ const Widgets = () => {
 
   const enabled = (id) => isWidgetEnabled(id);
 
-  const widgets = useMemo(
-    () => ({
-      time: enabled('time') && <Clock />,
-      date: enabled('date') && <Date />,
-      quicklinks: enabled('quicklinks') && online ? <QuickLinks /> : null,
-      aiask: enabled('aiask') ? <AIAsk /> : null,
-      weather: enabled('weather') && online ? <Weather /> : null,
-      quickweather: enabled('quickweather') && online ? <QuickWeather /> : null,
-      mail: enabled('mail') ? <GoogleMail /> : null,
-      calendar: enabled('calendar') ? <GoogleCalendar /> : null,
-      tasks: enabled('tasks') ? <GoogleTasks /> : null,
-      photoinfo: enabled('photoinfo') ? <PhotoInfoWidget /> : null,
-      rss: enabled('rss') ? <Rss /> : null,
-    }),
-    [layout], // Re-create widgets when the order or placement changes
-  );
+  const widgets = {
+    time: enabled('time') && <Clock />,
+    date: enabled('date') && <Date />,
+    quicklinks: enabled('quicklinks') && online ? <QuickLinks /> : null,
+    aiask: enabled('aiask') ? <AIAsk /> : null,
+    weather: enabled('weather') && online ? <Weather /> : null,
+    quickweather: enabled('quickweather') && online ? <QuickWeather /> : null,
+    mail: enabled('mail') ? <GoogleMail /> : null,
+    calendar: enabled('calendar') ? <GoogleCalendar /> : null,
+    tasks: enabled('tasks') ? <GoogleTasks /> : null,
+    photoinfo: enabled('photoinfo') ? <PhotoInfoWidget /> : null,
+    rss: enabled('rss') ? <Rss /> : null,
+  };
 
   useEffect(() => {
     const handleRefresh = (data) => {
@@ -136,9 +137,17 @@ const Widgets = () => {
     <WidgetsLayout />
   ) : (
     <Suspense fallback={<></>}>
-      <div className="widgetRail widgetRail-left">{draw(groups.left)}</div>
-      <WidgetsLayout split={split}>{middle}</WidgetsLayout>
-      <div className="widgetRail widgetRail-right">{draw(groups.right)}</div>
+      {compact ? (
+        <div className="compactWidgets">
+          <WidgetsLayout>{draw(layout.order)}</WidgetsLayout>
+        </div>
+      ) : (
+        <>
+          <div className="widgetRail widgetRail-left">{draw(groups.left)}</div>
+          <WidgetsLayout split={split}>{middle}</WidgetsLayout>
+          <div className="widgetRail widgetRail-right">{draw(groups.right)}</div>
+        </>
+      )}
     </Suspense>
   );
 };

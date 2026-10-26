@@ -655,10 +655,10 @@
               "title": "Əyilməni söndür",
               "subtitle": "Qeydlər və şəkillər düz durur, dartanda artıq əyilmir."
             },
-        "scratch_bare": {
-          "title": "Çərçivəsiz qeydlər",
-          "subtitle": "Qeydlər arxa fonda sadəcə mətn kimi dayanır və birinə klikləyəndə çərçivəsini geri alır."
-        },
+            "scratch_bare": {
+              "title": "Çərçivəsiz qeydlər",
+              "subtitle": "Qeydlər arxa fonda sadəcə mətn kimi dayanır və birinə klikləyəndə çərçivəsini geri alır."
+            },
             "cinema": {
               "title": "گؤرونتونو گیزلتمک اوچون اوچ دفعه کیلیکله",
               "subtitle": "اوچ کیلیک ویدیودان باشقا هر شئیی گیزلدر؛ بیر کیلیک یا Escape اونو قایطار."

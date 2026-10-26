@@ -8,10 +8,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
+
   /* 140% of one column of the middle rail, the width a single centre widget has.
      Not a viewport fraction: the pair of columns is what the widget is read against,
      and it caps at 760px however wide the window gets. */
   width: calc(var(--widget-column, 370px) * 1.4);
+  max-width: calc(100vw - 32px);
   padding: 0 2px 9px;
 
   /* The project's line: semi-transparent white, rounded at both ends. The thickness is
@@ -71,6 +73,10 @@
   background: none;
   border: 0;
   outline: none;
+
+  &:focus-visible {
+    outline: none;
+  }
 
   /* The hint is the widget's own colour held back, the way the scratch notes do
      it, rather than a second grey that would fight the theme. */
@@ -147,9 +153,11 @@
 }
 
 /* Two columns need room for two; below that the list is one column again. */
-@media (max-width: 560px) {
+@media (width <= 560px) {
   .aiAskMenu {
     grid-template-columns: 1fr;
+    min-width: 0;
+    width: min(320px, calc(100vw - 32px));
   }
 }
 

@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useEffect, useState } from 'react';
 import variables from 'config/variables';
 import { Dropdown, Text, ChipSelect } from 'components/Form/Settings';
@@ -18,6 +20,7 @@ const loadingItems = [
 ];
 
 const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) => {
+  useTranslationVersion();
   const loading = backgroundCategories[0] === variables.getMessage('modals.main.loading');
 
   // Mixkit answers no CORS header, so Firefox has to be given its origin before a new tab
@@ -102,7 +105,7 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
             subtitle={variables.getMessage(
               'modals.main.settings.sections.background.coverr.search_subtitle',
             )}
-            placeholder="e.g. ocean, forest, city"
+            placeholder={uiText('e_g_ocean_forest_city_24cef2')}
             name="coverrQuery"
             category="backgroundrefresh"
             onChange={clearPrefetch}
@@ -117,7 +120,10 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
 
     return (
       <Row final={true}>
-        <Content title={variables.getMessage(`${base}.title`)} subtitle={variables.getMessage(`${base}.subtitle`)} />
+        <Content
+          title={variables.getMessage(`${base}.title`)}
+          subtitle={variables.getMessage(`${base}.subtitle`)}
+        />
         <Action>
           {mixkit === 'missing' && (
             <button className="apiAllowButton" type="button" onClick={allowMixkit}>
@@ -127,7 +133,7 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
           <Text
             title={variables.getMessage(`${base}.search`)}
             subtitle={variables.getMessage(`${base}.search_subtitle`)}
-            placeholder="e.g. ink, water, clouds"
+            placeholder={uiText('e_g_ink_water_clouds_dd1835')}
             name="mixkitQuery"
             category="backgroundrefresh"
             onChange={clearPrefetch}
@@ -159,7 +165,7 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
           <Text
             title={variables.getMessage(`${base}.search`)}
             subtitle={variables.getMessage(`${base}.search_subtitle`)}
-            placeholder="e.g. ocean, forest, city"
+            placeholder={uiText('e_g_ocean_forest_city_24cef2')}
             name={`${source}Query`}
             category="backgroundrefresh"
             onChange={clearPrefetch}
@@ -197,7 +203,9 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
         <Row>
           <Content
             title={variables.getMessage('modals.main.settings.sections.background.live.title')}
-            subtitle={variables.getMessage('modals.main.settings.sections.background.live.subtitle')}
+            subtitle={variables.getMessage(
+              'modals.main.settings.sections.background.live.subtitle',
+            )}
           />
           <Action>
             <Dropdown
@@ -228,7 +236,7 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
         )}
       />
       <Action>
-        {topicsControl}
+        {backgroundAPI === 'mue' ? categoriesControl(backgroundCategories) : topicsControl}
         <Text
           title={variables.getMessage('modals.main.settings.sections.background.unsplash.id')}
           subtitle={variables.getMessage(

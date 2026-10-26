@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState, memo } from 'react';
 import { Checkbox, Slider } from 'components/Form/Settings';
@@ -10,6 +12,7 @@ import values from 'utils/data/slider_values.json';
 import { Row, Content, Action } from 'components/Layout/Settings/Item';
 
 function ExperimentalOptions() {
+  useTranslationVersion();
   const [eventType, setEventType] = useState();
   const [eventName, setEventName] = useState();
 
@@ -28,7 +31,7 @@ function ExperimentalOptions() {
         <Action>
           <Checkbox name="debug" text="Debug hotkey (Ctrl + #)" element=".other" />
           <Slider
-            title="Debug timeout"
+            title={uiText('debug_timeout_a8866c')}
             name="debugtimeout"
             min="0"
             max="5000"
@@ -37,9 +40,9 @@ function ExperimentalOptions() {
             marks={values.experimental}
             element=".other"
           />
-          <p style={{ textAlign: 'left', width: '100%' }}>Send Event</p>
+          <p style={{ textAlign: 'left', width: '100%' }}>{uiText('send_event_b3074e')}</p>
           <div className="text-field">
-            <label className="text-field-label">Type</label>
+            <label className="text-field-label">{uiText('type_3deb74')}</label>
             <input
               type="text"
               className="text-field-input"
@@ -49,7 +52,7 @@ function ExperimentalOptions() {
             />
           </div>
           <div className="text-field">
-            <label className="text-field-label">Name</label>
+            <label className="text-field-label">{uiText('name_709a23')}</label>
             <input
               type="text"
               className="text-field-input"
@@ -61,24 +64,28 @@ function ExperimentalOptions() {
           <Button
             type="settings"
             onClick={() => EventBus.emit(eventType, eventName)}
-            label="Send"
+            label={uiText('send_9bc257')}
           />
           <Button
             type="settings"
             onClick={() => toast('Toasted successfully')}
-            label="Normal Toast"
+            label={uiText('normal_toast_e23525')}
           />
           <Button
             type="settings"
             onClick={() => toast.success('Toasted successfully')}
-            label="Success Toast"
+            label={uiText('success_toast_da504e')}
           />
         </Action>
       </Row>
       <Row final={true}>
-        <Content title="Data" />
+        <Content title={uiText('data_e5e429')} />
         <Action>
-          <Button type="settings" onClick={() => localStorage.clear()} label="Clear LocalStorage" />
+          <Button
+            type="settings"
+            onClick={() => localStorage.clear()}
+            label={uiText('clear_localstorage_c451cf')}
+          />
         </Action>
       </Row>
     </>

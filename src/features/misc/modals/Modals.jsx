@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
@@ -12,28 +13,34 @@ import { parseDeepLink, shouldAutoOpenModal, updateHash } from 'utils/deepLinkin
 import Welcome from 'features/welcome/Welcome';
 
 const Modals = () => {
-  const [mainModal, setMainModal] = useState(false);
-  const [updateModal, setUpdateModal] = useState(false);
-  const [welcomeModal, setWelcomeModal] = useState(false);
-  const [appsModal, setAppsModal] = useState(false);
+  useTranslationVersion();
+  const [mainModal, setMainModal] = useState(
+    () => localStorage.getItem('showWelcome') !== 'true' && shouldAutoOpenModal(),
+  );
+  const [, setUpdateModal] = useState(false);
+  const [welcomeModal, setWelcomeModal] = useState(
+    () =>
+      localStorage.getItem('showWelcome') === 'true' && window.location.search !== '?nointro=true',
+  );
+  const [, setAppsModal] = useState(false);
   const [preview, setPreview] = useState(false);
-  const [deepLinkData, setDeepLinkData] = useState(null);
+  const [deepLinkData, setDeepLinkData] = useState(() =>
+    localStorage.getItem('showWelcome') !== 'true' && shouldAutoOpenModal()
+      ? parseDeepLink()
+      : null,
+  );
 
   useEffect(() => {
     // Preview mode blocks deep links and clears the hash.
     const isPreviewMode = localStorage.getItem('showWelcome') === 'true';
     if (isPreviewMode && shouldAutoOpenModal()) {
       window.history.replaceState(null, null, '/');
-      setWelcomeModal(true);
-      setPreview(false);
       return;
     }
 
     // A deep link takes priority over the welcome screen.
     if (shouldAutoOpenModal()) {
       const linkData = parseDeepLink();
-      setMainModal(true);
-      setDeepLinkData(linkData);
       variables.stats.postEvent('modal', `Opened via deep link: ${linkData.tab}`);
       return;
     }
@@ -42,7 +49,6 @@ const Modals = () => {
       localStorage.getItem('showWelcome') === 'true' &&
       window.location.search !== '?nointro=true'
     ) {
-      setWelcomeModal(true);
       variables.stats.postEvent('modal', 'Opened welcome');
     }
 
@@ -58,7 +64,9 @@ const Modals = () => {
     if (!shouldAutoOpenModal() && window.location.search !== '?nointro=true') {
       localStorage.setItem('showReminder', false);
     }
+  }, []);
 
+  useEffect(() => {
     const handleModalOpen = (data) => {
       if (data === 'openMainModal') {
         const linkData = parseDeepLink();
@@ -118,22 +126,28 @@ const Modals = () => {
       <Modal
         closeTimeoutMS={300}
         id="modal"
+        contentLabel="Moo settings"
         onRequestClose={() => toggleModal('mainModal', false)}
         isOpen={mainModal}
         className="Modal mainModal"
         overlayClassName="Overlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
       >
-        <MainModal modalClose={() => toggleModal('mainModal', false)} deepLinkData={deepLinkData} />
+        <MainModal
+          key={JSON.stringify(deepLinkData)}
+          modalClose={() => toggleModal('mainModal', false)}
+          deepLinkData={deepLinkData}
+        />
       </Modal>
       <Modal
         closeTimeoutMS={300}
+        contentLabel="Set up Moo"
         onRequestClose={() => closeWelcome()}
         isOpen={welcomeModal}
         className="Modal welcomemodal mainModal"
         overlayClassName="Overlay mainModal"
         shouldCloseOnOverlayClick={false}
-        ariaHideApp={false}
+        ariaHideApp={true}
       >
         <Welcome modalClose={() => closeWelcome()} modalSkip={() => previewWelcome()} />
       </Modal>

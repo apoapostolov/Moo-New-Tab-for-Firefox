@@ -1,7 +1,9 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState, useEffect, useRef } from 'react';
-import { useT } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import Tab from './Tab';
+import { updateHash } from 'utils/deepLinking';
 import ReminderInfo from '../components/ReminderInfo';
 import ErrorBoundary from '../../../../features/misc/modals/ErrorBoundary';
 import { TAB_TYPES } from '../constants/tabConfig';
@@ -16,92 +18,42 @@ const Tabs = ({
   navigationTrigger,
   sections,
 }) => {
-  const t = useT();
+  useTranslationVersion();
 
   // A deep link decides the initial section.
-  const getInitialSection = () => {
-    if (deepLinkData?.section && sections) {
-      const section = sections.find((s) => s.name === deepLinkData.section);
-      if (section) {
-        return {
-          label: t(section.label),
-          name: section.name,
-        };
-      }
-    }
-    return {
-      label: children[0]?.props.label,
-      name: children[0]?.props.name,
-    };
-  };
-
-  const initial = getInitialSection();
-  const [currentTab, setCurrentTab] = useState(initial.label);
-  const [currentName, setCurrentName] = useState(initial.name);
+  const initialName =
+    deepLinkData?.section && sections?.some((section) => section.name === deepLinkData.section)
+      ? deepLinkData.section
+      : children[0]?.props.name;
+  const [currentName, setCurrentName] = useState(initialName);
   const [showReminder, setShowReminder] = useState(localStorage.getItem('showReminder') === 'true');
+  const [previousTrigger, setPreviousTrigger] = useState(navigationTrigger);
+  const [previousReset, setPreviousReset] = useState(resetToFirst);
   const contentRef = useRef(null);
-
-  const handleTabClick = (tab, name) => {
-    if (name !== currentName) {
-      variables.stats.postEvent('tab', `Opened ${name}`);
-    }
-
-    setCurrentTab(tab);
+  if (navigationTrigger !== previousTrigger) {
+    setPreviousTrigger(navigationTrigger);
+    if (
+      navigationTrigger?.type === 'settings-section' &&
+      children.some((child) => child.props.name === navigationTrigger.data)
+    )
+      setCurrentName(navigationTrigger.data);
+  }
+  if (resetToFirst !== previousReset) {
+    setPreviousReset(resetToFirst);
+    if (resetToFirst) setCurrentName(children[0]?.props.name);
+  }
+  const currentTab =
+    children.find((child) => child.props.name === currentName)?.props.label ||
+    children[0]?.props.label;
+  const handleTabClick = (_label, name) => {
+    if (name !== currentName) variables.stats.postEvent('tab', `Opened ${name}`);
     setCurrentName(name);
-
-    if (contentRef.current) {
-      contentRef.current.scrollTop = 0;
-    }
-
-    if (onSectionChange) {
-      onSectionChange(tab, name);
-    }
+    updateHash(`#settings/${name}`);
   };
-
   useEffect(() => {
-    if (onSectionChange && currentTab) {
-      onSectionChange(currentTab, currentName);
-    }
-  }, []);
-
-  // Section labels follow the UI language.
-  useEffect(() => {
-    if (sections && currentName) {
-      const section = sections.find((s) => s.name === currentName);
-      if (section) {
-        const newLabel = t(section.label);
-        setCurrentTab(newLabel);
-      }
-    }
-  }, [t, sections, currentName]);
-
-  // Back and forward re-drive the section from the hash.
-  useEffect(() => {
-    if (navigationTrigger?.type === 'settings-section' && sections) {
-      const section = sections.find((s) => s.name === navigationTrigger.data);
-      if (section) {
-        const label = t(section.label);
-        setCurrentTab(label);
-        setCurrentName(section.name);
-        if (contentRef.current) {
-          contentRef.current.scrollTop = 0;
-        }
-      }
-    }
-  }, [navigationTrigger, sections, t]);
-
-  useEffect(() => {
-    if (resetToFirst) {
-      setCurrentTab(children[0]?.props.label);
-      setCurrentName(children[0]?.props.name);
-      if (contentRef.current) {
-        contentRef.current.scrollTop = 0;
-      }
-      if (onSectionChange) {
-        onSectionChange(children[0]?.props.label, children[0]?.props.name);
-      }
-    }
-  }, [resetToFirst]);
+    if (contentRef.current) contentRef.current.scrollTop = 0;
+    onSectionChange?.(currentTab, currentName);
+  }, [currentTab, currentName, onSectionChange]);
 
   const handleHideReminder = () => {
     localStorage.setItem('showReminder', 'false');
@@ -111,7 +63,28 @@ const Tabs = ({
   const showSidebar = activeTab === TAB_TYPES.SETTINGS;
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}>
+    <div
+      className="settingsTabs"
+      style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden' }}
+    >
+      {showSidebar && (
+        <label className="compactSectionNav">
+          {uiText('section_f2c6b5')}
+          <select
+            value={currentName}
+            onChange={(event) => {
+              const tab = children.find((child) => child.props.name === event.target.value);
+              handleTabClick(tab.props.label, tab.props.name);
+            }}
+          >
+            {children.map((tab) => (
+              <option key={tab.props.name} value={tab.props.name}>
+                {tab.props.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       {showSidebar ? (
         <div className="modalSidebar">
           {children.map((tab, index) => (
@@ -128,7 +101,7 @@ const Tabs = ({
       ) : null}
       <div className="modalTabContent" ref={contentRef}>
         {children.map((tab, index) => {
-          if (tab.props.label !== currentTab) {
+          if (tab.props.name !== currentName) {
             return null;
           }
 

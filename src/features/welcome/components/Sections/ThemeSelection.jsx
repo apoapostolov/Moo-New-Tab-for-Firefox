@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState } from 'react';
 import { MdAutoAwesome, MdLightMode, MdDarkMode } from 'react-icons/md';
@@ -11,6 +12,7 @@ const THEMES = {
 };
 
 function ThemeSelection() {
+  useTranslationVersion();
   const currentTheme = localStorage.getItem('theme') || THEMES.AUTO;
   const [theme, setTheme] = useState(currentTheme);
 

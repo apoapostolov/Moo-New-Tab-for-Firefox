@@ -1,9 +1,11 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo } from 'react';
 import variables from 'config/variables';
 import { MdClose, MdRestartAlt } from 'react-icons/md';
 import { Tooltip, Button } from 'components/Elements';
 
 function ClearModal({ modalClose, resetStats }) {
+  useTranslationVersion();
   return (
     <div className="smallModal">
       <div className="shareHeader">

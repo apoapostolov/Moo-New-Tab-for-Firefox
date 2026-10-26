@@ -1,3 +1,4 @@
+import { uiText } from 'lib/translations';
 import variables from 'config/variables';
 import { SHOW_DISCORD_LINK } from 'config/constants';
 import { PureComponent } from 'react';
@@ -75,7 +76,7 @@ class About extends PureComponent {
               alt="Logo"
             />
             <div className="aboutText">
-              <span className="title">Moo</span>
+              <span className="title">{uiText('moo_1946c3')}</span>
               <span className="subtitle">
                 {variables.getMessage('modals.main.settings.sections.about.version.title')}{' '}
                 {this.state.version}
@@ -84,7 +85,7 @@ class About extends PureComponent {
             </div>
             <div>
               <span className="subtitle">
-                Copyright 2018-
+                {uiText('copyright_2018_05bc08')}
                 {new Date().getFullYear()}{' '}
                 <a
                   className="link"
@@ -92,11 +93,13 @@ class About extends PureComponent {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Apostol Apostolov
+                  {uiText('apostol_apostolov_32040d')}
                 </a>
               </span>
             </div>
-            <span className="subtitle">Licensed under the BSD-3-Clause License</span>
+            <span className="subtitle">
+              {uiText('licensed_under_the_bsd_3_clause_license_0947fe')}
+            </span>
           </div>
         </div>
 

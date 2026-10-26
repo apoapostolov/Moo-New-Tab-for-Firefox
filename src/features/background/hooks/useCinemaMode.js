@@ -4,25 +4,13 @@ import EventBus from 'utils/eventbus';
 const HIDDEN_CLASS = 'uiHidden';
 const SETTING = 'cinemaMode';
 
-/* The gesture's own tolerances, not the browser's. A click run is counted per element and
- * expires on the double-click interval: on a page built out of stacked cards, notes and
- * text, two of the three presses land on different elements and the run never reaches
- * three, which is why the gesture felt unreliable rather than rare. */
+// Count taps across nearby elements, independently of native click counts.
 const TAPS = 3;
 const TAP_WINDOW = 700; // ms between presses — slower than the system's double-click gap
 const TAP_SLOP = 36; // px a hand may wander between presses and still mean the same run
 const RESTORE_DELAY = 300; // ms the page ignores presses for, so the reaching press cannot undo itself
 
-/**
- * A triple press is the one gesture the page has no other use for, so it is what hands the
- * page to the video. Only a video background registers it: with a still picture there is
- * nothing to watch on its own, and a hidden page would just look broken.
- *
- * With the UI hidden there is nothing left to click, so a single press brings it back.
- *
- * The switch defaults to on, so a profile that has never touched it has the gesture;
- * only an explicit false takes it away.
- */
+/** Triple press hides the UI over video; one press or Escape restores it. Enabled by default. */
 export const readCinemaMode = () => localStorage.getItem(SETTING) !== 'false';
 
 const onAControl = (target) =>

@@ -1,14 +1,19 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
-import { memo, useState, useCallback } from 'react';
+import { memo, useState, useCallback, useContext } from 'react';
+import { RowLabelContext } from 'components/Layout/Settings/Item/SettingsItem';
 
 import EventBus from 'utils/eventbus';
 
 import './Switch.scss';
 
 const Switch = memo((props) => {
+  useTranslationVersion();
+  const rowLabel = useContext(RowLabelContext);
   const [checked, setChecked] = useState(localStorage.getItem(props.name) === 'true');
 
   const handleChange = useCallback(() => {
+    if (props.disabled) return;
     const value = !checked;
     localStorage.setItem(props.name, value);
     setChecked(value);
@@ -17,10 +22,7 @@ const Switch = memo((props) => {
       props.onChange(value);
     }
 
-    variables.stats.postEvent(
-      'setting',
-      `${props.name} ${checked ? 'enabled' : 'disabled'}`,
-    );
+    variables.stats.postEvent('setting', `${props.name} ${value ? 'enabled' : 'disabled'}`);
 
     if (props.element) {
       if (!document.querySelector(props.element)) {
@@ -33,20 +35,23 @@ const Switch = memo((props) => {
   }, [checked, props]);
 
   return (
-    <div className="switch-wrapper">
+    <label className={`switch-wrapper${props.disabled ? ' disabled' : ''}`}>
       {!props.header && <span className="switch-label">{props.text}</span>}
-      <div className={`switch-track ${checked ? 'checked' : ''}`} onClick={handleChange}>
-        <div className="switch-thumb" />
-      </div>
       <input
         type="checkbox"
         name={props.name}
         checked={checked}
         onChange={handleChange}
         className="switch-input"
-        aria-hidden="true"
+        aria-label={props.text || props.label || props.name}
+        aria-labelledby={rowLabel || undefined}
+        disabled={props.disabled || false}
+        role="switch"
       />
-    </div>
+      <span className={`switch-track ${checked ? 'checked' : ''}`} aria-hidden="true">
+        <span className="switch-thumb" />
+      </span>
+    </label>
   );
 });
 

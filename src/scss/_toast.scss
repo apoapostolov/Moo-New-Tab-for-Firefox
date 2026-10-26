@@ -8,14 +8,15 @@
 
 // Glass surface.
 .Toastify__toast {
-  @include themed() {
+  @include themed {
     background: t($background) !important;
     color: t($color) !important;
-    box-shadow: t($boxShadow), 0 8px 32px rgb(0 0 0 / 20%) !important;
+    box-shadow:
+      t($boxShadow),
+      0 8px 32px rgb(0 0 0 / 20%) !important;
   }
 
   border-radius: $borderRadius !important;
-  -webkit-backdrop-filter: blur(15px) saturate(180%) !important;
   backdrop-filter: blur(15px) saturate(180%) !important;
   padding: 16px 20px !important;
   min-height: 64px !important;
@@ -28,7 +29,9 @@
 
   &:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 0 0 1px #484848, 0 12px 40px rgb(0 0 0 / 30%) !important;
+    box-shadow:
+      0 0 0 1px #484848,
+      0 12px 40px rgb(0 0 0 / 30%) !important;
   }
 }
 
@@ -38,13 +41,13 @@
   line-height: 1.5 !important;
   margin: 0 !important;
 
-  @include themed() {
+  @include themed {
     color: t($color) !important;
   }
 }
 
 .Toastify__close-button {
-  @include themed() {
+  @include themed {
     color: t($color) !important;
     opacity: 0.6 !important;
   }
@@ -63,8 +66,12 @@
 
   &--default,
   &--info {
-    @include themed() {
-      background: linear-gradient(90deg, var(--signature) 0%, var(--signature-light) 100%) !important;
+    @include themed {
+      background: linear-gradient(
+        90deg,
+        var(--signature) 0%,
+        var(--signature-light) 100%
+      ) !important;
     }
   }
 
@@ -87,7 +94,7 @@
 .Toastify__toast--success,
 .Toastify__toast--warning,
 .Toastify__toast--error {
-  @include themed() {
+  @include themed {
     background: t($background) !important;
     color: t($color) !important;
   }

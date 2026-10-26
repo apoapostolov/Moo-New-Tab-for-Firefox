@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo, useState, useEffect } from 'react';
 import { useT } from 'contexts';
@@ -33,12 +35,18 @@ import { CSS } from '@dnd-kit/utilities';
 import EventBus from 'utils/eventbus';
 
 const DragHandle = (props) => (
-  <div className="todo-drag-handle" {...props}>
+  <button
+    type="button"
+    aria-label={uiText('move_task_3481b3')}
+    className="todo-drag-handle"
+    {...props}
+  >
     <MdOutlineDragIndicator />
-  </div>
+  </button>
 );
 
 const SortableItem = ({ id, children }) => {
+  useTranslationVersion();
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const style = { transform: CSS.Transform.toString(transform), transition };
@@ -51,6 +59,7 @@ const SortableItem = ({ id, children }) => {
 };
 
 const SortableList = ({ items, onDragEnd, children }) => {
+  useTranslationVersion();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -66,10 +75,13 @@ const SortableList = ({ items, onDragEnd, children }) => {
 };
 
 function Todo({ todoRef, floatRef, position, xPosition, yPosition }) {
+  useTranslationVersion();
   const t = useT();
   const [todo, setTodo] = useState(JSON.parse(localStorage.getItem('todo')) || []);
   const [showTodo, setShowTodo] = useState(localStorage.getItem('todoPinned') === 'true');
-  const [zoomFontSize, setZoomFontSize] = useState('1.2rem');
+  const [zoomFontSize, setZoomFontSize] = useState(
+    () => `${(1.2 * Number(localStorage.getItem('zoomNavbar') || 100)) / 100}rem`,
+  );
 
   useEffect(() => {
     const handleRefresh = (data) => {
@@ -77,8 +89,6 @@ function Todo({ todoRef, floatRef, position, xPosition, yPosition }) {
         setZoomFontSize(Number(((localStorage.getItem('zoomNavbar') || 100) / 100) * 1.2) + 'rem');
       }
     };
-
-    setZoomFontSize(Number(((localStorage.getItem('zoomNavbar') || 100) / 100) * 1.2) + 'rem');
 
     EventBus.on('refresh', handleRefresh);
     return () => {
@@ -144,12 +154,19 @@ function Todo({ todoRef, floatRef, position, xPosition, yPosition }) {
   };
 
   return (
-    <div className="notes" onMouseLeave={handleHideTodo} onFocus={handleShowTodo}>
+    <div
+      className="notes"
+      onMouseLeave={handleHideTodo}
+      onFocus={handleShowTodo}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) handleHideTodo();
+      }}
+    >
       <button
         className="navbarButton"
         onMouseEnter={handleShowTodo}
-        onFocus={handleHideTodo}
-        onBlur={handleShowTodo}
+        onFocus={handleShowTodo}
+        aria-label={t('widgets.navbar.todo.title')}
         ref={todoRef}
         style={{ fontSize: zoomFontSize }}
       >
@@ -187,29 +204,27 @@ function Todo({ todoRef, floatRef, position, xPosition, yPosition }) {
                 <div className="todosEmpty">
                   <div className="emptyNewMessage">
                     <MdPlaylistRemove />
-                    <span className="title">
-                      {t('widgets.navbar.todo.no_todos')}
-                    </span>
+                    <span className="title">{t('widgets.navbar.todo.no_todos')}</span>
                     <span className="subtitle">
                       {t('modals.main.settings.sections.message.add_some')}
                     </span>
                   </div>
                 </div>
               ) : (
-                <SortableList
-                  items={todo.map((_, index) => index)}
-                  onDragEnd={handleDragEnd}
-                >
+                <SortableList items={todo.map((_, index) => index)} onDragEnd={handleDragEnd}>
                   {todo.map((todoItem, index) => (
                     <SortableItem key={index} id={index}>
                       {({ attributes, listeners }) => (
                         <div className={'todoRow' + (todoItem.done ? ' done' : '')}>
-                          <div
+                          <button
+                            type="button"
+                            aria-label={uiText('complete_task_af20ec')}
+                            aria-pressed={todoItem.done}
                             className={'todo-checkbox' + (todoItem.done ? ' checked' : '')}
                             onClick={() => updateTodo('done', index)}
                           >
                             {todoItem.done && <MdCheck />}
-                          </div>
+                          </button>
                           <Textarea
                             placeholder={t('widgets.navbar.notes.placeholder')}
                             value={todoItem.value}
@@ -217,12 +232,14 @@ function Todo({ todoRef, floatRef, position, xPosition, yPosition }) {
                             readOnly={todoItem.done}
                             minRows={1}
                           />
-                          <Tooltip
-                            title={t(
-                              'modals.main.marketplace.product.buttons.remove',
-                            )}
-                          >
-                            <MdDelete onClick={() => updateTodo('remove', index)} />
+                          <Tooltip title={t('modals.main.marketplace.product.buttons.remove')}>
+                            <button
+                              type="button"
+                              aria-label={uiText('remove_task_5be1bc')}
+                              onClick={() => updateTodo('remove', index)}
+                            >
+                              <MdDelete />
+                            </button>
                           </Tooltip>
                           <DragHandle {...attributes} {...listeners} />
                         </div>
@@ -240,6 +257,7 @@ function Todo({ todoRef, floatRef, position, xPosition, yPosition }) {
 }
 
 function TodoWrapper() {
+  useTranslationVersion();
   const [reference, setReference] = useState(null);
 
   const { x, y, refs, strategy } = useFloating({

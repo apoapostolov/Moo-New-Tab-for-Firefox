@@ -68,13 +68,10 @@ export const WIDGETS = [
     zone: 'left',
   },
   {
-    // Merged headlines from every feed configured under Settings, RSS. On by
-    // default so it can say where feeds are added, rather than never appearing.
     id: 'rss',
     label: () => 'RSS',
     setting: 'rssEnabled',
-    zone: 'right',
-    onByDefault: true,
+    zone: 'center',
   },
 ];
 
@@ -82,7 +79,19 @@ export const ZONES = ['left', 'center', 'right'];
 
 export const WIDGET_IDS = WIDGETS.map((widget) => widget.id);
 
-export const DEFAULT_ORDER = ['time', 'weather', 'date', 'quickweather', 'quicklinks', 'aiask', 'rss'];
+export const DEFAULT_ORDER = [
+  'time',
+  'weather',
+  'date',
+  'quickweather',
+  'quicklinks',
+  'aiask',
+  'rss',
+  'mail',
+  'calendar',
+  'tasks',
+  'photoinfo',
+];
 
 export const widgetById = (id) => WIDGETS.find((widget) => widget.id === id);
 

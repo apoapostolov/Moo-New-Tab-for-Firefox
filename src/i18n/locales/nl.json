@@ -655,10 +655,10 @@
               "title": "Kantelen uitschakelen",
               "subtitle": "Notities en afbeeldingen staan recht, en als je er een sleept krijgt hij geen scheefstand meer."
             },
-        "scratch_bare": {
-          "title": "Kaderloze notities",
-          "subtitle": "Notities staan als kale tekst op de achtergrond en krijgen hun kader terug zodra je er een aanklikt."
-        },
+            "scratch_bare": {
+              "title": "Kaderloze notities",
+              "subtitle": "Notities staan als kale tekst op de achtergrond en krijgen hun kader terug zodra je er een aanklikt."
+            },
             "cinema": {
               "title": "Drie keer klikken om de interface te verbergen",
               "subtitle": "Drie klikken verbergen alles behalve de video; één klik of Escape brengt hem terug."

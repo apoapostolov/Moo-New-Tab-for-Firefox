@@ -1,3 +1,5 @@
+import EventBus from 'utils/eventbus';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo, useEffect, useMemo, useRef } from 'react';
 
 /* How long a clip gets to paint a frame, and how long a silence inside it counts as dead.
@@ -8,7 +10,9 @@ const STALL_MS = 6000;
 
 /** Firefox has no native HLS, so hls.js is imported only when a live background is used. */
 function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight, onFail }) {
+  useTranslationVersion();
   const videoRef = useRef(null);
+  const playerRef = useRef(null);
   const sourceRef = useRef(null);
   const storedMute = useMemo(() => localStorage.getItem('backgroundVideoMute') === 'true', []);
   const storedLoop = useMemo(() => localStorage.getItem('backgroundVideoLoop') === 'true', []);
@@ -46,7 +50,9 @@ function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight, 
         renderTextTracksNatively: false,
       });
 
+      playerRef.current = player;
       player.loadSource(url);
+      if (document.hidden || localStorage.getItem('offlineMode') === 'true') player.stopLoad();
       player.attachMedia(video);
 
       // Chosen explicitly: the player measures the element before layout, so
@@ -86,17 +92,11 @@ function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight, 
     return () => {
       cancelled = true;
       if (player) player.destroy();
+      playerRef.current = null;
     };
-  }, [url, hls]);
+  }, [url, hls, maxHeight]);
 
-  /*
-   * A clip that will not play is a black page, and nothing else notices: the element is there,
-   * silent, at zero frames. It is reported once, by the media error if the file is missing or
-   * undecodable, or by a watch that finds nothing painted after the file should have arrived.
-   *
-   * Live streams are left alone. hls.js retries a dropped connection by itself, and a stream
-   * that is buffering is not a stream that died.
-   */
+  // Report failed clips once. Live streams use the HLS retry policy instead.
   useEffect(() => {
     const video = videoRef.current;
     const source = sourceRef.current;
@@ -147,12 +147,24 @@ function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight, 
       const video = videoRef.current;
       if (!video) return;
 
-      if (document.hidden) video.pause();
-      else video.play().catch(() => {});
+      if (document.hidden || localStorage.getItem('offlineMode') === 'true') {
+        playerRef.current?.stopLoad();
+        video.pause();
+      } else {
+        playerRef.current?.startLoad(-1);
+        video.play().catch(() => {});
+      }
     };
 
+    onVisibility();
     document.addEventListener('visibilitychange', onVisibility);
-    return () => document.removeEventListener('visibilitychange', onVisibility);
+    EventBus.on('refresh', onVisibility);
+    window.addEventListener('storage', onVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      EventBus.off('refresh', onVisibility);
+      window.removeEventListener('storage', onVisibility);
+    };
   }, [live]);
 
   // An MP4 can carry a subtitle track and `<video>` will show it, so every

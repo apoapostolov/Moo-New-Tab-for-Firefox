@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo, useState, useEffect, useCallback, useRef } from 'react';
 import { MdSource, MdOutlineAutoAwesome } from 'react-icons/md';
@@ -22,6 +23,7 @@ import {
 } from './optionTypes';
 
 const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, sectionName }) => {
+  useTranslationVersion();
   const [backgroundType, setBackgroundType] = useState(() => {
     const stored = localStorage.getItem('backgroundType') || 'api_unsplash';
     const normalized = normalizeBackgroundType(stored);
@@ -32,7 +34,11 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
     localStorage.getItem('backgroundFilter') || 'none',
   );
   const [backgroundCategories, setBackgroundCategories] = useState([
-    variables.getMessage('modals.main.loading'),
+    variables.getMessage(
+      navigator.onLine === false || localStorage.getItem('offlineMode') === 'true'
+        ? 'modals.update.offline.title'
+        : 'modals.main.loading',
+    ),
   ]);
   const [unsplashTopics, setUnsplashTopics] = useState(null);
   const [marketplaceEnabled] = useState(localStorage.getItem('photo_packs'));
@@ -40,7 +46,9 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
   const backgroundAPI = getApiForBackgroundType(backgroundType);
 
   // Colour types have no effects or display settings, so the source section opens.
-  const shouldShowSourceByDefault = ['colour', 'random_colour', 'random_gradient'].includes(backgroundType);
+  const shouldShowSourceByDefault = ['colour', 'random_colour', 'random_gradient'].includes(
+    backgroundType,
+  );
 
   const controllerRef = useRef(null);
 
@@ -106,11 +114,12 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
     controllerRef.current = new AbortController();
 
     if (navigator.onLine === false || localStorage.getItem('offlineMode') === 'true') {
-      setBackgroundCategories([variables.getMessage('modals.update.offline.title')]);
       return;
     }
 
-    getBackgroundCategories();
+    getBackgroundCategories().catch((error) => {
+      if (error.name !== 'AbortError') setBackgroundCategories([]);
+    });
     getUnsplashTopics();
 
     return () => {
@@ -168,7 +177,8 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
     backgroundType !== 'random_colour' &&
     backgroundType !== 'random_gradient';
 
-  const showEffects = isApiBackgroundType(backgroundType) || backgroundType === 'custom' || marketplaceEnabled;
+  const showEffects =
+    isApiBackgroundType(backgroundType) || backgroundType === 'custom' || marketplaceEnabled;
 
   const getHeader = () => {
     if (currentSubSection === 'effects') {
@@ -232,9 +242,7 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
           {showEffects && (
             <NavigationCard
               icon={MdOutlineAutoAwesome}
-              title={variables.getMessage(
-                'modals.main.settings.sections.background.effects.title',
-              )}
+              title={variables.getMessage('modals.main.settings.sections.background.effects.title')}
               subtitle={variables.getMessage(
                 'modals.main.settings.sections.background.effects.subtitle',
               )}
@@ -244,9 +252,7 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
         </>
       )}
 
-      {!currentSubSection && showEffects && (
-        <DisplaySettings usingImage={usingImage} />
-      )}
+      {!currentSubSection && showEffects && <DisplaySettings usingImage={usingImage} />}
 
       {currentSubSection === 'source' && (
         <>

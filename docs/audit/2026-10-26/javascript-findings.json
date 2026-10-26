@@ -1,0 +1,226 @@
+[
+  {
+    "file": "src/components/Elements/MainModal/Main.jsx",
+    "line": 28,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/components/Elements/MainModal/Main.jsx",
+    "line": 35,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/components/Elements/MainModal/Main.jsx",
+    "line": 49,
+    "severity": 1,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has a missing dependency: 'currentTab'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "src/components/Elements/MainModal/backend/Tabs.jsx",
+    "line": 65,
+    "severity": 1,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has missing dependencies: 'currentName', 'currentTab', and 'onSectionChange'. Either include them or remove the dependency array. If 'onSectionChange' changes too often, find the parent component that defines it and wrap that definition in useCallback."
+  },
+  {
+    "file": "src/components/Elements/MainModal/backend/Tabs.jsx",
+    "line": 73,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/components/Elements/MainModal/backend/Tabs.jsx",
+    "line": 84,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/components/Elements/MainModal/backend/Tabs.jsx",
+    "line": 95,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/components/Elements/MainModal/backend/Tabs.jsx",
+    "line": 104,
+    "severity": 1,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has missing dependencies: 'children' and 'onSectionChange'. Either include them or remove the dependency array. If 'onSectionChange' changes too often, find the parent component that defines it and wrap that definition in useCallback."
+  },
+  {
+    "file": "src/components/Elements/Tooltip/Tooltip.jsx",
+    "line": 87,
+    "severity": 2,
+    "rule": "react-hooks/refs",
+    "message": "Error: Cannot access refs during render"
+  },
+  {
+    "file": "src/components/Layout/Settings/Header/Header.jsx",
+    "line": 15,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/background/options/BackgroundOptions.jsx",
+    "line": 111,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/background/options/Custom.jsx",
+    "line": 165,
+    "severity": 1,
+    "rule": "no-console",
+    "message": "Unexpected console statement. Only these console methods are allowed: warn, error."
+  },
+  {
+    "file": "src/features/background/options/Custom.jsx",
+    "line": 226,
+    "severity": 1,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "The 'handleBatchUpload' function makes the dependencies of useEffect Hook (at line 484) change on every render. To fix this, wrap the definition of 'handleBatchUpload' in its own useCallback() Hook."
+  },
+  {
+    "file": "src/features/background/options/sections/APISettings.jsx",
+    "line": 45,
+    "severity": 1,
+    "rule": "no-unused-vars",
+    "message": "'categoriesControl' is assigned a value but never used."
+  },
+  {
+    "file": "src/features/google/GoogleTasks.jsx",
+    "line": 128,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/google/natural.js",
+    "line": 367,
+    "severity": 1,
+    "rule": "prefer-const",
+    "message": "'end' is never reassigned. Use 'const' instead."
+  },
+  {
+    "file": "src/features/google/useNaturalTitle.js",
+    "line": 19,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/misc/modals/Modals.jsx",
+    "line": 16,
+    "severity": 1,
+    "rule": "no-unused-vars",
+    "message": "'updateModal' is assigned a value but never used."
+  },
+  {
+    "file": "src/features/misc/modals/Modals.jsx",
+    "line": 18,
+    "severity": 1,
+    "rule": "no-unused-vars",
+    "message": "'appsModal' is assigned a value but never used."
+  },
+  {
+    "file": "src/features/misc/modals/Modals.jsx",
+    "line": 27,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/misc/views/Widgets.jsx",
+    "line": 58,
+    "severity": 1,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has an unnecessary dependency: 'layout'. Either exclude it or remove the dependency array."
+  },
+  {
+    "file": "src/features/navbar/components/Apps.jsx",
+    "line": 28,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/navbar/components/Notes.jsx",
+    "line": 27,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/navbar/components/Todo.jsx",
+    "line": 81,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/rss/Rss.jsx",
+    "line": 152,
+    "severity": 1,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useMemo has an unnecessary dependency: 'stored'. Either exclude it or remove the dependency array."
+  },
+  {
+    "file": "src/features/time/Clock.jsx",
+    "line": 210,
+    "severity": 1,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has a missing dependency: 'startTime'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "src/features/time/Date.jsx",
+    "line": 134,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/time/Date.jsx",
+    "line": 143,
+    "severity": 1,
+    "rule": "react-hooks/exhaustive-deps",
+    "message": "React Hook useEffect has a missing dependency: 'getDate'. Either include it or remove the dependency array."
+  },
+  {
+    "file": "src/features/weather/QuickWeather.jsx",
+    "line": 67,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/weather/Weather.jsx",
+    "line": 77,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/features/welcome/Welcome.jsx",
+    "line": 31,
+    "severity": 2,
+    "rule": "react-hooks/set-state-in-effect",
+    "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+  },
+  {
+    "file": "src/utils/settings/load.js",
+    "line": 104,
+    "severity": 1,
+    "rule": "no-console",
+    "message": "Unexpected console statement. Only these console methods are allowed: warn, error."
+  }
+]

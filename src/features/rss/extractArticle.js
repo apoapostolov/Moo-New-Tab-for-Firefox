@@ -50,7 +50,10 @@ const BLOCKS = new Set(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'blockquo
 const MAX_BLOCKS = 260;
 const MAX_CHARS = 16000;
 
-const clean = (value) => String(value || '').replace(/\s+/g, ' ').trim();
+const clean = (value) =>
+  String(value || '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
 const blockTag = (tag) => {
   if (tag === 'blockquote') return 'quote';
@@ -132,11 +135,13 @@ export function extractArticle(html, url) {
 }
 
 /** Fetches the page and reads it. Credentials are left out: this is not a signed-in visit. */
-export async function fetchArticle(url) {
+export async function fetchArticle(url, { signal } = {}) {
+  if (localStorage.getItem('offlineMode') === 'true') throw new Error('Moo is in offline mode.');
   const response = await fetch(url, {
     headers: { Accept: 'text/html,application/xhtml+xml' },
     credentials: 'omit',
     redirect: 'follow',
+    signal,
   });
 
   if (!response.ok) throw new Error(`HTTP ${response.status}`);

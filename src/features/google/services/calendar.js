@@ -1,13 +1,31 @@
-import { googleFetch } from '../api';
+import { googleFetch, googlePages } from '../api';
+import { calendarDate } from 'utils/date';
 
 const EVENTS = (calendarId) => `/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`;
 const CALENDAR_LIST = '/calendar/v3/users/me/calendarList';
 
+export const eventBounds = ({ start, end, allDay }) => {
+  if (!allDay) return { start: { dateTime: start }, end: { dateTime: end } };
+  const exclusiveEnd = calendarDate(end.slice(0, 10));
+  exclusiveEnd.setDate(exclusiveEnd.getDate() + 1);
+  const pad = (value) => String(value).padStart(2, '0');
+  return {
+    start: { date: start.slice(0, 10) },
+    end: {
+      date: `${exclusiveEnd.getFullYear()}-${pad(exclusiveEnd.getMonth() + 1)}-${pad(exclusiveEnd.getDate())}`,
+    },
+  };
+};
+
+export const eventKey = (event) => `${event.calendarId}:${event.id}`;
+export const canEditCalendar = (calendar) => ['owner', 'writer'].includes(calendar?.accessRole);
 const toEvent = (event, calendar = {}) => ({
   id: event.id,
   calendarId: calendar.id ?? 'primary',
   calendarName: calendar.summary ?? '',
   calendarColor: calendar.color ?? '',
+  accessRole: calendar.accessRole ?? 'reader',
+  canEdit: canEditCalendar(calendar),
   title: event.summary || '(no title)',
   description: event.description ?? '',
   location: event.location ?? '',
@@ -24,10 +42,12 @@ const toEvent = (event, calendar = {}) => ({
 });
 
 /** Every calendar the account can read, for the picker in the settings screen. */
-export const listCalendars = async () => {
-  const data = await googleFetch(`${CALENDAR_LIST}?minAccessRole=reader&maxResults=250`);
+export const listCalendars = async (signal) => {
+  const items = await googlePages(`${CALENDAR_LIST}?minAccessRole=reader&maxResults=250`, {
+    signal,
+  });
 
-  return (data?.items ?? []).map((calendar) => ({
+  return items.map((calendar) => ({
     id: calendar.id,
     summary: calendar.summaryOverride || calendar.summary || calendar.id,
     color: calendar.backgroundColor ?? '',
@@ -41,11 +61,14 @@ export const listCalendars = async () => {
  * results merge in start order.
  */
 export const listEvents = async ({
+  signal,
   timeMin,
   timeMax,
   maxResults = 12,
   calendarIds = [],
   calendars = [],
+  hideAllDay = false,
+  includeDeclined = false,
 }) => {
   const ids = calendarIds.length ? calendarIds : ['primary'];
   const known = new Map(calendars.map((calendar) => [calendar.id, calendar]));
@@ -55,17 +78,28 @@ export const listEvents = async ({
       const params = new URLSearchParams({
         singleEvents: 'true',
         orderBy: 'startTime',
+        signal,
         timeMin,
         timeMax,
         maxResults: String(maxResults),
       });
 
       try {
-        const data = await googleFetch(`${EVENTS(id)}?${params}`);
+        const items = await googlePages(`${EVENTS(id)}?${params}`, { signal });
 
-        return (data?.items ?? []).map((event) =>
-          toEvent(event, known.get(id) ?? { id, summary: '', color: '' }),
-        );
+        return items
+          .filter((event) => event.status !== 'cancelled')
+          .map((event) =>
+            toEvent(
+              event,
+              known.get(id) ??
+                (id === 'primary' ? calendars.find((calendar) => calendar.primary) : null) ?? {
+                  id,
+                  summary: '',
+                  color: '',
+                },
+            ),
+          );
       } catch (error) {
         // One unreadable calendar must not empty the agenda, but the reason still surfaces
         // when every calendar fails.
@@ -79,7 +113,10 @@ export const listEvents = async ({
 
   if (!events.length && failed.length) throw failed[0][0].error;
 
-  return events.sort((a, b) => new Date(a.start) - new Date(b.start)).slice(0, maxResults);
+  return events
+    .filter((event) => (!hideAllDay || !event.allDay) && (includeDeclined || !event.declined))
+    .sort((a, b) => calendarDate(a.start) - calendarDate(b.start))
+    .slice(0, maxResults);
 };
 
 export const createEvent = async ({
@@ -92,9 +129,7 @@ export const createEvent = async ({
   calendarId = 'primary',
   recurrence = [],
 }) => {
-  const bounds = allDay
-    ? { start: { date: start.slice(0, 10) }, end: { date: end.slice(0, 10) } }
-    : { start: { dateTime: start }, end: { dateTime: end } };
+  const bounds = eventBounds({ start, end, allDay });
 
   const event = await googleFetch(EVENTS(calendarId), {
     method: 'POST',
@@ -107,23 +142,21 @@ export const createEvent = async ({
     }),
   });
 
-  return toEvent(event, { id: calendarId });
+  return toEvent(event, { id: calendarId, accessRole: 'writer' });
 };
 
 export const updateEvent = async (
   id,
   { title, description, location, start, end, allDay, calendarId = 'primary' },
 ) => {
-  const bounds = allDay
-    ? { start: { date: start.slice(0, 10) }, end: { date: end.slice(0, 10) } }
-    : { start: { dateTime: start }, end: { dateTime: end } };
+  const bounds = eventBounds({ start, end, allDay });
 
   const event = await googleFetch(`${EVENTS(calendarId)}/${encodeURIComponent(id)}`, {
     method: 'PATCH',
     body: JSON.stringify({ summary: title, description, location, ...bounds }),
   });
 
-  return toEvent(event, { id: calendarId });
+  return toEvent(event, { id: calendarId, accessRole: 'writer' });
 };
 
 export const deleteEvent = async (id, calendarId = 'primary') => {
@@ -145,7 +178,7 @@ export const rangeBounds = (days = 7, date = new Date()) => {
 export const toLocalInput = (value) => {
   if (!value) return '';
 
-  const date = new Date(value);
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(value) ? calendarDate(value) : new Date(value);
   const pad = (number) => String(number).padStart(2, '0');
 
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(
@@ -154,3 +187,9 @@ export const toLocalInput = (value) => {
 };
 
 export const fromLocalInput = (value) => (value ? new Date(value).toISOString() : '');
+
+export const toAllDayEndInput = (value) => {
+  const date = calendarDate(value);
+  date.setDate(date.getDate() - 1);
+  return toLocalInput(date);
+};

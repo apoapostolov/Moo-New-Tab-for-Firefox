@@ -1,5 +1,6 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   Header,
@@ -26,6 +27,7 @@ import {
 import './timeOptions.scss';
 
 const TimeOptions = () => {
+  useTranslationVersion();
   const [timeType, setTimeType] = useState(localStorage.getItem('timeType') || 'digital');
   const [hourColour, setHourColour] = useState(localStorage.getItem('hourColour') || '#ffffff');
   const [minuteColour, setMinuteColour] = useState(
@@ -54,6 +56,7 @@ const TimeOptions = () => {
   };
 
   const WidgetType = () => {
+    useTranslationVersion();
     return (
       <Row final={timeType !== 'percentageComplete'}>
         <Content
@@ -393,7 +396,7 @@ const TimeOptions = () => {
         visibilityToggle={true}
       >
         <Group>
-          <WidgetType />
+          {WidgetType()}
           {getTimeSettings()}
         </Group>
       </PreferencesWrapper>

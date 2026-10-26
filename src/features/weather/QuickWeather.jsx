@@ -1,5 +1,7 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { fetchWithTimeout as fetch, requestOwner, settingsStamp } from 'utils/requests';
 import variables from 'config/variables';
-import { memo, useState, useEffect, useCallback } from 'react';
+import { memo, useState, useEffect, useCallback, useRef, useEffectEvent } from 'react';
 import { formatNumber } from 'utils/formatNumber';
 
 import WeatherIcon from './components/WeatherIcon';
@@ -10,21 +12,34 @@ import { getWeather } from './api/getWeather.js';
 import './quickweather.scss';
 
 const QuickWeather = memo(() => {
+  useTranslationVersion();
+  const owner = useRef(requestOwner());
+  const geoOwner = useRef(requestOwner());
   const [location, setLocation] = useState(localStorage.getItem('location') || '');
   const [done, setDone] = useState(false);
   const [weatherData, setWeatherData] = useState({});
 
   const autoFindLocation = useCallback(() => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation || localStorage.getItem('offlineMode') === 'true') return;
+    const request = geoOwner.current.start();
+    const stamp = settingsStamp(/^(location|offlineMode)$/);
     navigator.geolocation.getCurrentPosition(
       async (position) => {
+        if (!request.current()) return;
         try {
           const data = await (
             await fetch(
               `${variables.constants.API_URL}/gps?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`,
+              { signal: request.signal },
             )
           ).json();
-          if (data && data[0] && data[0].name) {
+          if (
+            request.current() &&
+            stamp === settingsStamp(/^(location|offlineMode)$/) &&
+            data &&
+            data[0] &&
+            data[0].name
+          ) {
             localStorage.setItem('location', data[0].name);
             setLocation(data[0].name);
           }
@@ -43,10 +58,19 @@ const QuickWeather = memo(() => {
     if (!location) {
       autoFindLocation();
     }
+    const geo = geoOwner.current;
+    return () => geo.cancel();
   }, [location, autoFindLocation]);
 
   const updateWeather = useCallback(async () => {
+    const request = owner.current.start();
+    const stamp = settingsStamp(/^(location|tempformat|language|offlineMode)$/);
     const data = await getWeather(location);
+    if (
+      !request.current() ||
+      stamp !== settingsStamp(/^(location|tempformat|language|offlineMode)$/)
+    )
+      return;
     if (data) {
       setWeatherData(data);
       setDone(data.done);
@@ -56,17 +80,24 @@ const QuickWeather = memo(() => {
     }
   }, [location]);
 
+  const refreshWeather = useEffectEvent(updateWeather);
   useEffect(() => {
+    const effectOwner = owner.current;
     const handleRefresh = async (data) => {
       if (data === 'weather') {
+        setLocation(localStorage.getItem('location') || '');
         await updateWeather();
       }
     };
 
     EventBus.on('refresh', handleRefresh);
-    updateWeather();
+    const first = setTimeout(refreshWeather, 0);
+    const timer = setInterval(updateWeather, 300000);
 
     return () => {
+      effectOwner.cancel();
+      clearTimeout(first);
+      clearInterval(timer);
       EventBus.off('refresh', handleRefresh);
     };
   }, [updateWeather]);
@@ -87,5 +118,7 @@ const QuickWeather = memo(() => {
     </span>
   );
 });
+
+QuickWeather.displayName = 'QuickWeather';
 
 export { QuickWeather as default, QuickWeather };

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { useState, useEffect } from 'react';
 import { Row, Content, Action } from 'components/Layout/Settings/Item';
 import variables from 'config/variables';
 import Slider from '../../../Form/Settings/Slider/Slider';
@@ -7,13 +8,16 @@ import values from 'utils/data/slider_values.json';
 import EventBus from 'utils/eventbus';
 
 const PreferencesWrapper = ({ children, ...props }) => {
+  useTranslationVersion();
   const [shown, setShown] = useState(localStorage.getItem(props.setting) === 'true');
 
-  EventBus.on('toggle', (setting) => {
-    if (setting === props.setting) {
-      setShown(!shown);
-    }
-  });
+  useEffect(() => {
+    const toggle = (setting) => {
+      if (setting === props.setting) setShown(localStorage.getItem(setting) === 'true');
+    };
+    EventBus.on('toggle', toggle);
+    return () => EventBus.off('toggle', toggle);
+  }, [props.setting]);
 
   return (
     <div className={shown ? 'preferences' : 'preferencesInactive'}>

@@ -2,7 +2,6 @@ import variables from 'config/variables';
 import { PureComponent } from 'react';
 
 import { MdErrorOutline, MdRefresh } from 'react-icons/md';
-import { captureException } from '@sentry/react';
 
 import { Button } from 'components/Elements';
 
@@ -26,7 +25,11 @@ class ErrorBoundary extends PureComponent {
   }
 
   reportError() {
-    captureException(this.state.errorData);
+    window.open(
+      `${variables.constants.BUG_REPORT}${encodeURIComponent('[Bug] Settings page could not load')}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
     this.setState({
       showReport: false,
     });

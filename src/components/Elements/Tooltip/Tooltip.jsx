@@ -1,13 +1,16 @@
-import { useState, memo, useRef } from 'react';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { useState, memo, useRef, useId, useEffect } from 'react';
 import { useFloating, flip, offset, shift } from '@floating-ui/react-dom';
 import './tooltip.scss';
 
 function Tooltip({ children, title, style, placement, subtitle }) {
+  useTranslationVersion();
   const [showTooltip, setShowTooltip] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [reference, setReference] = useState(null);
-  const tooltipId = useRef(`tooltip-${Math.random()}`);
+  const tooltipId = useId();
   const closeTimeout = useRef(null);
+  useEffect(() => () => clearTimeout(closeTimeout.current), []);
 
   const {
     x,
@@ -75,12 +78,16 @@ function Tooltip({ children, title, style, placement, subtitle }) {
         onFocus={handleFocus}
         onBlur={handleBlur}
         ref={setReference}
-        aria-describedby={tooltipId.current}
+        aria-describedby={showTooltip || isClosing ? tooltipId : undefined}
       >
         {children}
       </div>
       {(showTooltip || isClosing) && (
         <span
+          id={tooltipId}
+          role="tooltip"
+          // Floating UI exposes this stable callback ref; no ref.current is read here.
+          // eslint-disable-next-line react-hooks/refs
           ref={refs.setFloating}
           style={{
             position: strategy,

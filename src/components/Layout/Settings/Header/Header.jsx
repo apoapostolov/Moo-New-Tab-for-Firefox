@@ -1,19 +1,17 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState, useEffect } from 'react';
-import {
-  MdFlag,
-  MdOutlineVisibilityOff,
-  MdOutlineVisibility,
-  MdOutlineKeyboardArrowRight,
-} from 'react-icons/md';
+import { MdFlag, MdOutlineVisibilityOff, MdOutlineVisibility } from 'react-icons/md';
 import EventBus from 'utils/eventbus';
 import { Button } from 'components/Elements';
 
 export const CustomActions = ({ children }) => {
+  useTranslationVersion();
   return children;
 };
 
 function Header(props) {
+  useTranslationVersion();
   const [setting, setSetting] = useState(localStorage.getItem(props.setting) === 'true');
 
   useEffect(() => {
@@ -52,6 +50,7 @@ function Header(props) {
   );
 
   const ReportButton = () => {
+    useTranslationVersion();
     return (
       <Button
         type="settings"
@@ -69,12 +68,10 @@ function Header(props) {
 
   return (
     <div className="modalHeader">
-      <span className="mainTitle">
-        {props.secondaryTitle || props.title}
-      </span>
+      <span className="mainTitle">{props.secondaryTitle || props.title}</span>
       <div className="headerActions">
-        {props.visibilityToggle && <VisibilityToggle />}
-        {props.report !== false && <ReportButton />}
+        {props.visibilityToggle && VisibilityToggle()}
+        {props.report !== false && ReportButton()}
         {props.children}
       </div>
     </div>

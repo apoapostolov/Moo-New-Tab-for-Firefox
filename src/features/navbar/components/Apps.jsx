@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 // TODO: open on click and support pinned apps.
 import variables from 'config/variables';
 import { memo, useState, useEffect } from 'react';
@@ -9,15 +10,12 @@ import { shift, useFloating } from '@floating-ui/react-dom';
 import EventBus from 'utils/eventbus';
 
 const Apps = ({ appsRef, floatRef, position, xPosition, yPosition }) => {
+  useTranslationVersion();
   const [apps, setApps] = useState(JSON.parse(localStorage.getItem('applinks')));
-  const [visibility, setVisibility] = useState(
-    localStorage.getItem('appsPinned') === 'true' ? 'visible' : 'hidden',
-  );
-  const [marginLeft, setMarginLeft] = useState(
-    localStorage.getItem('refresh') === 'false' ? '-200px' : '-130px',
-  );
   const [showApps, setShowApps] = useState(localStorage.getItem('appsPinned') === 'true');
-  const [zoomFontSize, setZoomFontSize] = useState('1.2rem');
+  const [zoomFontSize, setZoomFontSize] = useState(
+    () => `${(1.2 * Number(localStorage.getItem('zoomNavbar') || 100)) / 100}rem`,
+  );
 
   const setZoom = () => {
     setZoomFontSize(Number(((localStorage.getItem('zoomNavbar') || 100) / 100) * 1.2) + 'rem');
@@ -27,14 +25,9 @@ const Apps = ({ appsRef, floatRef, position, xPosition, yPosition }) => {
     const handleRefresh = (data) => {
       if (data === 'navbar') {
         setApps(JSON.parse(localStorage.getItem('applinks')));
-        try {
-          setZoom();
-        } catch {
-        }
+        setZoom();
       }
     };
-
-    setZoom();
 
     EventBus.on('refresh', handleRefresh);
     return () => {
@@ -47,7 +40,7 @@ const Apps = ({ appsRef, floatRef, position, xPosition, yPosition }) => {
   };
 
   const handleHideApps = () => {
-    setShowApps(localStorage.getItem('AppsPinned') === 'true');
+    setShowApps(localStorage.getItem('appsPinned') === 'true');
   };
 
   const appsInfo = apps;
@@ -57,8 +50,9 @@ const Apps = ({ appsRef, floatRef, position, xPosition, yPosition }) => {
       <button
         className="navbarButton"
         onMouseEnter={handleShowApps}
-        onFocus={handleHideApps}
-        onBlur={handleShowApps}
+        onFocus={handleShowApps}
+        onBlur={handleHideApps}
+        aria-label={variables.getMessage('widgets.navbar.apps.title')}
         ref={appsRef}
         style={{ fontSize: zoomFontSize }}
       >
@@ -124,6 +118,7 @@ const Apps = ({ appsRef, floatRef, position, xPosition, yPosition }) => {
 };
 
 function AppsWrapper() {
+  useTranslationVersion();
   const [reference, setReference] = useState(null);
 
   const { x, y, refs, strategy } = useFloating({

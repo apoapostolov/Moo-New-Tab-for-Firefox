@@ -62,6 +62,7 @@
   &.dragging {
     cursor: grabbing;
     box-shadow: 0 22px 46px rgb(0 0 0 / 34%);
+
     // No easing during a drag, or the note lags the pointer.
     transition: none;
   }

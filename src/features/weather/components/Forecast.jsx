@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo, useState, useEffect, useCallback } from 'react';
 
 import WeatherIcon from './WeatherIcon';
@@ -20,48 +21,54 @@ const wmoToIcon = (code) => {
 };
 
 const Forecast = memo(({ location }) => {
+  useTranslationVersion();
   const [days, setDays] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchForecast = useCallback(async (signal) => {
-    setLoading(true);
-    try {
-      const geoRes = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1&language=en&format=json`,
-        { signal },
-      );
-      const geoData = await geoRes.json();
-      if (!geoData.results || !geoData.results.length) {
+  const fetchForecast = useCallback(
+    async (signal) => {
+      if (localStorage.getItem('offlineMode') === 'true') return;
+      setLoading(true);
+      try {
+        const geoRes = await fetch(
+          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1&language=en&format=json`,
+          { signal },
+        );
+        const geoData = await geoRes.json();
+        if (!geoData.results || !geoData.results.length) {
+          setLoading(false);
+          return;
+        }
+        const { latitude, longitude } = geoData.results[0];
+        const tempUnit =
+          localStorage.getItem('tempformat') === 'fahrenheit' ? 'fahrenheit' : 'celsius';
+        const fcRes = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&temperature_unit=${tempUnit}`,
+          { signal },
+        );
+        const fcData = await fcRes.json();
+        const daily = fcData.daily;
+        if (!daily) {
+          setLoading(false);
+          return;
+        }
+        const result = daily.time.slice(0, 5).map((t, i) => ({
+          date: new Date(`${t}T00:00:00`),
+          icon: wmoToIcon(daily.weathercode[i]),
+          max: Math.round(daily.temperature_2m_max[i]),
+          min: Math.round(daily.temperature_2m_min[i]),
+        }));
+        setDays(result);
+      } catch (e) {
+        if (e.name !== 'AbortError') {
+          console.error('Forecast fetch error', e);
+        }
+      } finally {
         setLoading(false);
-        return;
       }
-      const { latitude, longitude } = geoData.results[0];
-      const tempUnit = localStorage.getItem('tempformat') === 'fahrenheit' ? 'fahrenheit' : 'celsius';
-      const fcRes = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&temperature_unit=${tempUnit}`,
-        { signal },
-      );
-      const fcData = await fcRes.json();
-      const daily = fcData.daily;
-      if (!daily) {
-        setLoading(false);
-        return;
-      }
-      const result = daily.time.slice(0, 5).map((t, i) => ({
-        date: new Date(t),
-        icon: wmoToIcon(daily.weathercode[i]),
-        max: Math.round(daily.temperature_2m_max[i]),
-        min: Math.round(daily.temperature_2m_min[i]),
-      }));
-      setDays(result);
-    } catch (e) {
-      if (e.name !== 'AbortError') {
-        console.error('Forecast fetch error', e);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [location]);
+    },
+    [location],
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -102,18 +109,19 @@ const Forecast = memo(({ location }) => {
       {days.map((d, i) => (
         <div key={i} className="weatherForecastDay">
           <span className="wfDay">
-            {i === 0
-              ? 'Today'
-              : d.date.toLocaleDateString(undefined, { weekday: 'short' })}
+            {i === 0 ? 'Today' : d.date.toLocaleDateString(undefined, { weekday: 'short' })}
           </span>
           <WeatherIcon name={d.icon} />
           <span className="wfTemps" title={`High ${d.max}${symbol} · Low ${d.min}${symbol}`}>
-            {d.max}{symbol}
+            {d.max}
+            {symbol}
           </span>
         </div>
       ))}
     </div>
   );
 });
+
+Forecast.displayName = 'Forecast';
 
 export default Forecast;

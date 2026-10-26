@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useTranslationVersion } from 'contexts/TranslationContext';
+import { useState, useEffect, useRef, useEffectEvent } from 'react';
 
 import { convertTimezone } from 'utils/date';
 import {
@@ -17,10 +18,14 @@ import './clock.scss';
 const formatPaddedDigits = (value) => {
   const str = String(value);
   // Per digit, so locale numerals keep their padding.
-  return str.split('').map(digit => formatDigits(digit)).join('');
+  return str
+    .split('')
+    .map((digit) => formatDigits(digit))
+    .join('');
 };
 
 const Clock = () => {
+  useTranslationVersion();
   // Handing the clock to its fallback by hand lasts until the gesture is repeated, and
   // only while Progress is the clock being replaced.
   const peekRef = useRef(false);
@@ -53,7 +58,9 @@ const Clock = () => {
   const [finalSeconds, setFinalSeconds] = useState('');
   const [ampm, setAmpm] = useState('');
   const [display, setDisplay] = useState('block');
-  const [fontSize, setFontSize] = useState('4em');
+  const [fontSize, setFontSize] = useState(
+    () => `${(4 * Number(localStorage.getItem('zoomClock') || 100)) / 100}em`,
+  );
   // Progress through the day (or shift) as a fraction, 0–1; only the percentage clock reads it.
   const [fraction, setFraction] = useState(0);
   // Progress steps aside on days it is not set for and outside its shift window.
@@ -176,6 +183,7 @@ const Clock = () => {
     startTime(intervalFor(next));
   };
 
+  const startCurrentTime = useEffectEvent((wait) => startTime(wait));
   useEffect(() => {
     const handleRefresh = (data) => {
       if (data === 'clock' || data === 'timezone') {
@@ -184,23 +192,18 @@ const Clock = () => {
           return;
         }
 
-        timerRef.current = null;
-        startTime(0);
+        startCurrentTime(0);
 
         setDisplay('block');
         setFontSize(`${4 * Number((localStorage.getItem('zoomClock') || 100) / 100)}em`);
       }
     };
 
-    if (typeFor(nowInZone()) !== 'analogue') {
-      setFontSize(`${4 * Number((localStorage.getItem('zoomClock') || 100) / 100)}em`);
-    }
-
-    startTime(0);
+    startCurrentTime(0);
 
     EventBus.on('refresh', handleRefresh);
     return () => {
-      EventBus.off('refresh');
+      EventBus.off('refresh', handleRefresh);
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }

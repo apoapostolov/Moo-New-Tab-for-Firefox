@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { Dropdown, Slider } from 'components/Form/Settings';
 import { Row, Content, Action } from 'components/Layout/Settings/Item';
@@ -5,6 +6,7 @@ import values from 'utils/data/slider_values.json';
 import { backgroundImageEffects } from '../optionTypes';
 
 const EffectsSettings = ({ backgroundFilter, onFilterChange }) => {
+  useTranslationVersion();
   return (
     <>
       <Row>

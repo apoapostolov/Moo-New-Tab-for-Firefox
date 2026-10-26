@@ -30,7 +30,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(1, 1fr);
-  grid-gap: 0;
+  gap: 0;
 
   section.aside {
     display: flex;
@@ -214,7 +214,6 @@ a.privacy {
 
   .shareYourMoo {
     width: fit-content;
-    width: fit-content;
   }
 
   img {
@@ -281,7 +280,12 @@ a.privacy {
   }
 
   .icon {
-    background: linear-gradient(238.7deg, var(--signature) 13.8%, var(--signature-strong) 49.49%, var(--signature-light) 87.48%);
+    background: linear-gradient(
+      238.7deg,
+      var(--signature) 13.8%,
+      var(--signature-strong) 49.49%,
+      var(--signature-light) 87.48%
+    );
 
     /* @include themed {
       background-color: t($modal-sidebarActive);
@@ -320,7 +324,6 @@ a.privacy {
 
 .welcomeButtons {
   z-index: 999;
-  backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   position: sticky;
   bottom: 0;

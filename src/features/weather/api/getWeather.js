@@ -1,3 +1,4 @@
+import { fetchWithTimeout as fetch, settingsStamp, online } from 'utils/requests';
 import variables from 'config/variables';
 
 const convertTemperature = (temp, format) => {
@@ -36,18 +37,34 @@ const getLocalizedTempSymbol = (format) => {
   return localizedSymbols[baseLang]?.[format] || defaultSymbols[format] || 'K';
 };
 
+const inFlight = new Map();
 export const getWeather = async (location) => {
-  let cached = localStorage.getItem('currentWeather');
-  if (cached) {
-    cached = JSON.parse(cached);
-    // 3e5 ms = 5 minutes.
-    if (Date.now() - cached.cachedAt < 3e5) {
-      return cached.data;
-    }
-  }
-
+  const tempFormat = localStorage.getItem('tempformat') || 'celsius';
+  const key = JSON.stringify([location, tempFormat, localStorage.getItem('language') || 'en_GB']);
+  let cached;
   try {
-    const response = await fetch(variables.constants.API_URL + `/weather?city=${location}`);
+    cached = JSON.parse(localStorage.getItem('currentWeather'));
+  } catch {
+    /* Ignore a damaged cache. */
+  }
+  if (cached?.key === key && Date.now() - cached.cachedAt < 300000) return cached.data;
+  if (!location || localStorage.getItem('offlineMode') === 'true') return { done: true };
+  if (inFlight.has(key)) return inFlight.get(key);
+  const request = fetchWeather(location, tempFormat, key);
+  inFlight.set(key, request);
+  try {
+    return await request;
+  } finally {
+    inFlight.delete(key);
+  }
+};
+
+const fetchWeather = async (location, tempFormat, key) => {
+  const stamp = settingsStamp(/^(location|tempformat|language|offlineMode)$/);
+  try {
+    const response = await fetch(
+      variables.constants.API_URL + `/weather?city=${encodeURIComponent(location)}`,
+    );
 
     if (!response.ok) {
       console.error('Weather API response not ok:', response.status, response.statusText);
@@ -64,7 +81,6 @@ export const getWeather = async (location) => {
     }
 
     const { temp, temp_min, temp_max, feels_like } = data.main;
-    const tempFormat = localStorage.getItem('tempformat');
 
     const cacheable = {
       icon: data.weather[0].icon,
@@ -84,9 +100,11 @@ export const getWeather = async (location) => {
       },
       done: true,
     };
+    if (!online() || stamp !== settingsStamp(/^(location|tempformat|language|offlineMode)$/))
+      return null;
     localStorage.setItem(
       'currentWeather',
-      JSON.stringify({ data: cacheable, cachedAt: Date.now() }),
+      JSON.stringify({ key, data: cacheable, cachedAt: Date.now() }),
     );
     return cacheable;
   } catch (error) {

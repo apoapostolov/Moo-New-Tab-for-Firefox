@@ -1,10 +1,23 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import React from 'react';
 
 function Section({ title, subtitle, icon, onClick, children }) {
+  useTranslationVersion();
   return (
     <div className="moreSettings" onClick={onClick}>
-      <div className="left">
+      <div
+        className="left"
+        role="button"
+        tabIndex={0}
+        aria-label={title}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            onClick();
+          }
+        }}
+      >
         {icon}
         <div className="content">
           <span className="title">{title}</span>

@@ -1,23 +1,21 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
-import { memo, useRef, useState, useEffect, useCallback } from 'react';
+import { memo, useRef, useState, useEffect, useCallback, useEffectEvent } from 'react';
 import { toast } from 'react-toastify';
 import {
   MdCancel,
-  MdAddLink,
   MdAddPhotoAlternate,
   MdPersonalVideo,
   MdOutlineFileUpload,
   MdFolder,
   MdChevronLeft,
   MdChevronRight,
-  MdDelete,
-  MdInfo,
 } from 'react-icons/md';
 import EventBus from 'utils/eventbus';
 import { compressAccurately, filetoDataURL } from 'image-conversion';
 import videoCheck from '../api/videoCheck';
 import {
-  getAllBackgrounds,
   getAllBackgroundsWithMetadata,
   addBackground,
   deleteBackground,
@@ -30,7 +28,6 @@ import {
   generateBlurHash,
   getDataUrlSize,
   getFileName,
-  calculateStorageSize,
   calculateTotalStorageSize,
   formatBytes,
 } from 'utils/imageMetadata';
@@ -44,6 +41,7 @@ import CustomURLModal from './CustomURLModal';
 import FolderTaggingModal from './FolderTaggingModal';
 
 const CustomSettings = memo(() => {
+  useTranslationVersion();
   const [customBackground, setCustomBackground] = useState([]);
   const [customURLModal, setCustomURLModal] = useState(false);
   const [folderTaggingModal, setFolderTaggingModal] = useState(false);
@@ -134,12 +132,9 @@ const CustomSettings = memo(() => {
         const backgrounds = await getAllBackgroundsWithMetadata();
         setCustomBackground(backgrounds);
 
-        try {
-          localStorage.setItem('customBackground', JSON.stringify(backgrounds.map((bg) => bg.url)));
-        } catch (_quotaError) {
-          console.warn('localStorage quota exceeded, storing count only');
-          localStorage.setItem('customBackgroundCount', backgrounds.length.toString());
-        }
+        localStorage.setItem('customBackgroundCount', String(backgrounds.length));
+
+        localStorage.removeItem('customBackground');
 
         if (!skipRefresh) {
           EventBus.emit('refresh', 'background');
@@ -165,10 +160,7 @@ const CustomSettings = memo(() => {
     // Past 90% of the quota, ask the browser to keep the data rather than evict it.
     if (storageSize / availableQuota > 0.9 && navigator.storage && navigator.storage.persist) {
       try {
-        const isPersisted = await navigator.storage.persist();
-        if (isPersisted) {
-          console.log('Storage persistence granted');
-        }
+        await navigator.storage.persist();
       } catch (error) {
         console.warn('Could not request storage persistence:', error);
       }
@@ -197,7 +189,7 @@ const CustomSettings = memo(() => {
         reader.readAsDataURL(file);
       });
     } else {
-      // 450 px at 90% accuracy: a full-size data URL would not fit the quota.
+      // Compress to roughly 450 KB before storing the image.
       const compressed = await compressAccurately(file, {
         size: 450,
         accuracy: 0.9,
@@ -276,13 +268,9 @@ const CustomSettings = memo(() => {
       const backgrounds = await getAllBackgroundsWithMetadata();
       setCustomBackground(backgrounds);
 
-      // localStorage holds URLs only; if that overflows, the count is kept instead.
-      try {
-        localStorage.setItem('customBackground', JSON.stringify(backgrounds.map((bg) => bg.url)));
-      } catch (_quotaError) {
-        console.warn('localStorage quota exceeded, storing count only');
-        localStorage.setItem('customBackgroundCount', backgrounds.length.toString());
-      }
+      localStorage.setItem('customBackgroundCount', String(backgrounds.length));
+
+      localStorage.removeItem('customBackground');
 
       EventBus.emit('refresh', 'background');
     } catch (error) {
@@ -304,11 +292,9 @@ const CustomSettings = memo(() => {
       setCustomBackground(backgrounds);
       setSelectedImages(new Set());
 
-      try {
-        localStorage.setItem('customBackground', JSON.stringify(backgrounds.map((bg) => bg.url)));
-      } catch (_quotaError) {
-        localStorage.setItem('customBackgroundCount', backgrounds.length.toString());
-      }
+      localStorage.setItem('customBackgroundCount', String(backgrounds.length));
+
+      localStorage.removeItem('customBackground');
 
       EventBus.emit('refresh', 'background');
       toast(variables.getMessage('toasts.deleted'));
@@ -337,62 +323,52 @@ const CustomSettings = memo(() => {
     document.getElementById('bg-input').click();
   }, []);
 
-  const addCustomURL = useCallback(
-    async (e) => {
-      // regex: https://ihateregex.io/expr/url/
-      const urlRegex =
-        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b([-a-zA-Z0-9()!@:%_.~#?&=]*)/;
-      if (urlRegex.test(e) === false) {
-        return setUrlError(variables.getMessage('widgets.quicklinks.url_error'));
-      }
+  const addCustomURL = useCallback(async (e) => {
+    // regex: https://ihateregex.io/expr/url/
+    const urlRegex =
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b([-a-zA-Z0-9()!@:%_.~#?&=]*)/;
+    if (urlRegex.test(e) === false) {
+      return setUrlError(variables.getMessage('widgets.quicklinks.url_error'));
+    }
 
-      setCustomURLModal(false);
+    setCustomURLModal(false);
 
+    try {
+      const urlParts = e.split('/');
+      const filename = urlParts[urlParts.length - 1].split('?')[0] || 'Remote Image';
+
+      // Best effort: a remote image may not allow reading its size or pixels.
+      let dimensions = null;
+      let blurHash = null;
       try {
-        const urlParts = e.split('/');
-        const filename = urlParts[urlParts.length - 1].split('?')[0] || 'Remote Image';
-
-        // Best effort: a remote image may not allow reading its size or pixels.
-        let dimensions = null;
-        let blurHash = null;
-        try {
-          dimensions = await getImageDimensions(e);
-          blurHash = await generateBlurHash(e);
-        } catch (metadataError) {
-          console.warn('Could not extract metadata from remote image:', metadataError);
-        }
-
-        const backgroundData = {
-          url: e,
-          name: filename,
-          uploadDate: Date.now(),
-          dimensions,
-          fileSize: null, // Cannot determine file size for remote URLs without fetching
-          folder: '',
-          blurHash,
-        };
-
-        await addBackground(backgroundData);
-        const backgrounds = await getAllBackgroundsWithMetadata();
-        setCustomBackground(backgrounds);
-      } catch (error) {
-        console.error('Error adding URL:', error);
-        toast(variables.getMessage('toasts.error'));
+        dimensions = await getImageDimensions(e);
+        blurHash = await generateBlurHash(e);
+      } catch (metadataError) {
+        console.warn('Could not extract metadata from remote image:', metadataError);
       }
 
-      try {
-        localStorage.setItem(
-          'customBackground',
-          JSON.stringify(updatedBackgrounds.map((bg) => bg.url)),
-        );
-      } catch (_quotaError) {
-        localStorage.setItem('customBackgroundCount', updatedBackgrounds.length.toString());
-      }
+      const backgroundData = {
+        url: e,
+        name: filename,
+        uploadDate: Date.now(),
+        dimensions,
+        fileSize: null, // Cannot determine file size for remote URLs without fetching
+        folder: '',
+        blurHash,
+      };
 
-      EventBus.emit('refresh', 'background');
-    },
-    [customBackground.length],
-  );
+      await addBackground(backgroundData);
+      const backgrounds = await getAllBackgroundsWithMetadata();
+      setCustomBackground(backgrounds);
+      localStorage.setItem('customBackgroundCount', String(backgrounds.length));
+      localStorage.removeItem('customBackground');
+    } catch (error) {
+      console.error('Error adding URL:', error);
+      toast(variables.getMessage('toasts.error'));
+    }
+
+    EventBus.emit('refresh', 'background');
+  }, []);
 
   const handleFileInputChange = async (files) => {
     if (files.length > 1) {
@@ -431,8 +407,8 @@ const CustomSettings = memo(() => {
   const availableStorageLimit = storageQuota.quota || FALLBACK_STORAGE_LIMIT;
   const storagePercent = (storageUsed / availableStorageLimit) * 100;
   const totalStorageUsed = calculateTotalStorageSize();
-  const TOTAL_STORAGE_LIMIT = 5242880; // 5MB total localStorage limit (browser default)
 
+  const uploadBatch = useEffectEvent(handleBatchUpload);
   useEffect(() => {
     const dnd = customDnd.current;
     if (!dnd) return;
@@ -476,7 +452,7 @@ const CustomSettings = memo(() => {
         setPendingFiles(files);
         setFolderTaggingModal(true);
       } else {
-        await handleBatchUpload(files, '');
+        await uploadBatch(files, '');
       }
     };
 
@@ -493,7 +469,7 @@ const CustomSettings = memo(() => {
         dnd.ondrop = null;
       }
     };
-  }, [customBackground.length, handleBatchUpload]);
+  }, [customBackground.length]);
 
   const hasVideo = sortedBackgrounds.filter((bg) => bg && videoCheck(bg.url)).length > 0;
 
@@ -577,7 +553,7 @@ const CustomSettings = memo(() => {
                 {' '}
                 · {formatBytes(storageUsed)} / {formatBytes(availableStorageLimit)}
                 {storagePercent > 80 && navigator.storage && navigator.storage.persist && (
-                  <Tooltip title="Request persistent storage to prevent browser from automatically clearing your images">
+                  <Tooltip title={uiText('request_persistent_storage_to_prevent_browser_3f86be')}>
                     <button
                       className="request-storage-link"
                       onClick={async () => {
@@ -598,7 +574,7 @@ const CustomSettings = memo(() => {
                         }
                       }}
                     >
-                      Protect images
+                      {uiText('protect_images_f0d4c1')}
                     </button>
                   </Tooltip>
                 )}
@@ -607,9 +583,12 @@ const CustomSettings = memo(() => {
             <span className="selection-separator">·</span>
             {selectedImages.size > 0 ? (
               <>
-                <span className="selected-count">{selectedImages.size} selected</span>
+                <span className="selected-count">
+                  {selectedImages.size}
+                  {uiText('selected_835f3b')}
+                </span>
                 <button className="delete-link" onClick={handleBatchDelete}>
-                  Delete
+                  {uiText('delete_f6fdbe')}
                 </button>
                 {selectedImages.size < customBackground.length && (
                   <button
@@ -619,12 +598,12 @@ const CustomSettings = memo(() => {
                       setSelectedImages(allIndices);
                     }}
                   >
-                    Select all
+                    {uiText('select_all_913aff')}
                   </button>
                 )}
                 {selectedImages.size === customBackground.length && (
                   <button className="select-all-link" onClick={() => setSelectedImages(new Set())}>
-                    Deselect all
+                    {uiText('deselect_all_85cce1')}
                   </button>
                 )}
               </>
@@ -637,7 +616,7 @@ const CustomSettings = memo(() => {
                     setSelectedImages(allIndices);
                   }}
                 >
-                  Select all
+                  {uiText('select_all_913aff')}
                 </button>
               )
             )}
@@ -702,7 +681,7 @@ const CustomSettings = memo(() => {
                     className="image-card"
                     onClick={(e) => {
                       // The nav buttons sit inside the card, so their clicks must not select it.
-                      if (!e.target.closest('.image-nav-buttons')) {
+                      if (!e.target.closest('button, input')) {
                         toggleImageSelection(originalIndex);
                       }
                     }}
@@ -710,6 +689,7 @@ const CustomSettings = memo(() => {
                     <div className="image-checkbox">
                       <input
                         type="checkbox"
+                        aria-label={`Select ${bg.name || 'image'}`}
                         checked={selectedImages.has(originalIndex)}
                         onChange={() => toggleImageSelection(originalIndex)}
                       />
@@ -750,6 +730,7 @@ const CustomSettings = memo(() => {
                       <div className="image-nav-buttons">
                         <button
                           className="nav-button nav-prev"
+                          aria-label={uiText('previous_image_46edf0')}
                           onClick={() => {
                             if (index > 0) {
                               const prevBg = sortedBackgrounds[index - 1];
@@ -762,6 +743,7 @@ const CustomSettings = memo(() => {
                         </button>
                         <button
                           className="nav-button nav-next"
+                          aria-label={uiText('next_image_eb89a7')}
                           onClick={() => {
                             if (index < sortedBackgrounds.length - 1) {
                               const nextBg = sortedBackgrounds[index + 1];
@@ -795,6 +777,7 @@ const CustomSettings = memo(() => {
                     >
                       <button
                         className="delete-button"
+                        aria-label={`Remove ${bg.name || 'image'}`}
                         onClick={() => modifyCustomBackground('remove', originalIndex)}
                       >
                         <MdCancel />
@@ -864,7 +847,7 @@ const CustomSettings = memo(() => {
         isOpen={customURLModal}
         className="Modal resetmodal mainModal"
         overlayClassName="Overlay resetoverlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
       >
         <CustomURLModal
           modalClose={addCustomURL}
@@ -882,7 +865,7 @@ const CustomSettings = memo(() => {
         isOpen={folderTaggingModal}
         className="Modal resetmodal mainModal"
         overlayClassName="Overlay resetoverlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
       >
         <FolderTaggingModal
           files={pendingFiles}
@@ -900,7 +883,7 @@ const CustomSettings = memo(() => {
         isOpen={storageQuotaModal}
         className="Modal resetmodal mainModal"
         overlayClassName="Overlay resetoverlay"
-        ariaHideApp={false}
+        ariaHideApp={true}
       >
         <div className="smallModal">
           <div className="shareHeader">
@@ -919,7 +902,7 @@ const CustomSettings = memo(() => {
             </p>
             <div style={{ marginTop: '20px' }}>
               <p className="subtitle" style={{ fontWeight: '600', marginBottom: '8px' }}>
-                Custom Backgrounds
+                {uiText('custom_backgrounds_81e58e')}
               </p>
               <p className="subtitle">
                 {formatBytes(storageUsed)} / {formatBytes(availableStorageLimit)} (
@@ -928,14 +911,11 @@ const CustomSettings = memo(() => {
             </div>
             <div style={{ marginTop: '15px' }}>
               <p className="subtitle" style={{ fontWeight: '600', marginBottom: '8px' }}>
-                Total localStorage Usage
+                {uiText('total_localstorage_usage_817a52')}
               </p>
-              <p className="subtitle">
-                {formatBytes(totalStorageUsed)} / {formatBytes(TOTAL_STORAGE_LIMIT)} (
-                {Math.round((totalStorageUsed / TOTAL_STORAGE_LIMIT) * 100)}%)
-              </p>
+              <p className="subtitle">{formatBytes(totalStorageUsed)}</p>
               <p className="subtitle" style={{ marginTop: '8px', fontSize: '12px', opacity: 0.7 }}>
-                Includes all Moo settings and custom images
+                {uiText('settings_and_notes_use_localstorage_pictures_31b115')}
               </p>
             </div>
           </div>

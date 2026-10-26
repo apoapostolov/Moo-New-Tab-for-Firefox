@@ -38,13 +38,10 @@
 }
 
 .gwLabel {
+  @extend %widgetLabel;
+
   flex: 1;
   text-align: left;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.7;
 }
 
 .gwBadge {
@@ -194,6 +191,7 @@
   color: inherit;
   background: transparent;
   cursor: pointer;
+
   // The closed control is invisible on the card, but the browser paints the open list
   // from the option colours: without a dark scheme it is light under white text.
   color-scheme: dark;
@@ -208,15 +206,10 @@
 // since a backdrop-filter here would join the composited layer the cards paint over.
 // Hover preview of a whole message: a popover, so the top layer keeps it above the card.
 .gwPreview {
-  @extend %basic;
+  @extend %readerSurface;
 
-  position: fixed;
   inset: auto;
   margin: 0;
-  padding: 0;
-  border: 0;
-  display: none;
-  flex-direction: column;
   max-height: 62vh;
   overflow: hidden;
 
@@ -366,10 +359,10 @@
 
 .gwDialogBody {
   padding: 4px 16px 8px;
-  overflow-y: auto;
+  overflow: hidden auto;
+
   // overflow-y: auto already computes overflow-x to auto; stating it keeps a stray wide
   // child from adding a sideways scrollbar.
-  overflow-x: hidden;
 }
 
 .gwDialogFoot {
@@ -445,6 +438,7 @@
   input,
   textarea {
     width: 100%;
+
     // No fixed floor: a hard minimum here pushed the form past the dialog's own padding.
     min-width: 0;
     padding: 8px 10px;
@@ -531,10 +525,11 @@
 
   &.primary {
     border-color: transparent;
-    background: #4c8dff;
+    background: var(--signature-strong);
+    color: #fff;
 
     &:hover {
-      background: #5f99ff;
+      background: color-mix(in srgb, var(--signature-strong) 85%, #000);
     }
   }
 
@@ -692,7 +687,6 @@
     margin: 0;
     accent-color: #7cb0ff;
   }
-
 }
 
 .gwOptionIcon {
@@ -792,12 +786,38 @@
   padding: 0;
   border-radius: 50%;
   font-size: 0;
-  background: #4c8dff;
+  background: var(--signature-strong);
+  color: #fff;
 }
 
 /* Reduced motion: the card appears without the fade. */
 @media (prefers-reduced-motion: reduce) {
   .googleWidget {
     animation: none;
+  }
+}
+
+.gwFields {
+  display: contents;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.googleWidgetEmpty {
+  align-items: center;
+
+  .gwLabel {
+    align-self: stretch;
+  }
+
+  .gwButton.primary {
+    align-self: center;
+    background: var(--signature-strong);
+    color: #fff;
+
+    &:hover {
+      background: color-mix(in srgb, var(--signature-strong) 85%, #000);
+    }
   }
 }

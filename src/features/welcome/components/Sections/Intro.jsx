@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -10,6 +12,7 @@ const GITHUB_LINK =
   'https://github.com/' + variables.constants.ORG_NAME + '/' + variables.constants.REPO_NAME;
 
 function WelcomeNotice({ config }) {
+  useTranslationVersion();
   const { icon: Icon, title, subtitle, link } = config;
   return (
     <div className="welcomeNotice">
@@ -31,6 +34,7 @@ function WelcomeNotice({ config }) {
 }
 
 function Intro() {
+  useTranslationVersion();
   const [welcomeImage, setWelcomeImage] = useState(0);
 
   const updateWelcomeImage = useCallback(() => {
@@ -44,7 +48,7 @@ function Intro() {
         alt="Example Moo setup"
         draggable={false}
       />
-      <span className="shareYourMoo">#shareyourmue</span>
+      <span className="shareYourMoo">{uiText('_shareyourmue_abf3e9')}</span>
     </div>
   );
 

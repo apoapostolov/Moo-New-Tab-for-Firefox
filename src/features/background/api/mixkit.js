@@ -1,25 +1,7 @@
+import { fetchWithTimeout as fetch } from 'utils/requests';
 import { readRecent, rememberClip, pickUnseen } from './videoHistory';
 
-/*
- * Mixkit is the closest thing to Coverr that is still free: a stock-footage site with an
- * explicit licence (commercial use, no attribution, no key) and a catalogue that is mostly
- * the kind of footage a background wants — ink, particles, water, fire, slow clouds.
- *
- * It has no API, so the catalogue is read from the same pages a visitor sees and treated as
- * untrusted, exactly as Coverr's undocumented endpoint is: a card without an id, or one
- * filmed upright, is skipped, and null falls back to the offline image.
- *
- * The catch is CORS. Coverr's endpoint answers with `access-control-allow-origin: *`, so a
- * fetch from the page costs nothing. mixkit.co sends no such header, so the extension has
- * to be given the origin before it may read the catalogue: `mixkitAccess()` reports
- * whether it has been, `grantMixkit()` asks, and that call has to run inside a click.
- *
- * Sizes are not proportional. One measured clip is 1.3 MB at 360, 6.3 MB at 720 and 62.9 MB
- * at 1080. 720 is the size a background wants — sharp behind the cards, a sixth of the
- * bytes — so it is asked for first and 360 is the fallback. The fallback matters twice:
- * 1080 is never requested, and a profile that refused the asset origin still plays, because
- * a <video> element needs no permission to load the file.
- */
+// Read Mixkit catalogue pages with optional host permission. Prefer 720p, then 360p.
 const SITE = 'https://mixkit.co/free-stock-video/';
 const SITE_ORIGIN = 'https://mixkit.co/*';
 const ASSET_ORIGIN = 'https://assets.mixkit.co/*';
@@ -86,17 +68,7 @@ function readCards(html) {
   return [...cards.values()];
 }
 
-/**
- * The largest size that answers, or null when the asset host said no to both.
- *
- * The host answers `access-control-allow-origin: *`, so a probe that comes back *unhappy* is
- * real information: a clip whose id is gone answers 403, and pointing a <video> at it draws a
- * black rectangle. Null sends the caller to the next card.
- *
- * A probe that *throws* says nothing — the network was down, or the request never left — and
- * 720 is offered on the chance that playback works. The video element reports the failure and
- * the page asks for another clip, so neither path ends in a black page.
- */
+/** Skip files that answer with an error; a failed probe still permits direct playback. */
 async function pickFile(id) {
   let answered = false;
 

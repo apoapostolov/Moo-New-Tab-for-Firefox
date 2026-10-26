@@ -28,7 +28,7 @@
 
 .dropdown {
   position: relative;
-  width: 300px;
+  width: min(300px, 100%);
   margin-top: 10px;
   gap: 8px;
   display: flex;
@@ -139,6 +139,7 @@
   &.up .dropdown-menu {
     top: auto;
     bottom: calc(100% + 4px);
+
     @include animation(dropdownSlideUp 0.2s ease-out);
   }
 
@@ -150,13 +151,14 @@
     max-height: 250px;
     overflow-y: auto;
     z-index: 9999;
+
     @include animation(dropdownSlideIn 0.2s ease-out);
 
     @include themed {
       background: t($modal-background);
       border: 1px solid t($modal-sidebarActive);
       border-radius: t($borderRadius);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
     }
 
     &::-webkit-scrollbar {

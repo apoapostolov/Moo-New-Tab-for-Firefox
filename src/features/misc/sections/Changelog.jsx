@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useMemo } from 'react';
 import { marked } from 'marked';
 
@@ -15,9 +16,7 @@ const renderInline = (tokens = []) =>
   tokens.map((token, index) => {
     switch (token.type) {
       case 'text':
-        return token.tokens
-          ? <span key={index}>{renderInline(token.tokens)}</span>
-          : token.text;
+        return token.tokens ? <span key={index}>{renderInline(token.tokens)}</span> : token.text;
 
       case 'strong':
         return <strong key={index}>{renderInline(token.tokens)}</strong>;
@@ -107,6 +106,7 @@ const readReleases = (source) => {
 };
 
 const Changelog = () => {
+  useTranslationVersion();
   const releases = useMemo(() => readReleases(changelogSource), []);
 
   return (

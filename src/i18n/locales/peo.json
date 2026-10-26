@@ -655,10 +655,10 @@
               "title": "Turn off tilting",
               "subtitle": "Notes and pictures sit straight, and dragging one no longer gives it a lean."
             },
-        "scratch_bare": {
-          "title": "Rahmelose Notize",
-          "subtitle": "Die Notize schtehne als blosser Text uffem Hinnergrund unn krien ihr Rahme widder, wann mer een klickt."
-        },
+            "scratch_bare": {
+              "title": "Rahmelose Notize",
+              "subtitle": "Die Notize schtehne als blosser Text uffem Hinnergrund unn krien ihr Rahme widder, wann mer een klickt."
+            },
             "cinema": {
               "title": "Dreimol klicke fer's UI zu verstecke",
               "subtitle": "Drei Klicks verstecke alles ausser's Video; en Klick, odder Escape, bringt's widder zerick."

@@ -36,7 +36,6 @@
   box-shadow: 0 0 20px rgb(0 0 0 / 30%);
   opacity: 1;
   z-index: -2;
-  transition-timing-function: ease-in;
   border-radius: map.get($modal, 'border-radius');
   user-select: none;
   overflow: hidden;
@@ -103,8 +102,6 @@
 #modal {
   height: 80vh;
   width: clamp(60vw, 1400px, 90vw);
-
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
   backdrop-filter: blur(16px) saturate(180%);
   overflow: hidden;
   border-radius: 12px;
@@ -153,12 +150,6 @@ h5 {
   }
 
   animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 @keyframes spin {
@@ -428,4 +419,70 @@ h5 {
 .clockSkeleton {
   font-size: 30px !important;
   font-weight: bold;
+}
+
+.compactSectionNav {
+  display: none;
+}
+
+.settingsTabs {
+  min-height: 0;
+}
+
+.modalTabContent {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.backupData,
+.backupImport {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+@media (width <= 1100px), (height <= 600px) {
+  #modal {
+    width: calc(100vw - 1rem);
+    height: calc(100dvh - 1rem);
+  }
+
+  .settingsTabs {
+    flex-direction: column;
+  }
+
+  .light .modalSidebar,
+  .dark .modalSidebar {
+    display: none;
+  }
+
+  .compactSectionNav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+
+    select {
+      min-width: 0;
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 8px;
+    }
+  }
+
+  .light .modalTabContent,
+  .dark .modalTabContent {
+    padding: 1rem 1rem 3rem;
+    min-height: 0;
+  }
+
+  .resetDataButtonsLayout {
+    grid-template-columns: minmax(0, 1fr);
+
+    :nth-child(1) {
+      grid-column: auto;
+    }
+  }
 }

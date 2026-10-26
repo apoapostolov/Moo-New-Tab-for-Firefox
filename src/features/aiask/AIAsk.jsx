@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MdMenuBook, MdTerminal } from 'react-icons/md';
 import {
@@ -19,21 +21,7 @@ import {
 
 import './aiask.scss';
 
-/**
- * Where a question can be sent, by address alone: no key, no account, nothing to configure,
- * which is the only kind of service this widget can offer.
- *
- * One thing to know before adding another: some of these answer on arrival, because the
- * server does the work and the address is the question — `/search?q=…` on a search engine,
- * `input?i=…` on a calculator. Others only fill a composer and open ready to send, one Enter
- * short, because the site keeps the send for the person — ChatGPT and Claude both do this
- * deliberately. Plain search sits among the first kind: it hands back results and stops.
- *
- * Google needs `udm=50` (AI Mode; `udm=14` is the plain web view). ChatGPT needs
- * `hints=search` to arm its search tool and `temporary-chat=true` to keep a query typed on a
- * new tab and forgotten out of the account's history. Brave needs `summary=1` to open the
- * AI answer rather than ten links.
- */
+/** URL-based services. Some open results; others prefill a composer for the user to send. */
 const SERVICES = {
   // Casual search: the question goes to a page of results, not to an answer. Kept apart from
   // the answer engines above, because 'what is the weather' and 'who won in 1994' want
@@ -143,9 +131,7 @@ const SERVICES = {
   },
 };
 
-/* Three headings rather than one list of seventeen: a question about the weather, a question
- * that wants one answer, and a question about an error message do not go to the same place,
- * and the menu says so. Search leads, because it is the widest net. */
+// Group the service picker by purpose.
 const GROUPS = [
   ['search', 'Search'],
   ['answers', 'Answers'],
@@ -161,6 +147,7 @@ const readService = () => {
 };
 
 const AIAsk = () => {
+  useTranslationVersion();
   const [service, setService] = useState(readService);
   const [query, setQuery] = useState('');
   const [picking, setPicking] = useState(false);
@@ -281,7 +268,7 @@ const AIAsk = () => {
           setHintHidden(true);
         }}
         onBlur={() => setHintHidden(false)}
-        placeholder="Ask anything"
+        placeholder={uiText('ask_anything_fffbce')}
         aria-label={`Ask ${name}`}
         autoComplete="off"
         spellCheck="false"

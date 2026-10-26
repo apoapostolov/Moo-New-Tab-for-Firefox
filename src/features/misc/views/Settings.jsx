@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo, useMemo } from 'react';
 import { useT } from 'contexts/TranslationContext';
 
@@ -31,13 +32,21 @@ const sections = [
     component: NavbarOptions,
   },
   { label: 'modals.main.settings.sections.time.title', name: 'time', component: TimeOptions },
-  { label: 'modals.main.settings.sections.quicklinks.title', name: 'quicklinks', component: QuickLinksOptions },
+  {
+    label: 'modals.main.settings.sections.quicklinks.title',
+    name: 'quicklinks',
+    component: QuickLinksOptions,
+  },
   {
     label: 'modals.main.settings.sections.background.title',
     name: 'background',
     component: BackgroundOptions,
   },
-  { label: 'modals.main.settings.sections.weather.title', name: 'weather', component: WeatherOptions },
+  {
+    label: 'modals.main.settings.sections.weather.title',
+    name: 'weather',
+    component: WeatherOptions,
+  },
   { label: 'modals.main.settings.sections.rss.title', name: 'rss', component: RssOptions },
   {
     label: 'modals.main.settings.sections.google.title',
@@ -79,14 +88,16 @@ const sections = [
 ].filter((section) => SHOW_EXPERIMENTAL || section.name !== 'experimental');
 
 function Settings(props) {
+  useTranslationVersion();
   const t = useT();
 
-  const translatedSections = useMemo(() =>
-    sections.map(section => ({
-      ...section,
-      translatedLabel: t(section.label)
-    })),
-    [t]
+  const translatedSections = useMemo(
+    () =>
+      sections.map((section) => ({
+        ...section,
+        translatedLabel: t(section.label),
+      })),
+    [t],
   );
 
   return (
@@ -101,7 +112,7 @@ function Settings(props) {
       navigationTrigger={props.navigationTrigger}
       sections={sections}
     >
-      {translatedSections.map(({ label, name, component: Component, translatedLabel }) => (
+      {translatedSections.map(({ name, component: Component, translatedLabel }) => (
         <div key={name} label={translatedLabel} name={name}>
           <Component
             currentSubSection={props.currentSubSection}

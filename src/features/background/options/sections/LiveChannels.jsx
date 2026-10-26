@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState } from 'react';
 import { MdAdd, MdCheck, MdClose, MdDeleteOutline, MdEdit } from 'react-icons/md';
 
@@ -27,6 +28,7 @@ const text = (key) => variables.getMessage(`${SECTION}.${key}`);
  * because a stream that moves should not need a new build to follow it.
  */
 const LiveChannels = ({ onChanged }) => {
+  useTranslationVersion();
   const [channels, setChannels] = useState(readChannels);
   const [editing, setEditing] = useState(null);
   const [adding, setAdding] = useState(false);
@@ -56,7 +58,8 @@ const LiveChannels = ({ onChanged }) => {
 
     // The same address twice would play one stream under two names.
     const taken = channels.some(
-      (channel) => channel.id !== editingId && channel.url.trim().toLowerCase() === url.toLowerCase(),
+      (channel) =>
+        channel.id !== editingId && channel.url.trim().toLowerCase() === url.toLowerCase(),
     );
 
     return taken ? text('url_duplicate') : '';
@@ -127,7 +130,12 @@ const LiveChannels = ({ onChanged }) => {
       <button className="liveChannelIcon" type="button" aria-label={text('save')} onClick={save}>
         <MdCheck />
       </button>
-      <button className="liveChannelIcon" type="button" aria-label={text('cancel')} onClick={cancel}>
+      <button
+        className="liveChannelIcon"
+        type="button"
+        aria-label={text('cancel')}
+        onClick={cancel}
+      >
         <MdClose />
       </button>
     </span>

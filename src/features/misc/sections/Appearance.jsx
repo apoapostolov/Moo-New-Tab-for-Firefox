@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { memo, useCallback, useEffect, useState } from 'react';
 
 import variables from 'config/variables';
@@ -33,7 +35,9 @@ const GroupHeading = ({ title, subtitle }) => (
 );
 
 function AppearanceOptions({ currentSubSection, onSubSectionChange, sectionName }) {
+  useTranslationVersion();
   const ThemeSelection = () => {
+    useTranslationVersion();
     return (
       <Row>
         <Content
@@ -102,6 +106,7 @@ function AppearanceOptions({ currentSubSection, onSubSectionChange, sectionName 
    * switches, so it is a look decision, not an advanced one.
    */
   const SignatureOptions = () => {
+    useTranslationVersion();
     return (
       <Group>
         <GroupHeading
@@ -126,11 +131,11 @@ function AppearanceOptions({ currentSubSection, onSubSectionChange, sectionName 
                   onClick={() => choose(preset.value)}
                 />
               ))}
-              <label className="signatureCustom" title="Any colour you like">
+              <label className="signatureCustom" title={uiText('any_colour_you_like_eb393e')}>
                 <input
                   type="color"
                   value={colour}
-                  aria-label="Pick any colour"
+                  aria-label={uiText('pick_any_colour_1cfabf')}
                   onChange={(event) => choose(event.target.value)}
                 />
               </label>
@@ -150,6 +155,7 @@ function AppearanceOptions({ currentSubSection, onSubSectionChange, sectionName 
   };
 
   const FontOptions = () => {
+    useTranslationVersion();
     const fontWeight = 'modals.main.settings.sections.appearance.font.weight';
     return (
       <Row final={true}>
@@ -246,6 +252,7 @@ function AppearanceOptions({ currentSubSection, onSubSectionChange, sectionName 
   };
 
   const AccessibilityOptions = () => {
+    useTranslationVersion();
     return (
       <Row final={true}>
         <Content
@@ -339,7 +346,7 @@ function AppearanceOptions({ currentSubSection, onSubSectionChange, sectionName 
     <>
       {header}
       {isAccessibilitySection ? (
-        <AccessibilityOptions />
+        AccessibilityOptions()
       ) : (
         <>
           <Section
@@ -352,9 +359,9 @@ function AppearanceOptions({ currentSubSection, onSubSectionChange, sectionName 
             icon={<MdAccessibility />}
             onClick={() => onSubSectionChange('accessibility', sectionName)}
           />
-          <ThemeSelection />
-          <SignatureOptions />
-          <FontOptions />
+          {ThemeSelection()}
+          {SignatureOptions()}
+          {FontOptions()}
         </>
       )}
     </>

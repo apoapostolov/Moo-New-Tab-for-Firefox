@@ -16,14 +16,23 @@ export function useBackgroundState() {
   });
 
   const updateBackground = useCallback((newData) => {
-    setBackgroundData((prev) => ({
-      ...prev,
+    setBackgroundData({
+      url: '',
+      style: '',
+      type: '',
+      currentAPI: '',
+      video: false,
+      hls: false,
+      live: false,
+      loop: undefined,
+      muted: undefined,
       ...newData,
       photoInfo: {
-        ...prev.photoInfo,
+        hidden: false,
+        offline: false,
         ...(newData.photoInfo || {}),
       },
-    }));
+    });
   }, []);
 
   const resetBackground = useCallback(() => {

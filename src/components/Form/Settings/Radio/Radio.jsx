@@ -1,3 +1,4 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo, useState, useCallback } from 'react';
 import { useTranslation } from 'contexts/TranslationContext';
@@ -7,8 +8,10 @@ import EventBus from 'utils/eventbus';
 import './Radio.scss';
 
 const Radio = memo((props) => {
-  const { changeLanguage } = useTranslation();
+  useTranslationVersion();
+  const { changeLanguage, language } = useTranslation();
   const [value, setValue] = useState(localStorage.getItem(props.name));
+  const selectedValue = props.name === 'language' ? language : value;
 
   const handleChange = useCallback(
     async (newValue) => {
@@ -17,7 +20,7 @@ const Radio = memo((props) => {
       }
 
       if (props.name === 'language') {
-        changeLanguage(newValue);
+        await changeLanguage(newValue);
         setValue(newValue);
 
         variables.stats.postEvent('setting', `${props.name} from ${value} to ${newValue}`);
@@ -62,22 +65,22 @@ const Radio = memo((props) => {
         {props.options.map((option) => (
           <label
             key={option.value}
-            className={`radio-option ${value === option.value ? 'selected' : ''} ${option.disabled || props.disabled ? 'disabled' : ''}`}
+            className={`radio-option ${selectedValue === option.value ? 'selected' : ''} ${option.disabled || props.disabled ? 'disabled' : ''}`}
           >
             <span className="radio-label">{option.name}</span>
             <input
               type="radio"
               name={props.name}
               value={option.value}
-              checked={value === option.value}
+              checked={selectedValue === option.value}
               onChange={() => handleChange(option.value)}
               disabled={option.disabled || props.disabled || false}
               className="radio-input"
-              aria-label={option.name}
+              aria-label={typeof option.name === 'string' ? option.name : undefined}
               tabIndex={0}
             />
             <div className="radio-circle">
-              {value === option.value && <div className="radio-dot" />}
+              {selectedValue === option.value && <div className="radio-dot" />}
             </div>
           </label>
         ))}

@@ -1,3 +1,4 @@
+import { fetchWithTimeout as fetch } from 'utils/requests';
 import variables from 'config/variables';
 
 const HEARTED_KEY = 'heartedImages';

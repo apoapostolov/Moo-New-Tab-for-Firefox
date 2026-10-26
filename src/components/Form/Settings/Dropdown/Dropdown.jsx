@@ -1,5 +1,7 @@
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
-import { memo, useState, useCallback, useRef, useEffect } from 'react';
+import { memo, useState, useCallback, useRef, useEffect, useId, useContext } from 'react';
+import { RowLabelContext } from 'components/Layout/Settings/Item/SettingsItem';
 import { MdExpandMore, MdCheck, MdRefresh } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
@@ -8,14 +10,16 @@ import EventBus from 'utils/eventbus';
 import './Dropdown.scss';
 
 const Dropdown = memo((props) => {
-  const [value, setValue] = useState(
-    localStorage.getItem(props.name) || props.items[0]?.value,
-  );
+  useTranslationVersion();
+  const rowLabel = useContext(RowLabelContext);
+  const [value, setValue] = useState(localStorage.getItem(props.name) || props.items[0]?.value);
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [opensUp, setOpensUp] = useState(false);
   const containerRef = useRef(null);
   const optionsRef = useRef([]);
+  const menuId = useId();
+  const items = props.items.filter(Boolean);
 
   /**
    * A dropdown near the bottom of a pane has no room below it: measure against the nearest
@@ -67,8 +71,18 @@ const Dropdown = memo((props) => {
 
   const openMenu = useCallback(() => {
     setOpensUp(measureDirection());
+    setFocusedIndex(
+      Math.max(
+        0,
+        props.items.filter(Boolean).findIndex((item) => item.value === value),
+      ),
+    );
     setIsOpen(true);
-  }, [measureDirection]);
+  }, [measureDirection, props.items, value]);
+
+  useEffect(() => {
+    if (isOpen) optionsRef.current[focusedIndex]?.scrollIntoView({ block: 'nearest' });
+  }, [isOpen, focusedIndex]);
 
   // Re-check while the pane scrolls or the window resizes.
   useEffect(() => {
@@ -111,7 +125,7 @@ const Dropdown = memo((props) => {
 
       if (!props.noSetting) {
         localStorage.setItem(props.name, newValue);
-        localStorage.setItem(props.name2, props.value2);
+        if (props.name2) localStorage.setItem(props.name2, props.value2);
       }
 
       if (props.onChange) {
@@ -138,10 +152,11 @@ const Dropdown = memo((props) => {
         case 'Enter':
         case ' ':
           e.preventDefault();
-          if (isOpen) setIsOpen(false);
+          if (isOpen && items[focusedIndex]) onChange(items[focusedIndex].value);
           else openMenu();
           break;
         case 'Escape':
+          if (isOpen) e.stopPropagation();
           setIsOpen(false);
           setFocusedIndex(-1);
           break;
@@ -150,8 +165,18 @@ const Dropdown = memo((props) => {
           if (!isOpen) {
             openMenu();
           } else {
-            setFocusedIndex((prev) => (prev < props.items.filter((i) => i !== null).length - 1 ? prev + 1 : prev));
+            setFocusedIndex((prev) => Math.min(prev + 1, items.length - 1));
           }
+          break;
+        case 'Home':
+        case 'End':
+          if (isOpen) {
+            e.preventDefault();
+            setFocusedIndex(e.key === 'Home' ? 0 : items.length - 1);
+          }
+          break;
+        case 'Tab':
+          setIsOpen(false);
           break;
         case 'ArrowUp':
           e.preventDefault();
@@ -161,7 +186,7 @@ const Dropdown = memo((props) => {
           break;
       }
     },
-    [isOpen, props.items, props.disabled, openMenu],
+    [isOpen, items, focusedIndex, props.disabled, openMenu, onChange],
   );
 
   const handleOptionKeyDown = useCallback(
@@ -191,11 +216,16 @@ const Dropdown = memo((props) => {
     >
       {label && (
         <div className="dropdown-header">
-          <label className="dropdown-label">{label}</label>
-          <span className="dropdown-reset" onClick={resetItem}>
+          <span className="dropdown-label">{label}</span>
+          <button
+            type="button"
+            className="dropdown-reset"
+            onClick={resetItem}
+            disabled={props.disabled}
+          >
             <MdRefresh />
             {variables.getMessage('modals.main.settings.buttons.reset')}
-          </span>
+          </button>
         </div>
       )}
       <div
@@ -206,28 +236,35 @@ const Dropdown = memo((props) => {
           else openMenu();
         }}
         onKeyDown={handleKeyDown}
-        role="button"
+        role="combobox"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
+        aria-controls={isOpen ? menuId : undefined}
+        aria-activedescendant={
+          isOpen && focusedIndex >= 0 ? `${menuId}-${focusedIndex}` : undefined
+        }
+        aria-disabled={props.disabled || undefined}
         aria-label={label || props.name}
+        aria-labelledby={!label && rowLabel ? rowLabel : undefined}
         tabIndex={props.disabled ? -1 : 0}
       >
         <span className="dropdown-value">{selectedItem?.text || value}</span>
         <MdExpandMore className={`dropdown-arrow ${isOpen ? 'open' : ''}`} />
       </div>
       {isOpen && (
-        <div className="dropdown-menu" role="listbox">
-          {props.items.map((item, index) =>
+        <div id={menuId} className="dropdown-menu" role="listbox" aria-label={label || props.name}>
+          {items.map((item, index) =>
             item !== null ? (
               <div
                 key={id + item.value}
+                id={`${menuId}-${index}`}
                 ref={(el) => (optionsRef.current[index] = el)}
                 className={`dropdown-option ${value === item.value ? 'selected' : ''} ${index === focusedIndex ? 'focused' : ''}`}
                 onClick={() => onChange(item.value)}
                 onKeyDown={(e) => handleOptionKeyDown(e, item)}
                 role="option"
                 aria-selected={value === item.value}
-                tabIndex={0}
+                tabIndex={-1}
               >
                 <span className="dropdown-option-text">{item.text}</span>
                 {value === item.value && <MdCheck className="dropdown-option-check" />}

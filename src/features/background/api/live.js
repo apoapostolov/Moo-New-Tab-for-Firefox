@@ -1,227 +1,217 @@
 import { getOfflineImage } from './offlineImage';
 
-/**
- * The channels a fresh profile starts with: nature, the world seen from a place, weather,
- * outdoors and documentary, all of it free to stream. Every entry was measured rather than
- * trusted — its master playlist answers, it carries a 1080p rendition or better, and both
- * the manifest and its segments allow an origin, which is what an extension page needs to
- * play a stream without a granted host permission. Anything that only answered from a
- * leased address or re-streamed a subscription channel was left out.
- *
- * These are only the starting list: the store below is what the page reads, and every one
- * of them can be renamed, re-pointed or removed in Settings.
- */
+/** Default live channels; the saved list below allows editing and removal. */
 export const LIVE_CHANNELS = [
   {
     id: 'wildearth',
-    name: "WildEarth",
+    name: 'WildEarth',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://dqga3jatxofgx.cloudfront.net/WildEarth.m3u8',
   },
   {
     id: 'naturescape',
-    name: "Stingray Naturescape",
+    name: 'Stingray Naturescape',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://lotus.stingray.com/manifest/naturescape-a003-montreal/samsungtvplus/master.m3u8',
   },
   {
     id: 'lovenature',
-    name: "Love Nature",
+    name: 'Love Nature',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg00090-blueantllc-lovenature-au-samsungau-wggcn.amagi.tv/playlist/amg00090-blueantllc-lovenature-au-samsungau/playlist.m3u8',
   },
   {
     id: 'lovenature4k',
-    name: "Love Nature 4K",
+    name: 'Love Nature 4K',
     quality: '4K',
     maxHeight: 2160,
     url: 'https://pb-ehs1glsha1juy.akamaized.net/Love_Nature_4K.m3u8',
   },
   {
     id: 'bbcearth',
-    name: "BBC Earth",
+    name: 'BBC Earth',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg00793-amg00793c6-xumo-us-2669.playouts.now.amagi.tv/BBCStudios-BBCEarthA-hls/playlist.m3u8',
   },
   {
     id: 'inwild',
-    name: "INWILD",
+    name: 'INWILD',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg00861-terninternation-inwild-samsunguk-w5wic.amagi.tv/playlist/amg00861-terninternation-inwild-samsunguk/playlist.m3u8',
   },
   {
     id: 'lovetheplanet',
-    name: "Love the Planet",
+    name: 'Love the Planet',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg01821-lovetvchannels-lovetheplanetuksamsung-samsunguk-apopw.amagi.tv/playlist/amg01821-lovetvchannels-lovetheplanetuksamsung-samsunguk/playlist.m3u8',
   },
   {
     id: 'realwild',
-    name: "Real Wild",
+    name: 'Real Wild',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg00426-littledotstudio-realwildnz-samsungnz/playlist.m3u8',
   },
   {
     id: 'waterbear',
-    name: "WaterBear",
+    name: 'WaterBear',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg01415-waterbearnetwor-waterbear-samsunguk-1h0y8.amagi.tv/playlist/amg01415-waterbearnetwor-waterbear-samsunguk/playlist.m3u8',
   },
   {
     id: 'zenlife',
-    name: "ZenLIFE",
+    name: 'ZenLIFE',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://lotus.stingray.com/manifest/zenlife-zen001-montreal/samsungtvplus/master.m3u8',
   },
   {
     id: '3catcameras',
-    name: "3Cat Weather Cameras",
+    name: '3Cat Weather Cameras',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://directes-tv-int.3catdirectes.cat/live-content/beauties-hls/master.m3u8',
   },
   {
     id: 'arubatv',
-    name: "Aruba TV",
+    name: 'Aruba TV',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://cdn01.setar.aw/Canal49/canal49/playlist.m3u8',
   },
   {
     id: 'weatherchannel',
-    name: "The Weather Channel",
+    name: 'The Weather Channel',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://twcprod-live.twc-tv.com/v1/manifest/b4d4d63a49309cc5140171fb2e92485c31be1e9e/DSP_6228e4760505741a116f1ba2_twcprod-live/6bf09ce5-366b-463c-b67e-c4b799f73c3f/4.m3u8',
   },
   {
     id: 'accuweather',
-    name: "AccuWeather Now",
+    name: 'AccuWeather Now',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg00684-accuweather-accuweather-plex/playlist.m3u8',
   },
   {
     id: 'chinatravel',
-    name: "China Travel",
+    name: 'China Travel',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg01314-amg01314c7-distrotv-us-10219.playouts.now.amagi.tv/playlist/amg01314-cgtn-cgtnchinatravel-distrotvus/playlist.m3u8',
   },
   {
     id: 'discoveringchina',
-    name: "Discovering China",
+    name: 'Discovering China',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg01314-amg01314c8-distrotv-us-10218.playouts.now.amagi.tv/playlist/amg01314-cgtn-cgtndiscoveringchina-distrotvus/playlist.m3u8',
   },
   {
     id: 'discoverpakistan',
-    name: "Discover Pakistan",
+    name: 'Discover Pakistan',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://livecdn.live247stream.com/discoverpakistan/web/playlist.m3u8',
   },
   {
     id: 'turismotravel',
-    name: "Turismo Travel",
+    name: 'Turismo Travel',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://stmv3.voxtvhd.com.br/turismotraveltv/turismotraveltv/playlist.m3u8',
   },
   {
     id: 'yachtingtv',
-    name: "Yachting TV",
+    name: 'Yachting TV',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://streams2.sofast.tv/vglive-sk-461164/index.m3u8',
   },
   {
     id: 'outdoorchannel',
-    name: "Outdoor Channel",
+    name: 'Outdoor Channel',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://cdn-apse1-prod.tsv2.amagi.tv/linear/amg00718-outdoorchannela-outdoortvnz-samsungnz/playlist.m3u8',
   },
   {
     id: 'waypointtv',
-    name: "Waypoint TV",
+    name: 'Waypoint TV',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg00381-waypointcommuni-waypointtv-xumo-syiru.amagi.tv/playlist.m3u8',
   },
   {
     id: 'horsecountry',
-    name: "Horse & Country",
+    name: 'Horse & Country',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://hnc-free-viewlift.amagi.tv/HNC_AUSTRALIA.m3u8',
   },
   {
     id: 'akctv',
-    name: "AKC TV",
+    name: 'AKC TV',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://broadcast.blivenyc.com/speed/broadcast/22/desktop-playlist.m3u8',
   },
   {
     id: 'lovepets',
-    name: "Love Pets",
+    name: 'Love Pets',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg01576-blueskyeenterta-lovepetsemea-samsungse-ctamh.amagi.tv/playlist/amg01576-blueskyeenterta-lovepetsemea-samsungse/playlist.m3u8',
   },
   {
     id: 'cgtndoc',
-    name: "CGTN Documentary",
+    name: 'CGTN Documentary',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://hlspackager.akamaized.net/live/DB/CGTN_DOCUMENTARY/HLS/CGTN_DOCUMENTARY.m3u8',
   },
   {
     id: 'docubay',
-    name: "DocuBay",
+    name: 'DocuBay',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://cc-mgr91yrk4pehy.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-mgr91yrk4pehy/playlist.m3u8',
   },
   {
     id: 'dokusat',
-    name: "Dokusat",
+    name: 'Dokusat',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://muc3.iptv-playoutcenter.de/dokusat/dokusat1/playlist.m3u8',
   },
   {
     id: 'wedobigstories',
-    name: "WEDO Big Stories",
+    name: 'WEDO Big Stories',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://amg00735-videosolutionsa-wedobigdocs-ono-0urlz.amagi.tv/playlist/amg00735-videosolutionsa-wedobigdocs-ono/playlist.m3u8',
   },
   {
     id: 'agrotendencia',
-    name: "Agrotendencia",
+    name: 'Agrotendencia',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://5fc584f3f19c9.streamlock.net/agrotendencia/videoagrotendencia_hls1/playlist.m3u8',
   },
   {
     id: 'redbull',
-    name: "Red Bull TV",
+    name: 'Red Bull TV',
     quality: '1080p',
     maxHeight: 1080,
     url: 'https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8',
-  }
+  },
 ];
 
 export const LIVE_CHANNEL_ANY = 'any';
@@ -318,7 +308,10 @@ export function makeChannel({ name, url }) {
   const channels = readChannels();
 
   return {
-    id: freeId(name.trim(), channels.map((channel) => channel.id)),
+    id: freeId(
+      name.trim(),
+      channels.map((channel) => channel.id),
+    ),
     name: name.trim(),
     url: url.trim(),
     maxHeight: 1080,
@@ -336,7 +329,9 @@ export function addChannel(channel) {
 /** A channel keeps its id when renamed, so the saved selection and the photo credit follow it. */
 export function updateChannel(id, changes) {
   const next = readChannels().map((channel) =>
-    channel.id === id ? { ...channel, name: changes.name.trim(), url: changes.url.trim() } : channel,
+    channel.id === id
+      ? { ...channel, name: changes.name.trim(), url: changes.url.trim() }
+      : channel,
   );
 
   saveChannels(next);
@@ -395,6 +390,8 @@ export async function getLiveBackground(isOffline) {
   if (!channel || isOffline) return getOfflineImage('api');
 
   const data = {
+    type: 'api',
+    currentAPI: 'live',
     url: channel.url,
     video: true,
     live: true,

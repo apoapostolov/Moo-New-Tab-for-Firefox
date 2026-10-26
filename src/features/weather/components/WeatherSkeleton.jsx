@@ -1,7 +1,10 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { getSurface } from 'utils/widgetSurface';
 import { memo } from 'react';
 
 function WeatherSkeleton({ weatherType }) {
+  useTranslationVersion();
   return (
     <div className={`weather skeleton ${getSurface('weather')}`}>
       <div className="weatherCore">
@@ -12,15 +15,15 @@ function WeatherSkeleton({ weatherType }) {
           </div>
           {weatherType >= 2 && (
             <span className="minmax">
-              <span className="subtitle pulse">min</span>
-              <span className="subtitle pulse">max</span>
+              <span className="subtitle pulse">{uiText('min_b6c935')}</span>
+              <span className="subtitle pulse">{uiText('max_070602')}</span>
             </span>
           )}
         </div>
         {weatherType >= 2 && (
           <div className="extra-info">
-            <span className="pulse">feels like x</span>
-            <span className="loc pulse">location</span>
+            <span className="pulse">{uiText('feels_like_x_038366')}</span>
+            <span className="loc pulse">{uiText('location_6469ac')}</span>
           </div>
         )}
       </div>

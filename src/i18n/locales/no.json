@@ -655,10 +655,10 @@
               "title": "Slå av helning",
               "subtitle": "Notater og bilder står rett, og når du drar i et lener det seg ikke lenger."
             },
-        "scratch_bare": {
-          "title": "Rammeløse notater",
-          "subtitle": "Notater ligger som bar tekst på bakgrunnsbildet og får rammen tilbake når du klikker på ett."
-        },
+            "scratch_bare": {
+              "title": "Rammeløse notater",
+              "subtitle": "Notater ligger som bar tekst på bakgrunnsbildet og får rammen tilbake når du klikker på ett."
+            },
             "cinema": {
               "title": "Trippelklikk for å skjule grensesnittet",
               "subtitle": "Tre klikk skjuler alt unntatt videoen; ett klikk, eller Escape, henter det tilbake."

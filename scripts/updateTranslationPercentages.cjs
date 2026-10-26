@@ -1,91 +1,35 @@
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-
-// Language code mappings between Weblate and Mue
-const CODE_MAPPINGS = {
-  de: 'de_DE',
-  id: 'id_ID',
-  nb_NO: 'no',
-  tr: 'tr_TR',
-  zh_Hans: 'zh_CN',
-  pt: 'pt_PT',
-};
-
-const WEBLATE_API_URL = 'https://hosted.weblate.org/api/components/mue/mue-tab-7-1/statistics/';
-
-function fetchWeblateStats() {
-  return new Promise((resolve, reject) => {
-    const options = {
-      headers: {
-        'User-Agent': 'Mue-Translation-Update-Script',
-        Accept: 'application/json',
-      },
-    };
-
-    https
-      .get(WEBLATE_API_URL, options, (res) => {
-        let data = '';
-
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-
-        res.on('end', () => {
-          try {
-            const json = JSON.parse(data);
-            resolve(json);
-          } catch (e) {
-            reject(e);
-          }
-        });
-      })
-      .on('error', (err) => {
-        reject(err);
-      });
-  });
-}
-
-function mapLanguageCode(weblateCode) {
-  return CODE_MAPPINGS[weblateCode] || weblateCode;
-}
-
-async function updateTranslationPercentages() {
-  try {
-    console.log('Fetching translation statistics from Weblate...');
-    const data = await fetchWeblateStats();
-
-    const percentages = {};
-
-    data.results.forEach((lang) => {
-      const code = mapLanguageCode(lang.code);
-      percentages[code] = {
-        percent: Math.round(lang.translated_percent * 10) / 10, // Round to 1 decimal place
-        lastChange: lang.last_change,
-      };
-    });
-
-    const outputPath = path.join(__dirname, '../src/i18n/translationPercentages.json');
-    fs.writeFileSync(outputPath, JSON.stringify(percentages, null, 2));
-    fs.appendFileSync(outputPath, '\n');
-
-    console.log(`✓ Translation percentages updated successfully!`);
-    console.log(`  Total languages: ${Object.keys(percentages).length}`);
-    console.log(`  Output: ${outputPath}`);
-
-    // Show some examples
-    const sortedByPercent = Object.entries(percentages)
-      .sort((a, b) => b[1].percent - a[1].percent)
-      .slice(0, 5);
-
-    console.log('\nTop 5 translated languages:');
-    sortedByPercent.forEach(([code, data]) => {
-      console.log(`  ${code}: ${data.percent}%`);
-    });
-  } catch (error) {
-    console.error('Error updating translation percentages:', error);
-    process.exit(1);
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.join(__dirname, '../src/i18n');
+const flatten = (value, prefix = '', output = {}) => {
+  for (const [key, item] of Object.entries(value)) {
+    const name = prefix ? `${prefix}.${key}` : key;
+    if (item && typeof item === 'object') flatten(item, name, output);
+    else if (typeof item === 'string') output[name] = item;
   }
+  return output;
+};
+const source = flatten(JSON.parse(fs.readFileSync(path.join(root, 'locales/en_GB.json'), 'utf8')));
+const output = {};
+for (const file of fs
+  .readdirSync(path.join(root, 'locales'))
+  .filter((file) => file.endsWith('.json'))) {
+  const locale = file.replace('.json', '');
+  const values = flatten(JSON.parse(fs.readFileSync(path.join(root, 'locales', file), 'utf8')));
+  const present = Object.keys(source).filter(
+    (key) => typeof values[key] === 'string' && values[key].trim(),
+  ).length;
+  output[locale] = {
+    percent: Math.round((present / Object.keys(source).length) * 1000) / 10,
+    present,
+    total: Object.keys(source).length,
+  };
 }
-
-updateTranslationPercentages();
+output.pt_PT = output.pt;
+fs.writeFileSync(
+  path.join(root, 'translationPercentages.json'),
+  JSON.stringify(output, null, 2) + '\n',
+);
+console.log(
+  'Updated local key coverage. Copied English values count as present; this is not a translation-quality score.',
+);

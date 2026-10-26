@@ -1,3 +1,5 @@
+import { uiText } from 'lib/translations';
+import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -8,6 +10,7 @@ import { createPortal } from 'react-dom';
  */
 
 const Dialog = ({ title, onClose, children, footer }) => {
+  useTranslationVersion();
   const panel = useRef(null);
 
   useEffect(() => {
@@ -54,7 +57,12 @@ const Dialog = ({ title, onClose, children, footer }) => {
     >
       <header className="gwDialogHead">
         <h3>{title}</h3>
-        <button type="button" className="gwIconButton" onClick={onClose} aria-label="Close">
+        <button
+          type="button"
+          className="gwIconButton"
+          onClick={onClose}
+          aria-label={uiText('close_bbfa77')}
+        >
           ×
         </button>
       </header>

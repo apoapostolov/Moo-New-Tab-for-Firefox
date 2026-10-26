@@ -1,4 +1,4 @@
-import { googleFetch } from '../api';
+import { googleFetch, googlePages } from '../api';
 
 const LISTS = '/tasks/v1/users/@me/lists';
 
@@ -12,21 +12,23 @@ const toTask = (task) => ({
   position: task.position ?? '',
 });
 
-export const listTaskLists = async () => {
-  const data = await googleFetch(LISTS);
+export const listTaskLists = async (signal) => {
+  const items = await googlePages(`${LISTS}?maxResults=100`, { signal });
 
-  return (data?.items ?? []).map((list) => ({ id: list.id, title: list.title || 'Tasks' }));
+  return items.map((list) => ({ id: list.id, title: list.title || 'Tasks' }));
 };
 
-export const listTasks = async (listId, { showCompleted = false } = {}) => {
+export const listTasks = async (listId, { showCompleted = false, signal } = {}) => {
   const params = new URLSearchParams({
     showCompleted: String(showCompleted),
     maxResults: '100',
   });
 
-  const data = await googleFetch(`/tasks/v1/lists/${encodeURIComponent(listId)}/tasks?${params}`);
+  const items = await googlePages(`/tasks/v1/lists/${encodeURIComponent(listId)}/tasks?${params}`, {
+    signal,
+  });
 
-  return (data?.items ?? []).map(toTask);
+  return items.filter((task) => !task.deleted).map(toTask);
 };
 
 export const createTask = async (listId, { title, notes = '', due = '' }) => {
