@@ -31,6 +31,7 @@ Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab exten
 
 ### Changed
 
+- The Progress clock's bar is the strongest mark on the page now: it sits at 67% of the number's width instead of 84%, a third thicker than before, and is drawn in the time's own colour at full strength rather than the 55% tint it used.
 - The colour presets are one palette instead of a blue and four near-blues: Moo navy stays, and Rose, Amber, Sage, Teal and Violet join it at the same saturation and lightness, so the six differ in hue alone and read as a family. The row of seven, free picker included, is centred over the button beneath it.
 - The two widget text shadows are named for how they look: Soft glow, the wide blurred halo, and Hard shadow, the crisp copy offset behind the clock and the date.
 - Scratch pictures keep their corner controls out of the way: copy, close, download and the resize grip appear on the picture you clicked or dragged, and go when another note or picture takes over, or when you click anywhere else — the page, a widget, its buttons, the AI ask box or the photo credit.
