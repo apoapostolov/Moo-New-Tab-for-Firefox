@@ -100,10 +100,17 @@ const Widgets = () => {
       return <Fragment key={id}>{widget}</Fragment>;
     });
 
+  // A widget that is switched off is not on the page, so it cannot be half of a pair. The
+  // lane outlives the switch, and counting a hidden partner as a card drew a two-column
+  // page around nothing, with the cards that were left squeezed into the first column.
+  // `widgets` is the same answer the drawing uses, so offline mode's missing cards count
+  // as absent here too.
+  const shown = groups.center.filter((id) => Boolean(widgets[id]));
+
   // Full-width lines read across the whole middle column and are never part of
   // the two-column pair, so they are drawn first.
-  const lines = groups.center.filter((id) => isFullWidth(id));
-  const cards = groups.center.filter((id) => !isFullWidth(id));
+  const lines = shown.filter((id) => isFullWidth(id));
+  const cards = shown.filter((id) => !isFullWidth(id));
 
   // An empty lane is not a column: the split only exists once a card is moved in.
   const secondColumn = cards.filter((id) => layout.lane.includes(id));
