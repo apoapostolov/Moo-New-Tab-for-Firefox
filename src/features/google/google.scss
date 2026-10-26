@@ -15,38 +15,12 @@
 }
 
 // Widgets sit over a photo or video, so their contrast comes from the card, not the
-// page text colour.
+// page text colour. The card itself is the shared one, so a card beside them reads as
+// part of the same set.
 .googleWidget {
+  @extend %widgetCard;
+
   animation: googleWidgetIn 150ms ease-out both;
-  // The page centres its content and these rows run edge to edge in the card, so both
-  // need settling here rather than being inherited.
-  box-sizing: border-box;
-  width: 340px;
-  padding: 12px 14px;
-  text-align: left;
-  border-radius: 14px;
-  color: #fff;
-  font-size: 13px;
-  line-height: 1.4;
-  // A heavier scrim keeps the set uniform: a thinner one lets each card's photo tint it
-  // a different colour.
-  background: rgb(0 0 0 / 62%);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 10px 30px rgb(0 0 0 / 22%);
-  border: 1px solid rgb(255 255 255 / 9%);
-  text-shadow: 0 1px 2px rgb(0 0 0 / 45%);
-  user-select: none;
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  button {
-    font: inherit;
-    color: inherit;
-  }
 }
 
 .googleWidgetEmpty {

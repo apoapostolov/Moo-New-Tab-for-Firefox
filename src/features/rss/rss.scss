@@ -1,17 +1,13 @@
 @use 'scss/variables' as *;
 
-/* The card follows the widgets around it: the shared scrim, the shared radius, and
- * whatever text colour the theme puts on it. */
+/* The Google cards' own card, not the theme's: same width, same scrim, same radius, so the
+ * two read as one set rather than one sitting narrower and lighter than the other. */
 .rssWidget {
-  @extend %basic;
+  @extend %widgetCard;
 
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 320px;
-  max-width: 100%;
-  padding: 12px 14px 10px;
-  box-sizing: border-box;
 }
 
 .rssHead {
