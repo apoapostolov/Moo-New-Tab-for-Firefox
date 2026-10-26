@@ -64,9 +64,10 @@ with or endorsed by the Mue project.
 
 Stock photos: [Pexels](https://pexels.com), [Unsplash](https://unsplash.com).
 Stock video: [Coverr](https://coverr.co), [Pixabay](https://pixabay.com),
-[Pexels](https://pexels.com). Live channels: WildEarth, ZenLIFE, Love Nature and
-Red Bull TV, found through the [iptv-org](https://github.com/iptv-org/iptv)
-index; each stream remains the property of its broadcaster.
+[Pexels](https://pexels.com). Live channels: thirty free-to-stream nature, travel,
+weather and documentary channels, found through the
+[iptv-org](https://github.com/iptv-org/iptv) index; each stream remains the property
+of its broadcaster.
 Welcome modal images: [Undraw](https://undraw.co).
 
 ## License
