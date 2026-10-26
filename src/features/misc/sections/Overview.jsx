@@ -263,18 +263,21 @@ const Card = ({ id, enabled, onToggle }) => {
 };
 
 /** The space a card will land in: dim, bordered, and the size of a card. */
-const Slot = ({ label }) => (
-  <span className="dropSlot">{label ? <span className="dropSlotLabel">{label}</span> : null}</span>
+const Slot = ({ label, wide }) => (
+  <span className={`dropSlot${wide ? ' dropSlot-wide' : ''}`}>
+    {label ? <span className="dropSlotLabel">{label}</span> : null}
+  </span>
 );
 
 /**
  * The line between two rows of the middle column. It is drawn only while a card is in
  * the air, and its negative margins cancel the space it takes, so the column does not
- * jump when the drag starts. As the target it opens to the height of a card.
+ * jump when the drag starts. It never opens: the opening is the slot row the drop
+ * produces, which is the size of the widget on its way in.
  */
-const Gap = ({ open }) => <div className={`dropGap${open ? ' dropGap-open' : ''}`} />;
+const Gap = () => <div className="dropGap" />;
 
-const Zone = ({ zone, rows, onToggle, isEnabled, activeId, gapAt, slotOpen }) => {
+const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide }) => {
   // Only the middle column needs lines between rows: on a rail the halves of a card
   // already mean before and after.
   const gaps = zone === 'center' && activeId !== null;
@@ -295,12 +298,12 @@ const Zone = ({ zone, rows, onToggle, isEnabled, activeId, gapAt, slotOpen }) =>
 
           return (
             <Fragment key={key}>
-              {gaps ? <Gap open={gapAt === index} /> : null}
+              {gaps ? <Gap /> : null}
 
               <div className={`zoneRow${row.length === 1 ? ' isSingle' : ''}`}>
                 {row.map((id) =>
                   id === SLOT ? (
-                    <Slot key="slot" />
+                    <Slot key="slot" wide={slotWide} />
                   ) : (
                     <Card
                       key={id}
@@ -316,7 +319,7 @@ const Zone = ({ zone, rows, onToggle, isEnabled, activeId, gapAt, slotOpen }) =>
           );
         })}
 
-        {gaps && rows.length ? <Gap open={gapAt === rows.length} /> : null}
+        {gaps && rows.length ? <Gap /> : null}
       </div>
     </div>
   );
@@ -518,7 +521,9 @@ const Overview = () => {
     [rowsFor],
   );
 
-  const gapAt = target && target.zone === 'center' && target.overId === null ? target.index : -1;
+  // The opening is drawn at the size of the widget on its way in: a card takes one
+  // column of the row, a full-width line takes the row.
+  const slotWide = activeId ? isFullWidth(activeId) : false;
 
   return (
     <>
@@ -548,6 +553,7 @@ const Overview = () => {
               isEnabled={isWidgetEnabled}
               activeId={activeId}
               slotOpen={target?.zone === 'left' && target.overId === null}
+              slotWide={slotWide}
             />
           </div>
 
@@ -570,6 +576,7 @@ const Overview = () => {
               isEnabled={isWidgetEnabled}
               activeId={activeId}
               slotOpen={target?.zone === 'right' && target.overId === null}
+              slotWide={slotWide}
             />
           </div>
 
@@ -580,8 +587,8 @@ const Overview = () => {
               onToggle={toggleEnabled}
               isEnabled={isWidgetEnabled}
               activeId={activeId}
-              gapAt={gapAt}
               slotOpen={target?.zone === 'center' && target.overId === null}
+              slotWide={slotWide}
             />
           </div>
         </div>

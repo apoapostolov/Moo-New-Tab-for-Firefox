@@ -601,13 +601,6 @@
   transition: height 0.12s ease, margin 0.12s ease, background 0.12s ease;
 }
 
-.dropGap-open {
-  height: 46px;
-  margin: 0;
-  border: 1px dashed color-mix(in srgb, currentColor 38%, transparent);
-  background: color-mix(in srgb, currentColor 5%, transparent);
-}
-
 /* The opening a drag makes: a dim, bordered space the size of a card. */
 .dropSlot {
   display: flex;
@@ -625,6 +618,12 @@
 .dropSlotOver {
   border-color: color-mix(in srgb, var(--signature, currentColor) 65%, transparent);
   background: color-mix(in srgb, var(--signature, currentColor) 12%, transparent);
+}
+
+/* A full-width line on its way in takes the whole row; a card keeps one column, which
+   the single-row rule above gives it. */
+.widgetZone[data-zone='center'] .zoneRow.isSingle > .dropSlot-wide {
+  width: 100%;
 }
 
 .dropSlotLabel {
