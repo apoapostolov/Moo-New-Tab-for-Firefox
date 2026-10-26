@@ -200,10 +200,10 @@ const Rss = () => {
   };
 
   /**
-   * The panel is placed after it has been measured, and it goes beside the card
-   * rather than over it: right of the row first, then left of it, which is the side
-   * a card in the right rail opens onto. Only when neither side has room does it
-   * fall below the row, above it, or into whatever height the window allows.
+   * The panel is placed after it has been measured, and it stands beside the card rather than
+   * over it. The rule is the mail preview's, down to the numbers: the card's own half of the
+   * window decides the side, the panel is pinned to the middle of the window, and its height
+   * is the same share of the window — two panels that open from a row should not drift apart.
    */
   useLayoutEffect(() => {
     const node = panel.current;
@@ -211,49 +211,33 @@ const Rss = () => {
     if (!node || !open) return undefined;
 
     const place = () => {
-      const margin = 12;
-      const gap = 12;
-      const width = Math.min(440, window.innerWidth - margin * 2);
-      const row = open.element?.getBoundingClientRect();
-
-      if (!row) return;
+      const width = Math.min(430, window.innerWidth - 48);
+      const card = open.element?.getBoundingClientRect();
 
       node.style.width = `${width}px`;
-      node.style.maxHeight = `${window.innerHeight - margin * 2}px`;
+      node.style.maxHeight = `${Math.min(window.innerHeight * 0.62, window.innerHeight - 32)}px`;
 
-      const height = node.offsetHeight;
-      const sideRoom = window.innerWidth - margin;
-      let left = null;
+      if (!card) return;
 
-      if (row.right + gap + width <= sideRoom) left = row.right + gap;
-      else if (row.left - gap - width >= margin) left = row.left - gap - width;
+      const besideRight = card.left + card.width / 2 < window.innerWidth / 2;
+      const wantedLeft = besideRight ? card.right + 12 : card.left - width - 12;
 
-      let offset;
-
-      if (left !== null) {
-        offset = Math.min(Math.max(margin, row.top), window.innerHeight - height - margin);
-      } else {
-        left = Math.min(Math.max(margin, row.left), window.innerWidth - width - margin);
-        offset = row.bottom + gap;
-
-        if (offset + height > window.innerHeight - margin) {
-          const above = row.top - gap - height;
-          offset = above >= margin ? above : Math.max(margin, window.innerHeight - height - margin);
-        }
-      }
-
-      node.style.left = `${Math.round(left)}px`;
-      node.style.top = `${Math.round(offset)}px`;
+      node.style.left = `${Math.round(Math.max(16, Math.min(wantedLeft, window.innerWidth - width - 16)))}px`;
+      node.style.top = `${Math.round(Math.max(16, (window.innerHeight - node.offsetHeight) / 2))}px`;
     };
 
     place();
 
+    // The panel grows as the article arrives and its picture loads, and the placement is
+    // measured from its height, so the height has to be watched rather than taken once.
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(place) : null;
+
+    observer?.observe(node);
     window.addEventListener('resize', place);
-    window.addEventListener('scroll', place, true);
 
     return () => {
+      observer?.disconnect();
       window.removeEventListener('resize', place);
-      window.removeEventListener('scroll', place, true);
     };
   }, [open, article.status, article.article, tick]);
 
