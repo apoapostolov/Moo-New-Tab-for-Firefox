@@ -1,7 +1,7 @@
 /*
  * The query line: a hairline under the words, not a field around them. It is drawn
- * by the widget rather than the input's border, so it can fade at both ends and
- * fill with the signature colour.
+ * by the widget rather than the input's border, so it can carry a second, brighter
+ * line over itself when the caret is in it.
  */
 .aiAsk {
   position: relative;
@@ -29,8 +29,9 @@
     background: rgb(255 255 255 / 20%);
   }
 
-  /* With the caret in the line, the signature colour fills it from the middle
-     outwards, which is the only motion the widget has. */
+  /* With the caret in the line, a brighter line fills it from the middle outwards,
+     which is the only motion the widget has. One white, no second colour: the line
+     belongs to the page, and a hue in it would read as a brand mark on a control. */
   &::after {
     content: '';
     position: absolute;
@@ -39,12 +40,7 @@
     width: 0;
     height: clamp(2px, 0.13em, 5px);
     border-radius: 999px;
-    background: linear-gradient(
-      90deg,
-      rgb(255 255 255 / 0%),
-      var(--signature, #6b86a8),
-      rgb(255 255 255 / 0%)
-    );
+    background: rgb(255 255 255 / 45%);
     opacity: 0;
     transition:
       width 460ms cubic-bezier(0.22, 0.61, 0.24, 1),
