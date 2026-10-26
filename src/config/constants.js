@@ -10,17 +10,17 @@ export const MARKETPLACE_URL = 'https://muetab.com/marketplace';
 export const CHANGELOG_URL = 'https://muetab.com/blog/changelog';
 export const PRIVACY_URL = 'https://muetab.com/privacy';
 export const WEBLATE_URL = 'https://hosted.weblate.org/projects/mue/mue-tab/';
-export const REPORT_ITEM =
-  'https://github.com/mue/marketplace/issues/new?assignees=&labels=item%2Creport&projects=&template=item_issue_report.yml&title=%5BItem+Report%5D+Insert+marketplace+item+name+here';
-export const BUG_REPORT =
-  'https://github.com/mue/mue/issues/new?assignees=&labels=bug&projects=&template=issue_report.yml&title=%5BBug%5D+Insert+issue+name+here';
+export const REPO_URL = 'https://github.com/apoapostolov/Moo-New-Tab-for-Firefox';
+export const ISSUES_URL = `${REPO_URL}/issues`;
+// The settings header appends the page name as the issue title.
+export const BUG_REPORT = `${REPO_URL}/issues/new?labels=bug&template=bug_report.yml&title=`;
 export const SENTRY_DSN =
   'https://430352fd4b174d688ebd82fc85c22c58@o1217438.ingest.sentry.io/6359480';
 export const KNOWLEDGEBASE = 'https://support.muetab.com';
 
 // Moo Info
 export const ORG_NAME = 'apoapostolov';
-export const REPO_NAME = 'Moo';
+export const REPO_NAME = 'Moo-New-Tab-for-Firefox';
 export const EMAIL = 'theapoapostolov@gmail.com';
 export const TWITTER_HANDLE = 'apomakesmods';
 export const DISCORD_SERVER = 'zv8C9F8';

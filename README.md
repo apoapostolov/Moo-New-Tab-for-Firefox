@@ -13,10 +13,12 @@
   <img src="assets/moo-newtab.gif" alt="Moo new tab page with a looping video background" width="800" />
 </p>
 
+Bugs and requests: [issues](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/issues).
+
 ## What is Moo?
 
 Moo is a new-tab page extension for Firefox (Manifest V3). It is a personal,
-simplified fork of [Mue](https://github.com/mue/mue) (BSD-3-Clause) that
+simplified derivative of [Mue](https://github.com/mue/mue) (BSD-3-Clause) that
 targets Firefox only and removes features that are no longer maintained or
 needed: Marketplace, Library, quotes, greetings, the achievement system and
 search (deprecated in Mue 7.2).
@@ -55,7 +57,7 @@ For a permanent install in Zen/Firefox, copy `build/firefox-1.0.0.zip` (renamed 
 
 ## Credits
 
-Moo is a fork of [Mue](https://github.com/mue/mue) by The Mue Authors
+Moo builds on [Mue](https://github.com/mue/mue) by The Mue Authors
 (BSD-3-Clause). Mue's original code, design and assets remain credited to
 their authors. Moo is a personal, simplified derivative and is not affiliated
 with or endorsed by the Mue project.

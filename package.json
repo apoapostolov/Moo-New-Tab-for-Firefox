@@ -4,10 +4,10 @@
   "author": "Apostol Apostolov (https://github.com/apoapostolov)",
   "description": "Fast, open and free-to-use new tab page for Firefox.",
   "repository": {
-    "url": "github:apoapostolov/Moo"
+    "url": "github:apoapostolov/Moo-New-Tab-for-Firefox"
   },
-  "homepage": "https://github.com/apoapostolov/Moo",
-  "bugs": "https://github.com/mue/mue/issues/new?assignees=&labels=bug&template=bug-report.md&title=%5BBUG%5D",
+  "homepage": "https://github.com/apoapostolov/Moo-New-Tab-for-Firefox#readme",
+  "bugs": "https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/issues",
   "license": "BSD-3-Clause",
   "version": "1.0.0",
   "type": "module",

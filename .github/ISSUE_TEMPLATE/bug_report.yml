@@ -1,0 +1,40 @@
+name: Bug report
+description: Something in Moo does not work as it should
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. A short report with the exact version is worth more than a long one.
+
+  - type: input
+    id: version
+    attributes:
+      label: Moo version
+      description: Settings → About shows it, or the file name of the `.xpi` you installed.
+      placeholder: 1.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: firefox
+    attributes:
+      label: Firefox version
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what appeared instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or errors
+      description: Drag images in, or paste anything from the browser console.
+    validations:
+      required: false
