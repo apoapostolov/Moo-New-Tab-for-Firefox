@@ -30,6 +30,8 @@ Moo is a Firefox-only fork of [Mue](https://muetab.com), the new tab extension b
 
 ### Changed
 
+- Scratch pictures keep their corner controls out of the way: copy, close, download and the resize grip appear on the picture you clicked or dragged, and leave when another note or picture takes over.
+- A scratch picture with transparency is drawn as a sticker, with no panel, frame or rectangle behind it, so a cut-out sits on the wallpaper as its own shape. Click or drag it and the frame and the controls come back.
 - Firefox only, with its own add-on id so it installs next to Mue.
 - The first run keeps the settings already in use in Mue.
 - Background effects each get their own heading (blur, brightness, filter) instead of one shared block.

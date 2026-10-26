@@ -132,9 +132,36 @@ const loadImage = (url) =>
     image.src = url;
   });
 
+/** True when any pixel is not fully opaque, so the picture has a cut-out. */
+const hasTransparency = (context, width, height) => {
+  const { data } = context.getImageData(0, 0, width, height);
+
+  for (let index = 3; index < data.length; index += 4) {
+    if (data[index] < 250) return true;
+  }
+
+  return false;
+};
+
+/** Pictures stored before the sticker rule carry no flag yet: read the pixels once. */
+const detectTransparency = async (src) => {
+  const image = await loadImage(src);
+  const canvas = document.createElement('canvas');
+
+  canvas.width = image.width;
+  canvas.height = image.height;
+
+  const context = canvas.getContext('2d');
+
+  context.drawImage(image, 0, 0);
+
+  return hasTransparency(context, canvas.width, canvas.height);
+};
+
 /**
  * A clipboard screenshot can be several megabytes, so it is drawn once into a
  * smaller canvas and stored as WebP, keeping it in the hundreds of kilobytes.
+ * The same pass reports whether the picture has any transparency.
  */
 const prepareImage = async (file) => {
   const objectUrl = URL.createObjectURL(file);
@@ -154,6 +181,7 @@ const prepareImage = async (file) => {
     return {
       src: canvas.toDataURL('image/webp', IMAGE_QUALITY),
       ratio: image.width / Math.max(1, image.height),
+      transparent: hasTransparency(context, canvas.width, canvas.height),
     };
   } finally {
     URL.revokeObjectURL(objectUrl);
@@ -185,6 +213,8 @@ const Scratch = () => {
   const [imageDrag, setImageDrag] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [copyFailed, setCopyFailed] = useState(null);
+  // The one note or picture in hand. Its controls are the only ones on screen.
+  const [focused, setFocused] = useState(null);
 
   const dragRef = useRef(null);
   const imageDragRef = useRef(null);
@@ -263,6 +293,7 @@ const Scratch = () => {
 
       commitNotes([...notes, note]);
       setEditingId(note.id);
+      setFocused(note.id);
     },
     [commitNotes, notes],
   );
@@ -290,6 +321,7 @@ const Scratch = () => {
     event.currentTarget.setPointerCapture?.(event.pointerId);
 
     tiltRef.current = 0;
+    setFocused(note.id);
 
     dragRef.current = {
       id: note.id,
@@ -397,7 +429,7 @@ const Scratch = () => {
   // Images
 
   const addImage = useCallback(async (file) => {
-    const { src, ratio } = await prepareImage(file);
+    const { src, ratio, transparent } = await prepareImage(file);
     const at = pointer.current ?? {
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
@@ -415,6 +447,7 @@ const Scratch = () => {
       angle: randomTilt(),
       z: nextZ(),
       src,
+      transparent,
     };
 
     setImages((current) => {
@@ -423,6 +456,20 @@ const Scratch = () => {
       return saveImages(next);
     });
   }, []);
+
+  // Pictures stored before the sticker rule carry no flag: read the pixels once, then keep it.
+  useEffect(() => {
+    const pending = images.find((image) => typeof image.transparent !== 'boolean');
+
+    if (!pending) return;
+
+    const settle = (transparent) =>
+      commitImages(
+        images.map((image) => (image.id === pending.id ? { ...image, transparent } : image)),
+      );
+
+    detectTransparency(pending.src).then(settle, () => settle(false));
+  }, [commitImages, images]);
 
   useEffect(() => {
     const track = (event) => {
@@ -466,6 +513,7 @@ const Scratch = () => {
     event.currentTarget.setPointerCapture?.(event.pointerId);
 
     tiltRef.current = 0;
+    setFocused(image.id);
 
     imageDragRef.current = {
       mode: 'move',
@@ -566,6 +614,7 @@ const Scratch = () => {
 
     event.stopPropagation();
     event.currentTarget.setPointerCapture?.(event.pointerId);
+    setFocused(image.id);
 
     imageDragRef.current = {
       mode: 'resize',
@@ -718,7 +767,9 @@ const Scratch = () => {
           return (
             <div
               key={image.id}
-              className={`scratchImage${active ? ' dragging' : ''}`}
+              className={`scratchImage${active ? ' dragging' : ''}${
+                focused === image.id ? ' focused' : ''
+              }${image.transparent ? ' sticker' : ''}`}
               style={{
                 left: image.x + (active && imageDrag.mode === 'move' ? imageDrag.dx : 0),
                 top: image.y + (active && imageDrag.mode === 'move' ? imageDrag.dy : 0),

@@ -49,6 +49,56 @@
   }
 }
 
+/* The controls belong to the picture in hand: they appear when it is clicked or
+   dragged, and leave when another note or picture takes over. */
+.scratchImage .scratchImageButton,
+.scratchImage .scratchImageResize {
+  opacity: 0;
+  // Not just invisible: a hidden button must not swallow the drag that lands on it.
+  pointer-events: none;
+}
+
+.scratchImage.focused .scratchImageButton {
+  opacity: 0.62;
+  pointer-events: auto;
+}
+
+.scratchImage.focused .scratchImageResize {
+  opacity: 0.72;
+  pointer-events: auto;
+}
+
+.scratchImage.focused .scratchImageClose.armed,
+.scratchImage.focused .scratchImageCopy.refused {
+  opacity: 1;
+}
+
+/* A picture with a cut-out is a sticker: no frame, no panel behind it, and a
+   shadow that follows its own outline instead of a rectangle. */
+.scratchImage.sticker {
+  background: transparent;
+  border-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+
+  img {
+    filter: drop-shadow(0 12px 22px rgb(0 0 0 / 30%));
+  }
+
+  &.dragging {
+    box-shadow: none;
+
+    img {
+      filter: drop-shadow(0 20px 34px rgb(0 0 0 / 40%));
+    }
+  }
+
+  // The frame is the only handle a cut-out has, so it carries a little more weight.
+  &.focused {
+    border-color: rgb(255 255 255 / 35%);
+  }
+}
+
 .scratchImageButton {
   position: absolute;
   display: grid;
