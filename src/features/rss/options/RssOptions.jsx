@@ -129,7 +129,7 @@ const RssOptions = () => {
         />
 
         {feeds.map((feed) => (
-          <Row key={feed.url}>
+          <Row key={feed.url} className="rssFeedRow">
             <Content title={feed.title || feedTitle(feed.url)} subtitle={feed.url} />
             <Action>
               {access[feed.url] === 'missing' ? (

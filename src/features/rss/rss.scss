@@ -287,6 +287,22 @@
   }
 }
 
+/* A feed is a line of content inside the group rather than another setting, so it is drawn
+ * inside the rows around it: inset from both edges, further on the left, which reads as a
+ * list of addresses instead of five more switches. The group path is named so this wins on
+ * specificity rather than on which stylesheet happened to load last. */
+.settingsGroup .settingsRow.rssFeedRow {
+  padding-left: 28px;
+  padding-right: 18px;
+
+  /* The action column seats its buttons 10px down, which is right for a button standing
+     under a label and wrong for one glyph centred against two lines: it landed 5px low.
+     The path is named as deep as the rule that sets it, or the margin wins. */
+  .action .rssOptionIcon {
+    margin-top: 0;
+  }
+}
+
 /* Settings rows. The feed address runs the width of the row, so the add can sit at the
  * end of it as a glyph and the text has room for a real address. */
 .rssFeedField {
