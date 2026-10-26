@@ -85,27 +85,31 @@
     }
   }
 
-  /* A story with a picture carries it in a small square beside the text, so the list
-     still reads as headlines and the pictures do not set the row height. */
+  /* A story with a picture carries it in a small square at the right of its two lines, so
+     the text keeps the card's left edge — where every other headline starts — and the
+     pictures still do not set the row height. */
   &.rssItem-hasThumb {
-    grid-template-columns: 34px minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto 34px;
     align-items: start;
 
-    .rssThumb {
-      grid-row: 1 / span 2;
+    .rssSource {
       grid-column: 1;
     }
 
-    .rssSource {
+    .rssAge {
       grid-column: 2;
     }
 
-    .rssAge {
-      grid-column: 3;
+    .rssItemTitle {
+      grid-column: 1 / span 2;
     }
 
-    .rssItemTitle {
-      grid-column: 2 / -1;
+    .rssThumb {
+      /* Beside the text at the right, the square starts on the line the row starts on.
+         Centred against two lines it slid down under the site name. */
+      grid-row: 1 / span 2;
+      grid-column: 3;
+      align-self: start;
     }
   }
 }
