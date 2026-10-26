@@ -4,10 +4,21 @@ import EventBus from 'utils/eventbus';
 const HIDDEN_CLASS = 'uiHidden';
 const SETTING = 'cinemaMode';
 
+/* The gesture's own tolerances, not the browser's. A click run is counted per element and
+ * expires on the double-click interval: on a page built out of stacked cards, notes and
+ * text, two of the three presses land on different elements and the run never reaches
+ * three, which is why the gesture felt unreliable rather than rare. */
+const TAPS = 3;
+const TAP_WINDOW = 700; // ms between presses — slower than the system's double-click gap
+const TAP_SLOP = 36; // px a hand may wander between presses and still mean the same run
+const RESTORE_DELAY = 300; // ms the page ignores presses for, so the reaching press cannot undo itself
+
 /**
- * A triple click is the one gesture the page has no other use for, so it is what hands
- * the page to the video. Only a video background registers it: with a still picture
- * there is nothing to watch on its own, and a hidden page would just look broken.
+ * A triple press is the one gesture the page has no other use for, so it is what hands the
+ * page to the video. Only a video background registers it: with a still picture there is
+ * nothing to watch on its own, and a hidden page would just look broken.
+ *
+ * With the UI hidden there is nothing left to click, so a single press brings it back.
  *
  * The switch defaults to on, so a profile that has never touched it has the gesture;
  * only an explicit false takes it away.
@@ -37,11 +48,52 @@ export function useCinemaMode(isVideo) {
   useEffect(() => {
     if (!isVideo || !enabled) return undefined;
 
-    const handleClick = (event) => {
-      // The browser counts the clicks in a run, so the third one is the gesture.
-      if (event.detail !== 3 || onAControl(event.target)) return;
+    let taps = 0;
+    let lastAt = 0;
+    let lastX = 0;
+    let lastY = 0;
+    let hiddenAt = 0;
 
-      document.body.classList.toggle(HIDDEN_CLASS);
+    const press = (event) => {
+      // A secondary button or a second finger is a different intention, not a faster run.
+      if (event.button !== 0 || event.isPrimary === false) {
+        taps = 0;
+        return;
+      }
+
+      // Controls keep their clicks: pressing a widget three times is still pressing a widget.
+      if (onAControl(event.target)) {
+        taps = 0;
+        return;
+      }
+
+      const now = event.timeStamp || performance.now();
+
+      if (document.body.classList.contains(HIDDEN_CLASS)) {
+        if (now - hiddenAt < RESTORE_DELAY) return;
+        document.body.classList.remove(HIDDEN_CLASS);
+        taps = 0;
+        return;
+      }
+
+      const quick = now - lastAt <= TAP_WINDOW;
+      const near =
+        Math.abs(event.clientX - lastX) <= TAP_SLOP && Math.abs(event.clientY - lastY) <= TAP_SLOP;
+
+      taps = quick && near ? taps + 1 : 1;
+      lastAt = now;
+      lastX = event.clientX;
+      lastY = event.clientY;
+
+      if (taps < TAPS) return;
+
+      taps = 0;
+      hiddenAt = now;
+
+      // Left alone, the browser's own triple click selects the paragraph it lands in, and
+      // the selection would still be there when the page comes back.
+      event.preventDefault();
+      document.body.classList.add(HIDDEN_CLASS);
     };
 
     // Nothing else is on screen to escape with, so the keyboard has to reach it too.
@@ -51,11 +103,12 @@ export function useCinemaMode(isVideo) {
       }
     };
 
-    document.addEventListener('click', handleClick);
+    // Captured, so an element that stops propagation cannot keep the gesture from arriving.
+    document.addEventListener('pointerdown', press, true);
     document.addEventListener('keydown', handleKey);
 
     return () => {
-      document.removeEventListener('click', handleClick);
+      document.removeEventListener('pointerdown', press, true);
       document.removeEventListener('keydown', handleKey);
       // The background or the switch changed under a hidden page, so the UI comes back.
       document.body.classList.remove(HIDDEN_CLASS);
