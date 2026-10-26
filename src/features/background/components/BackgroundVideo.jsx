@@ -1,8 +1,15 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
 
+/* How long a clip gets to paint a frame, and how long a silence inside it counts as dead.
+ * Twelve seconds is generous for a background clip; a file that is merely slow keeps sending
+ * bytes, and a file that sends nothing for six seconds is not going to arrive. */
+const FIRST_FRAME_MS = 12000;
+const STALL_MS = 6000;
+
 /** Firefox has no native HLS, so hls.js is imported only when a live background is used. */
-function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight }) {
+function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight, onFail }) {
   const videoRef = useRef(null);
+  const sourceRef = useRef(null);
   const storedMute = useMemo(() => localStorage.getItem('backgroundVideoMute') === 'true', []);
   const storedLoop = useMemo(() => localStorage.getItem('backgroundVideoLoop') === 'true', []);
 
@@ -82,6 +89,56 @@ function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight }
     };
   }, [url, hls]);
 
+  /*
+   * A clip that will not play is a black page, and nothing else notices: the element is there,
+   * silent, at zero frames. It is reported once, by the media error if the file is missing or
+   * undecodable, or by a watch that finds nothing painted after the file should have arrived.
+   *
+   * Live streams are left alone. hls.js retries a dropped connection by itself, and a stream
+   * that is buffering is not a stream that died.
+   */
+  useEffect(() => {
+    const video = videoRef.current;
+    const source = sourceRef.current;
+
+    if (!video || !onFail || live) return undefined;
+
+    let reported = false;
+    let lastProgress = 0;
+
+    const report = () => {
+      if (reported) return;
+      reported = true;
+      onFail();
+    };
+
+    const settle = setTimeout(() => {
+      // Nothing painted, and nothing has arrived for six seconds: the file is not late, it is
+      // absent. A slow file that is still downloading keeps its place.
+      const stalled = !lastProgress || Date.now() - lastProgress > STALL_MS;
+
+      if (video.readyState < 2 && stalled) report();
+    }, FIRST_FRAME_MS);
+
+    const painted = () => clearTimeout(settle);
+    const progress = () => {
+      lastProgress = Date.now();
+    };
+
+    video.addEventListener('error', report);
+    video.addEventListener('loadeddata', painted);
+    video.addEventListener('progress', progress);
+    source?.addEventListener('error', report);
+
+    return () => {
+      clearTimeout(settle);
+      video.removeEventListener('error', report);
+      video.removeEventListener('loadeddata', painted);
+      video.removeEventListener('progress', progress);
+      source?.removeEventListener('error', report);
+    };
+  }, [url, live, onFail]);
+
   // A live stream keeps downloading while the tab is hidden; park it instead.
   useEffect(() => {
     if (!live) return undefined;
@@ -118,8 +175,11 @@ function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight }
     };
   }, [url, hls]);
 
+  // Keyed by the address: a <video> that has failed does not restart resource selection when
+  // its <source> changes, so a replacement clip would sit there silently. A new element does.
   return (
     <video
+      key={url}
       ref={videoRef}
       autoPlay
       muted={isMuted}
@@ -128,7 +188,7 @@ function BackgroundVideo({ url, filterStyle, loop, muted, hls, live, maxHeight }
       style={filterStyle}
       id="backgroundVideo"
     >
-      {!hls && <source src={url} />}
+      {!hls && <source ref={sourceRef} src={url} />}
     </video>
   );
 }

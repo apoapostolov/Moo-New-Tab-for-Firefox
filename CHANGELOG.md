@@ -169,6 +169,7 @@ Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab exten
 - A live channel that publishes captions no longer draws them over the wallpaper. The background has no text of its own, and a webcam stream that ships a caption rendition used to have it switched on automatically.
 
 - The AI Ask service menu opens above notes and pictures. It sat at 3 while the scratch layer floats at 40, so a note parked over the widget covered the list; it is now above that layer and still below a dialog.
+- A Mixkit clip that will not play no longer leaves a black page: a clip whose file the asset host refuses is skipped before it is shown, and one that fails on screen asks the catalogue for the next clip, twice, before the offline image takes over.
 ### Removed
 
 - Marketplace and Library.

@@ -86,26 +86,46 @@ function readCards(html) {
   return [...cards.values()];
 }
 
-/** The largest size that answers; 360 is used when neither probe does. */
+/**
+ * The largest size that answers, or null when the asset host said no to both.
+ *
+ * The host answers `access-control-allow-origin: *`, so a probe that comes back *unhappy* is
+ * real information: a clip whose id is gone answers 403, and pointing a <video> at it draws a
+ * black rectangle. Null sends the caller to the next card.
+ *
+ * A probe that *throws* says nothing — the network was down, or the request never left — and
+ * 720 is offered on the chance that playback works. The video element reports the failure and
+ * the page asks for another clip, so neither path ends in a black page.
+ */
 async function pickFile(id) {
+  let answered = false;
+
   for (const size of SIZES) {
     const url = ASSET(id, size);
 
     try {
       const response = await fetch(url, { method: 'HEAD' });
+      answered = true;
 
       if (response.ok) return url;
     } catch {
-      // No permission for the asset host, or no such size: the next one may still play.
+      // Blocked or unreachable: the probe proves nothing about this file.
     }
   }
 
-  return ASSET(id, SIZES[SIZES.length - 1]);
+  return answered ? null : ASSET(id, SIZES[0]);
 }
 
-export async function fetchMixkitVideo() {
+/**
+ * `excluded` holds the clips the page has already failed to play, so a retry moves on instead
+ * of handing back the rectangle that is already black.
+ */
+export async function fetchMixkitVideo(excluded = []) {
   const query = (localStorage.getItem('mixkitQuery') || '').trim();
   const recent = readRecent(RECENT_KEY);
+  // Cards this call has already turned down, so a page full of dead clips cannot be picked
+  // from twice and a mixed page still ends with the one that plays.
+  const skipped = new Set();
 
   for (let attempt = 0; attempt < ATTEMPTS; attempt++) {
     const params = new URLSearchParams({
@@ -123,7 +143,7 @@ export async function fetchMixkitVideo() {
         continue;
       }
 
-      const cards = readCards(await response.text());
+      const cards = readCards(await response.text()).filter((item) => !skipped.has(item.id));
       // The last attempt accepts a repeat: an older clip beats a blank fallback.
       const card = pickUnseen(cards, attempt === ATTEMPTS - 1 ? [] : recent, (item) => item.id);
 
@@ -131,10 +151,20 @@ export async function fetchMixkitVideo() {
         continue;
       }
 
+      const url = await pickFile(card.id);
+
+      // No file, or the one already on screen: this clip is not the answer, and another page
+      // of the catalogue is one request away.
+      if (!url || excluded.includes(url)) {
+        skipped.add(card.id);
+
+        continue;
+      }
+
       rememberClip(RECENT_KEY, card.id);
 
       return {
-        url: await pickFile(card.id),
+        url,
         video: true,
         loop: true,
         muted: true,
