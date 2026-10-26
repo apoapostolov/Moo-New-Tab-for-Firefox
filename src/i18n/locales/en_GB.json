@@ -400,6 +400,10 @@
                 "title": "Colour",
                 "subtitle": "Pick one, or take the colour the wallpaper is already wearing."
               }
+            },
+            "scratch_no_tilt": {
+              "title": "Turn off tilting",
+              "subtitle": "Notes and pictures sit straight, and dragging one no longer gives it a lean."
             }
           },
           "weather": {

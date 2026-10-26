@@ -28,6 +28,8 @@ const NOTES_STORE = 'scratchNotesData';
 const IMAGES_STORE = 'scratchImagesData';
 const NOTES_FLAG = 'scratchNotes';
 const IMAGES_FLAG = 'scratchImages';
+// Off by default: the lean is part of the feel. Turning it on keeps everything straight.
+const NO_TILT_FLAG = 'scratchNoTilt';
 const TOP_Z = 'scratchTopZ';
 const ARM_TIMEOUT = 4000;
 // A picture is stored whole, so the store has a ceiling: past it the oldest picture gives way.
@@ -205,6 +207,7 @@ const toPngBlob = async (src) => {
 const Scratch = () => {
   const [notesOn, setNotesOn] = useState(() => localStorage.getItem(NOTES_FLAG) === 'true');
   const [imagesOn, setImagesOn] = useState(() => localStorage.getItem(IMAGES_FLAG) === 'true');
+  const [noTilt, setNoTilt] = useState(() => localStorage.getItem(NO_TILT_FLAG) === 'true');
   const [notes, setNotes] = useState(readNotes);
   const [images, setImages] = useState(readImages);
   const [editingId, setEditingId] = useState(null);
@@ -229,6 +232,7 @@ const Scratch = () => {
     const reread = () => {
       setNotesOn(localStorage.getItem(NOTES_FLAG) === 'true');
       setImagesOn(localStorage.getItem(IMAGES_FLAG) === 'true');
+      setNoTilt(localStorage.getItem(NO_TILT_FLAG) === 'true');
     };
 
     EventBus.on('refresh', reread);
@@ -287,7 +291,7 @@ const Scratch = () => {
         x: clamp(clientX - 28, 8, Math.max(8, window.innerWidth - NOTE_WIDTH - 8)),
         y: clamp(clientY - 16, 8, Math.max(8, window.innerHeight - 120)),
         text: '',
-        angle: randomTilt(),
+        angle: noTilt ? 0 : randomTilt(),
         z: nextZ(),
       };
 
@@ -386,7 +390,7 @@ const Scratch = () => {
               ...note,
               x: clamp(current.baseX + dx, 4, Math.max(4, window.innerWidth - 60)),
               y: clamp(current.baseY + dy, 4, Math.max(4, window.innerHeight - 40)),
-              angle: settleAngle(note.angle + tiltRef.current),
+              angle: noTilt ? 0 : settleAngle(note.angle + tiltRef.current),
             }
           : note,
       ),
@@ -444,7 +448,7 @@ const Scratch = () => {
       y: clamp(at.y - height / 2, 8, Math.max(8, window.innerHeight - height - 8)),
       width,
       ratio,
-      angle: randomTilt(),
+      angle: noTilt ? 0 : randomTilt(),
       z: nextZ(),
       src,
       transparent,
@@ -704,7 +708,7 @@ const Scratch = () => {
         notes.map((note, index) => {
           const editing = editingId === note.id;
           const active = drag?.id === note.id;
-          const angle = note.angle + (active ? drag.tilt : 0);
+          const angle = noTilt ? 0 : note.angle + (active ? drag.tilt : 0);
 
           return (
             <div
@@ -762,7 +766,9 @@ const Scratch = () => {
         images.map((image, index) => {
           const active = imageDrag?.id === image.id;
           const width = active && imageDrag.mode === 'resize' ? imageDrag.width : image.width;
-          const angle = image.angle + (active && imageDrag.tilt ? imageDrag.tilt : 0);
+          const angle = noTilt
+            ? 0
+            : image.angle + (active && imageDrag.tilt ? imageDrag.tilt : 0);
 
           return (
             <div

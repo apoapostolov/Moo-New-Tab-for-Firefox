@@ -73,29 +73,31 @@
   opacity: 1;
 }
 
-/* A picture with a cut-out is a sticker: no frame, no panel behind it, and a
-   shadow that follows its own outline instead of a rectangle. */
+/* A picture with a cut-out is a sticker: no frame, no panel and no shadow, so it
+   sits on the wallpaper as its own shape. The round corners stay, so the cut-out
+   is clipped the way the card always was. Nothing here is a filter: a filter on a
+   moving picture is re-rendered every frame, which is what made the first drag
+   skip. `will-change` gives it its own layer before the drag needs one.
+   Touched, it is a card again: the glass, the round corners and the shadow fade
+   back in with the controls. */
 .scratchImage.sticker {
   background: transparent;
   border-color: transparent;
-  border-radius: 0;
   box-shadow: none;
+  will-change: transform;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 
-  img {
-    filter: drop-shadow(0 12px 22px rgb(0 0 0 / 30%));
-  }
-
-  &.dragging {
-    box-shadow: none;
-
-    img {
-      filter: drop-shadow(0 20px 34px rgb(0 0 0 / 40%));
-    }
-  }
-
-  // The frame is the only handle a cut-out has, so it carries a little more weight.
   &.focused {
-    border-color: rgb(255 255 255 / 35%);
+    background: rgb(18 18 20 / 32%);
+    border-color: rgb(255 255 255 / 15%);
+    box-shadow: 0 14px 34px rgb(0 0 0 / 26%);
+
+    &.dragging {
+      box-shadow: 0 22px 46px rgb(0 0 0 / 34%);
+    }
   }
 }
 

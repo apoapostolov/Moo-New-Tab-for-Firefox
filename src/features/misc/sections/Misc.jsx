@@ -53,6 +53,20 @@ const MiscOptions = () => {
             />
           </Action>
         </Row>
+
+        <Row>
+          <Content
+            title={variables.getMessage(`${MISC_SECTION}.scratch_no_tilt.title`)}
+            subtitle={variables.getMessage(`${MISC_SECTION}.scratch_no_tilt.subtitle`)}
+          />
+          <Action>
+            <Switch
+              name="scratchNoTilt"
+              category="other"
+              text={variables.getMessage('modals.main.settings.enabled')}
+            />
+          </Action>
+        </Row>
       </Group>
     </>
   );

@@ -2,7 +2,7 @@
 
 ## 1.0.0 — 25 October 2026
 
-Moo is a Firefox-only fork of [Mue](https://muetab.com), the new tab extension by The Mue Authors. It keeps the backgrounds, the weather and the widgets, drops the store and the account extras, and adds what this setup was missing.
+Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab extension by The Mue Authors. It keeps the backgrounds, the weather and the widgets, drops the store and the account extras, and adds what this setup was missing.
 
 ### Added
 
@@ -26,12 +26,13 @@ Moo is a Firefox-only fork of [Mue](https://muetab.com), the new tab extension b
 - Three columns for the new tab page: any widget can sit in a rail down the left side, a rail down the right, or the middle column. In Overview the widgets are dropped into a Left, Right or Centre box around the preview, and moving one between those boxes moves it on the page.
 - Weather Full and Image Info are widgets now, so the full weather card and the photographer credit can be placed like any other. A profile that has never moved them keeps them in the corners they were always in.
 - Bulgarian language.
+- A setting in Misc that turns off the tilt, off by default. Notes and pictures sit straight and a drag no longer leans them, while the lean you already have is kept, so switching it back restores every note where it was.
 - Brand icons for new quick links. Typing an address that matches one of 409 known sites fills the icon field with that site's mark, drawn as a plain white glyph instead of a coloured favicon. The marks come from Simple Icons (plus an older release of it for the brands that asked to be removed), Material Design Icons and Font Awesome brands, and the row stays visually even across all three.
 
 ### Changed
 
 - Scratch pictures keep their corner controls out of the way: copy, close, download and the resize grip appear on the picture you clicked or dragged, and leave when another note or picture takes over.
-- A scratch picture with transparency is drawn as a sticker, with no panel, frame or rectangle behind it, so a cut-out sits on the wallpaper as its own shape. Click or drag it and the frame and the controls come back.
+- A scratch picture with transparency is drawn as a sticker: no panel, no frame and no shadow, so a cut-out sits on the wallpaper as its own shape, still with the card's round corners. Click or drag it and the glass comes back under it, the frame with it, and the controls in the corners.
 - Firefox only, with its own add-on id so it installs next to Mue.
 - The first run keeps the settings already in use in Mue.
 - Background effects each get their own heading (blur, brightness, filter) instead of one shared block.
@@ -72,6 +73,7 @@ Moo is a Firefox-only fork of [Mue](https://muetab.com), the new tab extension b
 
 ### Fixed
 
+- A transparent scratch picture stuttered once or twice the first time it was dragged. It carried a shadow filter, which the browser re-renders for every frame of a move, and the card had no layer of its own until the drag asked for one.
 - The Add Link dialog had no room on its right: the form width excluded its own padding while the inputs added theirs, so the right edge was clipped. The box now measures from the border, and the dialog is 560px wide.
 - The animated background can no longer pan past the edge of the image and show black strips.
 - Weather spacing, and the min/max temperature alignment in the widget and the forecast.
