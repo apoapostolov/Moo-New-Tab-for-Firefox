@@ -12,7 +12,7 @@ const COUNT_KEY = 'rssItemCount';
 const REFRESH_KEY = 'rssRefreshMinutes';
 const FULL_ARTICLE_KEY = 'rssFullArticle';
 
-const DEFAULT_COUNT = 12;
+const DEFAULT_COUNT = 3;
 // A dozen headlines is the most the card is asked to carry, so an older profile that
 // stored more is read back down to it rather than kept.
 const MAX_COUNT = 12;

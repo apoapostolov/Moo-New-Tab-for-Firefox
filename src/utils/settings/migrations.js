@@ -63,12 +63,26 @@ const seedCinemaMode = () => {
   }
 };
 
+// The RSS card carried a dozen headlines by default. A profile that still holds that
+// value from the old default is brought down to three once; the mark stops it recurring,
+// so a later choice of twelve is never overridden.
+const RSS_COUNT_MARK = 'rssCountDefaultThree';
+
+const reseedRssCount = () => {
+  if (localStorage.getItem(RSS_COUNT_MARK)) return;
+
+  if (localStorage.getItem('rssItemCount') === '12') localStorage.setItem('rssItemCount', '3');
+
+  localStorage.setItem(RSS_COUNT_MARK, 'true');
+};
+
 const runMigrations = () => {
   retireMueLibrary();
   seedPercentageFallback();
   seedPercentageDoubleClick();
   seedPhotoInfoLocation();
   seedCinemaMode();
+  reseedRssCount();
 
   if (!localStorage.getItem(HOVER_MARK)) {
     if (localStorage.getItem('navbarHover') === 'true') localStorage.removeItem('navbarHover');

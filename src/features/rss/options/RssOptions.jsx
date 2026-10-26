@@ -35,7 +35,7 @@ const KEEP = [
 const seedDefaults = () => {
   const defaults = {
     rssFullArticle: 'true',
-    rssItemCount: '12',
+    rssItemCount: '3',
     rssRefreshMinutes: '30',
     rssArticleTtl: '168',
   };
