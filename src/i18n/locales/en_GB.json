@@ -406,6 +406,9 @@
               "subtitle": "Notes and pictures sit straight, and dragging one no longer gives it a lean."
             }
           },
+          "rss": {
+            "title": "RSS"
+          },
           "weather": {
             "title": "Weather",
             "location": "Location",

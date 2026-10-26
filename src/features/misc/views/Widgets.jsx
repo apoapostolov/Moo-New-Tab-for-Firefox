@@ -23,6 +23,7 @@ const GoogleMail = lazy(() => import('../../google/GoogleMail'));
 const GoogleCalendar = lazy(() => import('../../google/GoogleCalendar'));
 const GoogleTasks = lazy(() => import('../../google/GoogleTasks'));
 const PhotoInfoWidget = lazy(() => import('../../background/components/PhotoInfoWidget'));
+const Rss = lazy(() => import('../../rss/Rss'));
 
 /**
  * A rail each side and the middle column; Overview decides which. The middle splits in two only
@@ -52,6 +53,7 @@ const Widgets = () => {
       calendar: enabled('calendar') ? <GoogleCalendar /> : null,
       tasks: enabled('tasks') ? <GoogleTasks /> : null,
       photoinfo: enabled('photoinfo') ? <PhotoInfoWidget /> : null,
+      rss: enabled('rss') ? <Rss /> : null,
     }),
     [layout], // Re-create widgets when the order or placement changes
   );

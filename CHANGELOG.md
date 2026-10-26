@@ -5,6 +5,7 @@
 Moo is a Firefox-only derivative of [Mue](https://muetab.com), the new tab extension by The Mue Authors. It keeps the backgrounds, the weather and the widgets, drops the store and the account extras, and adds what this setup was missing.
 
 ### Added
+- An RSS widget that reads several feeds as one list. Feeds are added under Settings, RSS: any RSS or Atom address is accepted, each one is fetched on its own, duplicates are dropped, and what is left is sorted newest first. Hovering a headline opens a reader beside the card with the feed's own summary, then the article itself once the page has fetched and read it, with the story's lead image and its text set for reading; clicking a headline opens the original. A feed that fails does not take the others with it: the rest of the list still draws and the card says how many did not answer. Adding a feed asks the browser for access to that site, because a feed on a host the page cannot reach answers nothing.
 
 - Unsplash topics: pick from the live topic list instead of four fixed collections.
 - Coverr: free looping video clips as a background source, with an optional search.

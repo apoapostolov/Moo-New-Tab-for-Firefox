@@ -10,6 +10,7 @@ import { QuickLinksOptions } from 'features/quicklinks';
 import { BackgroundOptions } from 'features/background';
 import { WeatherOptions } from 'features/weather';
 import { GoogleOptions } from 'features/google';
+import { RssOptions } from 'features/rss';
 import { Stats } from 'features/stats';
 import {
   About,
@@ -37,6 +38,7 @@ const sections = [
     component: BackgroundOptions,
   },
   { label: 'modals.main.settings.sections.weather.title', name: 'weather', component: WeatherOptions },
+  { label: 'modals.main.settings.sections.rss.title', name: 'rss', component: RssOptions },
   {
     label: 'modals.main.settings.sections.google.title',
     name: 'google',

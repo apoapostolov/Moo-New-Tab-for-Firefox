@@ -11,6 +11,7 @@ const SURFACE_SETTINGS = {
   mail: 'surfaceMail',
   calendar: 'surfaceCalendar',
   tasks: 'surfaceTasks',
+  rss: 'surfaceRss',
 };
 
 function getSurface(setting) {

@@ -22,6 +22,7 @@
     }
   },
   "permissions": ["identity", "storage", "clipboardWrite"],
+  "optional_host_permissions": ["*://*/*"],
   "host_permissions": [
     "https://www.googleapis.com/*",
     "https://oauth2.googleapis.com/*",
