@@ -1,0 +1,10 @@
+/* A video background can be watched on its own. A triple click empties the page to the
+   video and a second triple click brings everything back; `pointer-events: none` is what
+   lets those clicks reach the video, so the same gesture can undo itself. */
+body.uiHidden {
+  #center,
+  .Toastify__toast-container {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

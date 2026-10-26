@@ -6,6 +6,7 @@ import { setCurrentPhoto } from './photoStore';
 import { useBackgroundLoader } from './hooks/useBackgroundLoader';
 import { useBackgroundRenderer, useBackgroundFilters, useBackgroundOverlayFilters } from './hooks/useBackgroundRenderer';
 import { useBackgroundEvents } from './hooks/useBackgroundEvents';
+import { useCinemaMode } from './hooks/useCinemaMode';
 
 import { useEffect, useRef, useCallback } from 'react';
 import EventBus from 'utils/eventbus';
@@ -20,6 +21,7 @@ export default function Background() {
 
   useBackgroundRenderer(backgroundData);
   useBackgroundEvents(backgroundData, refreshBackground);
+  useCinemaMode(backgroundData.video);
 
   // The credit card is a separate widget, so it needs to know which photo is
   // behind the page without living inside the element that draws it.
