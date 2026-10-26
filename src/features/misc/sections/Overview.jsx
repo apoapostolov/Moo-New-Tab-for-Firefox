@@ -1,23 +1,14 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MdOutlineDragIndicator } from 'react-icons/md';
 import {
   DndContext,
-  closestCorners,
+  DragOverlay,
   KeyboardSensor,
-  pointerWithin,
   PointerSensor,
-  useDroppable,
+  useDraggable,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 
 import variables from 'config/variables';
 import Clock from './overview_skeletons/Clock';
@@ -42,12 +33,14 @@ import {
 
 import EventBus from 'utils/eventbus';
 
-// Zones in the order they are drawn around the preview.
-const ZONE_TITLES = { left: 'Left', center: 'Centre', right: 'Right' };
+const ZONE_TITLES = { left: 'Left', center: 'Center', right: 'Right' };
 
-// Ms a card must be held over another in the middle column before that one steps
-// aside: long enough that dragging past a row never triggers it.
-const HOLD_MS = 260;
+// Stands in for the card being dragged while the columns are drawn, so a column can
+// open a space for it without holding on to it.
+const SLOT = '\u0000slot';
+
+// How far past a row edge still counts as the line between two rows.
+const GAP_REACH = 2;
 
 const widgetLabel = (id) => {
   const widget = WIDGETS.find((item) => item.id === id);
@@ -56,66 +49,275 @@ const widgetLabel = (id) => {
 };
 
 /**
- * A row wins over the container it sits in, and a container only answers where
- * the pointer is really inside it, so a far corner cannot claim a drop aimed at a row.
+ * A column is read as rows: the rails hold one card per row, the middle column holds
+ * two once a pair has been made. A second card only joins the row above it, so a pair
+ * can never become a row of three.
  */
-const collisionDetection = (args) => {
-  const hits = pointerWithin(args);
+const toRows = (ids, secondLane) => {
+  const rows = [];
 
-  if (hits.length === 0) return closestCorners(args);
+  ids.forEach((id) => {
+    const last = rows[rows.length - 1];
 
-  const row = hits.find((hit) => !ZONES.includes(hit.id));
+    if (secondLane.includes(id) && last && last.length === 1) last.push(id);
+    else rows.push([id]);
+  });
 
-  return row ? [row] : hits;
+  return rows;
 };
 
-const SortableItem = ({ id, enabled, onToggle, secondColumn, makingRoom }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+/** Rows back to a flat order and the middle column's second lane. */
+const fromRows = (rows) => {
+  const ids = [];
+  const lane = [];
 
-  const style = { transform: CSS.Transform.toString(transform), transition };
+  rows.forEach((row) =>
+    row.forEach((id, index) => {
+      if (id === SLOT) return;
 
-  const className = [
-    'sortableItem',
-    secondColumn ? 'inSecondColumn' : '',
-    makingRoom ? 'makingRoom' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+      ids.push(id);
+
+      if (index === 1) lane.push(id);
+    }),
+  );
+
+  return { ids, lane };
+};
+
+/**
+ * The rows a drop produces. Over a lone card the arriving card takes the side the
+ * pointer is on and that card steps to the other side, so the two share a row. A pair
+ * already sharing a row stays together and the arriving card takes a row of its own
+ * either side of it. On the line between rows it takes a row of its own there. In a
+ * rail every row holds one card, so any drop simply opens a row.
+ */
+const placeRows = ({ zone, rows, insert, overId, side, index, insertWide }) => {
+  const next = rows.map((row) => [...row]);
+  // The clock, the date, the one-line weather and the query line read across the whole
+  // middle column: they never take half of a row, and nothing pairs with them. The card
+  // in the air is a placeholder in the preview, so its kind is passed in rather than read.
+  const wide = insertWide || (overId ? isFullWidth(overId) : false);
+
+  if (!overId) {
+    next.splice(Math.min(index ?? 0, next.length), 0, [insert]);
+
+    return next;
+  }
+
+  const at = next.findIndex((row) => row.includes(overId));
+
+  if (at < 0) return [...next, [insert]];
+
+  if (zone !== 'center') {
+    next.splice(side === 'after' ? at + 1 : at, 0, [insert]);
+
+    return next;
+  }
+
+  const row = next[at];
+
+  if (row.length > 1 || wide) {
+    next.splice(side === 'a' ? at : at + 1, 0, [insert]);
+
+    return next;
+  }
+
+  next.splice(at, 1, side === 'b' ? [overId, insert] : [insert, overId]);
+
+  return next;
+};
+
+/** Where the pointer sits on the cards as they were when the drag began. */
+const captureGeometry = () => {
+  const geometry = {};
+
+  ZONES.forEach((zone) => {
+    const column = document.querySelector(`.widgetZone[data-zone="${zone}"]`);
+
+    if (!column) return;
+
+    const box = column.getBoundingClientRect();
+
+    geometry[zone] = {
+      left: box.left,
+      right: box.right,
+      cards: [...column.querySelectorAll('.zoneCard')].map((card) => {
+        const rect = card.getBoundingClientRect();
+
+        return {
+          id: card.dataset.widgetId,
+          left: rect.left,
+          right: rect.right,
+          top: rect.top,
+          bottom: rect.bottom,
+        };
+      }),
+      gaps: [...column.querySelectorAll('.dropGap')].map((gap, index) => {
+        const rect = gap.getBoundingClientRect();
+
+        return { index, top: rect.top, bottom: rect.bottom };
+      }),
+    };
+  });
+
+  return geometry;
+};
+
+/** The column the pointer is in, or the one it is nearest. */
+const pickZone = (geometry, x) => {
+  let best = null;
+  let distance = Infinity;
+
+  ZONES.forEach((zone) => {
+    const column = geometry[zone];
+
+    if (!column) return;
+
+    const away = x < column.left ? column.left - x : x > column.right ? x - column.right : 0;
+
+    if (away < distance) {
+      distance = away;
+      best = zone;
+    }
+  });
+
+  return best;
+};
+
+/**
+ * The place the card would land, read off the frozen geometry rather than the live
+ * layout: the opening this answer draws changes the layout, and asking the changed
+ * layout again would flip the answer back and forth until React gives up.
+ */
+const readTarget = (geometry, point) => {
+  const zone = pickZone(geometry, point.x);
+
+  if (!zone) return null;
+
+  const column = geometry[zone];
+
+  if (column.cards.length === 0) {
+    return { zone, overId: null, side: zone === 'center' ? 'a' : 'after', index: 0 };
+  }
+
+  // In the middle column the line between two rows is a place of its own.
+  if (zone === 'center') {
+    const gap = column.gaps.find(
+      (item) => point.y >= item.top - GAP_REACH && point.y <= item.bottom + GAP_REACH,
+    );
+
+    if (gap) return { zone, overId: null, side: 'at', index: gap.index };
+  }
+
+  let nearest = column.cards[0];
+  let distance = Infinity;
+
+  column.cards.forEach((card) => {
+    const away =
+      point.y < card.top ? card.top - point.y : point.y > card.bottom ? point.y - card.bottom : 0;
+
+    if (away < distance) {
+      distance = away;
+      nearest = card;
+    }
+  });
+
+  if (zone === 'center') {
+    return {
+      zone,
+      overId: nearest.id,
+      side: point.x < (nearest.left + nearest.right) / 2 ? 'a' : 'b',
+    };
+  }
+
+  return {
+    zone,
+    overId: nearest.id,
+    side: point.y < (nearest.top + nearest.bottom) / 2 ? 'before' : 'after',
+  };
+};
+
+const sameTarget = (a, b) => {
+  if (!a || !b) return a === b;
+
+  return a.zone === b.zone && a.overId === b.overId && a.side === b.side && a.index === b.index;
+};
+
+const Card = ({ id, enabled, onToggle }) => {
+  const { attributes, listeners, setNodeRef } = useDraggable({ id });
 
   return (
-    <li ref={setNodeRef} style={style} {...attributes} className={className} data-widget-id={id}>
-      <span className="dragHandle" {...listeners}>
+    <div ref={setNodeRef} className="zoneCard" data-widget-id={id} {...attributes}>
+      <span className="dragHandle" {...listeners} aria-label={`Move ${widgetLabel(id)}`}>
         <MdOutlineDragIndicator />
       </span>
-      <span style={{ flex: 1 }}>{widgetLabel(id)}</span>
-      <input type="checkbox" checked={enabled} onChange={() => onToggle(id)} />
-    </li>
+      <span className="zoneCardLabel">{widgetLabel(id)}</span>
+      <input
+        type="checkbox"
+        checked={enabled}
+        aria-label={widgetLabel(id)}
+        onChange={() => onToggle(id)}
+      />
+    </div>
   );
 };
 
-/** A drop container: the whole box is the target, so an empty zone still accepts a widget. */
-const Zone = ({ zone, items, onToggle, isEnabled, secondLane, makingRoomId, hovered }) => {
-  const { setNodeRef, isOver } = useDroppable({ id: zone });
-  const className = `widgetZone${isOver || hovered ? ' widgetZoneOver' : ''}`;
+/** The space a card will land in: dim, bordered, and the size of a card. */
+const Slot = ({ label }) => (
+  <span className="dropSlot">{label ? <span className="dropSlotLabel">{label}</span> : null}</span>
+);
+
+/**
+ * The line between two rows of the middle column. It is drawn only while a card is in
+ * the air, and its negative margins cancel the space it takes, so the column does not
+ * jump when the drag starts. As the target it opens to the height of a card.
+ */
+const Gap = ({ open }) => <div className={`dropGap${open ? ' dropGap-open' : ''}`} />;
+
+const Zone = ({ zone, rows, onToggle, isEnabled, activeId, gapAt, slotOpen }) => {
+  // Only the middle column needs lines between rows: on a rail the halves of a card
+  // already mean before and after.
+  const gaps = zone === 'center' && activeId !== null;
 
   return (
-    <div ref={setNodeRef} className={className} data-zone={zone}>
-      <span className="title">{ZONE_TITLES[zone]}</span>
-      <SortableContext id={zone} items={items} strategy={verticalListSortingStrategy}>
-        <ul className="sortableContainer">
-          {items.length === 0 ? <li className="widgetZoneEmpty">Drop a widget here</li> : null}
-          {items.map((id) => (
-            <SortableItem
-              key={id}
-              id={id}
-              enabled={isEnabled(id)}
-              onToggle={onToggle}
-              secondColumn={zone === 'center' && secondLane.includes(id)}
-              makingRoom={zone === 'center' && makingRoomId === id}
-            />
-          ))}
-        </ul>
-      </SortableContext>
+    <div className="widgetZone" data-zone={zone}>
+      <span className="zoneTitle">{ZONE_TITLES[zone]}</span>
+
+      <div className="zoneCards">
+        {rows.length === 0 ? (
+          <span className={`dropSlot${slotOpen ? ' dropSlotOver' : ''}`}>
+            <span className="dropSlotLabel">Drop a widget here</span>
+          </span>
+        ) : null}
+
+        {rows.map((row, index) => {
+          const key = row.find((id) => id !== SLOT) || `slot-${zone}`;
+
+          return (
+            <Fragment key={key}>
+              {gaps ? <Gap open={gapAt === index} /> : null}
+
+              <div className={`zoneRow${row.length === 1 ? ' isSingle' : ''}`}>
+                {row.map((id) =>
+                  id === SLOT ? (
+                    <Slot key="slot" />
+                  ) : (
+                    <Card
+                      key={id}
+                      id={id}
+                      enabled={isEnabled(id)}
+                      onToggle={onToggle}
+                      dragging={id === activeId}
+                    />
+                  ),
+                )}
+              </div>
+            </Fragment>
+          );
+        })}
+
+        {gaps && rows.length ? <Gap open={gapAt === rows.length} /> : null}
+      </div>
     </div>
   );
 };
@@ -123,197 +325,94 @@ const Zone = ({ zone, items, onToggle, isEnabled, secondLane, makingRoomId, hove
 const Overview = () => {
   const [groups, setGroups] = useState(() => groupByZone(readOrder(), readPlacement()));
   const [secondLane, setSecondLane] = useState(readSecondLane);
-  // The card held long enough to step aside.
-  const [steppedAside, setSteppedAside] = useState(null);
-  // The column being dragged over; it highlights without any list moving mid-gesture.
-  const [hoverZone, setHoverZone] = useState(null);
-  const holdRef = useRef(null);
+  const [activeId, setActiveId] = useState(null);
+  const [activeWidth, setActiveWidth] = useState(null);
+  const [target, setTarget] = useState(null);
+  const pointer = useRef({ x: 0, y: 0 });
+  const geometry = useRef(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor),
   );
 
   const findZone = useCallback((id) => ZONES.find((zone) => groups[zone].includes(id)), [groups]);
 
-  const zoneFor = (over) => {
-    if (!over) return null;
+  const rowsFor = useCallback(
+    (zone, insert) => {
+      const base = toRows(groups[zone], secondLane)
+        .map((row) => row.filter((id) => id !== activeId))
+        .filter((row) => row.length > 0);
 
-    return ZONES.includes(over.id) ? over.id : findZone(over.id);
-  };
+      if (!target || target.zone !== zone) return base;
 
-  const clearHold = useCallback(() => {
-    if (holdRef.current) {
-      clearTimeout(holdRef.current.timer);
-      holdRef.current = null;
-    }
-
-    setSteppedAside(null);
-  }, []);
-
-  /**
-   * Holding over a row asks it to step aside. The timer is per target, so a card
-   * that is only passed over never fires.
-   */
-  const holdOver = useCallback((id) => {
-    if (holdRef.current?.id === id) return;
-
-    if (holdRef.current) clearTimeout(holdRef.current.timer);
-
-    if (!id) {
-      holdRef.current = null;
-      setSteppedAside(null);
-
-      return;
-    }
-
-    holdRef.current = {
-      id,
-      timer: setTimeout(() => {
-        holdRef.current = null;
-        setSteppedAside(id);
-      }, HOLD_MS),
-    };
-  }, []);
-
-  /**
-   * Nothing moves between lists while a card is in the air: moving a row to another
-   * container unmounts the element dnd-kit is dragging, which ends the gesture and
-   * drops the card back where it came from. So the drag only lights up the column
-   * it is over, and the move happens once, on drop.
-   */
-  const handleDragOver = ({ active, over }) => {
-    const from = findZone(active.id);
-    const to = zoneFor(over);
-
-    const overCentreRow =
-      Boolean(over) &&
-      !ZONES.includes(over.id) &&
-      over.id !== active.id &&
-      from === 'center' &&
-      to === 'center' &&
-      // Only a card has a second column to move into; full-width lines stay put.
-      !isFullWidth(over.id) &&
-      !isFullWidth(active.id);
-
-    holdOver(overCentreRow ? over.id : null);
-    setHoverZone(to && to !== from ? to : null);
-  };
-
-  /**
-   * The row the card was left over. `over` may be the container instead, which has
-   * no row to index from, so the card's own centre answers.
-   */
-  const dropIndex = (zone, ids, active, over) => {
-    if (over && ids.includes(over.id)) return ids.indexOf(over.id);
-
-    const dragged = active.rect?.current?.translated;
-
-    if (!dragged) return -1;
-
-    const centre = dragged.top + dragged.height / 2;
-    // The dragged card follows the pointer, so over its own list it resolves to its
-    // own index and leaves the list alone; in another column it is not in the list
-    // and the nearest row answers instead.
-    const rows = [...document.querySelectorAll(`.widgetZone[data-zone="${zone}"] .sortableItem`)];
-
-    let best = -1;
-    let nearest = Infinity;
-
-    rows.forEach((row) => {
-      const index = ids.indexOf(row.dataset.widgetId);
-
-      if (index < 0) return;
-
-      const box = row.getBoundingClientRect();
-      const distance = Math.abs(box.top + box.height / 2 - centre);
-
-      if (distance < nearest) {
-        nearest = distance;
-        best = index;
-      }
-    });
-
-    return best;
-  };
-
-  /**
-   * The card joins the column of the card it was dropped beside; dropped anywhere
-   * else in the middle it goes to the first.
-   */
-  const laneFor = (id, over) => {
-    const beside = over && groups.center.includes(over.id) && over.id !== id ? over.id : null;
-
-    return beside && secondLane.includes(beside) ? [...lane(), id] : lane();
-  };
-
-  const lane = (id) => secondLane.filter((item) => item !== id);
-
-  const handleDragEnd = ({ active, over }) => {
-    const aside = steppedAside;
-
-    clearHold();
-    setHoverZone(null);
-
-    const from = findZone(active.id);
-    const to = zoneFor(over);
-
-    if (!from || !to) return;
-
-    if (to !== 'center') {
-      // Leaving the middle column also leaves its second lane.
-      setSecondLane(lane(active.id));
-    } else if (aside && aside !== active.id) {
-      // Dropped into the space the held card opened: the dragged card takes that
-      // place in the first column, the held one keeps the second.
-      setSecondLane([...lane(active.id).filter((id) => id !== aside), aside]);
-
-      setGroups((previous) => {
-        const rest = previous.center.filter((id) => id !== active.id);
-        const at = rest.indexOf(aside);
-
-        return {
-          ...previous,
-          center:
-            at < 0 ? [...rest, active.id] : [...rest.slice(0, at), active.id, ...rest.slice(at)],
-        };
+      return placeRows({
+        zone,
+        rows: base,
+        insert,
+        overId: target.overId,
+        side: target.side,
+        index: target.index,
+        insertWide: isFullWidth(activeId),
       });
+    },
+    [groups, secondLane, activeId, target],
+  );
+
+  const clear = useCallback(() => {
+    setActiveId(null);
+    setActiveWidth(null);
+    setTarget(null);
+    geometry.current = null;
+  }, []);
+
+  /**
+   * The pointer is followed directly, and the place it points at is read off the layout
+   * as it stood when the drag began. Nothing here depends on the layout the drag itself
+   * produces, so the target cannot flip back and forth.
+   */
+  const handleMove = (event) => {
+    const { activatorEvent, delta } = event;
+
+    if (activatorEvent?.clientX === undefined) return;
+
+    pointer.current = { x: activatorEvent.clientX + delta.x, y: activatorEvent.clientY + delta.y };
+
+    if (!geometry.current) geometry.current = captureGeometry();
+
+    const next = readTarget(geometry.current, pointer.current);
+
+    setTarget((current) => (sameTarget(current, next) ? current : next));
+  };
+
+  const handleDragEnd = () => {
+    if (!activeId) {
+      clear();
 
       return;
-    } else if (from === 'center' || to === 'center') {
-      setSecondLane(laneFor(active.id, over));
     }
 
-    const target = dropIndex(to, groups[to], active, over);
+    const from = findZone(activeId);
+    const to = target?.zone ?? from;
 
-    if (from === to) {
-      const current = groups[from].indexOf(active.id);
-
-      if (target < 0 || target === current) return;
-
-      setGroups((previous) => ({
-        ...previous,
-        [from]: arrayMove(previous[from], current, target),
-      }));
+    if (!from || !to) {
+      clear();
 
       return;
     }
 
-    setGroups((previous) => {
-      const next = {
-        left: [...previous.left],
-        center: [...previous.center],
-        right: [...previous.right],
-      };
+    const center = fromRows(rowsFor('center', activeId));
+    const placed = to === 'center' ? center.ids : fromRows(rowsFor(to, activeId)).ids;
 
-      next[from] = next[from].filter((id) => id !== active.id);
+    setGroups((previous) => ({
+      ...previous,
+      [from]: previous[from].filter((id) => id !== activeId),
+      center: center.ids,
+      ...(to === 'center' ? {} : { [to]: placed }),
+    }));
 
-      const at = target < 0 || target > next[to].length ? next[to].length : target;
-
-      next[to].splice(at, 0, active.id);
-
-      return next;
-    });
+    setSecondLane(center.lane);
+    clear();
   };
 
   const toggleEnabled = (id) => {
@@ -384,10 +483,8 @@ const Overview = () => {
   const previewZone = (zone) => {
     const items = previewItems(zone);
 
-    // One column until something sits in the second, or until a card is held aside.
-    const aside = steppedAside && items.some(({ id }) => id === steppedAside) ? steppedAside : null;
-
-    if (zone !== 'center' || (!aside && secondLane.length === 0)) {
+    // One column until something sits in the second.
+    if (zone !== 'center' || secondLane.length === 0) {
       return (
         <div className={`previewZone previewZone-${zone}`}>
           {items.map((item) => previewCard(item, isFullWidth(item.id)))}
@@ -395,7 +492,7 @@ const Overview = () => {
       );
     }
 
-    const inSecond = (id) => (aside ? id === aside : secondLane.includes(id));
+    const inSecond = (id) => secondLane.includes(id);
     const lines = items.filter(({ id }) => isFullWidth(id));
     const first = items.filter(({ id }) => !isFullWidth(id) && !inSecond(id));
     const second = items.filter(({ id }) => !isFullWidth(id) && inSecond(id));
@@ -404,16 +501,24 @@ const Overview = () => {
       <div className={`previewZone previewZone-${zone}`}>
         {lines.map((item) => previewCard(item, true))}
         <div className="previewLanes">
-          <div className="previewLane">
-            {first.map(({ id, node }) => previewCard({ id, node }))}
-          </div>
-          <div className="previewLane">
-            {second.map(({ id, node }) => previewCard({ id, node }))}
-          </div>
+          <div className="previewLane">{first.map(({ id, node }) => previewCard({ id, node }))}</div>
+          <div className="previewLane">{second.map(({ id, node }) => previewCard({ id, node }))}</div>
         </div>
       </div>
     );
   };
+
+  const columns = useMemo(
+    () =>
+      ZONES.reduce((all, zone) => {
+        all[zone] = rowsFor(zone, SLOT);
+
+        return all;
+      }, {}),
+    [rowsFor],
+  );
+
+  const gapAt = target && target.zone === 'center' && target.overId === null ? target.index : -1;
 
   return (
     <>
@@ -423,25 +528,33 @@ const Overview = () => {
 
       <DndContext
         sensors={sensors}
-        collisionDetection={collisionDetection}
-        onDragOver={handleDragOver}
+        onDragStart={({ active }) => {
+          const node = document.querySelector(`[data-widget-id="${active.id}"]`);
+          const box = node?.getBoundingClientRect();
+
+          setActiveWidth(box ? box.width : null);
+          setActiveId(active.id);
+        }}
+        onDragMove={handleMove}
         onDragEnd={handleDragEnd}
-        onDragCancel={clearHold}
+        onDragCancel={clear}
       >
         <div className="overviewZones">
           <div className="overviewSide overviewSide-left">
             <Zone
               zone="left"
-              items={groups.left}
+              rows={columns.left}
               onToggle={toggleEnabled}
               isEnabled={isWidgetEnabled}
-              secondLane={secondLane}
-              hovered={hoverZone === 'left'}
+              activeId={activeId}
+              slotOpen={target?.zone === 'left' && target.overId === null}
             />
           </div>
 
           <div className="overviewPreview">
-            <span className="title">{variables.getMessage('modals.welcome.buttons.preview')}</span>
+            <span className="zoneTitle">
+              {variables.getMessage('modals.welcome.buttons.preview')}
+            </span>
             <div className="tabPreview">
               {previewZone('left')}
               {previewZone('center')}
@@ -452,26 +565,40 @@ const Overview = () => {
           <div className="overviewSide overviewSide-right">
             <Zone
               zone="right"
-              items={groups.right}
+              rows={columns.right}
               onToggle={toggleEnabled}
               isEnabled={isWidgetEnabled}
-              secondLane={secondLane}
-              hovered={hoverZone === 'right'}
+              activeId={activeId}
+              slotOpen={target?.zone === 'right' && target.overId === null}
             />
           </div>
 
           <div className="overviewBelow">
             <Zone
               zone="center"
-              items={groups.center}
+              rows={columns.center}
               onToggle={toggleEnabled}
               isEnabled={isWidgetEnabled}
-              secondLane={secondLane}
-              makingRoomId={steppedAside}
-              hovered={hoverZone === 'center'}
+              activeId={activeId}
+              gapAt={gapAt}
+              slotOpen={target?.zone === 'center' && target.overId === null}
             />
           </div>
         </div>
+
+        <DragOverlay dropAnimation={null}>
+          {activeId ? (
+            <div
+              className="zoneCard dragCard"
+              style={activeWidth ? { width: activeWidth } : undefined}
+            >
+              <span className="dragHandle">
+                <MdOutlineDragIndicator />
+              </span>
+              <span className="zoneCardLabel">{widgetLabel(activeId)}</span>
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </>
   );
