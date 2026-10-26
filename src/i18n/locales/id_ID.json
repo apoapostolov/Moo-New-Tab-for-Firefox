@@ -46,7 +46,7 @@
       "not_found": "Tidak Ditemukan",
       "meters": "{amount} meter",
       "extra_information": "Informasi Tambahan",
-      "feels_like": "Terasa seperti {jumlah}"
+      "feels_like": "Terasa seperti {amount}"
     },
     "quote": {
       "link_tooltip": "Buka di Wikipedia",

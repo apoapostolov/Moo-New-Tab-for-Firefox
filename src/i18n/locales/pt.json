@@ -44,9 +44,9 @@
     },
     "weather": {
       "not_found": "Não encontrado",
-      "meters": "{quantidade} metros",
+      "meters": "{amount} metros",
       "extra_information": "Informação extra",
-      "feels_like": "Parece {quantia}"
+      "feels_like": "Parece {amount}"
     },
     "quote": {
       "link_tooltip": "Abrir na Wikipédia",
@@ -278,7 +278,7 @@
               "add_colour": "Adicionar cor",
               "add_background": "Adicionar plano de fundo",
               "drop_to_upload": "Solte para carregar",
-              "formats": "Formatos disponíveis: {lista}",
+              "formats": "Formatos disponíveis: {list}",
               "select": "Ou selecione",
               "add_url": "Adicione URL",
               "disabled": "Desativado",
