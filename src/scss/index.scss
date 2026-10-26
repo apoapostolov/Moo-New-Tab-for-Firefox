@@ -87,10 +87,16 @@ body {
       display: flex;
       min-width: 0;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       gap: 20px;
 
+      /* A card fills the column it stands in. Centring each one on its own width gave
+         two cards in different columns different insets — the mail card is built 340px
+         wide, so it sat 15px in from a 370px column while the quick links card filled
+         it — and the two columns then started on different lines. The width has to be
+         stated: a card with its own width is not stretched by align-items alone. */
       > * {
+        width: 100%;
         max-width: 100%;
       }
     }
