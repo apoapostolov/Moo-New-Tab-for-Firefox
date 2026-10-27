@@ -24,14 +24,14 @@ import './google.scss';
 const dayLabel = (value, today, tomorrow) => {
   const date = /^\d{4}-\d{2}-\d{2}$/.test(value) ? calendarDate(value) : new Date(value);
 
-  if (date.toDateString() === today.toDateString()) return 'Today';
-  if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
+  if (date.toDateString() === today.toDateString()) return uiText('today');
+  if (date.toDateString() === tomorrow.toDateString()) return uiText('tomorrow');
 
   return date.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' });
 };
 
 const timeLabel = (event, use24Hour) => {
-  if (event.allDay) return 'All day';
+  if (event.allDay) return uiText('all_day_114574');
 
   return new Date(event.start).toLocaleTimeString([], {
     hour: '2-digit',

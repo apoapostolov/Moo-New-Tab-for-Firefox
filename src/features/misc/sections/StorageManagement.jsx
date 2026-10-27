@@ -47,11 +47,7 @@ export default function StorageManagement() {
       <summary>{uiText('manage_saved_pictures_f4518f')}</summary>
       {estimate && (
         <p>
-          {uiText('this_browser_is_using_about_b2a057')}
-          {mb(estimate.usage)}
-          {uiText('of_de04fa')}
-          {mb(estimate.quota)}
-          {uiText('available_space_for_moo_a0fa5e')}
+          {uiText('storage_used_sentence', { used: mb(estimate.usage), total: mb(estimate.quota) })}
         </p>
       )}
       <p>{uiText('scratch_pictures_stay_until_you_remove_them_b_77cf6e')}</p>

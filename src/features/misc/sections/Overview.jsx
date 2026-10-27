@@ -30,7 +30,8 @@ import {
 
 import EventBus from 'utils/eventbus';
 
-const ZONE_TITLES = { left: 'Left', center: 'Center', right: 'Right' };
+const ZONE_KEYS = { left: 'zone_left', center: 'zone_center', right: 'zone_right' };
+const zoneTitle = (zone) => uiText(ZONE_KEYS[zone]);
 
 // Stands in for the card being dragged while the columns are drawn, so a column can
 // open a space for it without holding on to it.
@@ -290,7 +291,7 @@ const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide })
 
   return (
     <div className="widgetZone" data-zone={zone}>
-      <span className="zoneTitle">{ZONE_TITLES[zone]}</span>
+      <span className="zoneTitle">{zoneTitle(zone)}</span>
 
       <div className="zoneCards">
         {rows.length === 0 ? (
@@ -519,7 +520,7 @@ const Overview = () => {
             <div key={id} className="widgetMoveRow">
               <span>{widgetLabel(id)}</span>
               <select
-                aria-label={`Place ${widgetLabel(id)}`}
+                aria-label={uiText('place_widget', { widget: widgetLabel(id) })}
                 value={zone}
                 onChange={(event) => {
                   const destination = event.target.value;
@@ -533,13 +534,13 @@ const Overview = () => {
               >
                 {ZONES.map((value) => (
                   <option key={value} value={value}>
-                    {ZONE_TITLES[value]}
+                    {zoneTitle(value)}
                   </option>
                 ))}
               </select>
               <button
                 type="button"
-                aria-label={`Move ${widgetLabel(id)} up`}
+                aria-label={uiText('move_widget_up', { widget: widgetLabel(id) })}
                 disabled={index === 0}
                 onClick={() =>
                   setGroups((current) => {
@@ -553,7 +554,7 @@ const Overview = () => {
               </button>
               <button
                 type="button"
-                aria-label={`Move ${widgetLabel(id)} down`}
+                aria-label={uiText('move_widget_down', { widget: widgetLabel(id) })}
                 disabled={index === groups[zone].length - 1}
                 onClick={() =>
                   setGroups((current) => {

@@ -48,12 +48,8 @@ const dueLabel = (due, dateStyle = 'relative') => {
 
   const days = dayNumber(due) - dayNumber(new Date());
 
-  if (days === 0) return 'Today';
-  if (days === 1) return 'Tomorrow';
-  if (days === -1) return 'Yesterday';
-  if (days > 1) return `in ${days} days`;
-
-  return `${Math.abs(days)} days ago`;
+  const locale = (localStorage.getItem('language') || 'en_GB').replace('_', '-');
+  return new Intl.RelativeTimeFormat(locale, { numeric: 'auto' }).format(days, 'day');
 };
 
 /** Overdue, today, next seven days, later, and anything without a date. */
@@ -75,6 +71,13 @@ const dueBucket = (due) => {
 };
 
 const BUCKET_ORDER = ['Overdue', 'Today', 'This week', 'Later', 'No due date'];
+const BUCKET_KEYS = {
+  Overdue: 'overdue',
+  Today: 'today',
+  'This week': 'this_week',
+  Later: 'later',
+  'No due date': 'no_due_date',
+};
 
 const GoogleTasks = () => {
   useTranslationVersion();
@@ -337,7 +340,7 @@ const GoogleTasks = () => {
               ))}
             </select>
           ) : (
-            lists[0]?.title || 'Tasks'
+            lists[0]?.title || uiText('tasks_090ec5')
           )}
         </span>
         <button
@@ -360,7 +363,7 @@ const GoogleTasks = () => {
       {groups ? (
         groups.map(([bucket, bucketTasks]) => (
           <div className="gwDay" key={bucket}>
-            <span className="gwDayLabel">{bucket}</span>
+            <span className="gwDayLabel">{uiText(BUCKET_KEYS[bucket])}</span>
             <ul className="gwList">{bucketTasks.map(row)}</ul>
           </div>
         ))

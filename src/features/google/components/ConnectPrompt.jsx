@@ -1,4 +1,5 @@
 import { useTranslationVersion } from 'contexts/TranslationContext';
+import { uiText } from 'lib/translations';
 import { useState } from 'react';
 
 /**
@@ -26,7 +27,7 @@ const ConnectPrompt = ({ label, onConnect, error }) => {
     <div className="googleWidget googleWidgetEmpty" role="region" aria-label={label}>
       <span className="gwLabel">{label}</span>
       <button type="button" className="gwButton primary" onClick={connectNow} disabled={busy}>
-        {busy ? 'Waiting for Google…' : 'Connect Google'}
+        {busy ? uiText('waiting_for_google') : uiText('connect_google')}
       </button>
       {error && <p className="gwError">{describeError(error)}</p>}
     </div>
@@ -36,13 +37,13 @@ const ConnectPrompt = ({ label, onConnect, error }) => {
 export const describeError = (error) => {
   switch (error) {
     case 'MISSING_CREDENTIALS':
-      return 'Add a Google client ID and secret in Settings first.';
+      return uiText('google_missing_credentials');
     case 'NOT_CONNECTED':
-      return 'Google is not connected yet.';
+      return uiText('google_not_connected');
     case 'NO_CODE':
-      return 'Google did not return an authorisation code.';
+      return uiText('google_no_code');
     case 'STATE_MISMATCH':
-      return 'The sign-in response did not match the request. Try again.';
+      return uiText('google_state_mismatch');
     default:
       return error;
   }

@@ -289,9 +289,9 @@ export const GoogleWidgetSettings = () => {
   const [tab, setTab] = useState(null);
 
   const tabs = [
-    { id: 'mail', label: 'Mail' },
-    { id: 'calendar', label: 'Calendar' },
-    { id: 'tasks', label: 'Tasks' },
+    { id: 'mail', label: uiText('mail_92379c') },
+    { id: 'calendar', label: uiText('calendar_adab50') },
+    { id: 'tasks', label: uiText('tasks_090ec5') },
   ];
 
   const render = useCallback(() => {

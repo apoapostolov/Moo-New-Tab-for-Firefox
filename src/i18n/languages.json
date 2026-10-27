@@ -4,16 +4,8 @@
     "value": "ar"
   },
   {
-    "name": "مصرى",
-    "value": "arz"
-  },
-  {
     "name": "Azərbaycan",
     "value": "az"
-  },
-  {
-    "name": "تۆرکجه",
-    "value": "azb"
   },
   {
     "name": "Български",
@@ -86,10 +78,6 @@
   {
     "name": "Norsk",
     "value": "no"
-  },
-  {
-    "name": "𐎱𐎠𐎼𐎿",
-    "value": "peo"
   },
   {
     "name": "Português",

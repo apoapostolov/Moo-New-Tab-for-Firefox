@@ -18,7 +18,7 @@ export default function BackupImport({ onImported = () => window.location.reload
     setError('');
     setSelection(null);
     try {
-      if (file.size > MAX_BACKUP_BYTES) throw new Error('This backup is too large to open.');
+      if (file.size > MAX_BACKUP_BYTES) throw new Error(uiText('backup_too_large'));
       const source = await file.text();
       setSelection({ source, preview: prepareBackup(source) });
     } catch (error) {
@@ -33,7 +33,7 @@ export default function BackupImport({ onImported = () => window.location.reload
       onImported(backup);
       setSelection(null);
     } catch (error) {
-      setError(`Nothing was imported. ${error.message}`);
+      setError(uiText('backup_none_imported', { error: error.message }));
     } finally {
       setBusy(false);
     }
@@ -49,33 +49,32 @@ export default function BackupImport({ onImported = () => window.location.reload
       {selection && (
         <section aria-label={uiText('backup_preview_2c8a58')}>
           <p>
-            {selection.preview.summary.settings} {uiText('settings_3cc1d5')}
-            {selection.preview.summary.notes !== null
-              ? ` and ${selection.preview.summary.notes} notes`
-              : ''}{' '}
-            {uiText('are_ready_to_import_f985c4')}
+            {selection.preview.summary.notes === null
+              ? uiText('backup_settings_ready', { settings: selection.preview.summary.settings })
+              : uiText('backup_settings_notes_ready', {
+                  settings: selection.preview.summary.settings,
+                  notes: selection.preview.summary.notes,
+                })}
           </p>
           {selection.preview.summary.scratchImages !== null && (
             <p>
-              {uiText('the_backup_will_replace_your_scratch_pictures_a36392')}{' '}
-              {selection.preview.summary.scratchImages} {uiText('pictures_938a09')}
+              {uiText('backup_scratch_count', { count: selection.preview.summary.scratchImages })}
             </p>
           )}
           <p>
             {selection.preview.summary.backgrounds === null
-              ? 'Your picture collection will stay as it is.'
-              : `The backup will replace your picture collection with ${selection.preview.summary.backgrounds} pictures.`}{' '}
+              ? uiText('backup_backgrounds_unchanged')
+              : uiText('backup_backgrounds_count', {
+                  count: selection.preview.summary.backgrounds,
+                })}{' '}
             {uiText('settings_included_in_the_file_replace_their_c_887b24')}
           </p>
           {selection.preview.skipped.length > 0 && (
-            <p>
-              {selection.preview.skipped.length}{' '}
-              {uiText('private_temporary_or_unrecognised_entries_wil_b7da06')}
-            </p>
+            <p>{uiText('backup_skipped_count', { count: selection.preview.skipped.length })}</p>
           )}
           <div className="resetDataButtonsLayout">
             <Button
-              label={busy ? 'Importing…' : 'Import this backup'}
+              label={busy ? uiText('backup_importing') : uiText('backup_import_action')}
               disabled={busy}
               onClick={apply}
             />

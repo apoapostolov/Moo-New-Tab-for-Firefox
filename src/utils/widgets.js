@@ -1,4 +1,5 @@
 import variables from 'config/variables';
+import { uiText } from 'lib/translations';
 
 /**
  * Every widget in one list, read by both the settings panel and the page so the
@@ -16,7 +17,7 @@ export const WIDGETS = [
   {
     // The full card, not the one-line reading.
     id: 'weather',
-    label: () => 'Weather Full',
+    label: () => uiText('weather_full_widget'),
     setting: 'weatherEnabled',
     onByDefault: true,
     zone: 'left',
@@ -29,14 +30,14 @@ export const WIDGETS = [
   },
   {
     id: 'quickweather',
-    label: () => 'Weather Now',
+    label: () => uiText('weather_now_69ed32'),
     setting: 'quickWeatherEnabled',
     fullWidth: true,
   },
   {
     // Search and answer services share a query.
     id: 'aiask',
-    label: () => 'Search/Ask Bar',
+    label: () => uiText('search_ask_bar'),
     setting: 'aiAskEnabled',
     onByDefault: true,
     fullWidth: true,
@@ -48,29 +49,29 @@ export const WIDGETS = [
   },
   {
     id: 'mail',
-    label: () => 'Mail',
+    label: () => uiText('mail_92379c'),
     setting: 'googleMailEnabled',
   },
   {
     id: 'calendar',
-    label: () => 'Calendar',
+    label: () => uiText('calendar_adab50'),
     setting: 'googleCalendarEnabled',
   },
   {
     id: 'tasks',
-    label: () => 'Tasks',
+    label: () => uiText('tasks_090ec5'),
     setting: 'googleTasksEnabled',
   },
   {
     // Photographer credit card, driven by the `photoInformation` setting.
     id: 'photoinfo',
-    label: () => 'Image Info',
+    label: () => uiText('image_info_widget'),
     setting: 'photoInformation',
     zone: 'left',
   },
   {
     id: 'rss',
-    label: () => 'RSS',
+    label: () => uiText('rss_fcae0f'),
     setting: 'rssEnabled',
     zone: 'center',
   },

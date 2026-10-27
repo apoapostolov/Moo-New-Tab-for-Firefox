@@ -1,10 +1,17 @@
 import { useTranslationVersion } from 'contexts/TranslationContext';
-const WidgetsLayout = ({ children, split = false }) => {
+import { uiText } from 'lib/translations';
+import WidgetScroll from './WidgetScroll';
+const WidgetsLayout = ({ children, split = false, scroll = true }) => {
   useTranslationVersion();
   return (
-    <div id="widgets" className={split ? 'widgetsSplit' : undefined}>
+    <WidgetScroll
+      id="widgets"
+      className={split ? 'widgetsSplit' : ''}
+      enabled={scroll && !split}
+      label={uiText('center_widgets_label')}
+    >
       {children}
-    </div>
+    </WidgetScroll>
   );
 };
 

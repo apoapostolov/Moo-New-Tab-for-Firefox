@@ -97,6 +97,8 @@ body {
       gap: 20px;
       width: 100%;
       align-items: start;
+      min-height: 0;
+      grid-template-rows: minmax(0, 1fr);
     }
 
     .widgetColumn {
@@ -105,6 +107,9 @@ body {
       flex-direction: column;
       align-items: stretch;
       gap: 20px;
+      min-height: 0;
+      max-height: 100%;
+      overflow-y: auto;
 
       /* A card fills the column it stands in. Centring each one on its own width gave
          two cards in different columns different insets — the mail card is built 340px
@@ -512,5 +517,60 @@ body.hardTextShadow {
   #center > #widgets > *,
   .widgetRail > * {
     flex-shrink: 0;
+  }
+
+  #center > #widgets.widgetsSplit {
+    overflow: visible;
+  }
+
+  #center > #widgets.widgetsSplit > .widgetPair {
+    flex-shrink: 1;
+  }
+}
+
+#center #widgets.widgetScrollArea,
+#center .widgetScrollArea {
+  scrollbar-width: none;
+  scrollbar-gutter: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.widgetScrollThumb {
+  position: fixed;
+  z-index: 45;
+  width: 6px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 48%);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 45%);
+  opacity: 0;
+  pointer-events: none;
+  touch-action: none;
+  cursor: grab;
+  transition: opacity 400ms ease-out;
+
+  &.is-on {
+    opacity: 1;
+    pointer-events: auto;
+    transition-duration: 120ms;
+  }
+
+  &.is-on::before {
+    content: '';
+    position: absolute;
+    inset: 0 -6px;
+  }
+
+  &.is-dragging {
+    cursor: grabbing;
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .widgetScrollThumb {
+    transition: none;
   }
 }

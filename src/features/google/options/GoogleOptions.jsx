@@ -188,7 +188,11 @@ const GoogleOptions = () => {
               onClick={auth ? disconnectNow : connectNow}
               disabled={busy || loading || (!auth && !ready)}
             >
-              {auth ? 'Disconnect' : busy ? 'Waiting for Google…' : 'Connect Google'}
+              {auth
+                ? uiText('disconnect_google')
+                : busy
+                  ? uiText('waiting_for_google')
+                  : uiText('connect_google')}
             </button>
           </Action>
         </Row>

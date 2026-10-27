@@ -6,6 +6,8 @@ import QuickLinks from '../../quicklinks/QuickLinks';
 import Date from '../../time/Date';
 import AIAsk from '../../aiask/AIAsk';
 import { WidgetsLayout } from 'components/Layout';
+import WidgetScroll from 'components/Layout/WidgetsLayout/WidgetScroll';
+import { uiText } from 'lib/translations';
 import {
   readOrder,
   readPlacement,
@@ -115,8 +117,12 @@ const Widgets = () => {
       {draw(lines)}
       {split ? (
         <div className="widgetPair">
-          <div className="widgetColumn">{draw(firstColumn)}</div>
-          <div className="widgetColumn">{draw(secondColumn)}</div>
+          <WidgetScroll className="widgetColumn" label={uiText('center_left_widgets_label')}>
+            {draw(firstColumn)}
+          </WidgetScroll>
+          <WidgetScroll className="widgetColumn" label={uiText('center_right_widgets_label')}>
+            {draw(secondColumn)}
+          </WidgetScroll>
         </div>
       ) : (
         draw(cards)
@@ -127,9 +133,9 @@ const Widgets = () => {
   return (
     <Suspense fallback={<></>}>
       {compact && !basicLayout ? (
-        <div className="compactWidgets">
-          <WidgetsLayout>{draw(layout.order)}</WidgetsLayout>
-        </div>
+        <WidgetScroll className="compactWidgets" label={uiText('center_widgets_label')}>
+          <WidgetsLayout scroll={false}>{draw(layout.order)}</WidgetsLayout>
+        </WidgetScroll>
       ) : (
         <>
           <div className="widgetRail widgetRail-left">{draw(groups.left)}</div>

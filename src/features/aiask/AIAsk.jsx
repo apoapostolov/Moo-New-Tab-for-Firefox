@@ -134,9 +134,9 @@ const SERVICES = {
 
 // Group the service picker by purpose.
 const GROUPS = [
-  ['search', 'Search'],
-  ['answers', 'Answers'],
-  ['reference', 'Reference'],
+  ['search', 'search_group'],
+  ['answers', 'answers_group'],
+  ['reference', 'reference_group'],
 ];
 
 const SERVICE_KEY = 'aiAskService';
@@ -266,7 +266,7 @@ const AIAsk = () => {
   const { Icon, name } = SERVICES[service];
 
   return (
-    <form className="aiAsk" aria-label="Search/Ask Bar" onSubmit={submit} ref={box}>
+    <form className="aiAsk" aria-label={uiText('search_ask_bar')} onSubmit={submit} ref={box}>
       <input
         ref={input}
         className={hintHidden ? 'aiAskInput aiAskHintHide' : 'aiAskInput'}
@@ -288,7 +288,7 @@ const AIAsk = () => {
         }}
         onBlur={() => setHintHidden(false)}
         placeholder={uiText('ask_anything_fffbce')}
-        aria-label={`Ask ${name}`}
+        aria-label={uiText('ask_service', { service: name })}
         autoComplete="off"
         spellCheck="false"
       />
@@ -307,7 +307,8 @@ const AIAsk = () => {
       {picking &&
         createPortal(
           <div className="aiAskMenu" id="ask-service-menu" role="menu" ref={menu}>
-            {GROUPS.map(([id, label]) => {
+            {GROUPS.map(([id, labelKey]) => {
+              const label = uiText(labelKey);
               const entries = Object.entries(SERVICES).filter(([, item]) => item.group === id);
 
               if (!entries.length) return null;

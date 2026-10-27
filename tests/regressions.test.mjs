@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { after, beforeEach, test } from 'node:test';
 import 'fake-indexeddb/auto';
 import { createServer } from 'vite';
@@ -386,7 +387,32 @@ test('locale tags are preserved, fallback works and new UI keys are present', as
   assert.equal(normalizeLocale('pt-BR'), 'pt_BR'); assert.equal(normalizeLocale('zh-Hant'), 'zh_Hant');
   assert.equal(normalizeLocale('invalid'), 'en_GB');
   const language = await initTranslations('bg');
-  assert.equal(language.getMessage('bg', 'ui.close_bbfa77'), 'Close');
+  assert.equal(language.getMessage('bg', 'ui.close_bbfa77'), 'Затвори');
+  const fallback = await initTranslations('peo');
+  assert.equal(fallback.getMessage('peo', 'ui.close_bbfa77'), 'Close');
+});
+
+test('selectable languages cover English keys and retain interpolation placeholders', () => {
+  const read = path => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
+  const languages = read('../src/i18n/languages.json');
+  const flatten = (value, prefix = '') => Object.entries(value).flatMap(([key, item]) => {
+    const path = prefix ? `${prefix}.${key}` : key;
+    return item && typeof item === 'object' && !Array.isArray(item)
+      ? flatten(item, path) : [[path, item]];
+  });
+  const source = flatten(read('../src/i18n/locales/en_GB.json'));
+  const placeholders = text => (text.match(/\{[^{}]+\}/g) || []).sort();
+  for (const { value } of languages) {
+    const code = value === 'pt_PT' ? 'pt' : value;
+    const locale = new Map(flatten(read(`../src/i18n/locales/${code}.json`)));
+    for (const [key, text] of source) {
+      assert.ok(typeof locale.get(key) === 'string' && locale.get(key).trim(), `${value}: ${key}`);
+      assert.deepEqual(placeholders(locale.get(key)), placeholders(text), `${value}: ${key}`);
+    }
+  }
+  for (const retired of ['peo', 'arz', 'azb']) {
+    assert.ok(!languages.some(language => language.value === retired));
+  }
 });
 
 test('profile reset keeps personal notes and export includes pending text', async () => {

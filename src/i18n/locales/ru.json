@@ -13,8 +13,8 @@
     "background": {
       "credit": "Фото",
       "unsplash": "на Unsplash",
-      "information": "Information",
-      "download": "Download",
+      "information": "Информация",
+      "download": "Скачать",
       "downloads": "Загрузки",
       "views": "Просмотры",
       "likes": "Нравится",
@@ -31,10 +31,10 @@
     "quicklinks": {
       "new": "Новая ссылка",
       "edit": "Изменить ссылку",
-      "name": "Name",
+      "name": "Название",
       "url": "URL",
       "icon": "Значок (необязательно)",
-      "add": "Add",
+      "add": "Добавить",
       "name_error": "Должно содержать имя",
       "url_error": "Должно содержать URL",
       "icon_hint": "Заполняется для известных сайтов. Пусто — значит, используется favicon сайта.",
@@ -62,7 +62,7 @@
         "refresh": "Перезагрузить"
       },
       "notes": {
-        "title": "Notes",
+        "title": "Примечания",
         "placeholder": "Напишите здесь"
       },
       "todo": {
@@ -79,7 +79,7 @@
   },
   "modals": {
     "main": {
-      "title": "Options",
+      "title": "Опции",
       "loading": "Загрузка...",
       "file_upload_error": "Файл больше 2 МБ",
       "navbar": {
@@ -99,7 +99,7 @@
         "open_knowledgebase": "Открытая база знаний",
         "additional_settings": "Дополнительные настройки",
         "reminder": {
-          "title": "NOTICE",
+          "title": "УВЕДОМЛЕНИЕ",
           "message": "Для того чтобы все изменения произошли, необходимо обновить страницу."
         },
         "sections": {
@@ -111,8 +111,8 @@
           },
           "time": {
             "title": "Время",
-            "format": "Format",
-            "type": "Type",
+            "format": "Формат",
+            "type": "Тип",
             "type_subtitle": "Выберите, в каком формате будет отображаться время: в цифровом, аналоговом или в процентах завершения дня",
             "digital": {
               "title": "Цифровые",
@@ -137,7 +137,7 @@
               "title": "Вертикальные часы",
               "change_hour_colour": "Изменить цвет текста часа",
               "change_minute_colour": "Изменить цвет текста минут",
-              "change_second_colour": "Change second text colour"
+              "change_second_colour": "Изменение второго цвета текста"
             },
             "percentage": {
               "shift_title": "Рабочая смена",
@@ -157,7 +157,7 @@
             }
           },
           "date": {
-            "title": "Date",
+            "title": "Дата",
             "week_number": "Число недели",
             "day_of_week": "День недели",
             "datenth": "Дата n-ая",
@@ -205,8 +205,8 @@
           "greeting": {
             "title": "Приветствие",
             "events": "События",
-            "events_description": "Control events on Moo such as birthdays.",
-            "enable_events": "Show messages on special days",
+            "events_description": "Управляйте событиями на Moo, такими как дни рождения.",
+            "enable_events": "Показывать сообщения в особые дни",
             "default": "Сообщение с приветствием по-умолчанию",
             "name": "Имя для приветствия",
             "birthday": "День рождения",
@@ -214,13 +214,13 @@
             "birthday_age": "Возраст рождения",
             "birthday_date": "Дата рождения",
             "additional": "Настройки отображения приветствия",
-            "custom": "Custom events",
-            "event_name": "Event Name",
-            "day": "Day",
-            "month": "Month",
-            "no_events": "No Events",
-            "no_events_description": "Add Some Events",
-            "add_event": "Add Event"
+            "custom": "Пользовательские события",
+            "event_name": "Название события",
+            "day": "День",
+            "month": "Месяц",
+            "no_events": "Нет событий",
+            "no_events_description": "Добавить несколько событий",
+            "add_event": "Добавить событие"
           },
           "background": {
             "title": "Фон",
@@ -232,7 +232,7 @@
               "title": "Кнопки",
               "view": "Просмотр",
               "favourite": "Любимые",
-              "download": "Download"
+              "download": "Скачать"
             },
             "effects": {
               "title": "Эффекты",
@@ -250,7 +250,7 @@
               }
             },
             "type": {
-              "title": "Type",
+              "title": "Тип",
               "api": "API",
               "custom_image": "Пользовательское изображение",
               "custom_colour": "Пользовательский цвет/градиент",
@@ -265,9 +265,9 @@
               "pexels": "Pexels"
             },
             "unsplash": {
-              "title": "Unsplash Collection(s)",
+              "title": "Коллекция(и) Unsplash",
               "subtitle": "Select the collection(s) you want to use for your background",
-              "id": "Collection ID(s)",
+              "id": "Идентификаторы коллекций",
               "id_subtitle": "Enter a comma separated list of Unsplash IDs",
               "section_title": "Unsplash",
               "section_subtitle": "Выберите темы или укажите коллекцию.",
@@ -282,7 +282,7 @@
               "allow": "Разрешить"
             },
             "source": {
-              "title": "Source",
+              "title": "Источник",
               "subtitle": "Выберите, откуда брать фоновые изображения",
               "api": "API для фона",
               "custom_background": "Пользовательский фон",
@@ -293,37 +293,37 @@
               "drop_to_upload": "Перетащите, чтобы загрузить",
               "formats": "Доступные форматы: {list}",
               "select": "Или выберите",
-              "add_url": "Add URL",
+              "add_url": "Добавить URL",
               "disabled": "Выключен",
               "loop_video": "Зацикленное видео",
               "mute_video": "Отключить звук видео",
               "quality": {
                 "title": "Качество",
-                "original": "Original",
+                "original": "Оригинал",
                 "high": "Высокое качество",
                 "normal": "Нормальное качество",
-                "datasaver": "Data Saver"
+                "datasaver": "Экономия данных"
               },
               "custom_title": "Пользовательские изображения",
               "custom_description": "Выберите изображения с вашего локального компьютера",
               "remove": "Удалить изображение",
-              "delete_selected": "Delete {count} Selected",
-              "uploading": "Uploading {current} of {total}...",
-              "images": "images",
-              "tag_images": "Tag Images",
-              "tag_description": "Add {count} images to a folder (optional)",
-              "folder_name": "Folder Name",
-              "folder_placeholder": "Leave empty for no folder",
-              "storage_info": "Storage Information",
+              "delete_selected": "Удалить выбранное {count}",
+              "uploading": "Загрузка {current} из {total}...",
+              "images": "изображения",
+              "tag_images": "Отмечать изображения",
+              "tag_description": "Добавьте изображения {count} в папку (необязательно)",
+              "folder_name": "Имя папки",
+              "folder_placeholder": "Оставьте пустым, если папка отсутствует.",
+              "storage_info": "Информация о хранилище",
               "storage_description": "Moo uses browser storage to save your custom images. The current limit is approximately 4.85MB for all settings and images combined.",
-              "storage_current": "Current usage: {used} of {total} ({percent}%)",
+              "storage_current": "Текущее использование: {used} из {total} ({percent}%)",
               "sort": {
-                "date_newest": "Date Added (Newest)",
-                "date_oldest": "Date Added (Oldest)",
-                "name_asc": "Name (A-Z)",
-                "name_desc": "Name (Z-A)",
-                "size_small": "File Size (Smallest)",
-                "size_large": "File Size (Largest)"
+                "date_newest": "Дата добавления (самая новая)",
+                "date_oldest": "Дата добавления (самая старая)",
+                "name_asc": "Алфавитный (A-Z)",
+                "name_desc": "Имя (Z-A)",
+                "size_small": "Размер файла (наименьший)",
+                "size_large": "Размер файла (самый большой)"
               }
             },
             "display": "Отображать",
@@ -398,12 +398,12 @@
             "voice_search": "Поиск голосом",
             "dropdown": "Выпадающий список поиска",
             "focus": "Фокус на открытой вкладке",
-            "chrome_policy_warning": "In version 7.2, the ability to choose your search engine within Moo was removed to comply with new Chrome Web Store guidelines. Moo now uses your browser's default search engine. You can change this in Chrome Settings."
+            "chrome_policy_warning": "В версии 7.2 возможность выбора поисковой системы в Moo была удалена в соответствии с новыми рекомендациями Интернет-магазина Chrome. Moo теперь использует поисковую систему вашего браузера по умолчанию. Вы можете изменить это в настройках Chrome."
           },
           "weather": {
             "title": "Погода",
             "location": "Локация",
-            "auto": "Auto",
+            "auto": "Авто",
             "widget_type": "Тип виджета",
             "temp_format": {
               "title": "Формат температуры",
@@ -412,7 +412,7 @@
               "kelvin": "Кельвин"
             },
             "extra_info": {
-              "title": "Extra information",
+              "title": "Дополнительная информация",
               "show_location": "Показать расположение",
               "show_description": "Показать описание",
               "weather_description": "Описание погоды",
@@ -452,10 +452,10 @@
             "styling_description": "Настройка внешнего вида быстрых ссылок"
           },
           "message": {
-            "title": "Message",
-            "add": "Add message",
+            "title": "Сообщение",
+            "add": "Добавить сообщение",
             "messages": "Сообщения",
-            "text": "Text",
+            "text": "Текст",
             "no_messages": "Нет сообщений",
             "add_some": "Идем дальше и добавить некоторые.",
             "content": "Содержание сообщения"
@@ -469,28 +469,28 @@
               "new": "Новый"
             },
             "theme": {
-              "title": "Theme",
+              "title": "Тема",
               "description": "Измените тему виджетов и модальных окон Moo",
-              "auto": "Auto",
+              "auto": "Авто",
               "light": "Светлая",
               "dark": "Тёмная"
             },
             "navbar": {
               "title": "Навбар",
-              "widgets": "Navbar Widgets",
-              "notes": "Notes",
+              "widgets": "Виджеты навигационной панели",
+              "notes": "Примечания",
               "refresh": "Кнопка перезагрузки",
               "refresh_subtitle": "Выберите, что будет обновляться при нажатии кнопки обновления",
               "hover": "Отображение только при наведении",
               "additional": "Измените стиль панели навигации и какие кнопки вы хотите отображать",
               "refresh_options": {
-                "none": "None",
-                "page": "Page"
+                "none": "Нет",
+                "page": "Страница"
               },
               "apps_subtitle": "Создайте ярлык других широко используемых веб-сайтов."
             },
             "font": {
-              "title": "Font",
+              "title": "Шрифт",
               "description": "Измените шрифт, используемый в Moo",
               "custom": "Пользовательский шрифт",
               "google": "Импортировать из Google Fonts",
@@ -499,16 +499,16 @@
                 "thin": "Тонкий",
                 "extra_light": "Очень тонкий",
                 "light": "Лёгкий",
-                "normal": "Normal",
-                "medium": "Medium",
+                "normal": "Нормальный",
+                "medium": "Средний",
                 "semi_bold": "Полужирный",
                 "bold": "Жирный",
                 "extra_bold": "Сверхжирный"
               },
               "style": {
-                "title": "Font style",
-                "normal": "Normal",
-                "italic": "Italic",
+                "title": "Стиль шрифта",
+                "normal": "Нормальный",
+                "italic": "Курсив",
                 "oblique": "Курсив"
               }
             },
@@ -520,7 +520,7 @@
                 "title": "Тень текста виджета",
                 "new": "Новое",
                 "old": "Old",
-                "none": "None"
+                "none": "Нет"
               },
               "widget_zoom": "Widget zoom",
               "toast_duration": "Продолжительность подсказки",
@@ -534,11 +534,11 @@
             "title": "Дополнительно",
             "offline_mode": "Офлайн режим",
             "offline_subtitle": "При включении все запросы к онлайн-сервисам будут отключены.",
-            "data": "Data",
+            "data": "Данные",
             "data_description": "Choose whether to export your Moo settings to your computer, import an existing settings file, or reset your settings to their default values",
             "data_subtitle": "Выберите, следует ли экспортировать настройки Moo на компьютер, импортировать существующий файл настроек или сбросить настройки до значений по умолчанию",
             "reset_modal": {
-              "title": "WARNING",
+              "title": "ПРЕДУПРЕЖДЕНИЕ",
               "question": "Вы хотите сбросить Moo?",
               "information": "Это приведет к удалению всех данных. Если вы хотите сохранить свои данные и предпочтения, сначала экспортируйте их.",
               "cancel": "Отменить"
@@ -547,7 +547,7 @@
             "custom_css": "Пользовательский CSS",
             "custom_css_subtitle": "Настройте стиль Moo под себя с помощью каскадных таблиц стилей (CSS).",
             "custom_js": "Пользовательский JS",
-            "tab_name": "Tab name",
+            "tab_name": "Название вкладки",
             "tab_name_subtitle": "Измените название вкладки, которая появляется в вашем браузере",
             "timezone": {
               "title": "Часовой пояс",
@@ -556,12 +556,12 @@
             },
             "experimental_warning": "Обратите внимание, что команда Moo не может оказать поддержку, если у вас включен экспериментальный режим. Пожалуйста, сначала отключите его и посмотрите, сохранится ли проблема, прежде чем обращаться в службу поддержки.",
             "preview_data_disabled": {
-              "title": "Data Settings Disabled",
+              "title": "Настройки данных отключены",
               "description": "Data settings are disabled in preview mode. Please exit preview mode to use this feature."
             }
           },
           "stats": {
-            "title": "Stats",
+            "title": "Статистика",
             "sections": {
               "tabs_opened": "Открытые вкладки",
               "backgrounds_favourited": "Избранные фоны",
@@ -573,35 +573,35 @@
             },
             "usage": "Статистика использования",
             "achievements": "Достижения",
-            "achievement_unlocked": "Achievement Unlocked: {name}",
+            "achievement_unlocked": "Достижение разблокировано: {name}",
             "unlocked": "{count} разблокировано",
-            "locked": "Locked",
+            "locked": "Заблокировано",
             "clear_modal": {
-              "question": "Do you want to clear your stats?",
-              "information": "This will clear all achievements and usage statistics."
+              "question": "Хотите очистить свою статистику?",
+              "information": "Это приведет к удалению всех достижений и статистики использования."
             }
           },
           "experimental": {
             "title": "Экспериментальные настройки",
             "warning": "Данные настройки не были полностью протестированы/реализованы и могут работать некорректно!",
-            "developer": "Developer"
+            "developer": "Разработчик"
           },
           "language": {
             "title": "Язык",
             "quote": "Язык цитат",
-            "search": "Search languages...",
-            "current": "Current",
-            "use_system": "Use system language",
-            "locale_formatting": "Format numbers for your language"
+            "search": "Поиск языков...",
+            "current": "Текущий",
+            "use_system": "Использовать системный язык",
+            "locale_formatting": "Форматирование чисел для вашего языка"
           },
           "changelog": {
             "title": "Журнал изменений",
-            "by": "By {author}"
+            "by": "Автор: {author}"
           },
           "about": {
             "title": "О программе",
             "version": {
-              "title": "Version",
+              "title": "Версия",
               "checking_update": "Проверяю обновления",
               "update_available": "Обновление доступно",
               "no_update": "Нет доступных обновлений",
@@ -611,8 +611,8 @@
                 "description": "Обнаружена ошибка"
               }
             },
-            "contact_us": "Contact Us",
-            "support_mue": "Support Moo",
+            "contact_us": "Свяжитесь с нами",
+            "support_mue": "Поддержка Moo",
             "support_subtitle": "Поскольку Moo полностью бесплатен, мы полагаемся на пожертвования для покрытия счетов за сервер и финансирования развития",
             "support_donate": "Пожертвовать",
             "form_button": "Форма",
@@ -624,7 +624,7 @@
             "supporters": "Поддержка",
             "no_supporters": "В настоящее время нет поддержки Moo",
             "photographers": "Фотографы",
-            "curators": "Add-on creators"
+            "curators": "Создатели дополнений"
           },
           "google": {
             "title": "Google"
@@ -672,9 +672,9 @@
           "reset": "Сбросить",
           "import": "Импорт",
           "export": "Экспорт",
-          "cancel": "Cancel",
-          "continue": "Continue",
-          "close": "Close"
+          "cancel": "Отменить",
+          "continue": "Продолжить",
+          "close": "Закрыть"
         },
         "surface": {
           "title": "Стиль панели",
@@ -684,7 +684,7 @@
         }
       },
       "marketplace": {
-        "title": "Marketplace",
+        "title": "Торговая площадка",
         "by": "от {author}",
         "all": "Все",
         "learn_more": "Узнать больше",
@@ -700,14 +700,14 @@
         "knowledgebase_one": "Посетить",
         "knowledgebase_two": "база знаний",
         "knowledgebase_three": "чтобы создать свой собственный.",
-        "installing": "Installing",
+        "installing": "Установка",
         "product": {
           "overview": "Обзор",
           "information": "Информация",
           "last_updated": "Последнее обновление",
           "description": "Описание",
-          "details": "Details",
-          "more_from_curator": "More like this from {name}",
+          "details": "Подробности",
+          "more_from_curator": "Еще подобное от {name}",
           "show_more": "Показать больше",
           "show_less": "Показать меньше",
           "show_all": "Показать все",
@@ -715,21 +715,21 @@
           "no_images": "№ Изображения",
           "no_quotes": "Цитаты",
           "version": "Версия",
-          "created_by": "Created by",
-          "updated_at": "Updated on",
+          "created_by": "Автор:",
+          "updated_at": "Обновлено",
           "part_of": "Часть",
           "explore": "Обзор",
           "buttons": {
             "addtomue": "Добавить в Moo",
             "remove": "Удалить",
-            "update_addon": "Update Add-on",
+            "update_addon": "Обновление дополнения",
             "back": "Назад",
             "report": "Жалоба",
-            "not_available_preview": "Unavailable on Preview"
+            "not_available_preview": "Недоступно в предварительной версии"
           },
-          "not_in_language": "This add-on is not in your language",
-          "third_party_api": "This add-on uses a third-party API",
-          "sideload_warning": "This add-on has been sideloaded.",
+          "not_in_language": "Это дополнение не на вашем языке",
+          "third_party_api": "В этом дополнении используется сторонний API.",
+          "sideload_warning": "Это дополнение было загружено неопубликовано.",
           "setting": "Параметр",
           "value": "Цена"
         },
@@ -763,7 +763,7 @@
           "title": "Сортировка",
           "newest": "Установлено (Новое)",
           "a_z": "Алфавитный (A-Z)",
-          "recently_updated": "Recently Updated"
+          "recently_updated": "Недавно обновлено"
         },
         "create": {
           "title": "Создать",
@@ -817,16 +817,16 @@
         "settings": {
           "title": "Импортировать настройки",
           "description": "Установили Мue на новом устройстве? Не стесняйтесь импортировать свои старые настройки!",
-          "tip": "You can export your old settings by navigating to the Advanced tab in your old Moo setup. Then you need to click the export button which will download the JSON file. You can upload this file here to carry across your settings and preferences from your previous Moo installation."
+          "tip": "Вы можете экспортировать свои старые настройки, перейдя на вкладку «Дополнительно» в старой настройке Moo. Затем вам нужно нажать кнопку экспорта, чтобы загрузить файл JSON. Вы можете загрузить этот файл сюда, чтобы перенести настройки и предпочтения из предыдущей установки Moo."
         },
         "privacy": {
-          "title": "Privacy Options",
+          "title": "Параметры конфиденциальности",
           "description": "Enable settings to further protect your privacy with Moo.",
           "offline_mode_description": "Enabling offline mode will disable all requests to any service. This will result in online backgrounds, online quotes, marketplace, weather, quick links, change log and some about tab information to be disabled.",
           "links": {
-            "title": "Links",
-            "privacy_policy": "Privacy Policy",
-            "source_code": "Source Code"
+            "title": "Ссылки",
+            "privacy_policy": "Политика конфиденциальности",
+            "source_code": "Исходный код"
           }
         },
         "final": {
@@ -834,18 +834,18 @@
           "description": "Your Moo Tab experience is about to begin.",
           "changes": "Изменения",
           "changes_description": "To change settings later click on the settings icon in the top right corner of your tab.",
-          "imported": "Imported {amount} settings"
+          "imported": "Импортированные настройки {amount}"
         }
       },
       "buttons": {
-        "next": "Next",
-        "preview": "Preview",
-        "previous": "Previous",
+        "next": "Далее",
+        "preview": "Предварительный просмотр",
+        "previous": "Предыдущий",
         "close": "Закрыть",
         "finish": "Завершить"
       },
       "preview": {
-        "description": "You are currently in preview mode. Settings will be reset on closing this tab.",
+        "description": "Сейчас вы находитесь в режиме предварительного просмотра. Настройки будут сброшены при закрытии этой вкладки.",
         "continue": "Продолжить установку"
       }
     },
@@ -856,16 +856,268 @@
   },
   "toasts": {
     "quote": "Цитата скопирована",
-    "notes": "Notes copied",
+    "notes": "Заметки скопированы",
     "reset": "Сброшено",
     "installed": "Успешно установлено",
     "uninstalled": "Успешно удалено",
-    "updated": "Successfully updated",
+    "updated": "Обновлено успешно.",
     "error": "Что-то пошло не так",
     "imported": "Успешно импортировано",
     "no_storage": "Недостаточно места",
     "link_copied": "Ссылка скопирована",
-    "stats_reset": "Stats reset",
+    "stats_reset": "Сброс статистики",
     "deleted": "Успешно удалено"
+  },
+  "ui": {
+    "back_b52b36": "Назад",
+    "close_bbfa77": "Закрыть",
+    "cancel_77dfd2": "Отменить",
+    "report_issue_0b07f3": "Сообщить о проблеме",
+    "_mapbox_f422d2": "© Mapbox",
+    "_openstreetmap_b9eafa": "© OpenStreetMap",
+    "delete_f6fdbe": "Удалить",
+    "location_d219c6": "Локация",
+    "_apps_googleusercontent_com_f76874": "…apps.googleusercontent.com",
+    "gocspx_9dfa73": "GOCSPX-…",
+    "from_ana_example_com_522bd1": "from:ana@example.com",
+    "moo_1946c3": "Moo",
+    "apostol_apostolov_32040d": "Apostol Apostolov",
+    "name_709a23": "Название",
+    "edit_530164": "Редактировать",
+    "remove_e96390": "Удалить",
+    "rss_fcae0f": "RSS",
+    "allow_3ad0e3": "Разрешить",
+    "example_com_feed_xml_098287": "example.com/feed.xml",
+    "min_b6c935": "min",
+    "max_070602": "max",
+    "github_5442e2": "GitHub",
+    "_shareyourmue_abf3e9": "#shareyourmue",
+    "continue_in_the_github_issue_form_3e7eff": "Отправил!",
+    "notes_704400": "Примечания",
+    "type_3deb74": "Тип",
+    "data_e5e429": "Данные",
+    "details_dc3dec": "Подробности",
+    "sofia_news_a79eb0": "Новости Софии",
+    "section_f2c6b5": "Раздел",
+    "navigate_back_dc4aac": "Вернуться назад",
+    "forward_ba4e72": "Вперед",
+    "navigate_forward_7248fb": "Перейти вперед",
+    "breadcrumb_navigation_fceec8": "Навигация по цепочке",
+    "link_to_share_ed943d": "Ссылка для обмена",
+    "select_options_71c9fb": "Выберите параметры...",
+    "moo_could_not_load_this_page_edcf62": "Moo не удалось загрузить эту страницу.",
+    "reload_tab_f4515b": "Вкладка «Обновить»",
+    "support_discord_79f54b": "Поддержка Discord",
+    "ask_anything_fffbce": "Спросите что угодно",
+    "improve_this_map_0df9ff": "Улучшите эту карту",
+    "request_persistent_storage_to_prevent_browser_3f86be": "Запросите постоянное хранилище, чтобы браузер не мог автоматически удалять ваши изображения.",
+    "protect_images_f0d4c1": "Защита изображений",
+    "selected_835f3b": "выбрано",
+    "select_all_913aff": "Выбрать все",
+    "deselect_all_85cce1": "Отменить выбор всех",
+    "custom_backgrounds_81e58e": "Пользовательские фоны",
+    "total_localstorage_usage_817a52": "Общее использование localStorage",
+    "includes_all_moo_settings_and_custom_images_1c6025": "Включает все настройки Moo и пользовательские изображения.",
+    "e_g_ocean_forest_city_24cef2": "например. океан, лес, город",
+    "e_g_ink_water_clouds_dd1835": "например. чернила, вода, облака",
+    "change_interval_minutes_c7a418": "Интервал изменения (минуты)",
+    "calendar_adab50": "Календарь",
+    "title_768e0c": "Название",
+    "all_day_114574": "Весь день",
+    "starts_fc612a": "Начинается",
+    "ends_91856d": "Завершение",
+    "optional_0c6c41": "Необязательно",
+    "mail_preview_899f31": "Предварительный просмотр почты",
+    "reading_the_message_b300a1": "Чтение сообщения…",
+    "to_4374aa": "чтобы",
+    "attachment_1625e5": "вложение",
+    "task_7bb0dd": "Задача",
+    "due_145caf": "Срок погашения",
+    "new_event_2ef379": "Новое событие",
+    "mail_92379c": "Почта",
+    "refresh_mail_8661d3": "Обновить почту",
+    "tasks_090ec5": "Задачи",
+    "task_list_91c40a": "Список задач",
+    "new_task_17b2b8": "Новое задание",
+    "nothing_left_to_do_9c8622": "Делать больше нечего.",
+    "register_moo_in_google_cloud_a4d4d0": "Зарегистрируйте Moo в Google Cloud",
+    "google_only_answers_apps_it_knows_about_and_m_283a79": "Google отвечает только на те приложения, о которых ему известно, а Moo еще не таковым. В своем собственном облачном проекте включите Gmail, Календарь и Задачи APIs, затем создайте клиент OAuth типа Настольное приложение.",
+    "open_google_cloud_e03ae9": "Открыть Google Cloud",
+    "paste_this_redirect_uri_when_google_asks_5e50cd": "Вставьте этот URI перенаправления, когда Google спросит об этом.",
+    "copy_it_exactly_as_it_is_it_belongs_to_this_i_ac6486": "Скопируйте все как есть. Он принадлежит этой установке, и Google отвергает все остальное.",
+    "scopes_moo_will_ask_for_418c5c": "Области Moo запросит",
+    "the_permissions_the_app_requests_nothing_is_r_c5eb60": "Разрешения, которые запрашивает приложение. Ничего не читается, пока вы не подключитесь.",
+    "paste_the_client_id_and_secret_498adb": "Вставьте идентификатор клиента и секретный код.",
+    "both_come_from_the_app_you_made_in_step_1_moo_a79123": "Оба взяты из приложения, которое вы создали на шаге 1. Moo сохраняет их в этом профиле браузера и использует их для входа с помощью Google.",
+    "client_id_a766cd": "Идентификатор клиента",
+    "client_secret_4b468e": "Секрет клиента",
+    "connect_b65463": "Подключиться",
+    "last_error_5e4df8": "Последняя ошибка",
+    "mail_panel_a50e62": "Панель почты",
+    "calendar_panel_a9c143": "Панель календаря",
+    "tasks_panel_b2f973": "Панель задач",
+    "calendars_could_not_be_listed_disconnect_and_a35520": "Не удалось отобразить календари. Отключитесь и подключитесь снова, чтобы Moo мог прочитать список календаря, а затем перезагрузите эту страницу.",
+    "reading_your_calendars_e7d8b6": "Чтение календарей…",
+    "primary_e3b7c9": "основной",
+    "the_box_on_the_right_is_the_calendar_new_even_2286a9": "Поле справа — это календарь, в котором начинаются новые события. Там ничего не отмечено: последнее, которое вы использовали.",
+    "folders_could_not_be_read_reconnect_google_an_a7fcda": "Не удалось прочитать папки. Переподключите Google и снова откройте эту страницу.",
+    "calendars_shown_0b1365": "Показаны календари",
+    "choose_which_calendars_appear_on_your_page_07fd10": "Выберите, какие календари будут отображаться на вашей странице.",
+    "range_a16c5b": "Диапазон",
+    "how_far_ahead_the_widget_looks_feda5c": "Насколько далеко вперед смотрит виджет.",
+    "events_shown_57f3eb": "Показаны события",
+    "the_most_events_to_show_at_once_6546bc": "Максимальное количество событий, отображаемых одновременно.",
+    "event_details_bc2a9c": "Подробности мероприятия",
+    "choose_which_details_to_show_with_each_event_211d3b": "Выберите, какие сведения показывать в каждом событии.",
+    "layout_972ad8": "Макет",
+    "choose_how_to_group_events_and_show_their_tim_268cbd": "Выберите, как группировать события и показывать их время.",
+    "refresh_56e3ba": "Обновить",
+    "how_often_to_check_for_updates_e7f165": "Как часто проверять наличие обновлений.",
+    "choose_where_to_view_and_add_tasks_a2c6f1": "Выберите, где просматривать и добавлять задачи.",
+    "sorting_378e9e": "Сортировка",
+    "choose_the_order_of_your_tasks_1c693d": "Выберите порядок выполнения задач.",
+    "filtering_9075ed": "Фильтрация",
+    "what_is_left_out_of_the_list_78c20b": "То, что осталось за пределами списка.",
+    "due_dates_1e24cb": "Сроки сдачи",
+    "written_as_a_countdown_or_as_a_date_13a7f9": "Записывается как обратный отсчет или как дата.",
+    "what_each_row_shows_c9f5b1": "Что показывает каждая строка.",
+    "inbox_categories_41ffe8": "Категории входящих сообщений",
+    "show_messages_from_these_gmail_categories_unt_9e4fb0": "Показать сообщения из этих категорий Gmail. Снимите галочки с тех, которые хотите исключить.",
+    "folders_and_labels_3d61b8": "Папки и ярлыки",
+    "include_messages_from_these_folders_and_label_35adee": "Включите сообщения из этих папок и ярлыков рядом с указанными выше категориями.",
+    "filter_d7decf": "Фильтр",
+    "which_messages_the_widget_lists_cb527b": "Какие сообщения отображает виджет.",
+    "custom_search_c6246f": "Пользовательский поиск",
+    "overrides_the_filter_above_try_from_ana_examp_b68846": "Отменяет указанный выше фильтр. Попробуйте from:ana@example.com или has:attachment is:unread..",
+    "gmail_search_58ae54": "Поиск Gmail",
+    "messages_shown_d051d6": "Показаны сообщения",
+    "the_most_messages_to_show_at_once_641f05": "Максимальное количество сообщений, отображаемых одновременно.",
+    "first_line_ce405c": "Первая линия",
+    "show_the_sender_or_the_subject_first_1850d5": "Сначала покажите отправителя или тему.",
+    "detail_7c9a7c": "Подробности",
+    "extra_text_and_the_unread_indicator_425e7c": "Дополнительный текст и индикатор непрочитанного.",
+    "widget_settings_02de30": "Настройки виджета",
+    "which_widget_to_configure_0ad894": "Какой виджет настроить",
+    "copyright_2018_05bc08": "Авторские права 2018-",
+    "licensed_under_the_bsd_3_clause_license_0947fe": "Лицензия BSD-3-пункт.",
+    "save_your_settings_and_notes_or_bring_them_ba_f30abc": "Сохраните настройки и заметки или верните их из резервной копии. Вход и секретные ключи не включены.",
+    "include_uploaded_pictures_66d00b": "Включить загруженные изображения",
+    "save_a_backup_5835d2": "Сохраните резервную копию",
+    "restore_settings_6562d0": "Восстановление настроек",
+    "erase_all_local_data_e70015": "Удалить все локальные данные",
+    "backups_and_reset_are_available_after_setup_37f176": "Резервное копирование и сброс доступны после установки.",
+    "any_colour_you_like_eb393e": "Любой цвет, который вам нравится",
+    "pick_any_colour_1cfabf": "Выберите любой цвет",
+    "choose_a_backup_2fbfb0": "Выберите резервную копию",
+    "backup_preview_2c8a58": "Предварительный просмотр резервной копии",
+    "settings_3cc1d5": "настройки",
+    "are_ready_to_import_f985c4": "готовы к импорту.",
+    "settings_included_in_the_file_replace_their_c_887b24": "Настройки, включенные в файл, заменяют свои текущие значения. Остальные данные остаются прежними. Ключи для входа и секретные ключи хранятся отдельно.",
+    "private_temporary_or_unrecognised_entries_wil_b7da06": "частные, временные или нераспознанные записи будут пропущены.",
+    "debug_timeout_a8866c": "Тайм-аут отладки",
+    "send_event_b3074e": "Отправить событие",
+    "send_9bc257": "Отправить",
+    "normal_toast_e23525": "Обычный тост",
+    "success_toast_da504e": "Тост за успех",
+    "clear_localstorage_c451cf": "Очистить локальное хранилище",
+    "add_translation_7a4982": "Добавить перевод",
+    "drop_a_widget_here_94afdc": "Перетащите сюда виджет",
+    "move_widgets_with_buttons_453b33": "Перемещение виджетов с помощью кнопок",
+    "second_column_7620f0": "Второй столбец",
+    "thursday_january_1st_157956": "Четверг, 1 января.",
+    "weather_now_69ed32": "Погода сейчас",
+    "move_task_3481b3": "Переместить задачу",
+    "complete_task_af20ec": "Завершить задачу",
+    "remove_task_5be1bc": "Удалить задачу",
+    "feeds_ffe8e9": "Каналы",
+    "see_stories_from_all_your_feeds_in_one_list_n_0f4b60": "Просматривайте истории из всех своих каналов в одном списке, сначала самые новые. Каждая история появляется один раз.",
+    "add_a_feed_f00cf4": "Добавить канал",
+    "any_rss_or_atom_address_adding_it_asks_the_br_d4723c": "Любой адрес RSS или Atom. При его добавлении браузер просит разрешить странице читать этот сайт.",
+    "feed_address_3d4c56": "Адрес канала",
+    "add_feed_6aa1f2": "Добавить канал",
+    "reading_cffa2a": "Чтение",
+    "choose_how_many_stories_to_show_and_when_to_c_3ab1a2": "Выберите, сколько историй показывать и когда проверять наличие новых.",
+    "headlines_shown_a65e5c": "Показаны заголовки",
+    "the_number_of_stories_shown_on_your_page_8534f1": "Количество историй, показанных на вашей странице.",
+    "check_for_new_stories_every_04beb9": "Проверяйте новые истории каждые",
+    "in_minutes_952e8d": "В минутах.",
+    "full_articles_7f2177": "Полные статьи",
+    "load_articles_in_advance_so_you_can_read_them_cb2d13": "Загружайте статьи заранее, чтобы их можно было прочитать, наведя курсор на заголовок. Отключите эту функцию, чтобы вместо этого видеть сводку канала.",
+    "keep_full_articles_for_c11890": "Сохраняйте полные статьи для",
+    "save_articles_for_this_long_before_loading_th_c0a27c": "Сохраняйте статьи за это время, прежде чем загружать их снова. Статьи покидают сохраненный список, когда их заголовки покидают виджет.",
+    "rss_panel_07f858": "Панель RSS",
+    "reading_the_article_6a4e0f": "Читая статью…",
+    "the_article_could_not_be_read_here_70d641": "Статью невозможно прочитать здесь.",
+    "open_article_5899c6": "Открыть статью",
+    "rss_headlines_a9cbd7": "RSS заголовки",
+    "refresh_feeds_71e1bc": "Обновить каналы",
+    "fetching_headlines_1f9878": "Получение заголовков…",
+    "no_headlines_yet_add_feeds_in_settings_under_2306de": "Заголовков пока нет. Добавьте каналы в настройках в разделе RSS.",
+    "new_note_2b7b05": "Новая заметка",
+    "write_here_markdown_supported_e2bd9d": "Пишите сюда. Markdown поддерживается.",
+    "edit_note_9751b2": "Изменить заметку",
+    "copy_this_picture_72ef7d": "Скопируйте это изображение",
+    "save_to_a_file_5bb648": "Сохранить в файл",
+    "download_this_picture_623817": "Загрузите эту картинку",
+    "drag_to_resize_or_use_the_arrow_keys_44c451": "Чтобы изменить размер, перетащите его или используйте клавиши со стрелками.",
+    "resize_this_picture_4a327d": "Изменить размер изображения",
+    "feels_like_x_038366": "чувствует себя как Х",
+    "location_6469ac": "местоположение",
+    "london_4c57f0": "Лондон",
+    "cheese_d48b39": "Сыр",
+    "next_image_eb89a7": "Следующее изображение →",
+    "previous_image_46edf0": "← Предыдущее изображение",
+    "reload_the_tab_to_try_again_if_the_problem_re_74c119": "Перезагрузите вкладку и повторите попытку. Если проблема повторится, сообщите об этом по адресу GitHub.",
+    "settings_and_notes_use_localstorage_pictures_31b115": "В настройках и примечаниях используется localStorage. Картинки хранятся отдельно в IndexedDB.",
+    "this_calendar_is_read_only_you_can_view_the_e_efedef": "Этот календарь доступен только для чтения. Посмотреть мероприятие можно здесь.",
+    "close_mail_preview_47c136": "Закрыть предварительный просмотр письма",
+    "the_backup_will_replace_your_scratch_pictures_a36392": "Резервная копия заменит ваши черновые изображения на",
+    "pictures_938a09": "картинки.",
+    "manage_saved_pictures_f4518f": "Управление сохраненными изображениями",
+    "this_browser_is_using_about_b2a057": "Этот браузер использует около",
+    "of_de04fa": "из",
+    "available_space_for_moo_a0fa5e": "свободное место для Moo.",
+    "scratch_pictures_stay_until_you_remove_them_b_77cf6e": "Нацарапанные изображения остаются до тех пор, пока вы их не удалите. Фоновые изображения можно удалить в разделе «Фон → Custom». Включайте изображения при сохранении резервной копии, чтобы сохранить копию.",
+    "set_weather_location": "Установка местоположения погоды",
+    "weather_full_widget": "Погода",
+    "image_info_widget": "О снимке",
+    "search_ask_bar": "Поиск/вопрос",
+    "search_group": "Поиск",
+    "answers_group": "Ответы",
+    "reference_group": "Ссылка",
+    "ask_service": "Найдите или спросите {service}",
+    "center_widgets_label": "Центральные виджеты",
+    "center_left_widgets_label": "Виджеты по центру слева",
+    "center_right_widgets_label": "Правые центральные виджеты",
+    "zone_left": "Слева",
+    "zone_center": "Центр",
+    "zone_right": "Справа",
+    "place_widget": "Поместите {widget}",
+    "move_widget_up": "Переместить {widget} вверх",
+    "move_widget_down": "Переместить {widget} вниз",
+    "connect_google": "Подключить Google",
+    "waiting_for_google": "Жду Google…",
+    "disconnect_google": "Отключиться",
+    "google_missing_credentials": "Сначала добавьте идентификатор и секрет клиента Google в настройках.",
+    "google_not_connected": "Google еще не подключен.",
+    "google_no_code": "Google не вернул код авторизации.",
+    "google_state_mismatch": "Ответ на вход не соответствует запросу. Попробуйте еще раз.",
+    "today": "Сегодня",
+    "tomorrow": "Завтра",
+    "overdue": "Просрочено",
+    "this_week": "На этой неделе",
+    "later": "Позже",
+    "no_due_date": "Нет срока сдачи",
+    "backup_settings_ready": "Настройки готовы к импорту: {settings}.",
+    "backup_settings_notes_ready": "Готово к импорту — настройки: {settings}; примечания: {notes}.",
+    "backup_scratch_count": "Резервная копия заменит ваши черновые изображения. Картинки в резервной копии: {count}.",
+    "backup_backgrounds_unchanged": "Ваша коллекция изображений останется прежней.",
+    "backup_backgrounds_count": "Резервная копия заменит вашу коллекцию изображений. Картинки в резервной копии: {count}.",
+    "backup_skipped_count": "Пропущенные записи: {count}. Они являются частными, временными или непризнанными.",
+    "backup_importing": "Импорт…",
+    "backup_import_action": "Импортируйте эту резервную копию",
+    "backup_none_imported": "Ничего не было импортировано. {error}",
+    "backup_too_large": "Эта резервная копия слишком велика, чтобы ее можно было открыть.",
+    "storage_used_sentence": "Этот браузер использует около {used} из доступного пространства {total} для Moo."
   }
 }
