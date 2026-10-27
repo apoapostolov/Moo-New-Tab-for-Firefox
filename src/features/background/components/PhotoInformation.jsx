@@ -138,7 +138,6 @@ function PhotoInformation({ info, url, api }) {
   };
 
   const InformationItems = () => {
-    useTranslationVersion();
     return (
       <div className="extra-content">
         {info.location && info.location !== 'N/A' ? (
@@ -186,7 +185,6 @@ function PhotoInformation({ info, url, api }) {
   };
 
   const ActionButtons = () => {
-    useTranslationVersion();
     return (
       <div className="buttons">
         {!info.offline && (
@@ -219,7 +217,6 @@ function PhotoInformation({ info, url, api }) {
   };
 
   const UnsplashStats = () => {
-    useTranslationVersion();
     return (
       <div className="unsplashStats">
         <div title={t('widgets.background.views')}>

@@ -55,6 +55,11 @@
   justify-content: flex-start;
   gap: 6px;
   padding: 10px 20px 6px;
+  min-width: 0;
+
+  .iconAndTemps {
+    width: 100%;
+  }
 
   div {
     align-items: center;
@@ -76,6 +81,10 @@
       text-align: right;
     }
   }
+}
+
+#center #widgets .weather {
+  container: weather / inline-size;
 }
 
 .weatherIcon {
@@ -306,4 +315,34 @@
   font: inherit;
   padding: 0.25rem 0;
   cursor: pointer;
+}
+
+@container weather (width < 290px) {
+  .weatherCore {
+    padding-inline: 12px;
+  }
+
+  .weather .extra-info {
+    gap: 4px 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .weatherForecast {
+    grid-template-columns: repeat(auto-fit, minmax(42px, 1fr));
+    padding-inline: 12px;
+    row-gap: 10px;
+  }
+
+  .weatherExpandedInfo {
+    padding-inline: 12px;
+  }
+
+  .weatherExpandedInfoItems {
+    grid-template-columns: minmax(0, 1fr);
+
+    span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
 }

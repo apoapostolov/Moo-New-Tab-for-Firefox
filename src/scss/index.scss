@@ -83,6 +83,18 @@ body {
        against a single column rather than against the pair. */
     --widget-column: calc((min(760px, 74vw) - 20px) / 2);
 
+    > .weather,
+    > .photoInformationHolder {
+      width: var(--widget-card-width, 340px);
+      max-width: min(100%, calc(100vw - 2rem));
+    }
+
+    .photoInformationHolder .photoInformation {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
     /* The middle column split into two, which is the layout the Overview's
        hold-to-make-room gesture sets up. Only the cards are columns: the clock,
        the date, the one-line weather and the query line read across the whole
