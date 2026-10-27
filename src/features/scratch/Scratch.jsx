@@ -4,7 +4,8 @@ import { withProfileLock } from 'utils/settings/profile';
 import { readScratchAssets, patchScratchAssets } from 'utils/customBackgroundDB';
 import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import useScrollThumb from 'utils/useScrollThumb';
 
 import EventBus from 'utils/eventbus';
 import Markdown from './Markdown';
@@ -162,6 +163,31 @@ const SCRATCH_ENTRANCE = WIDGET_FADE + 120; // a beat after the page settles
 const SCRATCH_STAGGER = 60; // between one note and the next
 const SCRATCH_WINDOW = 1600; // how long after arriving the entrance still counts
 
+function NoteEditor({ text, readOnly, onChange, onBlur, angle }) {
+  const input = useRef(null);
+  useScrollThumb(input, true, false, angle);
+  useLayoutEffect(() => {
+    const element = input.current;
+    element.style.height = 'auto';
+    element.style.height = `${element.scrollHeight}px`;
+  }, [text]);
+  return (
+    <textarea
+      ref={input}
+      className="scratchNoteInput"
+      readOnly={readOnly}
+      value={text}
+      placeholder={uiText('write_here_markdown_supported_e2bd9d')}
+      autoFocus
+      onChange={(event) => onChange(event.target.value)}
+      onBlur={onBlur}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') event.currentTarget.blur();
+      }}
+    />
+  );
+}
+
 const Scratch = () => {
   useTranslationVersion();
   const [notesOn, setNotesOn] = useState(() => localStorage.getItem(NOTES_FLAG) === 'true');
@@ -247,7 +273,6 @@ const Scratch = () => {
   const tiltRef = useRef(0);
   const disarmTimer = useRef(null);
   const copyTimer = useRef(null);
-  const inputs = useRef({});
   // Last pointer position; a paste with no pointer over the page falls back to the window centre.
   const pointer = useRef(null);
 
@@ -384,7 +409,7 @@ const Scratch = () => {
 
   const startDrag = (event, note) => {
     if (event.button !== 0) return;
-    if (event.target.closest('.scratchNoteClose')) return;
+    if (event.target.closest('.scratchNoteClose, a')) return;
     if (editingId === note.id) return;
 
     event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -471,13 +496,6 @@ const Scratch = () => {
 
   const changeText = (id, text) => {
     setNotes((current) => current.map((note) => (note.id === id ? { ...note, text } : note)));
-
-    const input = inputs.current[id];
-
-    if (input) {
-      input.style.height = 'auto';
-      input.style.height = `${input.scrollHeight}px`;
-    }
   };
 
   // First click arms, second click confirms: shared so neither kind vanishes on one click.
@@ -854,20 +872,12 @@ const Scratch = () => {
                 ×
               </button>
               {editing ? (
-                <textarea
-                  ref={(element) => {
-                    inputs.current[note.id] = element;
-                  }}
-                  className="scratchNoteInput"
+                <NoteEditor
+                  angle={angle}
                   readOnly={Boolean(notesProblem)}
-                  value={note.text}
-                  placeholder={uiText('write_here_markdown_supported_e2bd9d')}
-                  autoFocus
-                  onChange={(event) => changeText(note.id, event.target.value)}
+                  text={note.text}
+                  onChange={(text) => changeText(note.id, text)}
                   onBlur={() => finishEditing(note)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Escape') event.currentTarget.blur();
-                  }}
                 />
               ) : (
                 <div
@@ -875,11 +885,13 @@ const Scratch = () => {
                   role="button"
                   tabIndex={0}
                   aria-label={uiText('edit_note_9751b2')}
-                  onClick={() => {
+                  onClick={(event) => {
+                    if (event.target.closest('a')) return;
                     setEditingId(note.id);
                     setFocused(note.id);
                   }}
                   onKeyDown={(event) => {
+                    if (event.target.closest('a')) return;
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault();
                       setEditingId(note.id);

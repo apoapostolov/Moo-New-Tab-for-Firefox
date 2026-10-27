@@ -553,7 +553,7 @@ body.hardTextShadow {
 .widgetScrollThumb {
   position: fixed;
   z-index: 45;
-  width: 6px;
+  width: 5px;
   border-radius: 999px;
   background: rgb(255 255 255 / 48%);
   box-shadow: 0 1px 3px rgb(0 0 0 / 45%);
@@ -561,7 +561,7 @@ body.hardTextShadow {
   pointer-events: none;
   touch-action: none;
   cursor: grab;
-  transition: opacity 400ms ease-out;
+  transition: opacity 200ms ease-out;
 
   &.is-on {
     opacity: 1;

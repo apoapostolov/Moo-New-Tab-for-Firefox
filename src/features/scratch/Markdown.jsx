@@ -1,10 +1,6 @@
 import { marked } from 'marked';
 
-/**
- * Renders note markdown as React elements instead of HTML. This page holds
- * extension privileges, so marked's tokens never become DOM: raw HTML shows as
- * text, images are dropped, and links are limited to http(s) and mailto.
- */
+// Render tokens as React elements; raw HTML remains text in this privileged page.
 
 const SAFE_SCHEME = /^(https?:|mailto:)/i;
 
@@ -41,9 +37,12 @@ const inline = (tokens = []) =>
           <span key={key}>{inline(token.tokens)}</span>
         );
       }
-      // Drawing an image would fetch a third-party server; only its alt text is shown.
-      case 'image':
-        return <span key={key}>{token.text}</span>;
+      case 'image': {
+        const src = safeHref(token.href);
+        return src && /^https?:/i.test(src) ? (
+          <img key={key} src={src} alt={token.text || ''} title={token.title || undefined} loading="lazy" referrerPolicy="no-referrer" />
+        ) : <span key={key}>{token.text}</span>;
+      }
       case 'text':
         return token.tokens ? <span key={key}>{inline(token.tokens)}</span> : token.text;
       case 'escape':
@@ -76,7 +75,10 @@ const blocks = (tokens = []) =>
         return (
           <Tag key={key} start={token.ordered && token.start !== 1 ? token.start : undefined}>
             {token.items.map((item, itemIndex) => (
-              <li key={`${key}-${itemIndex}`}>{blocks(item.tokens || [])}</li>
+              <li key={`${key}-${itemIndex}`}>
+                {item.task && <input type="checkbox" checked={Boolean(item.checked)} disabled aria-label={item.checked ? 'Completed' : 'Not completed'} />}
+                {blocks(item.tokens || [])}
+              </li>
             ))}
           </Tag>
         );
@@ -91,8 +93,15 @@ const blocks = (tokens = []) =>
         );
       case 'hr':
         return <hr key={key} />;
-      // Tables are beyond a sticky note, so the raw text is shown.
       case 'table':
+        return (
+          <div className="scratchNoteTable" key={key}>
+            <table>
+              <thead><tr>{token.header.map((cell, i) => <th key={i} style={{ textAlign: token.align[i] || undefined }}>{inline(cell.tokens)}</th>)}</tr></thead>
+              <tbody>{token.rows.map((row, i) => <tr key={i}>{row.map((cell, j) => <td key={j} style={{ textAlign: token.align[j] || undefined }}>{inline(cell.tokens)}</td>)}</tr>)}</tbody>
+            </table>
+          </div>
+        );
       case 'html':
         return (
           <p key={key} className="scratchNoteRaw">

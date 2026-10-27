@@ -14,7 +14,7 @@ The 1.0.0 archive was rebuilt on 27 October 2026. All selectable languages have 
 - **Widget layout.** Show, hide and move widgets under Settings → Overview, placing them on either side or in the centre. Weather and Image Info match the Google card width in the centre; split columns scroll independently with a scrollbar that fades after use.
 - **Clock and weather.** Choose a clock and set Progress around your working days and hours under Settings → Time. Add your location under Weather to see current conditions and a five-day forecast before making plans outside.
 - **RSS reader.** Enable RSS in Overview and add feed addresses under Settings → RSS to follow several sites in one list. Hover a headline to read the article when available, or open the original site.
-- **Notes, pictures and quick links.** Double-click an empty part of the page to create a note, place pictures on the page and add regular destinations under Settings → Quick Links. Keep the things you need for a project within reach of the next tab.
+- **Notes, pictures and quick links.** Double-click an empty part of the page to create a note, place pictures on the page and add regular destinations under Settings → Quick Links. Notes support Markdown links, images and tables, with a fading scrollbar while editing long notes.
 - **Backups.** Export your setup under Settings → Advanced, with uploaded pictures included if you choose, then preview an import before applying it. Move your layout and notes to another profile while keeping sign-in credentials separate.
 
 ### Changed

@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { after, beforeEach, test } from 'node:test';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import 'fake-indexeddb/auto';
 import { createServer } from 'vite';
 import EventBus from '../src/utils/eventbus.js';
@@ -390,6 +392,20 @@ test('locale tags are preserved, fallback works and new UI keys are present', as
   assert.equal(language.getMessage('bg', 'ui.close_bbfa77'), 'Затвори');
   const fallback = await initTranslations('peo');
   assert.equal(fallback.getMessage('peo', 'ui.close_bbfa77'), 'Close');
+});
+
+test('scratch Markdown renders tables, images, links and task lists without executable HTML', async () => {
+  const { default: Markdown } = await server.ssrLoadModule('/src/features/scratch/Markdown.jsx');
+  const text = '# Title\n\n[link](https://example.com) ![alt](https://example.com/a.png)\n\n| A | B |\n| --- | ---: |\n| one | **two** |\n\n- [x] Done\n- [ ] Next\n\n<script>alert(1)</script>\n\n[bad](javascript:alert(1)) ![bad](javascript:alert(1))';
+  const html = renderToStaticMarkup(React.createElement(Markdown, { text }));
+  assert.match(html, /<h1>Title<\/h1>/);
+  assert.match(html, /href="https:\/\/example.com" target="_blank" rel="noreferrer noopener"/);
+  assert.match(html, /<img[^>]+src="https:\/\/example.com\/a.png"/);
+  assert.match(html, /<table>/);
+  assert.match(html, /<strong>two<\/strong>/);
+  assert.equal((html.match(/type="checkbox"/g) || []).length, 2);
+  assert.match(html, /&lt;script&gt;/);
+  assert.doesNotMatch(html, /<script|(?:href|src)="javascript:/);
 });
 
 test('selectable languages cover English keys and retain interpolation placeholders', () => {
