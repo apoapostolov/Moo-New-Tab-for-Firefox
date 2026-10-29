@@ -1,3 +1,4 @@
+import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { useState } from 'react';
@@ -10,13 +11,14 @@ import {
   Group,
   PreferencesWrapper,
 } from 'components/Layout/Settings';
-import { Checkbox, Dropdown, Radio, Text } from 'components/Form/Settings';
+import { Checkbox, Dropdown, Radio, Text, Switch } from 'components/Form/Settings';
 
 import EventBus from 'utils/eventbus';
 
 import { MdRefresh } from 'react-icons/md';
 
 import DateOptions from './DateOptions';
+import WorldClockOptions from './WorldClockOptions';
 import {
   WEEKDAYS,
   readPercentageDays,
@@ -102,6 +104,20 @@ const TimeOptions = () => {
    */
   const percentageSettings = (
     <>
+      <Row>
+        <Content
+          title={uiText('shift_fallback_background')}
+          subtitle={uiText('shift_fallback_hint')}
+        />
+        <Action>
+          <Switch
+            name="percentageFallbackBackground"
+            stateText
+            label={uiText('shift_fallback_background')}
+            category="backgroundsource"
+          />
+        </Action>
+      </Row>
       <Row>
         <Content
           title={variables.getMessage(`${TIME_SECTION}.percentage.shift_title`)}
@@ -399,6 +415,7 @@ const TimeOptions = () => {
           {WidgetType()}
           {getTimeSettings()}
         </Group>
+        <WorldClockOptions />
       </PreferencesWrapper>
 
       {/* The date is part of the clock, so it sits at the end of the time

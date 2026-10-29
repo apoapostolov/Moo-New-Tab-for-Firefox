@@ -2,6 +2,7 @@ import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import usePreviewScroll from 'features/widgetKit/usePreviewScroll';
 
 import { getMessage } from '../services/gmail';
 import { describeError } from './ConnectPrompt';
@@ -17,15 +18,6 @@ const readCached = (key) => {
   return null;
 };
 
-/**
- * The wheel moves a target rather than the scroll position, and the text chases it: that lag is
- * what gives a long message weight instead of jumping line by line.
- */
-const SPRING_STIFFNESS = 220;
-const SPRING_DAMPING = 26;
-const REST_DISTANCE = 0.4;
-const REST_SPEED = 4;
-
 const formatDate = (value) => {
   const date = new Date(value);
 
@@ -40,14 +32,6 @@ const formatDate = (value) => {
   });
 };
 
-/** Line and page deltas mean different things to different mice. */
-const wheelDistance = (event, viewport) => {
-  if (event.deltaMode === 1) return event.deltaY * 16;
-  if (event.deltaMode === 2) return event.deltaY * viewport;
-
-  return event.deltaY;
-};
-
 /**
  * The whole message, floating beside the mail card. A manual popover rather than a real one: the
  * card's backdrop-filter clips a fixed child, so this goes in the top layer. Placement ignores the
@@ -59,7 +43,6 @@ const MailPreview = ({ message, account, anchor, onEnter, onLeave, onClose }) =>
   const cacheKey = `${account}:${message.id}`;
   const panel = useRef(null);
   const body = useRef(null);
-  const kinetic = useRef({ target: 0, position: 0, velocity: 0, frame: 0, last: 0 });
   const [height, setHeight] = useState(0);
   // The card can change size under an open panel: a row arrives, the zoom moves, the window
   // changes. Placement is state so it can follow.
@@ -153,92 +136,7 @@ const MailPreview = ({ message, account, anchor, onEnter, onLeave, onClose }) =>
     };
   }, [anchor]);
 
-  /**
-   * The wheel belongs to the message while the message is up, wherever the pointer is. It is
-   * caught on the window rather than the panel because the hand is usually down on the list.
-   */
-  useEffect(() => {
-    const node = body.current;
-
-    if (!node) return undefined;
-
-    const motion = kinetic.current;
-
-    motion.position = node.scrollTop;
-    motion.target = node.scrollTop;
-    motion.velocity = 0;
-
-    const tick = (now) => {
-      const elapsed = Math.min(0.032, Math.max(0.001, (now - motion.last) / 1000));
-      const furthest = node.scrollHeight - node.clientHeight;
-
-      motion.last = now;
-
-      const displacement = motion.position - motion.target;
-      const acceleration = -SPRING_STIFFNESS * displacement - SPRING_DAMPING * motion.velocity;
-
-      motion.velocity += acceleration * elapsed;
-      motion.position += motion.velocity * elapsed;
-
-      // A message has two ends: hitting one stops the glide rather than bouncing past, which
-      // would read as a broken scroll.
-      if (motion.position < 0) {
-        motion.position = 0;
-        motion.velocity = 0;
-      } else if (motion.position > furthest) {
-        motion.position = furthest;
-        motion.velocity = 0;
-      }
-
-      node.scrollTop = motion.position;
-
-      const settled =
-        Math.abs(motion.position - motion.target) < REST_DISTANCE &&
-        Math.abs(motion.velocity) < REST_SPEED;
-
-      if (settled) {
-        motion.position = motion.target;
-        node.scrollTop = motion.target;
-        motion.velocity = 0;
-        motion.frame = 0;
-
-        return;
-      }
-
-      motion.frame = window.requestAnimationFrame(tick);
-    };
-
-    const onWheel = (event) => {
-      if (!event.deltaY || event.ctrlKey) return;
-
-      const furthest = node.scrollHeight - node.clientHeight;
-
-      // Nothing to read past the edges: leave the wheel alone.
-      if (furthest <= 0) return;
-
-      event.preventDefault();
-
-      motion.target = Math.max(
-        0,
-        Math.min(furthest, motion.target + wheelDistance(event, node.clientHeight)),
-      );
-
-      if (!motion.frame) {
-        motion.last = window.performance.now();
-        motion.frame = window.requestAnimationFrame(tick);
-      }
-    };
-
-    window.addEventListener('wheel', onWheel, { passive: false });
-
-    return () => {
-      window.removeEventListener('wheel', onWheel);
-
-      if (motion.frame) window.cancelAnimationFrame(motion.frame);
-
-      motion.frame = 0;
-    };
-  }, []);
+  usePreviewScroll(body, cacheKey);
 
   const width = Math.min(430, window.innerWidth - 48);
 

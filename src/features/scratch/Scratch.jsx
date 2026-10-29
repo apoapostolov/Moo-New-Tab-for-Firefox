@@ -1,3 +1,5 @@
+import useFocusWorkspace from 'features/focus/useFocusWorkspace';
+import { isFocusWorkspace } from 'features/focus/workspace';
 import { durableWriter, registerDraft } from 'utils/durableWriter';
 import { saveFile } from 'utils/saveFile';
 import { withProfileLock } from 'utils/settings/profile';
@@ -5,10 +7,33 @@ import { readScratchAssets, patchScratchAssets } from 'utils/customBackgroundDB'
 import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { MdAdd, MdLock, MdLockOpen } from 'react-icons/md';
 import useScrollThumb from 'utils/useScrollThumb';
 
 import EventBus from 'utils/eventbus';
-import Markdown from './Markdown';
+import { deferScratchGesture } from 'utils/pageGestures';
+import Markdown, { ChecklistMarkdown, checklistLabel } from './Markdown';
+import ChecklistEditor, { ChecklistEntries, ChecklistProgress } from './Checklist';
+import {
+  checklistFromNote,
+  newChecklistItem,
+  validChecklist,
+  MAX_CHECKLIST_ITEMS,
+} from './checklistStore';
+import CountdownReadout from 'features/countdown/CountdownReadout';
+import CountdownForm from 'features/countdown/CountdownForm';
+import { validCountdown } from 'features/countdown/countdownStore';
+import {
+  normalizeNoteMemories,
+  noteBody,
+  noteType,
+  rememberNoteType,
+  switchNoteType,
+  updateNoteBody,
+  validNoteMemories,
+} from './noteTypes';
+import './scratchCountdown.scss';
+import 'features/countdown/countdown.scss';
 import {
   NOTE_WIDTH,
   TILT_EASE,
@@ -21,6 +46,7 @@ import {
   settleAngle,
   randomTilt,
   dragTarget,
+  stackingOrder,
 } from './shared';
 
 import './scratchNotes.scss';
@@ -43,7 +69,7 @@ const BARE_FLAG = 'scratchNotesBare';
 const TOP_Z = 'scratchTopZ';
 const ARM_TIMEOUT = 4000;
 const NOT_BACKGROUND =
-  '.scratchNote, .scratchImage, .scratchSaveError, #widgets, #navbar, .navbar, .modal, dialog, .ReactModal__Overlay, label, button, a, input, textarea, select, [contenteditable="true"], [role="button"], .Toastify, .reminder-info';
+  '[data-double-click-protected="true"], .scratchNote, .scratchImage, .scratchSaveError, #widgets, #navbar, .navbar, .modal, dialog, .ReactModal__Overlay, label, button, a, input, textarea, select, [contenteditable="true"], [role="button"], .Toastify, .reminder-info';
 
 const TYPING = 'input, textarea, [contenteditable="true"], [contenteditable=""], [role="textbox"]';
 
@@ -63,14 +89,22 @@ const readNotes = () => {
 
     return parsed
       .filter((note) => note && typeof note === 'object' && Number.isFinite(note.x))
-      .map((note) => ({
-        id: String(note.id || `n${Math.random().toString(36).slice(2)}`),
-        x: note.x,
-        y: Number.isFinite(note.y) ? note.y : 40,
-        text: typeof note.text === 'string' ? note.text : '',
-        angle: Number.isFinite(note.angle) ? note.angle : 1.5,
-        z: Number.isFinite(note.z) ? note.z : 1,
-      }));
+      .map((note) =>
+        normalizeNoteMemories({
+          id: String(note.id || `n${Math.random().toString(36).slice(2)}`),
+          x: note.x,
+          y: Number.isFinite(note.y) ? note.y : 40,
+          text: typeof note.text === 'string' ? note.text : '',
+          ...(validCountdown(note.countdown) ? { countdown: note.countdown } : {}),
+          ...(validChecklist(note.checklist) ? { checklist: note.checklist } : {}),
+          ...(typeof note.type === 'string' ? { type: note.type } : {}),
+          ...(typeof note.transparent === 'boolean' ? { transparent: note.transparent } : {}),
+          ...(typeof note.showInFocus === 'boolean' ? { showInFocus: note.showInFocus } : {}),
+          ...(typeof note.locked === 'boolean' ? { locked: note.locked } : {}),
+          angle: Number.isFinite(note.angle) ? note.angle : 1.5,
+          z: Number.isFinite(note.z) ? note.z : 1,
+        }),
+      );
   } catch {
     return [];
   }
@@ -83,7 +117,7 @@ const loadImage = (url) =>
     const image = new Image();
 
     image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error('That image could not be read.'));
+    image.onerror = () => reject(new Error(uiText('scratch_image_unreadable')));
     image.src = url;
   });
 
@@ -157,7 +191,7 @@ const toPngBlob = async (src) => {
   });
 };
 
-// Match the widget fade before staggering the scratch layer entrance.
+// Match the widget fade before staggering the floating layer entrance.
 const WIDGET_FADE = 1000;
 const SCRATCH_ENTRANCE = WIDGET_FADE + 120; // a beat after the page settles
 const SCRATCH_STAGGER = 60; // between one note and the next
@@ -197,14 +231,46 @@ const Scratch = () => {
   const [notesProblem] = useState(() => {
     try {
       const value = JSON.parse(localStorage.getItem(NOTES_STORE) || '[]');
-      return !Array.isArray(value) || value.some((note) => !note || !Number.isFinite(note.x))
-        ? 'Some saved notes could not be read. Their original data has been kept.'
+      return !Array.isArray(value) ||
+        value.some((note) => !note || !Number.isFinite(note.x) || !validNoteMemories(note))
+        ? uiText('scratch_notes_damaged')
         : '';
     } catch {
-      return 'Some saved notes could not be read. Their original data has been kept.';
+      return uiText('scratch_notes_damaged');
     }
   });
+  const focusWorkspace = useFocusWorkspace();
+  const [imageMenuId, setImageMenuId] = useState(null);
+  const [menuId, setMenuId] = useState(null);
+  const [configuringId, setConfiguringId] = useState(null);
+  const [configurationKind, setConfigurationKind] = useState('countdown');
+  const [checklistDraft, setChecklistDraft] = useState(null);
+  const [checklistItemId, setChecklistItemId] = useState(null);
+  const scratchEditorRef = useRef(null);
+  const [editorPosition, setEditorPosition] = useState(null);
   const [notes, setNotesState] = useState(readNotes);
+  useLayoutEffect(() => {
+    const editor = scratchEditorRef.current;
+    const note = notes.find((item) => item.id === configuringId);
+    if (!editor || !note) return undefined;
+    const place = () => {
+      const x = clamp(note.x, 16, Math.max(16, window.innerWidth - editor.offsetWidth - 16));
+      const y = clamp(note.y, 16, Math.max(16, window.innerHeight - editor.offsetHeight - 16));
+      setEditorPosition((current) =>
+        current?.id === note.id && current.x === x && current.y === y
+          ? current
+          : { id: note.id, x, y },
+      );
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(editor);
+    window.addEventListener('resize', place);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', place);
+    };
+  }, [configuringId, notes]);
   const [images, setImages] = useState([]);
   const [saveError, setSaveError] = useState('');
   const [imageError, setImageError] = useState('');
@@ -232,7 +298,7 @@ const Scratch = () => {
       (notes) => {
         if (notesProblem) throw new Error(notesProblem);
         if (revision !== localStorage.getItem('profileRevision'))
-          throw new Error('The profile changed in another tab. Reload to continue.');
+          throw new Error(uiText('scratch_profile_changed'));
         saveNotes(notes);
       },
       (status) => setSaveError(status === 'Saved' || status === 'Saving…' ? '' : status),
@@ -325,6 +391,40 @@ const Scratch = () => {
   }, []);
 
   const commitNotes = setNotes;
+  const openChecklistEditor = (note, itemId = null) => {
+    let value =
+      note.checklist ||
+      checklistFromNote(noteBody(note), noteType(note) === 'countdown' ? note.countdown.title : '');
+    if (itemId === 'new') {
+      const item = newChecklistItem();
+      value = { ...value, items: [...value.items, item] };
+      itemId = item.id;
+    }
+    setChecklistDraft(value);
+    setChecklistItemId(itemId);
+    setConfigurationKind('checklist');
+    setMenuId(null);
+    setEditingId(null);
+    setFocused(note.id);
+    setConfiguringId(note.id);
+  };
+  const saveChecklist = (note, checklist) =>
+    commitNotes(
+      notes.map((item) =>
+        item.id === note.id ? rememberNoteType(item, 'checklist', checklist) : item,
+      ),
+    );
+  const finishScratchEditor = () => {
+    setFocused(configuringId);
+    setConfiguringId(null);
+    scratchEditorRef.current?.querySelector('.scratchNoteMenuToggle')?.focus();
+  };
+  const showNoteType = (note, type) => {
+    commitNotes(notes.map((item) => (item.id === note.id ? switchNoteType(item, type) : item)));
+    setMenuId(null);
+    setEditingId(null);
+    setConfiguringId(null);
+  };
   const commitImages = useCallback((update) => {
     const revision = localStorage.getItem('profileRevision');
     const write = async () => {
@@ -367,7 +467,9 @@ const Scratch = () => {
         );
         return;
       }
-      setNotes((current) => current.map((note) => (note.id === id ? { ...note, z } : note)));
+      setNotes((current) =>
+        current.map((note) => (note.id === id && !note.locked ? { ...note, z } : note)),
+      );
     },
     [commitImages, setNotes],
   );
@@ -381,6 +483,7 @@ const Scratch = () => {
         x: clamp(clientX - 28, 8, Math.max(8, window.innerWidth - NOTE_WIDTH - 8)),
         y: clamp(clientY - 16, 8, Math.max(8, window.innerHeight - 120)),
         text: '',
+        showInFocus: isFocusWorkspace(),
         angle: noTilt ? 0 : randomTilt(),
         z: nextZ(),
       };
@@ -395,24 +498,42 @@ const Scratch = () => {
   useEffect(() => {
     if (!notesOn || notesProblem) return undefined;
 
+    const gesture = deferScratchGesture(document, createNote);
     const onDoubleClick = (event) => {
-      if (event.target.closest?.(NOT_BACKGROUND)) return;
+      if (
+        event.defaultPrevented ||
+        document.body.classList.contains('uiHidden') ||
+        event.target.closest?.(NOT_BACKGROUND)
+      )
+        return;
       if (document.querySelector('dialog[open], .ReactModal__Overlay--after-open')) return;
 
-      createNote(event.clientX, event.clientY);
+      gesture.schedule(event.clientX, event.clientY);
     };
 
     document.addEventListener('dblclick', onDoubleClick);
 
-    return () => document.removeEventListener('dblclick', onDoubleClick);
+    return () => {
+      gesture.dispose();
+      document.removeEventListener('dblclick', onDoubleClick);
+    };
   }, [createNote, notesOn, notesProblem]);
 
   const startDrag = (event, note) => {
     if (event.button !== 0) return;
-    if (event.target.closest('.scratchNoteClose, a')) return;
-    if (editingId === note.id) return;
+    if (note.locked) {
+      setFocused(note.id);
+      return;
+    }
+    const title = event.target.closest('.scratchChecklistTitle');
+    if (
+      !title &&
+      event.target.closest('button, input, select, textarea, form, .scratchNoteMenu, a')
+    )
+      return;
+    if (editingId === note.id || configuringId === note.id || menuId === note.id) return;
 
-    event.currentTarget.setPointerCapture?.(event.pointerId);
+    (title || event.currentTarget).setPointerCapture?.(event.pointerId);
 
     tiltRef.current = 0;
     setFocused(note.id);
@@ -426,6 +547,7 @@ const Scratch = () => {
       lastX: event.clientX,
       lastTime: event.timeStamp || performance.now(),
       moved: false,
+      captureOnMove: Boolean(title),
     };
 
     lift(note.id, 'note');
@@ -441,6 +563,11 @@ const Scratch = () => {
     const dy = event.clientY - current.startY;
 
     if (!current.moved && Math.hypot(dx, dy) < MOVE_THRESHOLD) return;
+
+    if (current.captureOnMove) {
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+      current.captureOnMove = false;
+    }
 
     current.moved = true;
 
@@ -487,15 +614,21 @@ const Scratch = () => {
     );
   };
 
-  const finishEditing = (note) => {
+  const finishEditing = (note, event) => {
     setEditingId(null);
 
+    if (event?.relatedTarget?.closest?.('.scratchNote') || note.countdown || note.checklist) {
+      commitNotes(notes);
+      return;
+    }
     if (!note.text.trim()) commitNotes(notes.filter((entry) => entry.id !== note.id));
     else commitNotes(notes);
   };
 
   const changeText = (id, text) => {
-    setNotes((current) => current.map((note) => (note.id === id ? { ...note, text } : note)));
+    setNotes((current) =>
+      current.map((note) => (note.id === id ? updateNoteBody(note, text) : note)),
+    );
   };
 
   // First click arms, second click confirms: shared so neither kind vanishes on one click.
@@ -536,6 +669,7 @@ const Scratch = () => {
         z: nextZ(),
         src,
         transparent,
+        showInFocus: isFocusWorkspace(),
       };
 
       await commitImages((current) => [...current, image]);
@@ -550,6 +684,9 @@ const Scratch = () => {
 
     const onPointerDown = (event) => {
       if (event.button !== 0) return;
+      if (!event.target?.closest?.('.scratchNoteMenu, .scratchNoteMenuToggle')) setMenuId(null);
+      if (!event.target?.closest?.('.scratchImageMenu, .scratchImageMenuToggle'))
+        setImageMenuId(null);
       if (event.target?.closest?.('.scratchNote, .scratchImage')) return;
 
       setFocused(null);
@@ -613,12 +750,14 @@ const Scratch = () => {
 
   const startImageDrag = (event, image) => {
     if (event.button !== 0) return;
-    if (event.target.closest('.scratchImageButton, .scratchImageResize')) return;
+    if (event.target.closest('.scratchImageButton, .scratchImageResize, .scratchNoteMenu')) return;
+
+    setFocused(image.id);
+    if (image.locked) return;
 
     event.currentTarget.setPointerCapture?.(event.pointerId);
 
     tiltRef.current = 0;
-    setFocused(image.id);
 
     imageDragRef.current = {
       mode: 'move',
@@ -715,7 +854,7 @@ const Scratch = () => {
   };
 
   const startResize = (event, image) => {
-    if (event.button !== 0) return;
+    if (event.button !== 0 || image.locked) return;
 
     event.stopPropagation();
     event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -739,6 +878,32 @@ const Scratch = () => {
 
   const removeImage = (id) => commitImages(images.filter((image) => image.id !== id));
 
+  const toggleNoteLock = (id) => {
+    setFocused(id);
+    setArmedId(null);
+    if (dragRef.current?.id === id) {
+      dragRef.current = null;
+      setDrag(null);
+    }
+    const z = nextZ();
+    setNotes((current) =>
+      current.map((note) => (note.id === id ? { ...note, locked: !note.locked, z } : note)),
+    );
+  };
+
+  const toggleImageLock = (id) => {
+    setFocused(id);
+    setArmedId(null);
+    if (imageDragRef.current?.id === id) {
+      imageDragRef.current = null;
+      setImageDrag(null);
+    }
+    const z = nextZ();
+    commitImages((current) =>
+      current.map((image) => (image.id === id ? { ...image, locked: !image.locked, z } : image)),
+    );
+  };
+
   const copyImage = async (image) => {
     window.clearTimeout(copyTimer.current);
     setCopyFailed(null);
@@ -747,7 +912,7 @@ const Scratch = () => {
       const png = await toPngBlob(image.src);
 
       if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
-        throw new Error('This browser will not take an image on the clipboard.');
+        throw new Error(uiText('scratch_clipboard_unsupported'));
       }
 
       await navigator.clipboard.write([new ClipboardItem({ 'image/png': png })]);
@@ -778,18 +943,26 @@ const Scratch = () => {
 
     const fit = () => {
       setNotes((current) =>
-        current.map((note) => ({
-          ...note,
-          x: clamp(note.x, 8, Math.max(8, window.innerWidth - 80)),
-          y: clamp(note.y, 8, Math.max(8, window.innerHeight - 60)),
-        })),
+        current.map((note) =>
+          note.locked
+            ? note
+            : {
+                ...note,
+                x: clamp(note.x, 8, Math.max(8, window.innerWidth - 80)),
+                y: clamp(note.y, 8, Math.max(8, window.innerHeight - 60)),
+              },
+        ),
       );
       setImages((current) =>
-        current.map((image) => ({
-          ...image,
-          x: clamp(image.x, 8, Math.max(8, window.innerWidth - 80)),
-          y: clamp(image.y, 8, Math.max(8, window.innerHeight - 60)),
-        })),
+        current.map((image) =>
+          image.locked
+            ? image
+            : {
+                ...image,
+                x: clamp(image.x, 8, Math.max(8, window.innerWidth - 80)),
+                y: clamp(image.y, 8, Math.max(8, window.innerHeight - 60)),
+              },
+        ),
       );
     };
 
@@ -810,6 +983,7 @@ const Scratch = () => {
   if (!notesOn && !imagesOn) return null;
 
   const error = notesProblem || imageError || saveError;
+  const stack = stackingOrder(notes, images);
 
   return (
     <div className="scratchLayer">
@@ -832,212 +1006,522 @@ const Scratch = () => {
         </div>
       )}
       {notesOn &&
-        notes.map((note, index) => {
-          const editing = editingId === note.id;
-          const active = drag?.id === note.id;
-          const angle = noTilt ? 0 : note.angle + (active ? drag.tilt : 0);
-          // Bare is a resting state, not a mode: the frame comes back the moment the note is
-          // in hand, whether that is a click, a drag or the caret.
-          const frameless = bare && !editing && !active && focused !== note.id;
+        notes
+          .filter((note) => !focusWorkspace || note.showInFocus === true)
+          .map((note, index) => {
+            const type = noteType(note);
+            const body = noteBody(note);
+            const editing = editingId === note.id;
+            const configuring = configuringId === note.id;
+            const active = drag?.id === note.id;
+            const angle = noTilt ? 0 : note.angle + (active ? drag.tilt : 0);
+            // Bare is a resting state, not a mode: the frame comes back the moment the note is
+            // in hand, whether that is a click, a drag or the caret.
+            const transparent = note.transparent ?? bare;
+            const frameless =
+              transparent && !editing && !configuring && !active && focused !== note.id;
 
-          return (
-            <div
-              key={note.id}
-              className={`scratchNote${editing ? ' editing' : ''}${active ? ' dragging' : ''}${
-                focused === note.id ? ' focused' : ''
-              }${frameless ? ' bare' : ''}`}
-              style={{
-                left: note.x + (active ? drag.dx : 0),
-                top: note.y + (active ? drag.dy : 0),
-                zIndex: note.z,
-                transform: `rotate(${angle.toFixed(2)}deg)`,
-                // Behind the page, then staggered so the notes assemble rather than
-                // appearing at once.
-                animationDelay: entrance(note.id, index),
-              }}
-              onPointerDown={(event) => startDrag(event, note)}
-              onPointerMove={moveDrag}
-              onPointerUp={endDrag}
-              onPointerCancel={endDrag}
-            >
-              <button
-                type="button"
-                className={`scratchNoteClose${armedId === note.id ? ' armed' : ''}`}
-                onClick={() =>
-                  armClose(note.id, () => commitNotes(notes.filter((item) => item.id !== note.id)))
-                }
-                title={armedId === note.id ? 'Click again to remove' : 'Remove note'}
-                aria-label={armedId === note.id ? 'Click again to remove the note' : 'Remove note'}
+            return (
+              <div
+                ref={configuring ? scratchEditorRef : undefined}
+                key={note.id}
+                className={`scratchNote${editing ? ' editing' : ''}${active ? ' dragging' : ''}${
+                  focused === note.id ? ' focused' : ''
+                }${frameless ? ' bare' : ''}${configuring ? ' scratchConfiguring' : ''}${type === 'checklist' ? ' scratchChecklistNote' : ''}${note.locked ? ' locked' : ''}`}
+                style={{
+                  left:
+                    configuring && editorPosition?.id === note.id
+                      ? editorPosition.x
+                      : note.x + (active ? drag.dx : 0),
+                  top:
+                    configuring && editorPosition?.id === note.id
+                      ? editorPosition.y
+                      : note.y + (active ? drag.dy : 0),
+                  zIndex: stack.get(`note:${note.id}`),
+                  transform: `rotate(${angle.toFixed(2)}deg)`,
+                  // Behind the page, then staggered so the notes assemble rather than
+                  // appearing at once.
+                  animationDelay: entrance(note.id, index),
+                }}
+                onPointerDown={(event) => startDrag(event, note)}
+                onPointerMove={moveDrag}
+                onPointerUp={endDrag}
+                onPointerCancel={endDrag}
               >
-                ×
-              </button>
-              {editing ? (
-                <NoteEditor
-                  angle={angle}
-                  readOnly={Boolean(notesProblem)}
-                  text={note.text}
-                  onChange={(text) => changeText(note.id, text)}
-                  onBlur={() => finishEditing(note)}
-                />
-              ) : (
                 <div
-                  className="scratchNoteBody"
-                  role="button"
-                  tabIndex={0}
-                  aria-label={uiText('edit_note_9751b2')}
-                  onClick={(event) => {
-                    if (event.target.closest('a')) return;
-                    setEditingId(note.id);
-                    setFocused(note.id);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.target.closest('a')) return;
-                    if (event.key === 'Enter' || event.key === ' ') {
+                  className={
+                    type === 'checklist' && !configuring
+                      ? 'scratchChecklistHeader'
+                      : 'scratchNoteControls'
+                  }
+                >
+                  {type === 'checklist' && !configuring && (
+                    <>
+                      <button
+                        type="button"
+                        className="scratchChecklistTitle"
+                        disabled={Boolean(notesProblem)}
+                        onClick={() => openChecklistEditor(note)}
+                        aria-label={uiText('checklist_edit')}
+                        title={checklistLabel(note.checklist.title)}
+                      >
+                        <ChecklistMarkdown text={note.checklist.title} />
+                      </button>
+                      <button
+                        type="button"
+                        className="scratchChecklistInlineAdd"
+                        aria-label={uiText('checklist_add_entry')}
+                        title={uiText('checklist_add_entry')}
+                        disabled={
+                          Boolean(notesProblem) ||
+                          note.checklist.items.length >= MAX_CHECKLIST_ITEMS
+                        }
+                        onClick={() => openChecklistEditor(note, 'new')}
+                      >
+                        <MdAdd aria-hidden="true" />
+                      </button>
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    className="scratchNoteMenuToggle"
+                    aria-label={uiText('scratch_note_options')}
+                    aria-expanded={menuId === note.id}
+                    onPointerDown={(event) => {
                       event.preventDefault();
-                      setEditingId(note.id);
+                      event.stopPropagation();
+                    }}
+                    onClick={() => {
+                      if (menuId !== note.id) lift(note.id, 'note');
+                      setMenuId(menuId === note.id ? null : note.id);
+                      setImageMenuId(null);
                       setFocused(note.id);
+                    }}
+                  >
+                    ⋮
+                  </button>
+                  <button
+                    type="button"
+                    className={`scratchNoteLock${note.locked ? ' locked' : ''}`}
+                    title={uiText(note.locked ? 'floating_unlock' : 'floating_lock')}
+                    aria-label={uiText(note.locked ? 'floating_unlock' : 'floating_lock')}
+                    aria-pressed={Boolean(note.locked)}
+                    disabled={Boolean(notesProblem)}
+                    onClick={() => toggleNoteLock(note.id)}
+                  >
+                    {note.locked ? (
+                      <MdLock aria-hidden="true" />
+                    ) : (
+                      <MdLockOpen aria-hidden="true" />
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    className={`scratchNoteClose${armedId === note.id ? ' armed' : ''}`}
+                    onClick={() =>
+                      armClose(note.id, () =>
+                        commitNotes(notes.filter((item) => item.id !== note.id)),
+                      )
                     }
-                    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+                    title={
+                      armedId === note.id
+                        ? uiText('scratch_remove_again')
+                        : uiText('scratch_remove_note')
+                    }
+                    aria-label={
+                      armedId === note.id
+                        ? uiText('scratch_remove_note_again')
+                        : uiText('scratch_remove_note')
+                    }
+                  >
+                    ×
+                  </button>
+                </div>
+                {menuId === note.id && (
+                  <div
+                    className="scratchNoteMenu"
+                    role="group"
+                    aria-label={uiText('scratch_note_options')}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Escape') setMenuId(null);
+                    }}
+                  >
+                    <label className="scratchNoteMenuCheck">
+                      <input
+                        type="checkbox"
+                        checked={transparent}
+                        disabled={Boolean(notesProblem)}
+                        onChange={(event) =>
+                          commitNotes(
+                            notes.map((item) =>
+                              item.id === note.id
+                                ? { ...item, transparent: event.target.checked }
+                                : item,
+                            ),
+                          )
+                        }
+                      />
+                      <span>{uiText('scratch_transparent')}</span>
+                    </label>
+                    <label className="scratchNoteMenuCheck">
+                      <input
+                        type="checkbox"
+                        checked={note.showInFocus === true}
+                        disabled={Boolean(notesProblem)}
+                        onChange={(event) => {
+                          const showInFocus = event.target.checked;
+                          commitNotes(
+                            notesRef.current.map((item) =>
+                              item.id === note.id ? { ...item, showInFocus } : item,
+                            ),
+                          );
+                        }}
+                      />
+                      <span>{uiText('floating_show_in_focus')}</span>
+                    </label>
+                    {[
+                      type,
+                      ...['note', 'checklist', 'countdown'].filter((item) => item !== type),
+                    ].map((menuType) => (
+                      <button
+                        key={menuType}
+                        type="button"
+                        onClick={() => {
+                          if (menuType === 'note') {
+                            if (type !== 'note') showNoteType(note, 'note');
+                            else {
+                              setMenuId(null);
+                              setEditingId(note.id);
+                              setFocused(note.id);
+                            }
+                          } else if (menuType === 'checklist') {
+                            if (type !== 'checklist' && note.checklist)
+                              showNoteType(note, 'checklist');
+                            else openChecklistEditor(note);
+                          } else if (type !== 'countdown' && note.countdown) {
+                            showNoteType(note, 'countdown');
+                          } else {
+                            setMenuId(null);
+                            setEditingId(null);
+                            setConfigurationKind('countdown');
+                            setConfiguringId(note.id);
+                          }
+                        }}
+                      >
+                        {uiText(
+                          (menuType === type
+                            ? {
+                                note: 'edit_note_9751b2',
+                                checklist: 'checklist_edit',
+                                countdown: 'countdown_edit',
+                              }
+                            : {
+                                note: 'scratch_to_note',
+                                checklist: 'scratch_to_list',
+                                countdown: 'scratch_to_countdown',
+                              })[menuType],
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {configuring ? (
+                  configurationKind === 'checklist' ? (
+                    <ChecklistEditor
+                      initial={checklistDraft}
+                      existing={Boolean(note.checklist)}
+                      initialItemId={checklistItemId}
+                      onSave={(checklist) => {
+                        saveChecklist(note, checklist);
+                        finishScratchEditor();
+                      }}
+                      onCancel={finishScratchEditor}
+                    />
+                  ) : (
+                    <CountdownForm
+                      compact
+                      initial={
+                        note.countdown || {
+                          title: type === 'checklist' ? note.checklist.title : '',
+                          text: body,
+                        }
+                      }
+                      onSave={(countdown) => {
+                        commitNotes(
+                          notes.map((item) =>
+                            item.id === note.id
+                              ? rememberNoteType(item, 'countdown', countdown)
+                              : item,
+                          ),
+                        );
+                        finishScratchEditor();
+                      }}
+                      onCancel={finishScratchEditor}
+                    />
+                  )
+                ) : type === 'checklist' ? (
+                  <section
+                    className="scratchChecklist"
+                    aria-label={checklistLabel(note.checklist.title) || uiText('checklist_entries')}
+                  >
+                    <ChecklistEntries
+                      items={note.checklist.items}
+                      readOnly={Boolean(notesProblem)}
+                      onChange={(items) => saveChecklist(note, { ...note.checklist, items })}
+                      onEdit={(itemId) => openChecklistEditor(note, itemId)}
+                    />
+                    <ChecklistProgress items={note.checklist.items} />
+                  </section>
+                ) : (
+                  <>
+                    {type === 'countdown' && <CountdownReadout value={note.countdown} />}
+                    {editing ? (
+                      <NoteEditor
+                        angle={angle}
+                        readOnly={Boolean(notesProblem)}
+                        text={body}
+                        onChange={(text) => changeText(note.id, text)}
+                        onBlur={(event) => finishEditing(note, event)}
+                      />
+                    ) : type === 'countdown' && !body.trim() && focused !== note.id ? null : (
+                      <div
+                        className="scratchNoteBody"
+                        role="button"
+                        tabIndex={0}
+                        aria-label={uiText('edit_note_9751b2')}
+                        onClick={(event) => {
+                          if (event.target.closest('a')) return;
+                          setEditingId(note.id);
+                          setFocused(note.id);
+                        }}
+                        onKeyDown={(event) => {
+                          if (event.target.closest('a')) return;
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            setEditingId(note.id);
+                            setFocused(note.id);
+                          }
+                          if (
+                            ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)
+                          ) {
+                            event.preventDefault();
+                            if (note.locked) return;
+                            const step = event.shiftKey ? 20 : 5;
+                            commitNotes(
+                              notes.map((item) =>
+                                item.id === note.id
+                                  ? {
+                                      ...item,
+                                      x: clamp(
+                                        item.x +
+                                          (event.key === 'ArrowLeft'
+                                            ? -step
+                                            : event.key === 'ArrowRight'
+                                              ? step
+                                              : 0),
+                                        8,
+                                        Math.max(8, window.innerWidth - NOTE_WIDTH),
+                                      ),
+                                      y: clamp(
+                                        item.y +
+                                          (event.key === 'ArrowUp'
+                                            ? -step
+                                            : event.key === 'ArrowDown'
+                                              ? step
+                                              : 0),
+                                        8,
+                                        Math.max(8, window.innerHeight - 100),
+                                      ),
+                                    }
+                                  : item,
+                              ),
+                            );
+                          }
+                        }}
+                      >
+                        <Markdown
+                          text={body || (type === 'countdown' ? uiText('scratch_add_notes') : '')}
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            );
+          })}
+
+      {imagesOn &&
+        images
+          .filter((image) => !focusWorkspace || image.showInFocus === true)
+          .map((image, index) => {
+            const active = imageDrag?.id === image.id;
+            const width = active && imageDrag.mode === 'resize' ? imageDrag.width : image.width;
+            const angle = noTilt
+              ? 0
+              : image.angle + (active && imageDrag.tilt ? imageDrag.tilt : 0);
+
+            return (
+              <div
+                key={image.id}
+                className={`scratchImage${active ? ' dragging' : ''}${
+                  focused === image.id ? ' focused' : ''
+                }${image.transparent ? ' sticker' : ''}${image.locked ? ' locked' : ''}${imageMenuId === image.id ? ' menuOpen' : ''}`}
+                style={{
+                  left: image.x + (active && imageDrag.mode === 'move' ? imageDrag.dx : 0),
+                  top: image.y + (active && imageDrag.mode === 'move' ? imageDrag.dy : 0),
+                  width,
+                  aspectRatio: image.ratio,
+                  zIndex: stack.get(`image:${image.id}`),
+                  transform: `rotate(${angle.toFixed(2)}deg)`,
+                  // Pictures follow the notes, so both kinds assemble in one run.
+                  animationDelay: entrance(image.id, index + notes.length),
+                }}
+                onPointerDown={(event) => startImageDrag(event, image)}
+                onPointerMove={moveImageDrag}
+                onPointerUp={endImageDrag}
+                onPointerCancel={endImageDrag}
+                onFocus={() => setFocused(image.id)}
+              >
+                <img src={image.src} alt={uiText('scratch_pasted_picture')} draggable={false} />
+                <button
+                  type="button"
+                  className={`scratchImageButton scratchImageCopy${
+                    copyFailed === image.id ? ' refused' : ''
+                  }`}
+                  title={
+                    copyFailed === image.id
+                      ? uiText('scratch_clipboard_refused')
+                      : uiText('scratch_copy_picture')
+                  }
+                  aria-label={uiText('copy_this_picture_72ef7d')}
+                  onClick={() => copyImage(image)}
+                >
+                  {copiedId === image.id ? '✓' : copyFailed === image.id ? '!' : '⧉'}
+                </button>
+                <button
+                  type="button"
+                  className="scratchImageButton scratchImageMenuToggle"
+                  aria-label={uiText('floating_image_options')}
+                  aria-expanded={imageMenuId === image.id}
+                  onPointerDown={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                  }}
+                  onClick={() => {
+                    if (imageMenuId !== image.id && !image.locked) lift(image.id, 'image');
+                    setImageMenuId(imageMenuId === image.id ? null : image.id);
+                    setMenuId(null);
+                    setFocused(image.id);
+                  }}
+                >
+                  ⋮
+                </button>
+                {imageMenuId === image.id && (
+                  <div
+                    className="scratchNoteMenu scratchImageMenu"
+                    role="group"
+                    aria-label={uiText('floating_image_options')}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Escape') {
+                        event.stopPropagation();
+                        setImageMenuId(null);
+                        event.currentTarget.parentElement
+                          .querySelector('.scratchImageMenuToggle')
+                          ?.focus();
+                      }
+                    }}
+                  >
+                    <label className="scratchNoteMenuCheck">
+                      <input
+                        type="checkbox"
+                        checked={image.showInFocus === true}
+                        onChange={(event) => {
+                          const showInFocus = event.target.checked;
+                          commitImages((current) =>
+                            current.map((item) =>
+                              item.id === image.id ? { ...item, showInFocus } : item,
+                            ),
+                          );
+                        }}
+                      />
+                      <span>{uiText('floating_show_in_focus')}</span>
+                    </label>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  className={`scratchImageButton scratchImageLock${image.locked ? ' locked' : ''}`}
+                  title={uiText(image.locked ? 'image_unlock' : 'image_lock')}
+                  aria-label={uiText(image.locked ? 'image_unlock' : 'image_lock')}
+                  aria-pressed={Boolean(image.locked)}
+                  onClick={() => toggleImageLock(image.id)}
+                >
+                  {image.locked ? <MdLock /> : <MdLockOpen />}
+                </button>
+                <button
+                  type="button"
+                  className={`scratchImageButton scratchImageClose${
+                    armedId === image.id ? ' armed' : ''
+                  }`}
+                  title={
+                    armedId === image.id
+                      ? uiText('scratch_remove_again')
+                      : uiText('scratch_remove_picture')
+                  }
+                  aria-label={
+                    armedId === image.id
+                      ? uiText('scratch_remove_picture_again')
+                      : uiText('scratch_remove_this_picture')
+                  }
+                  onClick={() => armClose(image.id, () => removeImage(image.id))}
+                >
+                  ×
+                </button>
+                <button
+                  type="button"
+                  className="scratchImageButton scratchImageDownload"
+                  title={uiText('save_to_a_file_5bb648')}
+                  aria-label={uiText('download_this_picture_623817')}
+                  onClick={() => downloadImage(image)}
+                >
+                  ↓
+                </button>
+                {!image.locked && (
+                  <span
+                    className="scratchImageResize"
+                    role="button"
+                    tabIndex={0}
+                    title={uiText('drag_to_resize_or_use_the_arrow_keys_44c451')}
+                    onKeyDown={(event) => {
+                      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key))
+                        return;
                       event.preventDefault();
-                      const step = event.shiftKey ? 20 : 5;
-                      commitNotes(
-                        notes.map((item) =>
-                          item.id === note.id
+                      const change = ['ArrowLeft', 'ArrowDown'].includes(event.key) ? -10 : 10;
+                      commitImages(
+                        images.map((item) =>
+                          item.id === image.id
                             ? {
                                 ...item,
-                                x: clamp(
-                                  item.x +
-                                    (event.key === 'ArrowLeft'
-                                      ? -step
-                                      : event.key === 'ArrowRight'
-                                        ? step
-                                        : 0),
-                                  8,
-                                  Math.max(8, window.innerWidth - NOTE_WIDTH),
-                                ),
-                                y: clamp(
-                                  item.y +
-                                    (event.key === 'ArrowUp'
-                                      ? -step
-                                      : event.key === 'ArrowDown'
-                                        ? step
-                                        : 0),
-                                  8,
-                                  Math.max(8, window.innerHeight - 100),
+                                width: clamp(
+                                  item.width + change,
+                                  80,
+                                  Math.max(80, window.innerWidth - 16),
                                 ),
                               }
                             : item,
                         ),
                       );
-                    }
-                  }}
-                >
-                  <Markdown text={note.text} />
-                </div>
-              )}
-            </div>
-          );
-        })}
-
-      {imagesOn &&
-        images.map((image, index) => {
-          const active = imageDrag?.id === image.id;
-          const width = active && imageDrag.mode === 'resize' ? imageDrag.width : image.width;
-          const angle = noTilt ? 0 : image.angle + (active && imageDrag.tilt ? imageDrag.tilt : 0);
-
-          return (
-            <div
-              key={image.id}
-              className={`scratchImage${active ? ' dragging' : ''}${
-                focused === image.id ? ' focused' : ''
-              }${image.transparent ? ' sticker' : ''}`}
-              style={{
-                left: image.x + (active && imageDrag.mode === 'move' ? imageDrag.dx : 0),
-                top: image.y + (active && imageDrag.mode === 'move' ? imageDrag.dy : 0),
-                width,
-                aspectRatio: image.ratio,
-                zIndex: image.z,
-                transform: `rotate(${angle.toFixed(2)}deg)`,
-                // Pictures follow the notes, so both kinds assemble in one run.
-                animationDelay: entrance(image.id, index + notes.length),
-              }}
-              onPointerDown={(event) => startImageDrag(event, image)}
-              onPointerMove={moveImageDrag}
-              onPointerUp={endImageDrag}
-              onPointerCancel={endImageDrag}
-            >
-              <img src={image.src} alt="Pasted on the page" draggable={false} />
-              <button
-                type="button"
-                className={`scratchImageButton scratchImageCopy${
-                  copyFailed === image.id ? ' refused' : ''
-                }`}
-                title={
-                  copyFailed === image.id
-                    ? 'The clipboard refused this picture'
-                    : 'Copy to the clipboard'
-                }
-                aria-label={uiText('copy_this_picture_72ef7d')}
-                onClick={() => copyImage(image)}
-              >
-                {copiedId === image.id ? '✓' : copyFailed === image.id ? '!' : '⧉'}
-              </button>
-              <button
-                type="button"
-                className={`scratchImageButton scratchImageClose${
-                  armedId === image.id ? ' armed' : ''
-                }`}
-                title={armedId === image.id ? 'Click again to remove' : 'Remove picture'}
-                aria-label={
-                  armedId === image.id ? 'Click again to remove the picture' : 'Remove this picture'
-                }
-                onClick={() => armClose(image.id, () => removeImage(image.id))}
-              >
-                ×
-              </button>
-              <button
-                type="button"
-                className="scratchImageButton scratchImageDownload"
-                title={uiText('save_to_a_file_5bb648')}
-                aria-label={uiText('download_this_picture_623817')}
-                onClick={() => downloadImage(image)}
-              >
-                ↓
-              </button>
-              <span
-                className="scratchImageResize"
-                role="button"
-                tabIndex={0}
-                title={uiText('drag_to_resize_or_use_the_arrow_keys_44c451')}
-                onKeyDown={(event) => {
-                  if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key))
-                    return;
-                  event.preventDefault();
-                  const change = ['ArrowLeft', 'ArrowDown'].includes(event.key) ? -10 : 10;
-                  commitImages(
-                    images.map((item) =>
-                      item.id === image.id
-                        ? {
-                            ...item,
-                            width: clamp(
-                              item.width + change,
-                              80,
-                              Math.max(80, window.innerWidth - 16),
-                            ),
-                          }
-                        : item,
-                    ),
-                  );
-                }}
-                aria-label={uiText('resize_this_picture_4a327d')}
-                onPointerDown={(event) => startResize(event, image)}
-                onPointerMove={moveImageDrag}
-                onPointerUp={endImageDrag}
-                onPointerCancel={endImageDrag}
-              />
-            </div>
-          );
-        })}
+                    }}
+                    aria-label={uiText('resize_this_picture_4a327d')}
+                    onPointerDown={(event) => startResize(event, image)}
+                    onPointerMove={moveImageDrag}
+                    onPointerUp={endImageDrag}
+                    onPointerCancel={endImageDrag}
+                  />
+                )}
+              </div>
+            );
+          })}
     </div>
   );
 };

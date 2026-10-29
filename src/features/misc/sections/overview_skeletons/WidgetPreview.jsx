@@ -21,6 +21,12 @@ export const WIDGET_PREVIEWS = {
   tasks: null,
   photoinfo: null,
   rss: null,
+  portfolio: null,
+  countdown: null,
+  habits: null,
+  airquality: null,
+  github: null,
+  bookmarks: null,
 };
 export default function WidgetPreview({ id, label }) {
   const Preview = WIDGET_PREVIEWS[id];

@@ -1,3 +1,5 @@
+import { isWidgetEnabled } from 'utils/widgets';
+import { workspaceProfile } from 'features/focus/workspace';
 import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
@@ -56,13 +58,29 @@ function PhotoInformation({ info, url, api }) {
   const t = useT();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const [usePhotoMap, setPhotoMap] = useState(false);
-  const [useMapIcon, setMapIcon] = useState(true);
   const [showExtraInfo, setshowExtraInfo] = useState(false);
   const [other, setOther] = useState(false);
   const [shareModal, openShareModal] = useState(false);
   const [excludeModal, openExcludeModal] = useState(false);
   const [favouriteTooltipText, setFavouriteTooltipText] = useState(t('widgets.quote.favourite'));
+  const widgetStyle = localStorage.getItem('widgetStyle');
+  const mapUrl =
+    isWidgetEnabled('photoinfo', workspaceProfile()) &&
+    localStorage.getItem('photoMap') === 'true' &&
+    !info.hidden &&
+    info.credit &&
+    info.latitude != null &&
+    info.longitude != null
+      ? `${variables.constants.API_URL}/map?latitude=${info.latitude}&longitude=${info.longitude}`
+      : null;
+
+  useEffect(() => {
+    // Legacy cards mount their expanded content on hover; warm the same image cache first.
+    if (mapUrl && widgetStyle === 'legacy') {
+      const map = new Image();
+      map.src = mapUrl;
+    }
+  }, [mapUrl, widgetStyle]);
 
   useEffect(() => {
     const image = new Image();
@@ -100,7 +118,7 @@ function PhotoInformation({ info, url, api }) {
   }
 
   // Hidden but still rendered: the favourite button reads these fields from the DOM.
-  if (localStorage.getItem('photoInformation') === 'false') {
+  if (!isWidgetEnabled('photoinfo', workspaceProfile())) {
     return (
       <div style={{ display: 'none' }}>
         <span id="credit">{credit}</span>
@@ -114,25 +132,22 @@ function PhotoInformation({ info, url, api }) {
   }
 
   const photoMap = () => {
-    if (
-      localStorage.getItem('photoMap') !== 'true' ||
-      info.latitude == null ||
-      info.longitude == null ||
-      usePhotoMap === false
-    ) {
-      return null;
-    }
-
-    const tile =
-      variables.constants.API_URL + `/map?latitude=${info.latitude}&longitude=${info.longitude}`;
+    if (!mapUrl) return null;
 
     return (
       <a
+        className="photoMapLink"
         href={`${variables.constants.OPENSTREETMAP_URL}/?mlat=${info.latitude}&mlon=${info.longitude}`}
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img className="locationMap" src={tile} alt="location" draggable={false} />
+        <img
+          className="locationMap"
+          src={mapUrl}
+          alt="location"
+          loading="eager"
+          draggable={false}
+        />
       </a>
     );
   };
@@ -143,7 +158,9 @@ function PhotoInformation({ info, url, api }) {
         {info.location && info.location !== 'N/A' ? (
           <div className="row" title={t('widgets.background.location')}>
             <MdLocationOn />
-            <span id="infoLocation">{info.location}</span>
+            <span id="infoLocation" title={info.location}>
+              {info.location}
+            </span>
           </div>
         ) : null}
         {info.camera && info.camera !== 'N/A' ? (
@@ -240,7 +257,9 @@ function PhotoInformation({ info, url, api }) {
   const map = photoMap();
   const photoMapClassList = `map-concept${map ? ' photoMap' : ''}`;
 
-  const widgetStyle = localStorage.getItem('widgetStyle');
+  const revealInformation = () => {
+    setshowExtraInfo(true);
+  };
 
   return (
     <div
@@ -280,47 +299,53 @@ function PhotoInformation({ info, url, api }) {
         <div
           className={`photoInformation orHover ${getSurface('background')}`}
           style={{ padding: widgetStyle === 'legacy' && '20px' }}
-          onMouseEnter={() => {
-            setshowExtraInfo(true);
-            setPhotoMap(true);
-            setMapIcon(false);
+          onMouseEnter={revealInformation}
+          onFocus={revealInformation}
+          onMouseLeave={(event) => {
+            if (!event.currentTarget.contains(document.activeElement)) setshowExtraInfo(false);
           }}
-          onMouseLeave={() => setshowExtraInfo(false)}
+          onBlur={(event) => {
+            if (
+              !event.currentTarget.contains(event.relatedTarget) &&
+              !event.currentTarget.matches(':hover')
+            )
+              setshowExtraInfo(false);
+          }}
         >
           <div className={photoMapClassList}>
-            {useMapIcon || !map ? <MdLocationOn /> : ''}
+            {!map && <MdLocationOn />}
             {map}
+            {map && (
+              <div className="mapAttribution">
+                <a
+                  href="https://www.mapbox.com/about/maps/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {' '}
+                  {uiText('_mapbox_f422d2')}{' '}
+                </a>{' '}
+                •{' '}
+                <a
+                  href="https://www.openstreetmap.org/about/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {' '}
+                  {uiText('_openstreetmap_b9eafa')}{' '}
+                </a>{' '}
+                •{' '}
+                <a
+                  href="https://www.mapbox.com/map-feedback/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {' '}
+                  {uiText('improve_this_map_0df9ff')}{' '}
+                </a>
+              </div>
+            )}
           </div>
-          {map && (
-            <div className="copyright">
-              <a
-                href="https://www.mapbox.com/about/maps/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {' '}
-                {uiText('_mapbox_f422d2')}{' '}
-              </a>{' '}
-              •{' '}
-              <a
-                href="https://www.openstreetmap.org/about/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {' '}
-                {uiText('_openstreetmap_b9eafa')}{' '}
-              </a>{' '}
-              •{' '}
-              <a
-                href="https://www.mapbox.com/map-feedback/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {' '}
-                {uiText('improve_this_map_0df9ff')}{' '}
-              </a>
-            </div>
-          )}
           <div className="photoInformation-content">
             <div className="photoInformation-text">
               <span

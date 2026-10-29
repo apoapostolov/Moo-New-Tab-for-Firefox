@@ -1,3 +1,13 @@
+@use 'scss/variables' as *;
+
+.quickweather.weatherNotice {
+  @extend %widgetNotice;
+
+  padding-block: 20px;
+  min-height: 56px;
+  box-sizing: border-box;
+}
+
 .quickweather {
   display: inline-flex;
   align-items: center;
@@ -14,5 +24,11 @@
     font-size: 0.85em;
     opacity: 0.7;
     margin-left: 4px;
+  }
+
+  .quickweatherSource {
+    font-size: 0.6em;
+    color: inherit;
+    opacity: 0.7;
   }
 }

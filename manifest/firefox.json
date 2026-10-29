@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "homepage_url": "https://github.com/apoapostolov/Moo-New-Tab-for-Firefox",
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["calendar-alerts.js", "background.js"]
   },
   "action": {
     "default_icon": "icons/128x128.png"
@@ -24,11 +24,30 @@
       "id": "moo@apoapostolov"
     }
   },
-  "permissions": ["identity", "storage", "clipboardWrite"],
+  "permissions": ["identity", "storage", "clipboardWrite", "alarms"],
+  "optional_permissions": ["bookmarks", "notifications"],
   "optional_host_permissions": ["*://*/*"],
   "host_permissions": [
+    "https://images-api.nasa.gov/*",
+    "https://images-assets.nasa.gov/*",
+    "https://commons.wikimedia.org/*",
+    "https://api.openweathermap.org/*",
+    "https://finnhub.io/*",
+    "https://api.twelvedata.com/*",
+    "https://api.frankfurter.dev/*",
+    "https://api.weatherapi.com/*",
+    "https://weather.visualcrossing.com/*",
+    "https://www.sinoptik.bg/*",
+    "https://weather.sinoptik.bg/*",
+    "https://sinoptik.bg/*",
     "https://www.googleapis.com/*",
     "https://oauth2.googleapis.com/*",
-    "https://accounts.google.com/*"
+    "https://accounts.google.com/*",
+    "https://air-quality-api.open-meteo.com/*",
+    "https://geocoding-api.open-meteo.com/*",
+    "https://api.github.com/*",
+    "https://api.raindrop.io/*",
+    "https://readwise.io/*",
+    "https://photon.komoot.io/*"
   ]
 }

@@ -1,0 +1,319 @@
+@use 'scss/variables' as *;
+
+.portfolioCard {
+  @extend %widgetCard;
+
+  .widgetHeader {
+    justify-content: space-between;
+  }
+}
+
+.portfolioLabel {
+  @extend %widgetLabel;
+}
+
+.portfolioActions {
+  display: flex;
+  gap: 5px;
+
+  button {
+    display: grid;
+    place-items: center;
+    border: 0;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 6px;
+    color: inherit;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.portfolioValue {
+  font-size: clamp(20px, 2.5vw, 28px);
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.portfolioChange {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.portfolioCard .positive {
+  color: #8dd5af;
+}
+
+.portfolioCard .negative {
+  color: #f4a5a5;
+}
+
+.portfolioHint,
+.portfolioFoot {
+  color: rgb(255 255 255 / 65%);
+  font-size: 11px;
+}
+
+.portfolioHint {
+  margin-top: 7px;
+}
+
+.portfolioFoot {
+  margin-top: 10px;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+.portfolioCurve {
+  display: block;
+  width: 100%;
+  height: 54px;
+  margin-top: 10px;
+  color: rgb(255 255 255 / 65%);
+
+  path {
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+.portfolioRows {
+  margin-top: 12px;
+  border-top: 1px solid rgb(255 255 255 / 12%);
+}
+
+.portfolioRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 9px;
+  font-size: 12px;
+
+  small {
+    color: rgb(255 255 255 / 60%);
+    margin-left: 8px;
+  }
+}
+
+.portfolioEmpty {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+.portfolioEmpty button,
+.portfolioOptionButton {
+  width: fit-content;
+  border: 0;
+  border-radius: 7px;
+  padding: 7px 10px;
+  color: white;
+  background: var(--signature-strong, #425978);
+  cursor: pointer;
+}
+
+.portfolioForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.portfolioHoldingsScroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.portfolioForm .portfolioHoldingsTable {
+  width: 100%;
+  min-width: 600px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-top: 0;
+  border-radius: 0;
+  box-shadow: none;
+
+  tr {
+    letter-spacing: normal;
+
+    @include themed {
+      color: t($color);
+      background: transparent;
+    }
+  }
+
+  th {
+    padding: 4px 12px 10px 0;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    @include themed {
+      color: t($subColor);
+    }
+  }
+
+  td {
+    padding: 8px 12px 8px 0;
+    text-align: left;
+    vertical-align: middle;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: 0;
+  }
+
+  th:last-child {
+    display: table-cell;
+  }
+
+  input[type='number'] {
+    appearance: textfield;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+}
+
+.portfolioControlsColumn {
+  width: 36px;
+}
+
+.portfolioHoldingActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.portfolioHoldingsTable .portfolioGlyph {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font-size: 18px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    color: var(--signature-link);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 2px;
+  }
+}
+
+.portfolioHoldingsTable .portfolioEditSymbol {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 3px;
+  }
+}
+
+.portfolioExchangeLabel {
+  margin-left: 8px;
+  opacity: 0.7;
+}
+
+.portfolioSymbolFields {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+
+  .portfolioExchangeInput {
+    flex: 0 0 6.5ch;
+    padding-inline: 8px;
+  }
+}
+
+.portfolioForm .portfolioFormActions {
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.light .portfolioCard.glassSurface {
+  .portfolioHint,
+  .portfolioFoot,
+  .portfolioRow small {
+    color: rgb(0 0 0 / 65%);
+  }
+
+  .positive {
+    color: #12643d;
+  }
+
+  .negative {
+    color: #9a3030;
+  }
+
+  .portfolioRows {
+    border-color: rgb(0 0 0 / 18%);
+  }
+}
+
+.portfolioCard button:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
+}
+
+.portfolioActions button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.portfolioProviderLink {
+  font-size: 14px;
+  margin-top: 8px;
+
+  @include themed {
+    color: t($link);
+  }
+}

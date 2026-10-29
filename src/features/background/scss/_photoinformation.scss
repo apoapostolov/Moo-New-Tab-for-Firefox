@@ -1,16 +1,58 @@
 @use 'scss/variables' as *;
 
+// Floats share layer 40. Lift the active card's stacking ancestors above that layer.
+#center
+  :is(#widgets, .widgetRail, .compactWidgets, .widgetColumn):has(
+    .photoInformationHolder:is(:hover, :focus-within)
+  ) {
+  z-index: 41;
+}
+
+#center :is(#widgets, .widgetColumn):has(.photoInformationHolder:is(:hover, :focus-within)) {
+  position: relative;
+}
+
+// Transparent space between cards must still let floating content receive clicks.
+#center :is(#widgets, .compactWidgets):has(.photoInformationHolder:is(:hover, :focus-within)) {
+  pointer-events: none;
+
+  #widgets,
+  .widgetPair,
+  .widgetColumn {
+    pointer-events: none;
+  }
+
+  > *,
+  #widgets > *,
+  .widgetColumn > * {
+    pointer-events: auto;
+  }
+
+  > .widgetPair {
+    pointer-events: none;
+  }
+}
+
 .photoInformationHolder {
   /* The zone the widget is placed in decides where the card sits; it is not
    * pinned to a corner of the background. */
   flex-flow: column-reverse;
   display: flex;
+  position: relative;
+  z-index: 0;
 
-  &:hover .unsplashStats {
+  &:hover,
+  &:focus-within {
+    z-index: 41;
+  }
+
+  &:hover .unsplashStats,
+  &:focus-within .unsplashStats {
     display: flex;
   }
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     .photoInformation {
       height: auto;
       align-items: flex-start;
@@ -24,7 +66,7 @@
       .extra-content {
         margin-top: 10px;
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
         transition: 0.8s;
       }
@@ -47,20 +89,6 @@
 
           svg {
             font-size: 1em;
-          }
-        }
-      }
-
-      .copyright {
-        display: flex;
-        margin-top: 10px;
-        gap: 10px;
-
-        a {
-          text-decoration: none;
-
-          @include themed {
-            color: t($subColor);
           }
         }
       }
@@ -250,8 +278,10 @@
     }
   }
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     padding: 20px;
+    text-align: left;
     height: auto;
     align-items: flex-start;
     flex-flow: column;
@@ -289,20 +319,6 @@
       }
     }
 
-    .copyright {
-      display: flex;
-      margin-top: 10px;
-      gap: 10px;
-
-      a {
-        text-decoration: none;
-
-        @include themed {
-          color: t($subColor);
-        }
-      }
-    }
-
     .photoInformation-content {
       padding-left: 0;
     }
@@ -330,7 +346,8 @@
 
   /* Opened, the card stacks in a column and the map slot takes the full width;
    * the glyph keeps its own size and sits at the left. */
-  &:hover .map-concept:not(.photoMap) {
+  &:hover .map-concept:not(.photoMap),
+  &:focus-within .map-concept:not(.photoMap) {
     width: auto;
     align-self: flex-start;
     margin: 0 0 4px;
@@ -360,7 +377,7 @@
     /* The link has to own the tile. An image sized in percentages inside an
      * auto-height inline link has no height to resolve against, so the map fell
      * back to its natural 200px and spilled out of the 50px box. */
-    a {
+    > .photoMapLink {
       display: block;
       width: 100%;
       height: 100%;
@@ -413,6 +430,9 @@
 }
 
 .photoInformation-content {
+  box-sizing: border-box;
+  min-width: 0;
+
   /* Relative to the card's own font size, not the 14px face it inherits. */
   line-height: 1.4;
   padding-right: 10px;
@@ -441,6 +461,7 @@
   display: none;
   flex-flow: column;
   width: 100%;
+  min-width: 0;
   transition: 1s;
 
   .row {
@@ -448,8 +469,11 @@
     align-items: center;
     gap: 20px;
     font-size: 13px;
+    min-width: 0;
 
     svg {
+      flex-shrink: 0;
+
       @include themed {
         color: t($subColor);
         font-size: 18px;
@@ -458,8 +482,11 @@
   }
 }
 
-.copyright {
-  display: none;
+.photoInformation #infoLocation {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .buttons {
@@ -484,17 +511,20 @@
 }
 
 .photoMap {
+  position: relative;
+
   img {
     height: 50px !important;
     width: 50px !important;
   }
 
-  a {
+  .photoMapLink {
     height: 50px;
   }
 }
 
 .photoInformation:hover,
+.photoInformation:focus-within,
 .photoInformation-legacy + .photoInformation {
   .photoMap {
     height: auto !important;
@@ -504,10 +534,51 @@
       width: auto !important;
     }
 
-    a {
+    .photoMapLink {
       height: auto !important;
     }
   }
+}
+
+.photoInformation .photoMap .mapAttribution {
+  position: absolute;
+  inset: auto 0 0;
+  display: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 2px 4px;
+  box-sizing: border-box;
+  padding: 3px 6px;
+  margin: 0;
+  background: rgb(0 0 0 / 65%);
+  color: rgb(255 255 255 / 80%);
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 1.3;
+  letter-spacing: normal;
+  text-shadow: none;
+
+  a {
+    display: inline;
+    width: auto;
+    height: auto;
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+
+.photoInformation:hover .photoMap .mapAttribution,
+.photoInformation:focus-within .photoMap .mapAttribution,
+.photoInformation-legacy + .photoInformation .photoMap .mapAttribution {
+  display: flex;
 }
 
 /* Counts are detail, not the headline: they appear when hover opens the card,

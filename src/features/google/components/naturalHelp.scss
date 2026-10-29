@@ -1,0 +1,74 @@
+@use 'scss/variables' as *;
+
+.gwNaturalHelpTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 11px;
+  white-space: nowrap;
+  cursor: help;
+
+  > svg {
+    font-size: 14px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+}
+
+.gwNaturalHelpPanel {
+  @extend %readerSurface;
+
+  position: fixed;
+  inset: auto;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 28%);
+  font-size: 11.5px;
+  line-height: 1.5;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+
+  &:not(:popover-open) {
+    display: none;
+  }
+
+  &:popover-open {
+    display: block;
+  }
+
+  > p {
+    margin: 0 0 10px;
+  }
+
+  > p:last-child {
+    margin-bottom: 0;
+    opacity: 0.8;
+  }
+
+  dl {
+    display: grid;
+    gap: 9px;
+    margin: 0 0 12px;
+  }
+
+  dt {
+    font-weight: 600;
+  }
+
+  dd {
+    margin: 2px 0 0;
+    opacity: 0.8;
+  }
+}

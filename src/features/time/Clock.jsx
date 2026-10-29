@@ -12,6 +12,7 @@ import { formatPercentage, formatDigits } from 'utils/formatNumber';
 import { AnalogClock } from './components/AnalogClock';
 import { VerticalClock } from './components/VerticalClock';
 import EventBus from 'utils/eventbus';
+import WorldClocks from './WorldClocks';
 
 import './clock.scss';
 
@@ -167,13 +168,15 @@ const Clock = () => {
    * Progress back. Outside Progress's days and shift the fallback is already the clock,
    * so there is nothing to hand it to and the gesture does nothing.
    */
-  const toggleFallback = () => {
+  const toggleFallback = (event) => {
     if (!readPercentageDoubleClick()) return;
 
     const now = nowInZone();
 
     if (!peekRef.current && resolveTimeType(now) !== 'percentageComplete') return;
 
+    event?.preventDefault();
+    event?.stopPropagation();
     peekRef.current = !peekRef.current;
 
     const next = typeFor(now);
@@ -187,11 +190,6 @@ const Clock = () => {
   useEffect(() => {
     const handleRefresh = (data) => {
       if (data === 'clock' || data === 'timezone') {
-        if (localStorage.getItem('time') === 'false') {
-          setDisplay('none');
-          return;
-        }
-
         startCurrentTime(0);
 
         setDisplay('block');
@@ -257,4 +255,11 @@ const Clock = () => {
   );
 };
 
-export { Clock as default, Clock };
+function TimeClocks() {
+  return (
+    <WorldClocks>
+      <Clock />
+    </WorldClocks>
+  );
+}
+export { TimeClocks as default, Clock };

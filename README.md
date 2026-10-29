@@ -26,17 +26,21 @@ Moo opens directly in English with the time, Search/Ask Bar, basic weather in th
 
 ## Features
 
-- Google widgets: read mail, check upcoming events and manage tasks beside the clock. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use.
+- Google widgets: read mail, check upcoming events and manage tasks beside the clock. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use. Calendar and Tasks accept English scheduling phrases with a Natural Format guide, notes and a review of the interpreted fields. [Supported syntax](docs/NATURAL-FORMAT.md).
 - Search/Ask Bar: enter a question and choose a search engine, AI service or reference site from the service menu. Open a web search, find documentation or continue the question in a conversation.
-- RSS reader: enable RSS under Settings → Overview and add feeds under Settings → RSS. Headlines from several sites appear in one list; hover to read an article when available, or open the original site.
-- Notes and pictures: double-click an empty part of the page to create a note, or place pictures on the page. Notes and uploaded pictures are stored in your browser.
+- RSS reader: enable RSS in Overview and add feeds under Settings → Feeds, or read a Feedly account with a developer token. Headlines appear in one list; hover to read an article when available, or open the original site. Feeds import and export as OPML.
+- Floating Notes, Lists, Images and Countdowns: double-click empty space to create a note, then use its menu to change its type, or paste an image onto the page. Settings → Floats controls these features and the Countdown widget; content stays in your browser.
 - Quick links: add regular destinations under Settings → Quick Links so the sites you use for a project are available on a new tab.
 - Clock and weather: choose a clock, set Progress around your working hours and see current conditions and a five-day forecast for your location.
-- Widget layout: show, hide and arrange widgets in the left, centre or right column under Settings → Overview. Narrow and short windows use a scrollable layout.
+- Habits: confirm daily routines, selected weekdays or weekly goals in a weekly table. Browse earlier weeks, earn streak badges and hover for details and monthly history. Archiving keeps the habit's history.
+- Air Quality: choose a compact AQI reading, a forecast summary or detailed pollutant, UV and pollen readings for a saved city or coordinates. Readings use Open-Meteo's CAMS model forecasts.
+- Bookmarks: bring browser bookmarks, Raindrop and Readwise reading together, with recent saves, older discoveries and a shared detail preview. [Setup and options](docs/BOOKMARKS.md).
+- GitHub: check review requests, your pull requests, assigned issues and workflow runs through status glyphs and compact tabs. Hover to read the complete description and developer details. Public repositories work with a username; an optional personal token adds access to selected private repositories. [Widget setup and advanced options](docs/HABITS-AIR-QUALITY-GITHUB.md).
+- Widget layout: show, hide and arrange widgets in the left, centre or right column under Settings → Overview. The Standard / Focus selector saves separate widget visibility and placement for Focus sessions and Progress clock work shifts. Quick Links can use a separate Focus/Work list; each floating item has a Show in Focus checkbox. Narrow and short windows use a scrollable layout.
 - Backgrounds: use local pictures, stock photos, video clips or live channels. Some sources need a free API key. While a video is playing, triple-click the page to hide the widgets; triple-click again or press Escape to return.
 - Backups: export your setup under Settings → Advanced, including uploaded pictures if you choose. Imports show a preview before applying, and sign-in credentials stay out of the backup.
 
-Settings, notes and uploaded pictures are stored in your browser. Weather, backgrounds, feeds and connected Google widgets contact their respective services; [Data and connections](docs/PRIVACY.md) explains what goes where.
+Settings, notes, habit progress and uploaded pictures are stored in your browser. Weather, Air Quality, GitHub, Bookmarks, backgrounds, feeds and connected Google widgets contact their respective services; [Data and connections](docs/PRIVACY.md) explains what goes where.
 
 ## Installation
 

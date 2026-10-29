@@ -35,6 +35,8 @@ export const parseDeepLink = (hash = window.location.hash) => {
   }
 
   if (result.tab === 'settings') {
+    // Older links still reach the Countdown widget controls in Floats.
+    if (result.section === 'countdown') result.section = 'floats';
     // A third part is a sub-section, never an item id.
     if (result.subSection && !result.itemId) {
       result.itemId = null;

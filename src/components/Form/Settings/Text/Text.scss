@@ -4,13 +4,21 @@
   display: flex;
   flex-direction: column;
   width: min(300px, 100%);
+  min-width: 0;
+  max-width: 100%;
   margin-top: 10px;
+}
+
+.text-field-container.text-field-wide {
+  width: 100%;
+  margin-top: 0;
 }
 
 .text-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
 
   .text-field-header {
     display: flex;
@@ -53,30 +61,6 @@
     }
   }
 
-  .text-field-input {
-    height: 56px;
-    padding: 0 16px;
-    font-size: 16px;
-    outline: none;
-    transition: 0.2s ease;
-
-    @include themed {
-      background: t($modal-sidebar);
-      border: 1px solid t($modal-sidebarActive);
-      border-radius: t($borderRadius);
-      color: t($color);
-
-      &:hover,
-      &:focus {
-        border-color: t($color);
-      }
-
-      &::placeholder {
-        color: t($subColor);
-      }
-    }
-  }
-
   .text-field-textarea {
     padding: 16px;
     font-size: 16px;
@@ -107,5 +91,33 @@
       Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter',
       'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', Monaco,
       'Courier New', Courier, monospace !important;
+  }
+}
+
+.text-field-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 56px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 16px;
+  outline: none;
+  transition: 0.2s ease;
+
+  @include themed {
+    background: t($modal-sidebar);
+    border: 1px solid t($modal-sidebarActive);
+    border-radius: t($borderRadius);
+    color: t($color);
+
+    &:hover,
+    &:focus {
+      border-color: t($color);
+    }
+
+    &::placeholder {
+      color: t($subColor);
+    }
   }
 }

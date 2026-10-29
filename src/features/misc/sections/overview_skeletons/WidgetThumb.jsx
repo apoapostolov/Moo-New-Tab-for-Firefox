@@ -7,12 +7,18 @@ import { memo } from 'react';
  */
 
 export const THUMB_LAYOUT = {
+  bookmarks: { icon: 'square', lines: ['wide', 'medium'] },
+  habits: { icon: 'check', lines: ['wide', 'short'] },
+  airquality: { icon: 'weather', lines: ['medium', 'short'] },
+  github: { icon: 'article', lines: ['wide', 'medium'] },
   mail: { icon: 'dot', lines: ['wide', 'medium'] },
   calendar: { icon: 'square', lines: ['medium', 'wide'] },
   tasks: { icon: 'check', lines: ['wide'] },
   photoinfo: { icon: null, lines: ['medium', 'short'] },
   rss: { icon: 'article', lines: ['wide', 'medium', 'short'] },
   weather: { icon: 'weather', lines: ['medium', 'short'] },
+  countdown: { icon: 'square', lines: ['wide', 'short'] },
+  portfolio: { icon: 'dot', lines: ['wide', 'short'] },
 };
 
 function WidgetThumb({ type, label }) {
@@ -29,6 +35,17 @@ function WidgetThumb({ type, label }) {
         <span className="gwSkeletonDot gwSkeletonDot-small" />
       </div>
       {type === 'weather' && <span className="weatherThumbReading">☁ 18°</span>}
+      {type === 'portfolio' && <span className="weatherThumbReading">$12,450</span>}
+      {type === 'portfolio' && (
+        <svg viewBox="0 0 100 18" width="100%" height="18" aria-hidden="true">
+          <path
+            d="M0 16 L14 13 L24 15 L37 9 L49 11 L63 5 L75 7 L88 2 L100 3"
+            fill="none"
+            stroke="#8dd5af"
+            strokeWidth="1.5"
+          />
+        </svg>
+      )}
       <div className="gwSkeletonEntry">
         {layout.icon ? <span className={`gwSkeletonIcon gwSkeletonIcon-${layout.icon}`} /> : null}
         <span className="gwSkeletonLines">

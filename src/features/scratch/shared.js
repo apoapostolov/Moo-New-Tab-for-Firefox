@@ -1,5 +1,5 @@
 /**
- * Rules shared by scratch notes and pictures: note width, lean range, and the
+ * Rules shared by Floating Notes and Images: note width, lean range, and the
  * pointer distance that separates a click from a drag.
  */
 
@@ -36,6 +36,22 @@ const randomTilt = () =>
 /** Speed is px per ms, so lean follows the gesture rather than the frame rate. */
 const dragTarget = (speed) => clamp(speed * 120, -DRAG_TILT, DRAG_TILT);
 
+/** Locked floating items stay above normal content without changing order when selected. */
+const stackingOrder = (notes, images) => {
+  const entries = [
+    ...notes.map((note) => ({ key: `note:${note.id}`, z: note.z, locked: note.locked === true })),
+    ...images.map((image) => ({
+      key: `image:${image.id}`,
+      z: image.z,
+      locked: image.locked === true,
+    })),
+  ];
+  entries.sort(
+    (left, right) => Number(left.locked) - Number(right.locked) || (left.z || 0) - (right.z || 0),
+  );
+  return new Map(entries.map((item, index) => [item.key, index + 1]));
+};
+
 export {
   NOTE_WIDTH,
   MIN_TILT,
@@ -51,4 +67,5 @@ export {
   settleAngle,
   randomTilt,
   dragTarget,
+  stackingOrder,
 };

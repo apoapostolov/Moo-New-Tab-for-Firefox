@@ -20,13 +20,18 @@ const wmoToIcon = (code) => {
   return '03d';
 };
 
-const Forecast = memo(({ location }) => {
+const Forecast = memo(({ location, providedDays }) => {
   useTranslationVersion();
   const [days, setDays] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchForecast = useCallback(
     async (signal) => {
+      if (providedDays) {
+        setDays(providedDays.map((day) => ({ ...day, date: new Date(`${day.date}T00:00:00`) })));
+        setLoading(false);
+        return;
+      }
       if (localStorage.getItem('offlineMode') === 'true') return;
       setLoading(true);
       try {
@@ -67,7 +72,7 @@ const Forecast = memo(({ location }) => {
         setLoading(false);
       }
     },
-    [location],
+    [location, providedDays],
   );
 
   useEffect(() => {
@@ -102,7 +107,8 @@ const Forecast = memo(({ location }) => {
     return null;
   }
 
-  const symbol = localStorage.getItem('tempformat') === 'fahrenheit' ? '°F' : '°C';
+  const format = localStorage.getItem('tempformat');
+  const symbol = format === 'fahrenheit' ? '°F' : format === 'kelvin' ? 'K' : '°C';
 
   return (
     <div className="weatherForecast">

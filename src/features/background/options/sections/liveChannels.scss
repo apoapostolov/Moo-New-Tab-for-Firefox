@@ -53,28 +53,6 @@
   }
 }
 
-.liveChannelInput {
-  box-sizing: border-box;
-  width: 100%;
-  min-width: 0;
-  padding: 6px 8px;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  font: inherit;
-  font-size: 13px;
-
-  @include themed {
-    background: t($modal-background);
-    color: t($color);
-    border-color: t($modal-sidebarActive);
-  }
-
-  &:focus {
-    outline: none;
-    border-color: var(--signature);
-  }
-}
-
 .liveChannelControls {
   display: flex;
   align-items: center;

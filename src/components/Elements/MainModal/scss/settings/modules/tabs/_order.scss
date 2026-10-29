@@ -513,6 +513,15 @@
   min-width: 0;
 }
 
+.widgetZone[data-zone='center'] .zoneSectionDivider {
+  flex: 0 0 auto;
+  align-self: center;
+  width: calc(50% - (var(--card-gap) / 2));
+  margin: 6px 0;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, currentcolor 22%, transparent);
+}
+
 /* A row is a pair in the middle column and a single card on the rails. */
 .zoneRow {
   display: grid;
@@ -587,6 +596,12 @@
   &:hover {
     opacity: 0.85;
   }
+
+  &:focus-visible {
+    opacity: 1;
+    outline: 2px solid currentcolor;
+    outline-offset: 2px;
+  }
 }
 
 /* The line between two rows of the middle column. It is drawn only while a card is in
@@ -653,6 +668,7 @@
   width: 100%;
   aspect-ratio: 2 / 1;
   margin-top: 16px;
+  overflow: hidden;
 
   @include themed {
     background: t($modal-secondaryColour);
@@ -940,4 +956,52 @@
   width: 18px;
   height: 10px;
   border-radius: 8px;
+}
+
+.overviewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .mainTitle {
+    margin: 0;
+  }
+}
+
+.overviewProfile {
+  display: flex;
+  padding: 3px;
+  gap: 3px;
+  border: 1px solid rgb(127 127 127 / 25%);
+  border-radius: 10px;
+  background: rgb(127 127 127 / 10%);
+
+  button {
+    border: 0;
+    border-radius: 7px;
+    padding: 7px 13px;
+    color: inherit;
+    font: inherit;
+    font-size: 13px;
+    background: transparent;
+    cursor: pointer;
+
+    &[aria-pressed='true'] {
+      background: rgb(127 127 127 / 25%);
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentcolor;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.overviewFocusHint {
+  margin: 10px 0 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.7;
 }

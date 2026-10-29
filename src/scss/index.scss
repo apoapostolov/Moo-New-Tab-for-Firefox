@@ -59,6 +59,11 @@ body {
   align-items: flex-end;
 }
 
+.widgetRail > .weather,
+.widgetRail > .airQualityWidget {
+  width: var(--side-widget-width, 300px);
+}
+
 #center {
   font-size: calc(10px + 2vmin);
   text-align: center;

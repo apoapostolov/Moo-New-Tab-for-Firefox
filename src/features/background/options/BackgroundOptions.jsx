@@ -1,3 +1,4 @@
+import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import variables from 'config/variables';
 import { memo, useState, useEffect, useCallback, useRef } from 'react';
@@ -7,6 +8,7 @@ import EventBus from 'utils/eventbus';
 import { Header } from 'components/Layout/Settings';
 import { Dropdown } from 'components/Form/Settings';
 
+import FallbackOptions from './FallbackOptions';
 import ColourSettings from './Colour';
 import CustomSettings from './Custom';
 import APISettings from './sections/APISettings';
@@ -33,6 +35,9 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
   const [backgroundFilter, setBackgroundFilter] = useState(
     localStorage.getItem('backgroundFilter') || 'none',
   );
+  const [fallbackType, setFallbackType] = useState(
+    localStorage.getItem('fallbackBackgroundType') || 'none',
+  );
   const [backgroundCategories, setBackgroundCategories] = useState([
     variables.getMessage(
       navigator.onLine === false || localStorage.getItem('offlineMode') === 'true'
@@ -42,13 +47,6 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
   ]);
   const [unsplashTopics, setUnsplashTopics] = useState(null);
   const [marketplaceEnabled] = useState(localStorage.getItem('photo_packs'));
-
-  const backgroundAPI = getApiForBackgroundType(backgroundType);
-
-  // Colour types have no effects or display settings, so the source section opens.
-  const shouldShowSourceByDefault = ['colour', 'random_colour', 'random_gradient'].includes(
-    backgroundType,
-  );
 
   const controllerRef = useRef(null);
 
@@ -63,12 +61,6 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
       localStorage.setItem('backgroundAPI', api);
     }
   }, [backgroundType]);
-
-  useEffect(() => {
-    if (shouldShowSourceByDefault && currentSubSection !== 'source') {
-      onSubSectionChange('source', sectionName);
-    }
-  }, [shouldShowSourceByDefault, currentSubSection, onSubSectionChange, sectionName]);
 
   const getBackgroundCategories = useCallback(async () => {
     const data = await (
@@ -141,12 +133,24 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
     }
   }, []);
 
-  const getBackgroundSettings = () => {
-    switch (backgroundType) {
+  const handleFallbackChange = (value) => {
+    localStorage.removeItem('imageQueue');
+    localStorage.removeItem('videoQueue');
+    setFallbackType(value);
+  };
+
+  const getBackgroundSettings = (type = backgroundType, fallback = false) => {
+    switch (type) {
+      case 'none':
+        return null;
       case 'custom':
         return <CustomSettings />;
       case 'colour':
-        return <ColourSettings />;
+        return fallback ? (
+          <ColourSettings setting="fallbackBackgroundColour" category="backgroundsource" />
+        ) : (
+          <ColourSettings />
+        );
       case 'random_colour':
       case 'random_gradient':
         return null;
@@ -156,16 +160,17 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
 
     if (
       localStorage.getItem('photo_packs') &&
-      backgroundType !== 'custom' &&
-      backgroundType !== 'colour' &&
-      !isApiBackgroundType(backgroundType)
+      type !== 'custom' &&
+      type !== 'colour' &&
+      !isApiBackgroundType(type)
     ) {
       return null;
     }
 
     return (
       <APISettings
-        backgroundAPI={backgroundAPI}
+        key={`${fallback ? 'fallback' : 'primary'}:${type}`}
+        backgroundAPI={getApiForBackgroundType(type)}
         backgroundCategories={backgroundCategories}
         unsplashTopics={unsplashTopics}
       />
@@ -181,6 +186,15 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
     isApiBackgroundType(backgroundType) || backgroundType === 'custom' || marketplaceEnabled;
 
   const getHeader = () => {
+    if (currentSubSection === 'fallback') {
+      return (
+        <Header
+          title={variables.getMessage('modals.main.settings.sections.background.title')}
+          secondaryTitle={uiText('fallback_source')}
+          goBack={() => onSubSectionChange(null, sectionName)}
+        />
+      );
+    }
     if (currentSubSection === 'effects') {
       return (
         <Header
@@ -222,6 +236,7 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
       {!currentSubSection && (
         <>
           <NavigationCard
+            className="backgroundProviderCard"
             icon={MdSource}
             title={variables.getMessage('modals.main.settings.sections.background.source.title')}
             subtitle={variables.getMessage(
@@ -239,6 +254,10 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
             }
           />
 
+          <FallbackOptions
+            onTypeChange={handleFallbackChange}
+            onOpen={() => onSubSectionChange('fallback', sectionName)}
+          />
           {showEffects && (
             <NavigationCard
               icon={MdOutlineAutoAwesome}
@@ -270,6 +289,12 @@ const BackgroundOptions = memo(({ currentSubSection, onSubSectionChange, section
           backgroundFilter={backgroundFilter}
           onFilterChange={(value) => setBackgroundFilter(value)}
         />
+      )}
+      {currentSubSection === 'fallback' && (
+        <>
+          <FallbackOptions onTypeChange={handleFallbackChange} />
+          {getBackgroundSettings(fallbackType, true)}
+        </>
       )}
     </>
   );

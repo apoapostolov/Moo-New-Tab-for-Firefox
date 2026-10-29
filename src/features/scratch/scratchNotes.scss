@@ -70,6 +70,10 @@
   &.editing {
     cursor: text;
   }
+
+  &.locked {
+    cursor: default;
+  }
 }
 
 /*
@@ -93,7 +97,8 @@
     0 0 14px rgb(0 0 0 / 32%);
 
   /* The corner control belongs to the note in hand, as it does on a sticker. */
-  .scratchNoteClose {
+  .scratchNoteClose,
+  .scratchNoteLock {
     opacity: 0;
     pointer-events: none;
   }
@@ -112,7 +117,8 @@
     backdrop-filter: blur(16px) saturate(1.25);
     text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
 
-    .scratchNoteClose {
+    .scratchNoteClose,
+    .scratchNoteLock {
       opacity: 0.45;
       pointer-events: auto;
     }
@@ -123,7 +129,8 @@
   }
 }
 
-.scratchNoteClose {
+.scratchNoteClose,
+.scratchNoteLock {
   position: absolute;
   top: 3px;
   right: 5px;
@@ -151,10 +158,26 @@
   }
 
   // Armed: the second click removes the note.
-  &.armed {
+  &.armed,
+  &.locked {
     opacity: 1;
     color: #ff9d9d;
     background: rgb(255 90 90 / 22%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 2px;
+  }
+}
+
+.scratchNoteLock {
+  right: 27px;
+  font-size: 13px;
+
+  &:disabled {
+    opacity: 0.25;
+    cursor: default;
   }
 }
 

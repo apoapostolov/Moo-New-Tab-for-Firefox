@@ -11,6 +11,9 @@ const Switch = memo((props) => {
   useTranslationVersion();
   const rowLabel = useContext(RowLabelContext);
   const [checked, setChecked] = useState(localStorage.getItem(props.name) === 'true');
+  const text = props.stateText
+    ? variables.getMessage(`modals.main.settings.${checked ? 'enabled' : 'disabled'}`)
+    : props.text;
 
   const handleChange = useCallback(() => {
     if (props.disabled) return;
@@ -36,7 +39,7 @@ const Switch = memo((props) => {
 
   return (
     <label className={`switch-wrapper${props.disabled ? ' disabled' : ''}`}>
-      {!props.header && <span className="switch-label">{props.text}</span>}
+      {!props.header && <span className="switch-label">{text}</span>}
       <input
         type="checkbox"
         name={props.name}

@@ -274,7 +274,7 @@ export async function migrateScratchAssets() {
         (image) => !image || typeof image.id !== 'string' || typeof image.src !== 'string',
       )
     )
-      throw new Error('The saved scratch pictures need repair. Their original data has been kept.');
+      throw new Error('The saved Floating Images need repair. Their original data has been kept.');
   }
   await journalTransaction((_assets, journal, _done, scratch) => {
     const request = journal.get('scratchMigration');

@@ -57,7 +57,7 @@ const Modals = () => {
       <Modal
         closeTimeoutMS={300}
         id="modal"
-        contentLabel="Moo settings"
+        contentLabel={variables.getMessage('modals.main.navbar.settings')}
         onRequestClose={() => toggleModal('mainModal', false)}
         isOpen={mainModal}
         className="Modal mainModal"

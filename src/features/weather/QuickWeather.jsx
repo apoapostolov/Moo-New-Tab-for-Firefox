@@ -8,6 +8,7 @@ import WeatherIcon from './components/WeatherIcon';
 import EventBus from 'utils/eventbus';
 
 import { getWeather } from './api/getWeather.js';
+import { weatherSettings, WEATHER_ATTRIBUTION } from './api/providers';
 
 import './quickweather.scss';
 
@@ -55,7 +56,7 @@ const QuickWeather = memo(() => {
   }, []);
 
   useEffect(() => {
-    if (!location) {
+    if (!location && localStorage.getItem('weatherProvider') !== 'sinoptik') {
       autoFindLocation();
     }
     const geo = geoOwner.current;
@@ -64,11 +65,11 @@ const QuickWeather = memo(() => {
 
   const updateWeather = useCallback(async () => {
     const request = owner.current.start();
-    const stamp = settingsStamp(/^(location|tempformat|language|offlineMode)$/);
+    const stamp = settingsStamp(weatherSettings);
     const data = await getWeather(location);
     if (
       !request.current() ||
-      stamp !== settingsStamp(/^(location|tempformat|language|offlineMode)$/)
+      stamp !== settingsStamp(weatherSettings)
     )
       return;
     if (data) {
@@ -107,14 +108,16 @@ const QuickWeather = memo(() => {
   }
 
   if (!weatherData.weather) {
-    return <span className="quickweather">{location}</span>;
+    return <span className="quickweather weatherNotice">{weatherData.location || location}</span>;
   }
 
+  const source = WEATHER_ATTRIBUTION[weatherData.provider];
   return (
     <span className="quickweather">
       <WeatherIcon name={weatherData.icon} />
       {`${formatNumber(weatherData.weather.temp)}${weatherData.temp_text}`}
-      <span className="quickweatherLoc">{location}</span>
+      <span className="quickweatherLoc">{weatherData.displayLocation || location}</span>
+      {source && <a className="quickweatherSource" href={source.url} target="_blank" rel="noopener noreferrer">{source.name}</a>}
     </span>
   );
 });

@@ -2,8 +2,8 @@
  * `en_US` becomes `en-US`, plus a `-u-nu-` extension for languages with
  * non-Latin digits.
  */
-export function getLocaleCode() {
-  const language = localStorage.getItem('language')?.replace(/_/g, '-') || 'en-GB';
+export function getLocaleCode(locale = localStorage.getItem('language') || 'en-GB') {
+  const language = locale.replace(/_/g, '-');
 
   const numberingSystems = {
     ar: 'arab', // Arabic - Eastern Arabic numerals (٠-٩)
@@ -43,13 +43,13 @@ export function formatNumber(value, options = {}) {
 /**
  * Formats a 0–1 fraction as a percentage, not a 0–100 number.
  */
-export function formatPercentage(value) {
+export function formatPercentage(value, locale) {
   const localeFormatting = localStorage.getItem('localeFormatting');
   if (localeFormatting === 'false') {
     return Math.round(value * 100) + '%';
   }
   try {
-    return new Intl.NumberFormat(getLocaleCode(), {
+    return new Intl.NumberFormat(getLocaleCode(locale), {
       style: 'percent',
       maximumFractionDigits: 0,
     }).format(value);

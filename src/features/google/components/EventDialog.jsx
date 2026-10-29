@@ -5,6 +5,8 @@ import { useRef, useState } from 'react';
 import Dialog from './Dialog';
 import { useNaturalTitle } from '../useNaturalTitle';
 import { describe, toRrule } from '../natural';
+import { eventFormFromNatural } from '../naturalForms';
+import NaturalHelp from './NaturalHelp';
 import {
   createEvent,
   canEditCalendar,
@@ -75,68 +77,34 @@ const EventDialog = ({
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [repeat, setRepeat] = useState(null);
+  const [titleEdited, setTitleEdited] = useState(false);
   // One example per opening, so the title box keeps the same sentence while it is being read.
   const [titlePlaceholder] = useState(() => examplePlaceholder('event'));
-  const autoLocation = useRef('');
+  const manualFields = useRef(new Set());
 
   /**
    * The title box doubles as the form: a date, clock, length or place typed into it lands in its
    * own field, and whatever no reader claims stays as the title.
    */
-  const applyParsed = (parsed) => {
-    setRepeat(parsed.repeat || null);
-
-    setForm((current) => {
-      const next = { ...current };
-      // A re-parsed place replaces the previous one from the sentence, but never a hand-typed
-      // location.
-      next.location =
-        parsed.location || (current.location === autoLocation.current ? '' : current.location);
-      autoLocation.current = parsed.location || '';
-
-      if (!parsed.date) return next;
-
-      const day = new Date(parsed.date);
-
-      if (parsed.time) {
-        day.setHours(parsed.time.hours, parsed.time.minutes, 0, 0);
-
-        const finish = parsed.endTime
-          ? new Date(
-              day.getFullYear(),
-              day.getMonth(),
-              day.getDate(),
-              parsed.endTime.hours,
-              parsed.endTime.minutes,
-            )
-          : new Date(day.getTime() + (parsed.durationMinutes || 60) * 60000);
-        if (finish <= day) finish.setDate(finish.getDate() + 1);
-
-        next.allDay = false;
-        next.start = toLocalInput(day.toISOString());
-        next.end = toLocalInput(finish.toISOString());
-
-        return next;
-      }
-
-      next.allDay = true;
-      next.start = toLocalInput(day.toISOString());
-      next.end = toLocalInput((parsed.endDate ? new Date(parsed.endDate) : day).toISOString());
-
-      return next;
-    });
-  };
-
-  const parsed = useNaturalTitle(form.title, 'event', applyParsed);
-
-  const update = (key) => (changeEvent) =>
+  const applyParsed = (value) =>
+    setForm((current) => eventFormFromNatural(current, value, manualFields.current));
+  const { parsed, read } = useNaturalTitle(form.title, 'event', applyParsed, {
+    enabled: !isEditing || titleEdited,
+    allowRepeat: !isEditing,
+    defaultDate: isEditing ? form.start.slice(0, 10) : undefined,
+    calendars: isEditing ? [] : writableCalendars.map(({ id, summary }) => ({ id, summary })),
+  });
+  const update = (key) => (changeEvent) => {
+    if (key === 'title') setTitleEdited(true);
+    else manualFields.current.add(key);
     setForm((current) => ({ ...current, [key]: changeEvent.target.value }));
+  };
 
   // Picking a calendar counts as using it, so the next new event opens on it even before this
   // one is saved.
   const changeCalendar = (changeEvent) => {
     const id = changeEvent.target.value;
+    manualFields.current.add('calendarId');
 
     setForm((current) => ({ ...current, calendarId: id }));
     rememberCalendar(id);
@@ -149,17 +117,24 @@ const EventDialog = ({
       return;
     }
 
-    if (!form.title.trim()) {
+    const finalParsed = read();
+    if (finalParsed?.issues.length) {
+      setError(finalParsed.issues.join(' '));
+      return;
+    }
+    const finalForm = eventFormFromNatural(form, finalParsed, manualFields.current);
+    const title = (finalParsed ? finalParsed.title : form.title).trim();
+    if (!title) {
       setError('A title is needed.');
 
       return;
     }
-    const start = new Date(form.start);
-    const end = new Date(form.end);
+    const start = new Date(finalForm.start);
+    const end = new Date(finalForm.end);
     if (
       !Number.isFinite(start.getTime()) ||
       !Number.isFinite(end.getTime()) ||
-      (form.allDay ? end < start : end <= start)
+      (finalForm.allDay ? end < start : end <= start)
     ) {
       setError(
         'Choose an end after the start. An all-day event can start and end on the same day.',
@@ -171,19 +146,26 @@ const EventDialog = ({
     setError('');
 
     const payload = {
-      ...form,
+      ...finalForm,
       // Trimmed once the reader took the date, clock and place out, so the event is not named
       // "meeting on 24th oct".
-      title: (parsed?.title || form.title).trim(),
-      recurrence: !isEditing && repeat ? [toRrule(repeat)] : undefined,
-      start: form.allDay ? `${form.start.slice(0, 10)}T00:00:00` : fromLocalInput(form.start),
-      end: form.allDay ? `${form.end.slice(0, 10)}T00:00:00` : fromLocalInput(form.end),
+      title,
+      recurrence:
+        !isEditing && finalParsed?.repeat
+          ? [toRrule(finalParsed.repeat, { allDay: finalForm.allDay })]
+          : undefined,
+      start: finalForm.allDay
+        ? `${finalForm.start.slice(0, 10)}T00:00:00`
+        : fromLocalInput(finalForm.start),
+      end: finalForm.allDay
+        ? `${finalForm.end.slice(0, 10)}T00:00:00`
+        : fromLocalInput(finalForm.end),
     };
 
     try {
       const saved = isEditing ? await updateEvent(event.id, payload) : await createEvent(payload);
 
-      rememberCalendar(form.calendarId);
+      rememberCalendar(finalForm.calendarId);
 
       onSaved(saved);
       onClose();
@@ -214,6 +196,7 @@ const EventDialog = ({
     <Dialog
       title={readOnly ? 'Event details' : isEditing ? 'Edit event' : 'New event'}
       onClose={onClose}
+      actions={!readOnly && <NaturalHelp kind="event" editing={isEditing} />}
       footer={
         <>
           {isEditing && !readOnly && (
@@ -269,17 +252,22 @@ const EventDialog = ({
               )}
               {parsed.title && parsed.title !== form.title.trim() && ' · '}
               {describe(parsed, 'event')}
-              {repeat && isEditing && ' · repeats are only set on new events'}
             </p>
           )}
 
+          {parsed?.issues.length > 0 && (
+            <p className="gwError" role="alert">
+              {parsed.issues.join(' ')}
+            </p>
+          )}
           <label className="gwInline">
             <input
               type="checkbox"
               checked={form.allDay}
-              onChange={(changeEvent) =>
-                setForm((current) => ({ ...current, allDay: changeEvent.target.checked }))
-              }
+              onChange={(changeEvent) => {
+                manualFields.current.add('allDay');
+                setForm((current) => ({ ...current, allDay: changeEvent.target.checked }));
+              }}
             />
             {uiText('all_day_114574')}
           </label>

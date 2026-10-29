@@ -78,7 +78,7 @@
     outline: none;
   }
 
-  /* The hint is the widget's own colour held back, the way the scratch notes do
+  /* The hint is the widget's own colour held back, the way Floating Notes do
      it, rather than a second grey that would fight the theme. */
   &::placeholder {
     color: inherit;

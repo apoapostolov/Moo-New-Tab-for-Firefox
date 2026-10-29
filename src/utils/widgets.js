@@ -46,6 +46,7 @@ export const WIDGETS = [
     id: 'quicklinks',
     label: () => variables.getMessage('modals.main.settings.sections.quicklinks.title'),
     setting: 'quicklinksenabled',
+    fullWidth: true,
   },
   {
     id: 'mail',
@@ -75,6 +76,32 @@ export const WIDGETS = [
     setting: 'rssEnabled',
     zone: 'center',
   },
+  {
+    id: 'countdown',
+    label: () => uiText('countdown_title'),
+    setting: 'countdownEnabled',
+    zone: 'center',
+  },
+  {
+    id: 'portfolio',
+    label: () => uiText('portfolio_title'),
+    setting: 'portfolioEnabled',
+    zone: 'center',
+  },
+  { id: 'habits', label: () => uiText('habits_title'), setting: 'habitsEnabled', zone: 'center' },
+  {
+    id: 'airquality',
+    label: () => uiText('air_title'),
+    setting: 'airQualityEnabled',
+    zone: 'left',
+  },
+  {
+    id: 'bookmarks',
+    label: () => uiText('bookmarks_title'),
+    setting: 'bookmarksEnabled',
+    zone: 'center',
+  },
+  { id: 'github', label: () => 'GitHub', setting: 'githubEnabled', zone: 'center' },
 ];
 
 export const ZONES = ['left', 'center', 'right'];
@@ -92,6 +119,12 @@ export const DEFAULT_ORDER = [
   'mail',
   'calendar',
   'tasks',
+  'portfolio',
+  'countdown',
+  'habits',
+  'airquality',
+  'github',
+  'bookmarks',
   'photoinfo',
 ];
 
@@ -109,16 +142,21 @@ const defaultZone = (widget) => widget.zone || 'center';
  * Order for reading a profile: legacy names repaired, unknown ids dropped, and
  * any widget this build knows about appended.
  */
-export function readOrder() {
+export function readOrder(profile = 'standard') {
   let stored = null;
 
   try {
-    stored = JSON.parse(localStorage.getItem('order'));
+    stored = JSON.parse(localStorage.getItem(profile === 'focus' ? 'focusWidgetOrder' : 'order'));
   } catch {
     stored = null;
   }
 
-  let base = Array.isArray(stored) ? stored : DEFAULT_ORDER;
+  let base =
+    Array.isArray(stored) && stored.length
+      ? stored
+      : profile === 'focus'
+        ? readOrder()
+        : DEFAULT_ORDER;
 
   base = base.map((id) => (id === 'weatherline' ? 'quickweather' : id));
   base = base.filter((id, index, all) => WIDGET_IDS.includes(id) && all.indexOf(id) === index);
@@ -134,36 +172,45 @@ export function readOrder() {
   return base;
 }
 
-export function saveOrder(order) {
-  localStorage.setItem('order', JSON.stringify(order));
+export function saveOrder(order, profile = 'standard') {
+  localStorage.setItem(profile === 'focus' ? 'focusWidgetOrder' : 'order', JSON.stringify(order));
 }
 
 /**
  * Zone per widget. Anything unstored or unrecognised falls back to the widget's
  * default zone, so nothing moves on upgrade.
  */
-export function readPlacement() {
+export function readPlacement(profile = 'standard') {
   let stored = {};
 
   try {
-    stored = JSON.parse(localStorage.getItem('widgetPlacement')) || {};
+    stored =
+      JSON.parse(
+        localStorage.getItem(profile === 'focus' ? 'focusWidgetPlacement' : 'widgetPlacement'),
+      ) || {};
   } catch {
     stored = {};
   }
 
   const placement = {};
+  const inherited = profile === 'focus' ? readPlacement() : {};
 
   WIDGETS.forEach((widget) => {
     const zone = stored[widget.id];
 
-    placement[widget.id] = ZONES.includes(zone) ? zone : defaultZone(widget);
+    placement[widget.id] = ZONES.includes(zone)
+      ? zone
+      : inherited[widget.id] || defaultZone(widget);
   });
 
   return placement;
 }
 
-export function savePlacement(placement) {
-  localStorage.setItem('widgetPlacement', JSON.stringify(placement));
+export function savePlacement(placement, profile = 'standard') {
+  localStorage.setItem(
+    profile === 'focus' ? 'focusWidgetPlacement' : 'widgetPlacement',
+    JSON.stringify(placement),
+  );
 }
 
 /**
@@ -197,31 +244,70 @@ export function placementFromGroups(groups) {
  * Widgets in the centre column's second lane. An empty list means the page draws
  * a single column, which is why nothing is stored until the lane is used.
  */
-export function readSecondLane() {
+export function readSecondLane(profile = 'standard') {
   try {
-    const stored = JSON.parse(localStorage.getItem('widgetSecondLane'));
+    const raw = localStorage.getItem(
+      profile === 'focus' ? 'focusWidgetSecondLane' : 'widgetSecondLane',
+    );
+    if (profile === 'focus' && raw === null) return readSecondLane();
+    const stored = JSON.parse(raw);
 
-    return Array.isArray(stored) ? stored.filter((id) => WIDGET_IDS.includes(id)) : [];
+    return Array.isArray(stored)
+      ? stored.filter((id) => WIDGET_IDS.includes(id) && !isFullWidth(id))
+      : [];
   } catch {
     return [];
   }
 }
 
-export function saveSecondLane(ids) {
-  localStorage.setItem('widgetSecondLane', JSON.stringify(ids));
+export function saveSecondLane(ids, profile = 'standard') {
+  localStorage.setItem(
+    profile === 'focus' ? 'focusWidgetSecondLane' : 'widgetSecondLane',
+    JSON.stringify(ids),
+  );
 }
 
 /**
  * A widget with no stored value uses its default visibility.
  */
-export function isWidgetEnabled(id) {
+export function isWidgetEnabled(id, profile = 'standard') {
   const widget = widgetById(id);
 
   if (!widget) return false;
+
+  if (profile === 'focus') {
+    const visibility = readFocusVisibility();
+    if (typeof visibility[id] === 'boolean') return visibility[id];
+    if (id === 'quicklinks' && localStorage.getItem('quicklinksSeparateFocus') === 'true')
+      return true;
+    return ['time', 'date'].includes(id) && isWidgetEnabled(id);
+  }
 
   const stored = localStorage.getItem(widget.setting);
 
   if (stored === null) return Boolean(widget.onByDefault);
 
   return stored === 'true';
+}
+
+function readFocusVisibility() {
+  try {
+    const value = JSON.parse(localStorage.getItem('focusWidgetVisibility'));
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+  } catch {
+    return {};
+  }
+}
+
+export function setWidgetEnabled(id, enabled, profile = 'standard') {
+  const widget = widgetById(id);
+  if (!widget) return;
+  if (profile === 'focus') {
+    localStorage.setItem(
+      'focusWidgetVisibility',
+      JSON.stringify({ ...readFocusVisibility(), [id]: Boolean(enabled) }),
+    );
+  } else {
+    localStorage.setItem(widget.setting, String(Boolean(enabled)));
+  }
 }

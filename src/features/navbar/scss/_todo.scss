@@ -1,71 +1,161 @@
 @use 'scss/variables' as *;
 
-.notesContainer {
+.notesContainer.todoPopover {
+  box-sizing: border-box;
+  max-width: calc(100vw - 24px);
+  z-index: 41;
+
   .flexTodo {
     display: flex;
     flex-flow: column;
-    gap: 15px;
-    width: 223px;
+    gap: 12px;
+    width: min(320px, calc(100vw - 64px));
+  }
 
-    .todoRows {
-      max-height: 65vh !important;
-      overflow: hidden visible !important;
-      display: flex;
-      flex-flow: column;
-      gap: 15px;
+  .todoRows {
+    max-height: 60vh;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    padding: 3px;
+
+    > div {
+      overflow: clip;
+      padding: 2px;
+    }
+
+    > div > div + div {
+      margin-top: 10px;
     }
   }
 
   .todosEmpty {
-    height: 200px;
+    min-height: 180px;
     display: grid;
     place-items: center;
   }
 }
 
-.todoRow {
-  @include basicIconButton(1px, 16px, ui);
+.todoPopover .todoRow {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 28px;
+  align-items: start;
+  gap: 8px;
+  padding: 10px 8px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  text-align: left;
 
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  margin: 15px 5px;
-
-  @include themed {
-    color: t($color) !important;
+  &,
+  * {
+    box-sizing: border-box;
   }
 
-  textarea {
-    width: 120px;
+  @include themed {
+    color: t($color);
+    background: t($modal-sidebar);
+    border-color: t($modal-sidebarActive);
+    box-shadow: t($boxShadow);
 
-    @include themed {
-      color: t($color) !important;
+    &:focus-within {
+      border-color: t($link);
     }
   }
 
-  svg {
-    padding: 10px;
-    place-items: center;
+  textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 4px 2px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    box-shadow: none;
+    font-size: 15px;
+    line-height: 24px;
+    overflow-y: auto;
+    transition: none;
+
+    @include themed {
+      color: t($color);
+
+      &::placeholder {
+        color: t($subColor);
+      }
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  button {
     display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    font-size: 18px;
+    line-height: 1;
     cursor: pointer;
 
     @include themed {
-      color: t($color) !important;
+      &:hover {
+        background: t($modal-sidebarActive);
+      }
     }
 
-    &:hover {
+    &:focus-visible {
+      outline: 2px solid var(--signature-link);
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+      padding: 0;
+    }
+  }
+
+  .todo-checkbox {
+    margin-top: 3px;
+    border: 1px solid currentcolor;
+    border-radius: 50%;
+
+    &.checked {
       @include themed {
-        background: t($modal-sidebar);
-        border-radius: t($borderRadius);
+        color: t($link);
       }
     }
   }
-}
 
-.done {
-  text-decoration: line-through;
+  .todoActions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
 
-  textarea {
-    cursor: not-allowed;
+  .todo-delete:hover {
+    @include themed {
+      color: t($link);
+    }
+  }
+
+  .todo-drag-handle {
+    cursor: grab;
+    touch-action: none;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &.done textarea {
+    text-decoration: line-through;
   }
 }

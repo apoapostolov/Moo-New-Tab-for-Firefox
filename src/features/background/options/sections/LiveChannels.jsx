@@ -1,3 +1,4 @@
+import 'components/Form/Settings/Text/Text.scss';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useState } from 'react';
 import { MdAdd, MdCheck, MdClose, MdDeleteOutline, MdEdit } from 'react-icons/md';
@@ -105,14 +106,14 @@ const LiveChannels = ({ onChanged }) => {
   const fields = (
     <>
       <input
-        className="liveChannelInput liveChannelInput-name"
+        className="text-field-input liveChannelInput-name"
         value={draft.name}
         placeholder={text('name_placeholder')}
         aria-label={text('name')}
         onChange={(event) => setDraft({ ...draft, name: event.target.value })}
       />
       <input
-        className="liveChannelInput liveChannelInput-url"
+        className="text-field-input liveChannelInput-url"
         value={draft.url}
         placeholder={text('url_placeholder')}
         aria-label={text('url')}

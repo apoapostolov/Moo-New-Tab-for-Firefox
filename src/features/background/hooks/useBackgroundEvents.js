@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import EventBus from 'utils/eventbus';
+import { desiredBackgroundSource } from '../fallback';
 import { getBackgroundFilterStyle, getBackgroundOverlayStyle } from '../api/backgroundFilters';
 
 export function useBackgroundEvents(backgroundData, refreshBackground) {
@@ -7,7 +8,9 @@ export function useBackgroundEvents(backgroundData, refreshBackground) {
     const handleEvent = (event) => {
       if (event === 'background') {
         handleVisibilityToggle();
-      } else if (['marketplacebackgrounduninstall', 'backgroundrefresh'].includes(event)) {
+      } else if (
+        ['marketplacebackgrounduninstall', 'backgroundrefresh', 'backgroundsource'].includes(event)
+      ) {
         refreshBackground();
       } else if (event === 'backgroundeffect') {
         applyFilters();
@@ -40,20 +43,24 @@ export function useBackgroundEvents(backgroundData, refreshBackground) {
         'api_live',
         'api_pixabay',
         'api_pexels',
+        'api_nasa',
+        'api_commons',
       ].includes(rawType)
         ? 'api'
         : rawType;
       const needsRefresh =
-        (type !== backgroundData.type &&
-          !(backgroundData.photoInfo?.offline && type === backgroundData.type)) ||
-        (backgroundData.type === 'api' &&
-          localStorage.getItem('backgroundAPI') !== backgroundData.currentAPI) ||
-        (type === 'custom' && backgroundData.type !== 'custom') ||
-        (backgroundData.photoInfo?.pun &&
-          JSON.parse(localStorage.getItem('backgroundExclude') || '[]').includes(
-            backgroundData.photoInfo.pun,
-          ));
-
+        backgroundData.sourceSelection !== desiredBackgroundSource() ||
+        (backgroundData.sourceRole === 'fallback' && desiredBackgroundSource() === 'primary') ||
+        (backgroundData.sourceRole !== 'fallback' &&
+          ((type !== backgroundData.type &&
+            !(backgroundData.photoInfo?.offline && type === backgroundData.type)) ||
+            (backgroundData.type === 'api' &&
+              localStorage.getItem('backgroundAPI') !== backgroundData.currentAPI) ||
+            (type === 'custom' && backgroundData.type !== 'custom') ||
+            (backgroundData.photoInfo?.pun &&
+              JSON.parse(localStorage.getItem('backgroundExclude') || '[]').includes(
+                backgroundData.photoInfo.pun,
+              ))));
       if (needsRefresh) refreshBackground();
     };
 

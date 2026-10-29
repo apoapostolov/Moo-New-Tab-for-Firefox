@@ -65,7 +65,7 @@ export default function StorageManagement() {
                 )
               }
             />
-            <img src={image.src} alt="Scratch picture" />
+            <img src={image.src} alt={uiText('floating_image')} />
           </label>
         ))}
       </div>

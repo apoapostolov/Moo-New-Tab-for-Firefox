@@ -1,0 +1,989 @@
+[
+  {
+    "id": "webcam-8c73147e4808",
+    "name": "Appalachian Ski Mountain Resort · US",
+    "url": "https://stream.resortcams.com/live/appskimtn2.stream/chunklist.m3u8",
+    "source": "camguide",
+    "scene": "nature"
+  },
+  {
+    "id": "webcam-0468388bb406",
+    "name": "Blue Ridge Music Center · US",
+    "url": "https://stream.resortcams.com/live/blueridgemusiccenter.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-89166c18d1cb",
+    "name": "Blue Ridge Music Center - Visitor Center · US",
+    "url": "https://stream.resortcams.com/live/blueridgemusiccentervisitor.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-2932397e0aab",
+    "name": "Boar's Head Resort · US",
+    "url": "https://stream.resortcams.com/live/boarsheadresort.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "nature"
+  },
+  {
+    "id": "webcam-007d1bd23da4",
+    "name": "Bridgetown Hastings Beach Barbados · BB",
+    "url": "https://stream.iwcpinc.com/IWCP_NCC/_definst_/NCC_Hastings_2.stream/playlist.m3u8",
+    "source": "worldviewstream-direct-hls",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-b01e121ad4f8",
+    "name": "Bryce Resort · US",
+    "url": "https://stream.resortcams.com/live/bryceresort.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-75540e839149",
+    "name": "Castel Volturno, Lido Gallo · IT",
+    "url": "https://5e0add8153fcd.streamlock.net:1936/vedetta/castel-volturno.stream/playlist.m3u8",
+    "source": "worldviewstream",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-acc97760361d",
+    "name": "Messenia - Kalamata - Kalamata Beach 1 · GR",
+    "url": "https://livecameras.gr:30443/live/kala3/playlist.m3u8",
+    "source": "manual",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-b08096a3eafe",
+    "name": "Homestead Resort · US",
+    "url": "https://stream.resortcams.com/live/homestead.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-d6cf0a7750d0",
+    "name": "Mangystau Region - Aktau - Aktau - Drama Theater · KZ",
+    "url": "https://cam.xcom.kz:8081/dramteatr/index.m3u8",
+    "source": "opencctv",
+    "scene": "landmark"
+  },
+  {
+    "id": "webcam-77405938fd38",
+    "name": "Mangystau Region - Aktau - Aktau - Rocky Coastline Path · KZ",
+    "url": "https://cam.xcom.kz:8081/rockypath/index.m3u8",
+    "source": "opencctv",
+    "scene": "waterfront"
+  },
+  {
+    "id": "webcam-88a407e5bf9f",
+    "name": "Lake Gaston Pointe Waterfront · US",
+    "url": "https://media-hls.wral.com/livehttporigin/_definst_/mp4:lake_gaston-1015/playlist.m3u8",
+    "source": "wral",
+    "scene": "lake"
+  },
+  {
+    "id": "webcam-5ea54cfe27a1",
+    "name": "Looe Harbour - Plymouth · GB",
+    "url": "https://camstream.uk/HLS/looe3.m3u8",
+    "source": "worldviewstream",
+    "scene": "harbor"
+  },
+  {
+    "id": "webcam-89e4f55e3870",
+    "name": "Louisiana I-10 Lake Charles East · US",
+    "url": "https://ITSStreamingBR2.dotd.la.gov/public/shr-cam-021.streams/playlist.m3u8",
+    "source": "ladot",
+    "scene": "lake"
+  },
+  {
+    "id": "webcam-ffce79c4e4a9",
+    "name": "Louisiana I-10 Lake Charles West · US",
+    "url": "https://ITSStreamingBR2.dotd.la.gov/public/shr-cam-023.streams/playlist.m3u8",
+    "source": "ladot",
+    "scene": "lake"
+  },
+  {
+    "id": "webcam-8a68e312b797",
+    "name": "Massanutten Resort Base Cam · US",
+    "url": "https://stream.resortcams.com/live/massresort1.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-63f8fddc5a4c",
+    "name": "Massanutten Resort Tubing Cam · US",
+    "url": "https://stream.resortcams.com/live/massresort2.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-62b3525cd913",
+    "name": "Miami Beach · US",
+    "url": "https://cdn-us-east-prod-ingest-infra-dacast-com.akamaized.net/8e2f7f51-4653-43e0-7e8e-7e213959bb2b/source/index.m3u8",
+    "source": "worldviewstream",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-2b233786ebce",
+    "name": "Mt Irvine Beach - Surf Area · TT",
+    "url": "https://cams1.csn-tt.com:31333/live/mtirvine-surf.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-157bb8012163",
+    "name": "Paynes Bay - St James Barbados · BB",
+    "url": "https://stream.iwcpinc.com/IWCP_BEACH/_definst_/Paynes_Bay_1_Beachview.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-42a9ef19cc0f",
+    "name": "Rehoboth Beach Atlantic Sands Boardwalk · US",
+    "url": "https://live5.brownrice.com:444/atlanticsands/atlanticsands.stream/main_playlist.m3u8",
+    "source": "brownrice-visitdebeaches",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-78113be591fb",
+    "name": "Rehoboth Beach Atlantic Sands Oceanfront · US",
+    "url": "https://live5.brownrice.com:444/atlanticsands2/atlanticsands2.stream/main_playlist.m3u8",
+    "source": "brownrice-visitdebeaches",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-9ac186a6249f",
+    "name": "Galati - Galati 2 - DiGi · RO",
+    "url": "https://digilive.rcs-rds.ro/digilivedge/galati2_desktop.stream/index.m3u8",
+    "source": "manual",
+    "scene": "river"
+  },
+  {
+    "id": "webcam-49b2a8221569",
+    "name": "Roxborough River · TT",
+    "url": "https://cams1.csn-tt.com:31333/live/tab_rox.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "river"
+  },
+  {
+    "id": "webcam-8ad92f6447f4",
+    "name": "Store Bay - Crown Point · TT",
+    "url": "https://cams1.csn-tt.com:31333/live/storebay.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-5b6d4a9c4b17",
+    "name": "The Grömitz Coast · DE",
+    "url": "https://osl9.lvstrm.de/hls/stream.m3u8",
+    "source": "worldviewstream",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-e30b443874bf",
+    "name": "Castara - Castara Bay · TT",
+    "url": "https://cams1.csn-tt.com:31333/live/tab_castara.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-e38754586e96",
+    "name": "Mt Irvine - Mt Irvine Beach — Beach Area · TT",
+    "url": "https://cams1.csn-tt.com:31333/live/mtirvine-boats.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-fca491175118",
+    "name": "Parlatuvier - Parlatuvier Bay · TT",
+    "url": "https://cams1.csn-tt.com:31333/live/tab_parlatuvier.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-9ae901d241d6",
+    "name": "Roxborough - Argile Beach — Roxborough · TT",
+    "url": "https://cams1.csn-tt.com:31333/live/argilebeach.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-e3547fa6ea0c",
+    "name": "Scarborough - Scarborough — Port Mall · TT",
+    "url": "https://cams1.csn-tt.com:31333/live/scarborough-portmall.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "waterfront"
+  },
+  {
+    "id": "webcam-f14204f6492d",
+    "name": "Hawaii - Honolulu - Beachfront, Waikiki, HI · US",
+    "url": "https://stage-ams-nfs.srv.axds.co/stream/adaptive/uh/waikiki_sheraton/hls.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-5654f8a59c87",
+    "name": "Walton Lighthouse, Santa Cruz · US",
+    "url": "https://stage-ams-nfs.srv.axds.co/stream/adaptive/ucsc/walton_lighthouse/hls.m3u8",
+    "source": "worldviewstream",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-21c6b2601393",
+    "name": "Wintergreen Blue Ridge Express Cam · US",
+    "url": "https://stream.resortcams.com/live/wintergreen2.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-2d067e47e258",
+    "name": "Wintergreen Slopeside · US",
+    "url": "https://stream.resortcams.com/live/wintergreen3.stream/playlist.m3u8",
+    "source": "resortcams",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-f5e3e965b4d1",
+    "name": "Celebration Square · CA",
+    "url": "https://webvideo.mississauga.ca/StageWebcam/LiveStageWebcam.stream-audiodestin/playlist.m3u8",
+    "source": "worldviewstream",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-83b17bd65c57",
+    "name": "Florence Cathedral · IT",
+    "url": "https://5e0add8153fcd.streamlock.net:1936/vedetta/via-della-scala.stream/chunklist_w1359048502.m3u8",
+    "source": "camguide",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-52d65ff9b179",
+    "name": "Boeotia - Arachova - Arachova · GR",
+    "url": "https://livecameras.gr:30443/live/arach1/playlist.m3u8",
+    "source": "manual",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-503673e2e4eb",
+    "name": "Holzgau · AT",
+    "url": "https://h057.video-stream-hosting.de/tourismusverbandlechtal-rtplive/_definst_/mp4:camera3.stream/chunklist_w1581120379.m3u8",
+    "source": "camguide",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-c27679558c39",
+    "name": "Imphal India Discovery · IN",
+    "url": "https://prod.vodvideo.cbsnews.com/cbsnews/vr/hls/4458996_hls/master.m3u8",
+    "source": "india_discovery",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-22976acb2d59",
+    "name": "Mississauga Celebration Square · CA",
+    "url": "https://webvideo.mississauga.ca/BalconyWebcam/LiveWebcam.stream/chunklist_w1473770124.m3u8",
+    "source": "camguide",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-2a188fa5a7ff",
+    "name": "OSM · US",
+    "url": "https://1-or.vdn.terrafox.net/live/downtown-silver.stream/playlist.m3u8",
+    "source": "osm_webcam_pages",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-f058ac94be45",
+    "name": "Restaurants and cafes in the city center · US",
+    "url": "https://2-fss-2.streamhoster.com/pl_126/200612-1195858-1/playlist.m3u8",
+    "source": "camguide",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-00f08d075388",
+    "name": "Brasov - Cabana Postavarul · RO",
+    "url": "https://digilive.rcs-rds.ro/digilivedge/poiana_brasov_desktop.stream/index.m3u8",
+    "source": "manual",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-747b12cfb090",
+    "name": "Torgallmenningen Square · NO",
+    "url": "https://stream1.vossaskyen.no/bt/Torgallmenningen.stream/chunklist_w320945590.m3u8",
+    "source": "camguide",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-bb4b96400c55",
+    "name": "TV Tower · EE",
+    "url": "https://sv.levira.com/teletorn/smil:teletorn.smil/chunklist_w282021538_b2096000_DVR.m3u8",
+    "source": "camguide",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-cd8d8a9ce8f8",
+    "name": "Dellewalbaai · XX",
+    "url": "https://live.skylgenet.nl/hls/debranding-strand.m3u8",
+    "source": "osm_webcam_pages",
+    "scene": "city"
+  },
+  {
+    "id": "webcam-64104653fe13",
+    "name": "Alvor · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/alvor/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-a2caa35669db",
+    "name": "Apúlia · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bcapulia/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-7e76e65509d3",
+    "name": "Armação de Pêra · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/armacaodepera/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-938cbb4eec5b",
+    "name": "Arrifana · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/arrifana/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-65a63a50ddf4",
+    "name": "Carcavelos · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/carcavelos/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-651fa2b6e450",
+    "name": "Carcavelos | Calhau · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/carcavelos2/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-723f76a3c30f",
+    "name": "Costa de Caparica | CDS NORTE · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/costacaparicacds/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-df3948a6d340",
+    "name": "Costa de Caparica | Riviera · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/riviera/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-a1832956c049",
+    "name": "Costa de Caparica | São João | Cova do Vapor · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bccostasaojoao/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-cc1898ee36b4",
+    "name": "Costa de Caparica | Tarquínio · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bctarquinho/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-4aecd05edddc",
+    "name": "Dębki plaża · PL",
+    "url": "https://hoktastream2.webcamera.pl/debki_cam_284a24/debki_cam_284a24.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-2a1e3ce2d73b",
+    "name": "Ericeira | Praia do Sul · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/praiadosulericeira/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-93b4f2285ae2",
+    "name": "Espinho | Panorâmica · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/espinho/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-892537ee8010",
+    "name": "Faro | Praia de Faro Este · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bcfaro/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-1767d8da3e2e",
+    "name": "Foz do Arelho · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bcfozdoarelho/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-bb1c281237d5",
+    "name": "Furadouro · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/furadouro/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-aab536948126",
+    "name": "JASTARNIA · PL",
+    "url": "https://hoktastream2.webcamera.pl/jastarnia_cam_a14385/jastarnia_cam_a14385.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-8013a4247845",
+    "name": "Jezioro Niegocin · PL",
+    "url": "https://hoktastream4.webcamera.pl/skywind_cam_99451e/skywind_cam_99451e.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "lake"
+  },
+  {
+    "id": "webcam-7abc7b6d5915",
+    "name": "Jezioro Solińskie · PL",
+    "url": "https://hoktastream1.webcamera.pl/polanczyk_cam_aa8511/polanczyk_cam_aa8511.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "lake"
+  },
+  {
+    "id": "webcam-60cae10cab89",
+    "name": "Kamera Gdynia deptak, Poland · PL",
+    "url": "https://hoktastream1.webcamera.pl/gdynia_cam_b3ccea/gdynia_cam_b3ccea.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "harbor"
+  },
+  {
+    "id": "webcam-f08bdb4881fa",
+    "name": "Kamera Plaża Międzywodzie Najmniej oblegane plaże w Polsce, Poland · PL",
+    "url": "https://hoktastream3.webcamera.pl/miedzywodzie_cam_6b6996/miedzywodzie_cam_6b6996.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-081bd63de32c",
+    "name": "Kamera SARBINOWO PLAŻA NA ŻYWO, Poland · PL",
+    "url": "https://hoktastream1.webcamera.pl/sarbinowo_cam_bd6ec8/sarbinowo_cam_bd6ec8.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-4feeb28ac19d",
+    "name": "Kasprowy Wierch panorama · PL",
+    "url": "https://hoktastream1.webcamera.pl/pkl_cam_fa9db5/pkl_cam_fa9db5.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "mountain"
+  },
+  {
+    "id": "webcam-33b4923d0bf5",
+    "name": "Kraków - Zakole Wisły · PL",
+    "url": "https://hoktastream2.webcamera.pl/krakow_cam_4c3e37/krakow_cam_4c3e37.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "river"
+  },
+  {
+    "id": "webcam-da2e9d20b3f2",
+    "name": "Kraków · PL",
+    "url": "https://hoktastream1.webcamera.pl/wentzl_cam_be5c6c/wentzl_cam_be5c6c.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "landmark"
+  },
+  {
+    "id": "webcam-94a76a0acc65",
+    "name": "Kuźnica · PL",
+    "url": "https://hoktastream2.webcamera.pl/kuznica_cam_e87bf3/kuznica_cam_e87bf3.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-9c81e9163d56",
+    "name": "Leça da Palmeira · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/lecadapalmeira/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-e6dc345ba41b",
+    "name": "Matosinhos · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/matosinhos/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-90f339410368",
+    "name": "Meia Praia · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/meiapraia/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-07ba9fd27690",
+    "name": "Mielno - widok na plażę i promenadę - podgląd · PL",
+    "url": "https://hoktastream4.webcamera.pl/mielno_cam_0e2e7c/mielno_cam_0e2e7c.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-7c29d3e7a01a",
+    "name": "Mrzeżyno - widok na morze i plażę niedaleko wejścia do Portu Morskiego · PL",
+    "url": "https://hoktastream4.webcamera.pl/mrzezyno_cam_9c9575/mrzezyno_cam_9c9575.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-9940d7f91f75",
+    "name": "Mrzeżyno port · PL",
+    "url": "https://hoktastream1.webcamera.pl/airnet_cam_4279f5/airnet_cam_4279f5.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-012306043880",
+    "name": "Mrzeżyno port · PL",
+    "url": "https://hoktastream3.webcamera.pl/mrzezyno_cam_8e2d5d/mrzezyno_cam_8e2d5d.stream/playlist.m3u8",
+    "source": "webcamera_pl",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-b8036c9ee3c6",
+    "name": "Nazaré | Praia do Norte Panorâmica · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/nazareparadonorte/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-61237217a589",
+    "name": "Parede · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/parede/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-e0f9e94c6fdb",
+    "name": "Peniche | Baleal | Panorâmica · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bcbalealgeral/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-b0154717c93d",
+    "name": "Białogóra - Białogóra Plaża · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/bialogora_plaza_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-8fb819bb271f",
+    "name": "Bolszewo - Bolszewo ART Park · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/bolszewo_artpark_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-c9396a46058f",
+    "name": "Brzyno - Brzyno Przystań · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/brzyno_przystan_j_zarnowieckie_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-f41edd99808f",
+    "name": "Chałupy - Chałupy Przystań · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/chalupy_molo_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-1f1c843b3a04",
+    "name": "Chłapowo - Chłapowo, Bałtyk z kempingu Lazurowe · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wladyslawowo_kemping_lazurowe_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-7763510bf09d",
+    "name": "Dębki - Dębki - Widok z wieży · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/debki_wieza_rybaczowka_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-12d81270dd46",
+    "name": "Dębki - Dębki Plaża · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/debki_plaza_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-646a3a3d1f62",
+    "name": "Dębki - Dębki Plaża · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/debki_plaza_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-4bee01b6165e",
+    "name": "Gdańsk - Gdańsk Górki Zachodnie NCŻ · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gdansk_gorki_zachodnie_ncz_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-c886c4debd87",
+    "name": "Gdańsk - Gdańsk Miasto, Teatr Szekspirowski · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gdansk_centrum_teatr_szekspirowski_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-14eea12b12ae",
+    "name": "Gdańsk - Gdańsk Stare Miasto - Motława · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gdansk_olowianka_widok_motlawa_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-65a340d87345",
+    "name": "Gdynia - Gdynia Molo Południowe · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gdynia_al_jana_pawla_nabrzerze_pomorskie_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-3ee121fb4617",
+    "name": "Gdynia - Gdynia Orłowo · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gdynia_orlowo_plaza_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-91e16322cc89",
+    "name": "Gdynia - Gdynia Przystań jachtowa · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gdynia_marina_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-87d804340ee6",
+    "name": "Gniew - Gniew Panorama miasta · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gniew_widok_rynek_wieza_kosciola_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-8cab23b32d0a",
+    "name": "Gniew - Gniew Zakole Wisły · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gniew_widok_zakole_wisly_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-bf216e204e78",
+    "name": "Gniew - Gniew Zamek · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gniew_widok_na_zamek_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-22eb737a78c0",
+    "name": "Gniewino - Gniewino, Kaszubskie Oko · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/gniewino_kaszubskie_oko_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-79bb8ed776f5",
+    "name": "Grudziądz - Grudziądz Widok na Wisłę · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/grudziadz_wisla_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-eb1f2715cde9",
+    "name": "Hel - Hel Bulwar Nadmorski · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/hel_bulwar_nadmorski_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-c2552a245f22",
+    "name": "Jastarnia - Jastarnia Kemping Maszoperia · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/jastarnia_kemping_maszoperia_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-03acd4fcfff3",
+    "name": "Jastarnia - Jastarnia Molo · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/jastarnia_molo_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-bcdc27364c9e",
+    "name": "Jastarnia - Jastarnia Plaża, Dom Zdrojowy · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/jastarnia_plaza_dom_zdrojowy_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-47b2c7ca6ef8",
+    "name": "Jastrzębia Góra - Jastrzębia Góra Plaża · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/jastrzebiagora_plaza_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-2e04104f349b",
+    "name": "Jurata - Jurata Molo · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/jurata_molo_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-60989bec4713",
+    "name": "Karwia - Karwia Plaża · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/karwia_plaza_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-1a42ce4fe03c",
+    "name": "Kołobrzeg - Kołobrzeg Port · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/kolobrzeg_port_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-96d47fb69d3d",
+    "name": "Lubkowo DPS - Lubkowo DPS Przystań · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/lubkowo_przystan_dps_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-e8452b391d87",
+    "name": "Nadole - Nadole Przystań · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/nadole_przystan_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-138ca03990a6",
+    "name": "Puck - Puck Molo · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/puck_molo_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-24247dbf4551",
+    "name": "Puck - Puck Plaża, Przystań, Molo · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/puck_molo_port_jachtowy_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-24698b273afa",
+    "name": "Puck - Puck Stary Rynek · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/puck_stary_rynek_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-a811f6b91e98",
+    "name": "Puck - Puck Zatoka Pucka · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/puck_wieza_kosciola_zatokapucka_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-98f3e0a90e26",
+    "name": "Reda - Reda - Jara panorama miasta · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/reda_jara_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-47e570e37899",
+    "name": "Reda - Reda - MPCK Koksik, Gniazdo Sokoła w środku · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/reda_koksik_gniazdo_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-01612b8b6871",
+    "name": "Rewa - Rewa Surfstacja · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/rewa_surf_stacja_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-bc187c4570df",
+    "name": "Rumia - Rumia Wzgórze Markowca · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/rumia_wzgorze_markowca_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-499635377529",
+    "name": "Sopot - Sopot - Plaża Małe Molo · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/sopot_plaza_male_molo_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-e3e5ce0f0dc5",
+    "name": "Sopot - Sopot Molo · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/sopot_molo_skwer_kuracyjny_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-d7d58f293acb",
+    "name": "Sopot - Sopot Widok z mola · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/sopot_molo_meridian_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-3de0373d0234",
+    "name": "Wejherowo - Wejherowo Filharmonia · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wejherowo_filharmonia_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-b9516f6f1771",
+    "name": "Wejherowo - Wejherowo Panorama miasta · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wejherowo_wzgorze_wolnosci_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-938fc39cc31c",
+    "name": "Wejherowo - Wejherowo Plac Jakuba Wejhera · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wejherowo_plac_jakuba_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-c7f5ceee5ae7",
+    "name": "Wejherowo - Wejherowo ul. Orzeszkowej · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wejherowo_skrzyzowanie_orzeszkowej_k6_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-4711a528fcea",
+    "name": "Władysławowo - Władysławowo Aleja Gwiazd Sportu · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wladyslawowo_aleja_gwiazd.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-a37afb667fd2",
+    "name": "Władysławowo - Władysławowo Małe Morze · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wladyslawowo_kemping_male_morze_molo_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-b03999343712",
+    "name": "Władysławowo - Władysławowo Plaża · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wladyslawowo_plaza_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-178dfa868dd3",
+    "name": "Władysławowo - Władysławowo Port · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wladyslawowo_port_nabrzeze_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-7afd6883951a",
+    "name": "Władysławowo - Władysławowo Półwysep Helski · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/wladyslawowo_widok_na_polwysep_helski_z_wiezy_static.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-dda2a673b9f7",
+    "name": "Świnoujście - Świnoujście Centrum · PL",
+    "url": "https://ls.tkchopin.pl:9043/live/swinoujscie_centrum_obrotowa.stream/playlist.m3u8",
+    "source": "opencctv",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-09d961e553b6",
+    "name": "Praia da Falésia · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/vilamoura/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-2a85edeeacb1",
+    "name": "Praia da Luz · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/luz/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-525828a4ce59",
+    "name": "Praia da Rocha Panorâmica · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/praiadarocha/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-f48eb4ea9441",
+    "name": "Praia Verde | Castro Marim · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bcpraiaverde/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-9fe6b7201b98",
+    "name": "São João do Estoril · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/costacaparicabernard/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-a99a5a79c55d",
+    "name": "São Pedro do Estoril · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/saopedroestoria/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-b284a05421f7",
+    "name": "São Pedro do Estoril | Bico Estática · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bcsaopedrofixa/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  },
+  {
+    "id": "webcam-7c69e2fe5d1e",
+    "name": "Viana do Castelo | Cabedelo · PT",
+    "url": "https://video-auth1.iol.pt/beachcam/bccabedeloviana/playlist.m3u8",
+    "source": "beachcam_meo",
+    "scene": "beach"
+  }
+]

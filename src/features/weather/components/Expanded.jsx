@@ -60,12 +60,12 @@ function Expanded({ state: { weather, icon }, weatherType, variables }) {
     useTranslationVersion();
     const { icon: Icon, key, unit, title, extra } = weatherTypes[type];
     return (
-      enabled(type) && (
+      enabled(type) && weather[key] != null && weather[key] !== '' && (
         <Tooltip title={variables.getMessage(title)} placement="left">
           <span>
             <Icon className="weatherIcon" name={icon} />
             {`${weather[key]} ${unit || ''}`}
-            {extra && (
+            {extra && weather.wind_degrees != null && (weatherType === '3' || localStorage.getItem(extra) === 'true') && (
               <div style={{ fontSize: '25px', display: 'grid' }}>
                 <WindDirectionIcon className="weatherIcon" degrees={weather.wind_degrees} />
               </div>
@@ -76,7 +76,7 @@ function Expanded({ state: { weather, icon }, weatherType, variables }) {
     );
   };
 
-  const anyTooltipEnabled = Object.keys(weatherTypes).some(enabled);
+  const anyTooltipEnabled = Object.keys(weatherTypes).some((type) => enabled(type) && weather[weatherTypes[type].key] != null && weather[weatherTypes[type].key] !== '');
 
   return (
     anyTooltipEnabled && (

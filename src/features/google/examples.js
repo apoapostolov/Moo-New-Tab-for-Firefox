@@ -2,6 +2,11 @@
  * the syntax. Each entry is a phrasing natural.js handles, covering a distinct shape. */
 
 export const EVENT_EXAMPLES = [
+  'Tomorrow from 9 to 10:30, planning at the office; notes: Bring the figures',
+  'Design review every other week on Monday and Thursday at 4pm for six occurrences',
+  'Budget check every last Friday of the month at noon',
+  'Conference; starts 12 Nov at 9am; ends 13 Nov at 5pm',
+  'Team review tomorrow at half past nine for an hour and a half',
   'Dentist on 24th oct at 9 for 45 minutes',
   'Lunch with Ana on friday at 13:00 at Made in Blue',
   'Sprint review in 3 days at 14:00 for 1 hour',
@@ -25,6 +30,8 @@ export const EVENT_EXAMPLES = [
 ];
 
 export const TASK_EXAMPLES = [
+  'Please remind me to send the invoice by the day after tomorrow; notes: Keep a copy',
+  'Submit the report in two business days; notes: Attach the figures',
   'Call the plumber tomorrow',
   'Pay the electricity bill on the 5th',
   'Buy milk and eggs today',

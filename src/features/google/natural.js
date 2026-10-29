@@ -1,221 +1,136 @@
-/**
- * Splits a typed sentence into a title plus date, time, length, repeat and place. Passes run
- * repeats, lengths, times, dates, place, since "at 11:00" and "at the office" share a prefix;
- * unclaimed text is the title.
- */
+import {
+  addDays,
+  DAY,
+  midnight,
+  nextWeekday,
+  NUMBER,
+  readNaturalDate,
+  readNumber,
+  WEEKDAYS,
+} from './naturalDates.js';
 
-const WEEKDAYS = {
-  sunday: 0,
-  sun: 0,
-  monday: 1,
-  mon: 1,
-  tuesday: 2,
-  tue: 2,
-  tues: 2,
-  wednesday: 3,
-  wed: 3,
-  thursday: 4,
-  thu: 4,
-  thur: 4,
-  thurs: 4,
-  friday: 5,
-  fri: 5,
-  saturday: 6,
-  sat: 6,
+const CODES = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+const ORDINALS = { first: 1, second: 2, third: 3, fourth: 4, last: -1 };
+const mask = (s, i, n) => {
+  s.work = s.work.slice(0, i) + ' '.repeat(n) + s.work.slice(i + n);
 };
-
-const MONTHS = {
-  january: 0,
-  jan: 0,
-  february: 1,
-  feb: 1,
-  march: 2,
-  mar: 2,
-  april: 3,
-  apr: 3,
-  may: 4,
-  june: 5,
-  jun: 5,
-  july: 6,
-  jul: 6,
-  august: 7,
-  aug: 7,
-  september: 8,
-  sep: 8,
-  sept: 8,
-  october: 9,
-  oct: 9,
-  november: 10,
-  nov: 10,
-  december: 11,
-  dec: 11,
-};
-
-const WORDS = {
-  a: 1,
-  an: 1,
-  one: 1,
-  two: 2,
-  three: 3,
-  four: 4,
-  five: 5,
-  six: 6,
-  seven: 7,
-  eight: 8,
-  nine: 9,
-  ten: 10,
-  eleven: 11,
-  twelve: 12,
-  fifteen: 15,
-  twenty: 20,
-  thirty: 30,
-  forty: 40,
-  fortyfive: 45,
-  half: 0.5,
-};
-
-const MONTH_PATTERN = Object.keys(MONTHS).join('|');
-const WEEKDAY_PATTERN = Object.keys(WEEKDAYS).join('|');
-const NUM_PATTERN = `\\d+(?:\\.\\d+)?|${Object.keys(WORDS).join('|')}`;
-
-const toNumber = (raw) => {
-  const text = String(raw).trim().toLowerCase();
-
-  if (Object.prototype.hasOwnProperty.call(WORDS, text)) return WORDS[text];
-
-  const value = Number(text);
-
-  return Number.isFinite(value) ? value : null;
-};
-
-const atMidnight = (date) => {
-  const copy = new Date(date);
-
-  copy.setHours(0, 0, 0, 0);
-
-  return copy;
-};
-
-const addDays = (date, days) => {
-  const copy = atMidnight(date);
-
-  copy.setDate(copy.getDate() + days);
-
-  return copy;
-};
-
-/**
- * Rolls month and day forward to the next occurrence, so "24th oct" typed in November lands next
- * year.
- */
-
-const forwardDate = (now, month, day) => {
-  const candidate = atMidnight(now);
-
-  candidate.setMonth(month, day);
-
-  if (candidate.getMonth() !== month) {
-    // 31st of a 30-day month: clamp to the last day instead of rolling over.
-    candidate.setDate(0);
+const take = (s, pattern, read) => {
+  for (const m of s.work.matchAll(
+    new RegExp(pattern.source, pattern.flags.replace('g', '') + 'g'),
+  )) {
+    const value = read(m);
+    if (value === null || value === undefined || value === false) continue;
+    mask(s, m.index, m[0].length);
+    return value;
   }
-
-  if (candidate < atMidnight(now)) candidate.setFullYear(candidate.getFullYear() + 1);
-
-  return candidate;
-};
-
-/** A bare day number means this month if it is still ahead, else the next one. */
-const nextDayOfMonth = (now, day) => {
-  const candidate = atMidnight(now);
-
-  candidate.setDate(day);
-
-  if (candidate.getDate() !== day) candidate.setDate(0);
-  if (candidate >= atMidnight(now)) return candidate;
-
-  const next = atMidnight(now);
-
-  next.setMonth(next.getMonth() + 1, day);
-
-  if (next.getDate() !== day) next.setDate(0);
-
-  return next;
-};
-
-const nextWeekday = (now, weekday) => {
-  const today = atMidnight(now);
-  const ahead = (weekday - today.getDay() + 7) % 7;
-
-  return addDays(today, ahead);
-};
-
-const mask = (text, index, length) =>
-  text.slice(0, index) + ' '.repeat(length) + text.slice(index + length);
-
-/**
- * Claims the first phrase matching `pattern` when `read` returns something, so a later pass cannot
- * re-claim it.
- */
-
-const claim = (state, pattern, read) => {
-  const match = pattern.exec(state.work);
-
-  if (!match) return null;
-
-  const value = read(match);
-
-  if (value === null || value === undefined || value === false) return null;
-
-  state.work = mask(state.work, match.index, match[0].length);
-
-  return value;
-};
-
-const firstOf = (state, readers) => {
-  for (const [pattern, read] of readers) {
-    const value = claim(state, pattern, read);
-
-    if (value) return value;
-  }
-
   return null;
 };
-
-const setTime = (hours, minutes) => {
-  const h = Number(hours);
-  const m = Number(minutes || 0);
-
-  if (!Number.isFinite(h) || !Number.isFinite(m) || m > 59) return null;
-  if (h > 23) return null;
-
-  return { hours: h % 24, minutes: m };
+const UNIT = '(?:hours?|hrs?|h|minutes?|mins?|m|days?|d)(?![a-z])';
+const DURATION = `(?:half\\s+an?\\s+hour|${NUMBER}(?:\\s+and\\s+(?:a\\s+)?half)?\\s*${UNIT}(?:\\s*(?:and\\s+)?${NUMBER}\\s*${UNIT}){0,2}(?:\\s+and\\s+(?:a\\s+)?(?:half|quarter))?)`;
+const readDuration = (text) => {
+  if (/^half\s+an?\s+hour$/i.test(text)) return 30;
+  let total = 0,
+    first = 0;
+  for (const m of text.matchAll(
+    new RegExp(`(${NUMBER})(\\s+and\\s+(?:a\\s+)?half)?\\s*(${UNIT})`, 'gi'),
+  )) {
+    const unit = /^h/i.test(m[3]) ? 60 : /^d/i.test(m[3]) ? 1440 : 1;
+    first ||= unit;
+    total += (readNumber(m[1]) + (m[2] ? 0.5 : 0)) * unit;
+  }
+  if (/\band\s+(?:a\s+)?(?:half|quarter)$/i.test(text))
+    total += first * (/quarter$/i.test(text) ? 0.25 : 0.5);
+  return total >= 1 && total <= 525600 ? Math.round(total) : null;
+};
+const CLOCK = `(?:${NUMBER}(?::\\d{2})?\\s*(?:a\\.?m\\.?|p\\.?m\\.?)?|noon|midday|midnight)`;
+const readClock = (raw) => {
+  const text = raw.trim().toLowerCase().replace(/\./g, '');
+  if (/^(noon|midday|midnight)$/.test(text))
+    return { hours: text === 'midnight' ? 0 : 12, minutes: 0, explicit: true };
+  const m = text.match(new RegExp(`^(${NUMBER})(?::(\\d{2}))?\\s*(am|pm)?$`, 'i'));
+  if (!m) return null;
+  let hours = readNumber(m[1]);
+  const minutes = Number(m[2] || 0);
+  if (
+    !Number.isInteger(hours) ||
+    hours < 0 ||
+    hours > 23 ||
+    minutes > 59 ||
+    (m[3] && (hours < 1 || hours > 12))
+  )
+    return null;
+  if (m[3]) hours = (hours % 12) + (m[3] === 'pm' ? 12 : 0);
+  return { hours, minutes, explicit: Boolean(m[3]) };
+};
+const clockOnly = ({ hours, minutes }) => ({ hours, minutes });
+const REPEAT = new RegExp(
+  `\\b(?:every|each)\\s+(?:(?:other|${NUMBER})\\s+)?(?:single\\s+)?(?:${DAY}|days?|weeks?|months?|years?|weekdays?|weekends?)s?(?:\\s*(?:,|and|&)\\s*(?:${DAY})s?)*(?:\\s+on\\s+(?:${DAY})s?(?:\\s*(?:,|and|&)\\s*(?:${DAY})s?)*)?\\b|\\b(?:daily|weekly|monthly|yearly|annually|fortnightly|biweekly|weekdays|weekends)(?:\\s+on\\s+(?:${DAY})s?(?:\\s*(?:,|and|&)\\s*(?:${DAY})s?)*)?\\b`,
+  'i',
+);
+const readRepeat = (text) => {
+  const unit =
+    text
+      .match(
+        /\b(days?|weeks?|months?|years?|daily|weekly|monthly|yearly|annually|fortnightly|biweekly|weekdays?|weekends?)\b/i,
+      )?.[0]
+      .toLowerCase() || '';
+  const days = [...text.matchAll(new RegExp(`\\b(${DAY})s?\\b`, 'gi'))].map(
+    (m) => WEEKDAYS[m[1].toLowerCase()],
+  );
+  const amount = text.match(
+    new RegExp(`\\b(?:every|each)\\s+(${NUMBER})\\s+(?:days?|weeks?|months?|years?)\\b`, 'i'),
+  );
+  const interval = /\bother\b|fortnightly|biweekly/i.test(text)
+    ? 2
+    : amount
+      ? readNumber(amount[1])
+      : 1;
+  if (!Number.isInteger(interval) || interval < 1 || interval > 365) return null;
+  if (/weekday/.test(unit)) return { freq: 'WEEKLY', interval, byDay: [1, 2, 3, 4, 5] };
+  if (/weekend/.test(unit)) return { freq: 'WEEKLY', interval, byDay: [6, 0] };
+  return {
+    freq:
+      days.length || /week|fortnight/.test(unit)
+        ? 'WEEKLY'
+        : /month/.test(unit)
+          ? 'MONTHLY'
+          : /year|annually/.test(unit)
+            ? 'YEARLY'
+            : 'DAILY',
+    interval,
+    ...(days.length ? { byDay: [...new Set(days)] } : {}),
+  };
+};
+const nextRepeat = (repeat, now) => {
+  if (repeat.freq === 'MONTHLY' && (repeat.bySetPos || repeat.byMonthDay))
+    for (let m = 0; m < 13; m++) {
+      const first = new Date(now.getFullYear(), now.getMonth() + m, 1);
+      let date;
+      if (repeat.byMonthDay)
+        date = new Date(first.getFullYear(), first.getMonth(), repeat.byMonthDay);
+      else {
+        date = nextWeekday(first, repeat.byDay[0]);
+        if (repeat.bySetPos === -1) {
+          while (addDays(date, 7).getMonth() === first.getMonth()) date = addDays(date, 7);
+        } else date = addDays(date, (repeat.bySetPos - 1) * 7);
+      }
+      if (date >= midnight(now) && date.getMonth() === first.getMonth()) return date;
+    }
+  return repeat.byDay?.length
+    ? new Date(Math.min(...repeat.byDay.map((d) => nextWeekday(now, d).getTime())))
+    : midnight(now);
 };
 
-const meridiem = (value, marker) => {
-  if (!value || !marker) return value;
-
-  const lower = String(marker).toLowerCase();
-
-  if (lower.startsWith('p') && value.hours < 12) return { ...value, hours: value.hours + 12 };
-  if (lower.startsWith('a') && value.hours === 12) return { ...value, hours: 0 };
-
-  return value;
-};
-
-const shiftDate = (now, amount, unit) => {
-  const date = atMidnight(now);
-
-  if (unit === 'day') date.setDate(date.getDate() + amount);
-  if (unit === 'week') date.setDate(date.getDate() + amount * 7);
-  if (unit === 'month') date.setMonth(date.getMonth() + amount);
-
-  return date;
-};
-
-export const parseNatural = (text, { now = new Date(), kind = 'event' } = {}) => {
-  const state = { work: ` ${String(text || '').replace(/\s+/g, ' ')} ` };
-
-  const result = {
+/** English field extraction in local time. Unknown text remains available as the title. */
+export function parseNatural(
+  text,
+  { now = new Date(), kind = 'event', calendars = [], allowRepeat = true, defaultDate } = {},
+) {
+  const original = String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const state = { work: ` ${original} ` };
+  const r = {
     title: '',
     date: null,
     endDate: null,
@@ -225,413 +140,356 @@ export const parseNatural = (text, { now = new Date(), kind = 'event' } = {}) =>
     allDay: false,
     repeat: null,
     location: null,
+    notes: null,
+    status: null,
+    calendarId: null,
     understood: false,
+    dateExplicit: false,
+    issues: [],
   };
-
-  // Repetition comes first. Google tasks have no repeat field, so these words stay in the title
-  // instead of being dropped.
+  if (original.length > 20000) return { ...r, title: original };
+  const field = (names) =>
+    new RegExp(
+      `\\b(?:with\\s+)?(?:${names})\\s*(?::\\s*|\\s+(?=["']))(?:"([^"]*)"|'([^']*)'|([^;]+))`,
+      'i',
+    );
+  const content = (m) => (m[1] ?? m[2] ?? m[3] ?? '').trim();
+  r.notes = take(state, field('notes?|description'), content);
+  const literalTitle = take(state, field('title'), content);
+  if (kind === 'task')
+    r.status = take(
+      state,
+      /\bstatus\s*:\s*(completed|complete|done|open|pending|incomplete|needsAction)\b/i,
+      (m) => (/^(completed|complete|done)$/i.test(m[1]) ? 'completed' : 'needsAction'),
+    );
   if (kind === 'event') {
-    result.repeat = firstOf(state, [
-      [
-        new RegExp(`\\b(?:every|each|all)\\s+(?:single\\s+)?(${WEEKDAY_PATTERN})\\b`, 'i'),
-        (match) => ({ freq: 'WEEKLY', interval: 1, byDay: [WEEKDAYS[match[1].toLowerCase()]] }),
-      ],
-      [
-        /\b(?:every|each)\s+(?:(\d+|couple of|few)\s+)?(day|week|month|weekday)s?\b/i,
-        (match) => {
-          const interval = match[1] ? Math.max(1, Math.round(toNumber(match[1]) || 1)) : 1;
-          const unit = match[2].toLowerCase();
-
-          if (unit === 'weekday') return { freq: 'WEEKLY', interval, byDay: [1, 2, 3, 4, 5] };
-          if (unit === 'day') return { freq: 'DAILY', interval };
-          if (unit === 'week') return { freq: 'WEEKLY', interval };
-
-          return { freq: 'MONTHLY', interval };
-        },
-      ],
-      [
-        /\b(daily|weekly|monthly|weekdays?)\b/i,
-        (match) => {
-          const word = match[1].toLowerCase();
-
-          if (word === 'daily') return { freq: 'DAILY', interval: 1 };
-          if (word === 'weekly') return { freq: 'WEEKLY', interval: 1 };
-          if (word === 'monthly') return { freq: 'MONTHLY', interval: 1 };
-
-          return { freq: 'WEEKLY', interval: 1, byDay: [1, 2, 3, 4, 5] };
-        },
-      ],
-    ]);
-
-    // "for 2 days each day" counts repeats; alone, "for 2 days" is a length.
-    if (result.repeat) {
-      const count = claim(state, /\bfor\s+(\d+)\s+(?:times|days?|weeks?|months?)\b/i, (match) =>
-        Math.max(1, Number(match[1])),
-      );
-
-      if (count) result.repeat.count = count;
-    }
+    r.location =
+      take(state, field('location|place'), content) ||
+      take(state, /\b(?:at|in)\s+["']([^"']+)["']/i, (m) => m[1]);
+    r.calendarId = take(
+      state,
+      field('calendar'),
+      (m) =>
+        calendars.find((c) =>
+          [c.id, c.summary].some((name) => name?.toLowerCase() === content(m).toLowerCase()),
+        )?.id,
+    );
   }
-
-  // A written-out date is claimed before any clock, or the digits in "2026-12-24"
-  // look like the range 12:00 to 24:00.
-  const isoDate = claim(state, /\b(\d{4})-(\d{2})-(\d{2})\b/, (match) => {
-    const date = atMidnight(new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
-
-    return Number.isNaN(date.getTime()) ? null : date;
-  });
-
-  // A length: "for 2 hours", "for 30 min", "lasting 3 days".
-  const length = firstOf(state, [
-    [
+  const literals = [];
+  const protect = (value) => {
+    const token = `\uE000${String.fromCharCode(65 + literals.length)}\uE001`;
+    literals.push([token, value]);
+    return token;
+  };
+  const restore = (value) =>
+    literals.reduce((work, [token, literal]) => work.replaceAll(token, literal), value);
+  state.work = state.work.replace(/"[^"]*"/g, protect);
+  if (kind === 'event' && allowRepeat) {
+    r.repeat = take(
+      state,
       new RegExp(
-        `\\b(?:for|lasting)\\s+(${NUM_PATTERN})\\s*(hours?|hrs?|h|minutes?|mins?|m|days?)\\b`,
+        `\\b(?:every|each)\\s+(first|second|third|fourth|last)\\s+(${DAY})(?:\\s+of\\s+(?:(?:every|each|the)\\s+)?month)?\\b`,
         'i',
       ),
-      (match) => {
-        const amount = toNumber(match[1]);
-
-        if (!amount) return null;
-
-        const unit = match[2].toLowerCase();
-
-        if (unit.startsWith('h')) return Math.round(amount * 60);
-        if (unit.startsWith('d')) return Math.round(amount * 60 * 24);
-
-        return Math.round(amount);
-      },
-    ],
-    [/\b(?:for|lasting)\s+half\s+an?\s+hour\b/i, () => 30],
-    [/\b(?:for|lasting)\s+an?\s+hour\b/i, () => 60],
-  ]);
-
-  if (length) result.durationMinutes = length;
-
-  // Times: a range first, then a single clock, then the named hours.
-  const range = claim(
-    state,
-    /(?:from\s+)?\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*(?:-|–|to|until|till)\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/i,
-    (match) => {
-      // "3-5 dec" and "20-22 nov" are day ranges; a trailing month settles it and the
-      // date pass below claims the phrase.
-      const after = state.work.slice(match.index + match[0].length);
-
-      if (new RegExp(`^\\s*(?:of\\s+)?(${MONTH_PATTERN})\\b`, 'i').test(after)) return null;
-
-      const start = meridiem(setTime(match[1], match[2]), match[3] || match[6]);
-      const end = meridiem(setTime(match[4], match[5]), match[6] || match[3]);
-
-      if (!start) return null;
-
-      return { start, end };
-    },
-  );
-
-  if (range) {
-    result.time = range.start;
-    result.endTime = range.end;
-  }
-
-  if (!result.time) {
-    const single = firstOf(state, [
-      [
-        /\b(?:at|@)\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm|a|p)?\b/i,
-        (match) => meridiem(setTime(match[1], match[2]), match[3]),
-      ],
-      [
-        /\b(\d{1,2}):(\d{2})\s*(am|pm)?\b/i,
-        (match) => meridiem(setTime(match[1], match[2]), match[3]),
-      ],
-      [/\b(\d{1,2})\s*(am|pm)\b/i, (match) => meridiem(setTime(match[1], 0), match[2])],
-      [/\b(\d{1,2})\s*o'?clock\b/i, (match) => setTime(match[1], 0)],
-      [/\b(?:at\s+)?(noon|midday)\b/i, () => ({ hours: 12, minutes: 0 })],
-      [/\b(?:at\s+)?midnight\b/i, () => ({ hours: 0, minutes: 0 })],
-    ]);
-
-    if (single) result.time = single;
-  }
-
-  // A date: the most specific shape wins.
-  const spread = isoDate
-    ? null
-    : firstOf(state, [
-        [
-          new RegExp(
-            `\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_PATTERN})\\s*(?:-|–|to|until|till|through)\\s*(\\d{1,2})(?:st|nd|rd|th)?(?:\\s+(?:of\\s+)?(${MONTH_PATTERN}))?\\b`,
-            'i',
-          ),
-          (match) => {
-            const startMonth = MONTHS[match[2].toLowerCase()];
-            const endMonth = match[4] ? MONTHS[match[4].toLowerCase()] : startMonth;
-            const start = forwardDate(now, startMonth, Number(match[1]));
-            const end = forwardDate(now, endMonth, Number(match[3]));
-
-            // "24 dec to 3 jan" crosses the new year.
-            if (end < start) end.setFullYear(end.getFullYear() + 1);
-
-            return { start, end };
-          },
-        ],
-        [
-          new RegExp(
-            `\\b(\\d{1,2})\\s*(?:-|–|to|until|till|through)\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_PATTERN})\\b`,
-            'i',
-          ),
-          (match) => {
-            const month = MONTHS[match[3].toLowerCase()];
-            const first = Number(match[1]);
-            const last = Number(match[2]);
-            const start = forwardDate(now, month, first);
-            const end = new Date(start);
-
-            end.setDate(last);
-
-            // "28-3 nov" runs into the following month.
-            if (last < first) {
-              end.setMonth(end.getMonth() + 1, last);
-            }
-
-            return { start, end };
-          },
-        ],
-        [
-          new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+of\\s+(next|this)\\s+month\\b`, 'i'),
-          (match) => {
-            const date = atMidnight(now);
-
-            if (match[2].toLowerCase() === 'next')
-              date.setMonth(date.getMonth() + 1, Number(match[1]));
-            else date.setDate(Number(match[1]));
-
-            return { start: date, end: null };
-          },
-        ],
-      ]);
-
-  if (spread) {
-    result.date = spread.start;
-    result.endDate = spread.end;
-  }
-
-  result.date =
-    isoDate ||
-    result.date ||
-    firstOf(state, [
-      [
-        /\b(\d{1,2})[/.](\d{1,2})(?:[/.](\d{2,4}))?\b/,
-        (match) => {
-          const day = Number(match[1]);
-          const month = Number(match[2]);
-
-          if (day < 1 || day > 31 || month < 1 || month > 12) return null;
-
-          if (!match[3]) return forwardDate(now, month - 1, day);
-
-          const year = Number(match[3]) < 100 ? 2000 + Number(match[3]) : Number(match[3]);
-
-          return atMidnight(new Date(year, month - 1, day));
-        },
-      ],
-      [
-        new RegExp(
-          `\\b(?:on\\s+)?(?:the\\s+)?(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_PATTERN})\\b`,
-          'i',
-        ),
-        (match) => forwardDate(now, MONTHS[match[2].toLowerCase()], Number(match[1])),
-      ],
-      [
-        new RegExp(`\\b(${MONTH_PATTERN})\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`, 'i'),
-        (match) => forwardDate(now, MONTHS[match[1].toLowerCase()], Number(match[2])),
-      ],
-      [
-        /\b(?:on\s+)?(?:the\s+)?(\d{1,2})(?:st|nd|rd|th)\b/i,
-        (match) =>
-          Number(match[1]) >= 1 && Number(match[1]) <= 31
-            ? nextDayOfMonth(now, Number(match[1]))
-            : null,
-      ],
-      [
-        /\bon\s+(\d{1,2})\b/i,
-        (match) =>
-          Number(match[1]) >= 1 && Number(match[1]) <= 31
-            ? nextDayOfMonth(now, Number(match[1]))
-            : null,
-      ],
-      [
-        new RegExp(`\\bin\\s+(${NUM_PATTERN})\\s*(day|week|month)s?\\b`, 'i'),
-        (match) => shiftDate(now, toNumber(match[1]) || 0, match[2].toLowerCase()),
-      ],
-      [
-        new RegExp(`\\b(${NUM_PATTERN})\\s+(day|week|month)s?\\s+from\\s+(?:now|today)\\b`, 'i'),
-        (match) => shiftDate(now, toNumber(match[1]) || 0, match[2].toLowerCase()),
-      ],
-      [/\b(?:today|tonight)\b/i, () => atMidnight(now)],
-      [/\b(?:the\s+)?day\s+after\s+tomorrow\b/i, () => addDays(now, 2)],
-      [/\b(?:tomorrow|tmrw|tmw)\b/i, () => addDays(now, 1)],
-      [/\bnext\s+week\b/i, () => addDays(now, 7)],
-      [
-        /\bnext\s+month\b/i,
-        () => {
-          const date = atMidnight(now);
-
-          date.setMonth(date.getMonth() + 1);
-
-          return date;
-        },
-      ],
-      [
-        new RegExp(`\\b(next|this|coming|on)\\s+(${WEEKDAY_PATTERN})\\b`, 'i'),
-        (match) => {
-          const day = nextWeekday(now, WEEKDAYS[match[2].toLowerCase()]);
-
-          // "next sunday" typed on a sunday means the one after, not today.
-          return match[1].toLowerCase() === 'next' && day.getTime() === atMidnight(now).getTime()
-            ? addDays(day, 7)
-            : day;
-        },
-      ],
-      [
-        new RegExp(`\\b(${WEEKDAY_PATTERN})\\b`, 'i'),
-        (match) => nextWeekday(now, WEEKDAYS[match[1].toLowerCase()]),
-      ],
-    ]);
-
-  // "in 2 hours" is a clock time today, not a date of its own.
-  if (!result.time) {
-    const offset = claim(
+      (m) => ({
+        freq: 'MONTHLY',
+        interval: 1,
+        byDay: [WEEKDAYS[m[2].toLowerCase()]],
+        bySetPos: ORDINALS[m[1].toLowerCase()],
+      }),
+    );
+    r.repeat ||= take(
       state,
-      new RegExp(`\\bin\\s+(${NUM_PATTERN})\\s*(hour|hr|minute|min)s?\\b`, 'i'),
-      (match) => {
-        const amount = toNumber(match[1]);
-
-        if (!amount) return null;
-
-        const minutes = /^h/i.test(match[2]) ? amount * 60 : amount;
-        const when = new Date(now.getTime() + minutes * 60000);
-
-        when.setMinutes(Math.round(when.getMinutes() / 5) * 5);
-
-        return when;
+      /\b(?:every|each)\s+month\s+on\s+(?:the\s+)?(\d{1,2})(?:st|nd|rd|th)?\b/i,
+      (m) =>
+        +m[1] >= 1 && +m[1] <= 31 ? { freq: 'MONTHLY', interval: 1, byMonthDay: +m[1] } : null,
+    );
+    if (!r.repeat) {
+      const matches = [...state.work.matchAll(new RegExp(REPEAT.source, 'gi'))];
+      const match = matches.find((item) => /^(every|each)\b/i.test(item[0])) || matches[0];
+      if (match) {
+        r.repeat = readRepeat(match[0]);
+        if (r.repeat) mask(state, match.index, match[0].length);
+      }
+    }
+    if (r.repeat) {
+      const count = take(
+        state,
+        new RegExp(`\\bfor\\s+(${NUMBER})\\s+(?:times?|occurrences?)\\b`, 'i'),
+        (m) => {
+          const n = readNumber(m[1]);
+          return Number.isInteger(n) && n > 0 && n <= 10000 ? n : null;
+        },
+      );
+      if (count) r.repeat.count = count;
+      const untilPrefix = /\buntil\s+/i.exec(state.work);
+      if (untilPrefix) {
+        const offset = untilPrefix.index + untilPrefix[0].length;
+        const until = readNaturalDate(state.work.slice(offset), now, false);
+        if (until?.index === 0) {
+          r.repeat.until = until.date;
+          mask(state, untilPrefix.index, untilPrefix[0].length + until.length);
+        }
+      }
+    }
+  } else {
+    state.work = state.work.replace(
+      new RegExp(
+        `\\b(?:every|each)\\s+(?:first|second|third|fourth|last)\\s+(?:${DAY})(?:\\s+of\\s+(?:(?:every|each|the)\\s+)?month)?\\b`,
+        'gi',
+      ),
+      protect,
+    );
+    const hasUnsupportedRepeat =
+      literals.some(([, value]) => /^(every|each)\b/i.test(value)) ||
+      new RegExp(REPEAT.source, 'i').test(state.work);
+    state.work = state.work.replace(new RegExp(REPEAT.source, 'gi'), protect);
+    if (hasUnsupportedRepeat) state.work = state.work.replace(/\buntil\s+[^;,]+/gi, protect);
+    if (kind === 'task')
+      state.work = state.work.replace(
+        new RegExp(
+          `(?:\\bat\\s+|@\\s*)${CLOCK}\\b|\\b\\d{1,2}:\\d{2}\\s*(?:am|pm)?\\b|\\b\\d{1,2}\\s*(?:am|pm)\\b`,
+          'gi',
+        ),
+        protect,
+      );
+  }
+  let startBound = null,
+    endBound = null;
+  if (kind === 'event') {
+    const bounds =
+      /\b(starts?|ends?|begins?|finishes?)\s*(?::\s*|\s+)(.+?)(?=\s+and\s+(?:starts?|ends?|begins?|finishes?)\b|;|$)/i;
+    for (let n = 0; n < 2; n++)
+      take(state, bounds, (m) => {
+        const d = readNaturalDate(m[2], now, false);
+        let work = m[2];
+        if (d)
+          work = work.slice(0, d.index) + ' '.repeat(d.length) + work.slice(d.index + d.length);
+        const clock = work.match(new RegExp(`(?:\\bat\\s+|^\\s*)(${CLOCK})\\s*$`, 'i'));
+        const time = clock && readClock(clock[1]);
+        if ((!d && !time) || work.replace(clock?.[0] || '', '').trim()) return null;
+        const bound = { date: d?.date, time: time && clockOnly(time) };
+        if (/^(start|begin)/i.test(m[1])) startBound = bound;
+        else endBound = bound;
+        return bound;
+      });
+    r.allDay = Boolean(take(state, /\ball[ -]day\b/i, () => true));
+  }
+  const date = readNaturalDate(state.work, now);
+  if (date) {
+    r.date = date.date;
+    r.endDate = date.endDate;
+    r.dateExplicit = true;
+    mask(state, date.index, date.length);
+  }
+  if (startBound?.date) {
+    r.date = startBound.date;
+    r.dateExplicit = true;
+  }
+  if (endBound?.date) r.endDate = endBound.date;
+  if (kind === 'event') {
+    r.durationMinutes = take(
+      state,
+      new RegExp(`\\b(?:for|lasting(?:\\s+for)?)\\s+(${DURATION})\\b`, 'i'),
+      (m) => readDuration(m[1]),
+    );
+    let explicitPeriod = false;
+    const range = take(
+      state,
+      new RegExp(
+        `(?<![\\w/.-])(?:(from|between|at)\\s+)?(${CLOCK})\\s*(to|until|till|[-–—]|and)\\s*(${CLOCK})(?![\\w/.-])`,
+        'i',
+      ),
+      (m) => {
+        if (m[3].toLowerCase() === 'and' && m[1]?.toLowerCase() !== 'between') return null;
+        const start = readClock(m[2]),
+          end = readClock(m[4]);
+        if (!start || !end) return null;
+        const nearest = (hours, distance) =>
+          [hours % 12, (hours % 12) + 12].sort((a, b) => distance(a) - distance(b))[0];
+        if (!start.explicit && start.hours <= 12 && end.explicit)
+          start.hours = nearest(start.hours, (h) => (end.hours - h + 24) % 24 || 24);
+        if (start.explicit && !end.explicit && end.hours <= 12)
+          end.hours = nearest(end.hours, (h) => (h - start.hours + 24) % 24 || 24);
+        explicitPeriod = start.explicit || end.explicit;
+        return { start: clockOnly(start), end: clockOnly(end) };
       },
     );
-
-    if (offset) {
-      result.time = { hours: offset.getHours(), minutes: offset.getMinutes() };
-      result.date = atMidnight(offset);
+    if (range) {
+      r.time = range.start;
+      r.endTime = range.end;
     }
+    if (!r.time) {
+      const relative = take(state, new RegExp(`\\b(?:in|after)\\s+(${DURATION})\\b`, 'i'), (m) => {
+        const minutes = readDuration(m[1]);
+        return minutes && !r.date ? new Date(now.getTime() + minutes * 60000) : null;
+      });
+      if (relative) {
+        r.date = midnight(relative);
+        r.dateExplicit = true;
+        r.time = { hours: relative.getHours(), minutes: relative.getMinutes() };
+      }
+      const colloquial =
+        !r.time &&
+        take(
+          state,
+          new RegExp(
+            `\\b(?:at\\s+)?(half|quarter|${NUMBER})\\s+(past|to)\\s+(${NUMBER})(?:\\s*(am|pm))?\\b`,
+            'i',
+          ),
+          (m) => {
+            const h = readClock(m[3] + (m[4] || '')),
+              minutes = /half/i.test(m[1]) ? 30 : /quarter/i.test(m[1]) ? 15 : readNumber(m[1]);
+            if (!h || !Number.isInteger(minutes) || minutes < 1 || minutes > 59) return null;
+            explicitPeriod = h.explicit;
+            return m[2].toLowerCase() === 'to'
+              ? { hours: (h.hours + 23) % 24, minutes: 60 - minutes }
+              : { hours: h.hours, minutes };
+          },
+        );
+      if (colloquial) r.time = colloquial;
+      const written =
+        !r.time &&
+        take(
+          state,
+          new RegExp(
+            `\\b(?:at\\s+)?(${NUMBER})\\s+o'?clock\\b|\\bat\\s+(${NUMBER})\\s+(${NUMBER})(?:\\s*(am|pm))?\\b`,
+            'i',
+          ),
+          (m) => {
+            const hour = readNumber(m[1] || m[2]),
+              minutes = m[3] ? readNumber(m[3]) : 0;
+            const value = readClock(`${hour}:${String(minutes).padStart(2, '0')}${m[4] || ''}`);
+            if (!value) return null;
+            explicitPeriod = value.explicit;
+            return clockOnly(value);
+          },
+        );
+      if (written) r.time = written;
+      const single =
+        !r.time &&
+        take(
+          state,
+          new RegExp(
+            `(?:\\bat\\s+|@\\s*)(${CLOCK})(?![\\w:.])|\\b(\\d{1,2}:\\d{2}\\s*(?:am|pm)?|\\d{1,2}\\s*(?:am|pm)|noon|midday|midnight)\\b`,
+            'i',
+          ),
+          (m) => {
+            const c = readClock(m[1] || m[2]);
+            if (!c) return null;
+            explicitPeriod = c.explicit;
+            return clockOnly(c);
+          },
+        );
+      if (single) r.time = single;
+    }
+    const period = take(
+      state,
+      /\b(?:(?:in\s+the|this)\s+)?(morning|afternoon|evening|night)\b/i,
+      (m) => (r.time || r.date ? m[1].toLowerCase() : null),
+    );
+    if (period && !explicitPeriod) {
+      if (!r.time)
+        r.time = { hours: period === 'morning' ? 9 : period === 'afternoon' ? 15 : 19, minutes: 0 };
+      else if (period !== 'morning' && r.time.hours < 12) r.time.hours += 12;
+      else if (period === 'morning' && r.time.hours === 12) r.time.hours = 0;
+    }
+    if (startBound?.time) r.time = startBound.time;
+    if (endBound?.time) r.endTime = endBound.time;
+    r.location ||=
+      ((r.date || r.time || r.repeat || r.durationMinutes || /@/.test(state.work)) &&
+        take(state, /(?:\bat\s+|@)([^,;\uE000]+?)(?=\s{2,}|[,;]|$)/i, (m) => {
+          const place = m[1].trim();
+          return place.length > 1 && !/^(?:\d|least\b|most\b|all\b)/i.test(place) ? place : null;
+        })) ||
+      null;
   }
-
-  // A repeat on a weekday with no date of its own begins on that weekday.
-  if (result.repeat?.byDay?.length && !result.date) {
-    result.date = nextWeekday(now, result.repeat.byDay[0]);
+  if (r.repeat && !r.date) r.date = nextRepeat(r.repeat, now);
+  if (r.repeat?.count && r.repeat.until)
+    r.issues.push('Choose a repeat count or an end date, rather than both.');
+  if (r.repeat?.until && r.date && r.repeat.until < r.date)
+    r.issues.push('Choose a repeat end date on or after its start.');
+  if ((r.time || r.allDay) && !r.date)
+    r.date = midnight(defaultDate ? new Date(`${defaultDate}T00:00:00`) : now);
+  if (r.allDay) {
+    r.time = null;
+    r.endTime = null;
   }
-
-  // A clock with no day at all means today.
-  if (result.time && !result.date) result.date = atMidnight(now);
-
-  // Place: "@office", "at the office". Times are already gone, so "at" cannot be a clock.
-  if (kind === 'event') {
-    result.location = firstOf(state, [
-      [/(?:^|\s)@([\w'’ .&-]{2,40})/, (match) => match[1].trim().replace(/[.,;:]+$/, '')],
-      [
-        /\bat\s+((?!\btoday\b|\btomorrow\b|\bthe\s+\d)[\w'’ .&-]{2,40})/i,
-        (match) => {
-          const value = match[1]
-            .replace(/\s+/g, ' ')
-            .trim()
-            .replace(/[.,;:]+$/, '');
-
-          return value.length > 1 ? value : null;
-        },
-      ],
-    ]);
-  }
-
-  // Whatever no pass claimed is the title. Edges are tidied in a loop: one phrase can
-  // leave two connectives behind, as "on the 1st of december" does.
-  const tidy = (text) =>
-    text
-      .replace(/\s+/g, ' ')
-      .replace(/^[\s,;:.–—-]+|[\s,;:.–—-]+$/g, '')
-      .replace(/^(?:on|at|for|in|the|from|by|of)\s+/i, '')
-      .replace(/\s+(?:on|at|for|in|the|from|by|of)$/i, '')
-      .replace(/^[\s,;:.–—-]+|[\s,;:.–—-]+$/g, '');
-
-  let title = tidy(state.work);
-
-  for (let pass = 0; pass < 4; pass += 1) {
-    const next = tidy(title);
-
-    if (next === title) break;
-
-    title = next;
-  }
-
-  result.title = title.trim();
-
-  result.understood = Boolean(
-    result.date || result.time || result.repeat || result.durationMinutes || result.location,
+  if (r.date && !r.time && r.durationMinutes >= 1440 && !r.endDate)
+    r.endDate = addDays(r.date, Math.ceil(r.durationMinutes / 1440) - 1);
+  r.understood = Boolean(
+    r.date ||
+    r.time ||
+    r.repeat ||
+    r.durationMinutes ||
+    r.location ||
+    r.notes !== null ||
+    r.status ||
+    r.calendarId ||
+    literalTitle,
   );
+  let title = restore(state.work)
+    .replace(/\s+/g, ' ')
+    .replace(/^[\s,;:.–—-]+|[\s,;:.–—-]+$/g, '');
+  if (r.understood)
+    title = title
+      .replace(/^(?:please\s+)?remind me to\s+/i, '')
+      .replace(/\s+(?:on|at|from|by|starting|beginning|for|due|until)\s*$/i, '');
+  r.title = [literalTitle, title].filter(Boolean).join(' ').trim();
+  return r;
+}
 
-  return result;
-};
-
-const WEEKDAY_NAMES = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
-
-export const toRrule = (repeat) => {
+export const toRrule = (repeat, { allDay = false } = {}) => {
   if (!repeat?.freq) return null;
-
   const parts = [`FREQ=${repeat.freq}`];
-
   if (repeat.interval > 1) parts.push(`INTERVAL=${repeat.interval}`);
-  if (repeat.byDay?.length) {
-    parts.push(`BYDAY=${repeat.byDay.map((day) => WEEKDAY_NAMES[day]).join(',')}`);
+  if (repeat.byDay?.length) parts.push(`BYDAY=${repeat.byDay.map((d) => CODES[d]).join(',')}`);
+  if (repeat.bySetPos) parts.push(`BYSETPOS=${repeat.bySetPos}`);
+  if (repeat.byMonthDay) parts.push(`BYMONTHDAY=${repeat.byMonthDay}`);
+  if (repeat.count >= 1) parts.push(`COUNT=${repeat.count}`);
+  else if (repeat.until) {
+    const day = `${repeat.until.getFullYear()}${String(repeat.until.getMonth() + 1).padStart(2, '0')}${String(repeat.until.getDate()).padStart(2, '0')}`;
+    const end = new Date(
+      repeat.until.getFullYear(),
+      repeat.until.getMonth(),
+      repeat.until.getDate(),
+      23,
+      59,
+      59,
+    );
+    parts.push(`UNTIL=${allDay ? day : end.toISOString().replace(/[-:]|\.000/g, '')}`);
   }
-  if (repeat.count > 1) parts.push(`COUNT=${repeat.count}`);
-
   return `RRULE:${parts.join(';')}`;
 };
-
-/** The understood sentence, shown under the field so the reader sees it before saving. */
-export const describe = (parsed, kind = 'event') => {
-  if (!parsed?.understood) return '';
-
-  const bits = [];
-  const clock = (value) =>
-    `${String(value.hours).padStart(2, '0')}:${String(value.minutes).padStart(2, '0')}`;
-
-  if (parsed.date) {
-    const day = (value) =>
-      value.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
-
-    bits.push(parsed.endDate ? `${day(parsed.date)} → ${day(parsed.endDate)}` : day(parsed.date));
+export const describe = (p, kind = 'event') => {
+  if (!p?.understood) return '';
+  const bits = [],
+    clock = (v) => `${String(v.hours).padStart(2, '0')}:${String(v.minutes).padStart(2, '0')}`,
+    day = (v) =>
+      v.toLocaleDateString('en-GB', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+  if (p.date) bits.push(p.endDate ? `${day(p.date)} → ${day(p.endDate)}` : day(p.date));
+  if (p.time && kind === 'event')
+    bits.push(
+      p.endTime
+        ? `${clock(p.time)}–${clock(p.endTime)}`
+        : `from ${clock(p.time)}${p.durationMinutes ? `, ${p.durationMinutes} min` : ''}`,
+    );
+  else if (p.date && kind === 'event') bits.push('all day');
+  else if (p.durationMinutes) bits.push(`${p.durationMinutes} min`);
+  if (p.repeat) {
+    const unit = { DAILY: 'day', WEEKLY: 'week', MONTHLY: 'month', YEARLY: 'year' }[p.repeat.freq];
+    bits.push(
+      `every ${p.repeat.interval > 1 ? p.repeat.interval + ' ' : ''}${unit}${p.repeat.interval > 1 ? 's' : ''}${p.repeat.byDay?.length ? ' (' + p.repeat.byDay.map((d) => new Date(2024, 0, 7 + d).toLocaleDateString('en-GB', { weekday: 'short' })).join(', ') + ')' : ''}${p.repeat.bySetPos ? ' · ' + Object.keys(ORDINALS).find((k) => ORDINALS[k] === p.repeat.bySetPos) : ''}${p.repeat.count ? ', ' + p.repeat.count + ' times' : p.repeat.until ? ', until ' + day(p.repeat.until) : ''}`,
+    );
   }
-
-  if (parsed.time && kind === 'task') {
-    bits.push('time dropped, tasks are day only');
-  } else if (parsed.time && parsed.endTime) {
-    bits.push(`${clock(parsed.time)}–${clock(parsed.endTime)}`);
-  } else if (parsed.time) {
-    const long = parsed.durationMinutes
-      ? parsed.durationMinutes >= 60
-        ? `, ${Math.round((parsed.durationMinutes / 60) * 10) / 10} h`
-        : `, ${parsed.durationMinutes} min`
-      : '';
-
-    bits.push(`from ${clock(parsed.time)}${long}`);
-  } else if (parsed.date && kind === 'event') {
-    bits.push('all day');
-  }
-
-  if (parsed.repeat) {
-    const unit = { DAILY: 'day', WEEKLY: 'week', MONTHLY: 'month' }[parsed.repeat.freq] || 'day';
-    const every =
-      parsed.repeat.interval > 1 ? `every ${parsed.repeat.interval} ${unit}s` : `every ${unit}`;
-
-    bits.push(parsed.repeat.count > 1 ? `${every}, ${parsed.repeat.count} times` : every);
-  }
-
-  if (parsed.location) bits.push(`at ${parsed.location}`);
-
+  if (p.location) bits.push(`at ${p.location}`);
+  if (p.notes !== null) bits.push('notes added');
+  if (p.status) bits.push(p.status === 'completed' ? 'completed' : 'open');
+  if (p.calendarId) bits.push('calendar selected');
   return bits.join(' · ');
 };

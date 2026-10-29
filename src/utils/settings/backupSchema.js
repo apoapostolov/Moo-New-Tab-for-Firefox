@@ -1,3 +1,7 @@
+import { validCountdown } from '../../features/countdown/countdownStore';
+import { validHabits } from '../../features/habits/habitStore';
+import { validNoteMemories } from '../../features/scratch/noteTypes';
+import { validTimezone } from '../../features/time/worldClockStore';
 import defaults from '../data/default_settings.json';
 import supportedKeys from '../data/settings_keys.json';
 
@@ -7,6 +11,11 @@ export const MAX_BACKUP_BYTES = 150 * 1024 * 1024;
 export const isCredential = (key) =>
   /(?:secret|token|auth|clientid|apikey)$|^(?:pixabay|pexels)key$/i.test(key);
 export const TRANSIENT_KEYS = new Set([
+  'bookmarksOpenCache',
+  'githubCache',
+  'githubRetry',
+  'airQualityCache',
+  'focusSession',
   'firstRun',
   'showWelcome',
   'welcomePreview',
@@ -15,6 +24,9 @@ export const TRANSIENT_KEYS = new Set([
   'showReminder',
   'currentBackground',
   'currentWeather',
+  'portfolioQuoteCache',
+  'portfolioHistory',
+  'portfolioRatesCache',
   'imageQueue',
   'videoQueue',
   'rssItems',
@@ -50,6 +62,46 @@ const list = (test) => (value) => Array.isArray(value) && value.length <= 5000 &
 const point = (value) =>
   record(value) && text(value.id) && Number.isFinite(value.x) && Number.isFinite(value.y);
 const validators = {
+  habitsData: (value) => validHabits(value),
+  countdowns: (value) =>
+    Array.isArray(value) &&
+    value.length <= 100 &&
+    value.every((item) => validCountdown(item) && text(item.id) && text(item.text)) &&
+    new Set(value.map((item) => item.id)).size === value.length,
+  worldClocks: (value) =>
+    Array.isArray(value) &&
+    value.length <= 6 &&
+    value.every(
+      (item) => record(item) && text(item.id) && text(item.label) && validTimezone(item.zone),
+    ),
+  portfolioHoldings: (value) =>
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        record(item) &&
+        text(item.symbol) &&
+        /^[A-Z0-9][A-Z0-9.-]{0,19}$/.test(item.symbol) &&
+        (item.exchange == null || (text(item.exchange) && /^[A-Z0-9]{0,4}$/.test(item.exchange))) &&
+        Number.isFinite(item.shares) &&
+        item.shares > 0 &&
+        (item.cost == null || (Number.isFinite(item.cost) && item.cost >= 0)),
+    ) &&
+    new Set(value.map((item) => `${item.symbol}|${item.exchange || ''}`)).size === value.length,
+  focusWidgetOrder: list(text),
+  focusWidgetSecondLane: list(text),
+  focusWidgetVisibility: (value) =>
+    record(value) && Object.values(value).every((shown) => typeof shown === 'boolean'),
+  focusWidgetPlacement: (value) =>
+    record(value) &&
+    Object.values(value).every((zone) => ['left', 'center', 'right'].includes(zone)),
+  focusQuicklinks: list(
+    (value) =>
+      record(value) &&
+      text(value.name) &&
+      http(value.url) &&
+      text(value.key) &&
+      (!value.icon || media(value.icon)),
+  ),
   order: list(text),
   widgetSecondLane: list(text),
   widgetPlacement: (value) =>
@@ -81,11 +133,21 @@ const validators = {
   googleMailFolders: list(
     (value) => text(value) || (record(value) && text(value.id) && text(value.name)),
   ),
-  scratchNotesData: list((value) => point(value) && text(value.text)),
+  scratchNotesData: list(
+    (value) =>
+      point(value) &&
+      (value.showInFocus === undefined || typeof value.showInFocus === 'boolean') &&
+      text(value.text) &&
+      (value.locked === undefined || typeof value.locked === 'boolean') &&
+      (value.transparent === undefined || typeof value.transparent === 'boolean') &&
+      validNoteMemories(value),
+  ),
   scratchImagesData: list(
     (value) =>
       point(value) &&
+      (value.showInFocus === undefined || typeof value.showInFocus === 'boolean') &&
       media(value.src) &&
+      (value.locked === undefined || typeof value.locked === 'boolean') &&
       Number.isFinite(value.width) &&
       value.width > 0 &&
       Number.isFinite(value.ratio) &&
@@ -101,6 +163,21 @@ const validators = {
       (media(value.url) || ['random_colour', 'random_gradient'].includes(value.type))),
 };
 const numbers = {
+  habitsLimit: [1, 30],
+  habitsWeekStart: [0, 1],
+  bookmarksLimit: [3, 12],
+  bookmarksRefresh: [5, 120],
+  bookmarksMinAge: [0, 3650],
+  bookmarksRepeatDays: [0, 365],
+  bookmarksDomainLimit: [0, 12],
+  bookmarksMinMinutes: [0, 120],
+  githubLimit: [3, 20],
+  githubRefresh: [5, 60],
+  airQualityRefresh: [10, 120],
+  pomodoroWork: [1, 240],
+  pomodoroBreak: [1, 240],
+  pomodoroLongBreak: [1, 240],
+  pomodoroRounds: [1, 12],
   backgroundAutoChangeInterval: [1, 10080],
   rssItemCount: [1, 12],
   rssRefreshMinutes: [1, 10080],
@@ -134,7 +211,10 @@ export function validateSettings(input) {
     if (!['string', 'boolean', 'number'].includes(typeof raw))
       throw new Error(`The saved value for ${key} is not valid.`);
     const value = String(raw);
-    if (value.length > (key === 'scratchImagesData' ? MAX_BACKUP_BYTES : 1024 * 1024))
+    if (
+      value.length >
+      (['scratchImagesData', 'habitsData'].includes(key) ? MAX_BACKUP_BYTES : 1024 * 1024)
+    )
       throw new Error(`The saved value for ${key} is too large.`);
     const original = defaultValues[key];
     if ((original === 'true' || original === 'false') && !['true', 'false'].includes(value))
@@ -211,7 +291,7 @@ export function prepareBackup(source) {
       ? JSON.parse(settings.scratchImagesData)
       : undefined;
   if (scratchImages !== undefined && !validators.scratchImagesData(scratchImages))
-    throw new Error('The scratch pictures in this backup are not valid.');
+    throw new Error('The Floating Images in this backup are not valid.');
   delete settings.scratchImagesData;
   return {
     scratchImages,

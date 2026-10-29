@@ -1,5 +1,8 @@
 import { googleFetch, googlePages } from '../api';
 import { calendarDate } from 'utils/date';
+import { authRevision } from '../auth';
+import { eventReminders } from '../calendarAlerts';
+import { invalidateEventAlerts } from '../alertBridge';
 
 const EVENTS = (calendarId) => `/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`;
 const CALENDAR_LIST = '/calendar/v3/users/me/calendarList';
@@ -19,13 +22,13 @@ export const eventBounds = ({ start, end, allDay }) => {
 
 export const eventKey = (event) => `${event.calendarId}:${event.id}`;
 export const canEditCalendar = (calendar) => ['owner', 'writer'].includes(calendar?.accessRole);
-const toEvent = (event, calendar = {}) => ({
+export const toEvent = (event, calendar = {}) => ({
   id: event.id,
   calendarId: calendar.id ?? 'primary',
   calendarName: calendar.summary ?? '',
   calendarColor: calendar.color ?? '',
   accessRole: calendar.accessRole ?? 'reader',
-  canEdit: canEditCalendar(calendar),
+  canEdit: canEditCalendar(calendar) && !event.locked,
   title: event.summary || '(no title)',
   description: event.description ?? '',
   location: event.location ?? '',
@@ -34,6 +37,37 @@ const toEvent = (event, calendar = {}) => ({
   start: event.start?.dateTime ?? event.start?.date ?? '',
   end: event.end?.dateTime ?? event.end?.date ?? '',
   htmlLink: event.htmlLink ?? '',
+  timeZone: event.start?.timeZone || event.end?.timeZone || calendar.timeZone || '',
+  calendarTimeZone: calendar.timeZone || '',
+  defaultReminders: calendar.defaultReminders,
+  organizer: event.organizer ?? null,
+  creator: event.creator ?? null,
+  attendees: event.attendees ?? [],
+  attendeesOmitted: Boolean(event.attendeesOmitted),
+  recurrence: event.recurrence ?? [],
+  recurringEventId: event.recurringEventId || '',
+  originalStartTime: event.originalStartTime ?? null,
+  reminders: event.reminders ?? { useDefault: true },
+  conferenceData: event.conferenceData ?? null,
+  hangoutLink: event.hangoutLink || '',
+  attachments: event.attachments ?? [],
+  status: event.status || 'confirmed',
+  visibility: event.visibility || 'default',
+  transparency: event.transparency || 'opaque',
+  eventType: event.eventType || 'default',
+  guestsCanModify: event.guestsCanModify === true,
+  guestsCanInviteOthers: event.guestsCanInviteOthers !== false,
+  guestsCanSeeOtherGuests: event.guestsCanSeeOtherGuests !== false,
+  locked: event.locked === true,
+  endTimeUnspecified: event.endTimeUnspecified === true,
+  created: event.created || '',
+  updated: event.updated || '',
+  iCalUID: event.iCalUID || '',
+  source: event.source ?? null,
+  workingLocationProperties: event.workingLocationProperties ?? null,
+  outOfOfficeProperties: event.outOfOfficeProperties ?? null,
+  focusTimeProperties: event.focusTimeProperties ?? null,
+  birthdayProperties: event.birthdayProperties ?? null,
   declined: Boolean(
     (event.attendees ?? []).some(
       (attendee) => attendee.self && attendee.responseStatus === 'declined',
@@ -53,6 +87,8 @@ export const listCalendars = async (signal) => {
     color: calendar.backgroundColor ?? '',
     primary: Boolean(calendar.primary),
     accessRole: calendar.accessRole ?? 'reader',
+    timeZone: calendar.timeZone || '',
+    defaultReminders: calendar.defaultReminders,
   }));
 };
 
@@ -69,6 +105,7 @@ export const listEvents = async ({
   calendars = [],
   hideAllDay = false,
   includeDeclined = false,
+  strict = false,
 }) => {
   const ids = calendarIds.length ? calendarIds : ['primary'];
   const known = new Map(calendars.map((calendar) => [calendar.id, calendar]));
@@ -78,7 +115,6 @@ export const listEvents = async ({
       const params = new URLSearchParams({
         singleEvents: 'true',
         orderBy: 'startTime',
-        signal,
         timeMin,
         timeMax,
         maxResults: String(maxResults),
@@ -109,6 +145,7 @@ export const listEvents = async ({
   );
 
   const failed = pages.filter((page) => page[0]?.error);
+  if (strict && failed.length) throw failed[0][0].error;
   const events = pages.filter((page) => !page[0]?.error).flat();
 
   if (!events.length && failed.length) throw failed[0][0].error;
@@ -119,6 +156,77 @@ export const listEvents = async ({
     .slice(0, maxResults);
 };
 
+// Private event details stay in memory, scoped to the connected account and revision.
+const detailCache = new Map();
+const DETAIL_TTL = 5 * 60000;
+export const clearEventDetailsCache = () => detailCache.clear();
+const readDetail = (key) => {
+  const entry = detailCache.get(key);
+  if (entry && Date.now() - entry.at < DETAIL_TTL) return entry.value;
+  detailCache.delete(key);
+  return null;
+};
+const cacheDetail = (key, value) => {
+  detailCache.set(key, { at: Date.now(), value });
+  while (detailCache.size > 40) detailCache.delete(detailCache.keys().next().value);
+};
+
+/** Expanded instances omit recurrence rules; read their parent without replacing instance data. */
+export async function getEventDetails(event, { signal, account = '' } = {}) {
+  signal?.throwIfAborted();
+  const revision = authRevision();
+  const scope = `${account}:${revision}:${event.calendarId}`;
+  const context = JSON.stringify([
+    event.accessRole,
+    event.calendarName,
+    event.calendarTimeZone,
+    event.defaultReminders,
+  ]);
+  const key = `${scope}:${event.id}:${event.updated || ''}:${context}`;
+  const cached = readDetail(key);
+  if (cached) return cached;
+  const raw = await googleFetch(`${EVENTS(event.calendarId)}/${encodeURIComponent(event.id)}`, {
+    signal,
+  });
+  let series = null;
+  let recurrenceUnavailable = false;
+  if (raw.recurringEventId) {
+    const parentKey = `${scope}:series:${raw.recurringEventId}`;
+    try {
+      series =
+        readDetail(parentKey) ||
+        (await googleFetch(
+          `${EVENTS(event.calendarId)}/${encodeURIComponent(raw.recurringEventId)}`,
+          { signal },
+        ));
+      if (revision !== authRevision()) throw new DOMException('Account changed', 'AbortError');
+      signal?.throwIfAborted();
+      cacheDetail(parentKey, series);
+    } catch (error) {
+      if (error.name === 'AbortError' || signal?.aborted || revision !== authRevision())
+        throw error;
+      recurrenceUnavailable = true;
+    }
+  }
+  signal?.throwIfAborted();
+  if (revision !== authRevision()) throw new DOMException('Account changed', 'AbortError');
+  const details = {
+    ...toEvent(raw, {
+      id: event.calendarId,
+      summary: event.calendarName,
+      color: event.calendarColor,
+      accessRole: event.accessRole,
+      timeZone: event.calendarTimeZone,
+      defaultReminders: event.defaultReminders,
+    }),
+    recurrence: series?.recurrence || raw.recurrence || [],
+    seriesStart: series?.start || null,
+    recurrenceUnavailable,
+  };
+  cacheDetail(key, details);
+  return details;
+}
+
 export const createEvent = async ({
   title,
   description,
@@ -128,8 +236,14 @@ export const createEvent = async ({
   allDay,
   calendarId = 'primary',
   recurrence = [],
+  reminders = { useDefault:true },
 }) => {
   const bounds = eventBounds({ start, end, allDay });
+  if (recurrence.length && !allDay) {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    bounds.start.timeZone = timeZone;
+    bounds.end.timeZone = timeZone;
+  }
 
   const event = await googleFetch(EVENTS(calendarId), {
     method: 'POST',
@@ -139,6 +253,7 @@ export const createEvent = async ({
       location,
       ...bounds,
       ...(recurrence.length ? { recurrence } : {}),
+      reminders: eventReminders(reminders),
     }),
   });
 
@@ -147,20 +262,22 @@ export const createEvent = async ({
 
 export const updateEvent = async (
   id,
-  { title, description, location, start, end, allDay, calendarId = 'primary' },
+  { title, description, location, start, end, allDay, calendarId = 'primary', reminders },
 ) => {
   const bounds = eventBounds({ start, end, allDay });
 
   const event = await googleFetch(`${EVENTS(calendarId)}/${encodeURIComponent(id)}`, {
     method: 'PATCH',
-    body: JSON.stringify({ summary: title, description, location, ...bounds }),
+    body: JSON.stringify({ summary: title, description, location, ...bounds, ...(reminders ? { reminders:eventReminders(reminders) } : {}) }),
   });
 
+  await invalidateEventAlerts(calendarId, id);
   return toEvent(event, { id: calendarId, accessRole: 'writer' });
 };
 
 export const deleteEvent = async (id, calendarId = 'primary') => {
   await googleFetch(`${EVENTS(calendarId)}/${encodeURIComponent(id)}`, { method: 'DELETE' });
+  await invalidateEventAlerts(calendarId, id);
 };
 
 /** The window starts at midnight so a day reads as one block, and spans the configured lookahead. */

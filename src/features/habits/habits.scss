@@ -1,0 +1,483 @@
+@use 'scss/variables' as *;
+
+.habitSummary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 11px;
+}
+
+.habitSummary progress {
+  flex: 1;
+  width: 0;
+  height: 4px;
+  border: 0;
+  border-radius: 99px;
+  overflow: hidden;
+  color: inherit;
+  accent-color: currentcolor;
+  background: color-mix(in srgb, currentcolor 13%, transparent);
+}
+
+.habitSummary progress::-webkit-progress-bar {
+  background: color-mix(in srgb, currentcolor 13%, transparent);
+}
+
+.habitSummary progress::-webkit-progress-value {
+  background: currentcolor;
+}
+
+.habitSummary progress::-moz-progress-bar {
+  background: currentcolor;
+}
+
+.habitTableScroll {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.habitTable {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.habitsWidget .habitTable {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.wkCard.habitsWidget .habitTable tr {
+  color: inherit;
+  background: none;
+  letter-spacing: normal;
+}
+
+.wkCard.habitsWidget .habitTable tr > :is(th, td) {
+  display: table-cell;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+.habitNameColumn {
+  width: 32%;
+}
+
+.habitWeekNavColumn {
+  width: 16px;
+}
+
+.habitWeekNav {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.habitWeekNav > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.habitWeekNav:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.habitWeekNav:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: -2px;
+}
+
+.habitTable th,
+.habitTable td {
+  padding: 0;
+}
+
+.habitTable thead th {
+  height: 36px;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.habitTable .habitNameHeading {
+  text-align: start;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.habitTable thead time {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.habitTable thead small {
+  font-size: 9px;
+  font-weight: 400;
+}
+
+.habitTable thead .habitToday {
+  opacity: 1;
+  font-weight: 700;
+}
+
+.wkCard.habitsWidget .habitTable .habitToday {
+  background: color-mix(in srgb, currentcolor 5%, transparent);
+}
+
+.habitTable tbody tr {
+  height: 34px;
+}
+
+.habitTable tbody th {
+  text-align: start;
+  font-weight: 400;
+}
+
+.habitName {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 7px 8px 7px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  text-align: start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.habitName:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.habitNameText {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.habitBadge {
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 15px;
+  opacity: 0.22;
+}
+
+.habitBadge.isEarned {
+  opacity: 1;
+}
+
+.habitCell {
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 100%;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.habitCell > svg {
+  width: 24px;
+  height: 24px;
+  grid-area: 1/1;
+}
+
+.habitCell .habitCellMark {
+  width: 12px;
+  height: 12px;
+}
+
+.habitCell > .habitBadge {
+  grid-area: 1 / 1;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.habitCell:disabled {
+  cursor: default;
+}
+
+.habitCell.isFuture {
+  opacity: 0.28;
+}
+
+.habitRingTrack {
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-opacity: 0.25;
+}
+
+.habitRingValue {
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.habitCell.isComplete .habitRingTrack {
+  fill: currentcolor;
+  fill-opacity: 0.12;
+}
+
+.habitCell.isConfirmArmed {
+  color: #72dfa0;
+  background: rgb(40 156 86 / 22%);
+}
+
+.habitCell.isUndoArmed {
+  color: #ff9198;
+  background: rgb(198 48 63 / 22%);
+}
+
+.habitCell.isConfirmArmed .habitRingTrack,
+.habitCell.isUndoArmed .habitRingTrack {
+  opacity: 1;
+}
+
+.habitMissed {
+  opacity: 0.4;
+}
+
+.habitCell:hover:not(:disabled) {
+  background: color-mix(in srgb, currentcolor 9%, transparent);
+}
+
+.habitRest {
+  display: grid;
+  place-items: center;
+  height: 32px;
+  font-size: 11px;
+  opacity: 0.3;
+}
+
+.habitName:focus-visible,
+.habitCell:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: -2px;
+}
+
+.habitVisuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.habitDetailsPanel {
+  @extend %readerSurface;
+
+  inset: auto;
+  margin: 0;
+  width: min(280px, calc(100vw - 48px));
+  max-height: 62vh;
+  overflow: hidden;
+  padding: 14px;
+  gap: 8px;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 28%);
+
+  &:popover-open {
+    display: flex;
+  }
+}
+
+.habitDetailsScroll {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, currentcolor 30%, transparent) transparent;
+}
+
+.habitDetailsScroll > * {
+  flex-shrink: 0;
+}
+
+.habitDetailsPanel > header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.habitDetailsPanel > header > strong {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+.habitDetailsPanel p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.habitDetailDescription {
+  font-size: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.habitDetailScheduleRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.habitDetailScheduleRow > time {
+  margin-inline-start: auto;
+  text-align: end;
+}
+
+.habitDetailStatus {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.habitDetailStatus > svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+
+.habitDetailsPanel:focus {
+  outline: none;
+}
+
+.habitDetailStatus,
+.habitDetailWeekly {
+  font-size: 12px;
+}
+
+.habitHistory {
+  margin: 8px 0 0;
+}
+
+.habitHistory figcaption,
+.habitHistory figcaption > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.habitHistory figcaption {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 11px;
+}
+
+.habitHistoryYear > strong {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.habitHistory .habitHistoryValue {
+  margin-top: 4px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.habitHistory > svg {
+  display: block;
+  width: 100%;
+  height: 58px;
+  margin-top: 4px;
+}
+
+.habitHistoryBaseline {
+  fill: none;
+  stroke: currentcolor;
+  opacity: 0.15;
+}
+
+.habitHistoryLine {
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.habitHistoryPoint {
+  fill: currentcolor;
+  pointer-events: none;
+}
+
+.habitHistory rect:focus-visible {
+  outline: 1px solid currentcolor;
+  outline-offset: -1px;
+}
+
+.habitHistoryAxis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  opacity: 0.85;
+}
+
+.habitMilestones {
+  margin-top: 8px;
+}
+
+.habitMilestones p {
+  font-size: 11px;
+}
+
+.habitMilestones > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.light .habitsWidget.glassSurface .habitCell.isConfirmArmed {
+  color: #16763e;
+}
+
+.light .habitsWidget.glassSurface .habitTable thead th {
+  opacity: 1;
+}
+
+.light .habitsWidget.glassSurface .habitCell.isUndoArmed {
+  color: #b02536;
+}

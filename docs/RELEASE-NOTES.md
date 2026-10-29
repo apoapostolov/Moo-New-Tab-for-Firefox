@@ -1,10 +1,30 @@
+## Unreleased workspace changes
+
+Google Calendar adds a centred, scrollable event hover with recurrence, guests, full descriptions, conferencing, reminders, attachments and event settings. Locations have an on-demand OpenStreetMap preview. [Details](GOOGLE-CALENDAR.md).
+
+Overview saves separate Standard and Focus widget layouts, including visibility, order and placement. Focus sessions and scheduled Progress clock work shifts activate the Focus layout. Quick Links can use a separate Focus/Work list, and floating items have a Show in Focus checkbox. Quick Links occupies a full-width centre row above paired widgets.
+
+Bookmarks combines local browser bookmarks, Raindrop, Readwise Reader and Daily Review highlights in one Google-style widget. Independent source switches mix enabled libraries before Latest, Most opened, Mixed, Shuffle or Rediscover selection, with shared filters, repeat avoidance and a centred detail preview. [Setup and options](BOOKMARKS.md).
+
+GitHub uses status glyphs and compact count tabs, with full issue/PR descriptions and developer details in a hover preview. The header keeps only reload.
+
+Floats brings Floating Notes, Floating Lists, Floating Images and Floating Countdowns together in Settings, including the Countdown widget controls. Misc keeps Triple click to hide the UI. Padlocks keep Floating Notes, Lists, Countdowns and Images fixed above unlocked floating content. Saved content and preferences carry over.
+
+Habits uses the standard widget width with two-click daily confirmations, milestone progress rings and earned streak badges. Full names, details, monthly history and an Edit glyph appear in the hover panel; today's completion bar stays above the table.
+
+Air Quality now defaults to a compact reading, with Summary and Detailed views for forecasts and measurements. It matches Weather's width in the side columns. Settings links use bold theme text.
+
+Habits tracks daily, weekday and weekly targets with local history and streaks. Air Quality adds European and US AQI, pollutants, UV, pollen and forecasts from Open-Meteo / CAMS. GitHub brings review requests, authored pull requests, assigned issues and workflow runs into a read-only widget. Each has Classic and Glass panels, layout controls and its own settings. These changes are in the workspace; they do not replace the published 1.0.0 archive. [Setup and options](HABITS-AIR-QUALITY-GITHUB.md).
+
+## 1.0.0 — 26 October 2026
+
 Moo is a personal fork of [Mue](https://github.com/mue/mue) for Firefox and Zen. New profiles and resets open directly in English with digital time, Search/Ask Bar, basic weather in the bottom-left corner and Unsplash backgrounds. Enable other widgets in Settings.
 
 The 1.0.0 archive was rebuilt on 27 October 2026. All selectable languages have complete key coverage, including machine-assisted translations that still need fluent-speaker review.
 
 ### Added
 
-- **Google widgets.** Read mail, check appointments and manage tasks without opening three separate apps. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use.
+- **Google widgets.** Read mail, check appointments and manage tasks without opening three separate apps. Set up your own Google OAuth client under Settings → Google, then connect your account and choose the calendars and task list you use. Calendar and Tasks accept English scheduling phrases with a Natural Format guide, notes and a review of the interpreted fields. [Supported syntax](NATURAL-FORMAT.md).
 - **Search/Ask Bar.** Type a question and choose a search engine, AI service or reference site for a quick fact, documentation or a longer conversation. The menu stays visible in smaller windows.
 - **Picture, video and live backgrounds.** Choose a source under Settings → Background, use your own pictures or add a live stream. Triple-click a playing video to watch it with the widgets hidden; Escape brings them back.
 - **Widget layout.** Show, hide and move widgets under Settings → Overview, placing them on either side or in the centre. Weather and Image Info match the Google card width in the centre; split columns scroll independently with a scrollbar that fades after use.

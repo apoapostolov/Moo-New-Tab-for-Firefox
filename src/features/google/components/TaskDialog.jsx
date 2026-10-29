@@ -1,10 +1,12 @@
 import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Dialog from './Dialog';
 import { useNaturalTitle } from '../useNaturalTitle';
 import { describe } from '../natural';
+import { taskFormFromNatural } from '../naturalForms';
+import NaturalHelp from './NaturalHelp';
 import {
   createTask,
   deleteTask,
@@ -28,45 +30,54 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
     title: task?.title ?? '',
     notes: task?.notes ?? '',
     due: toDueInput(task?.due),
+    status: task?.status || 'needsAction',
   }));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [titleEdited, setTitleEdited] = useState(false);
+  const manualFields = useRef(new Set());
 
   /** The title box takes the day as well: "pay rent in 9 days" sets the due date. */
   const applyParsed = (parsed) => {
-    if (!parsed.date) return;
-
-    const day = new Date(parsed.date);
-    const stamp = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(
-      day.getDate(),
-    ).padStart(2, '0')}`;
-
-    setForm((current) => ({ ...current, due: stamp }));
+    setForm((current) => taskFormFromNatural(current, parsed, manualFields.current));
   };
 
-  const parsed = useNaturalTitle(form.title, 'task', applyParsed);
+  const { parsed, read } = useNaturalTitle(form.title, 'task', applyParsed, {
+    enabled: !isEditing || titleEdited,
+  });
 
-  const update = (key) => (changeEvent) =>
+  const update = (key) => (changeEvent) => {
+    if (key === 'title') setTitleEdited(true);
+    else manualFields.current.add(key);
     setForm((current) => ({ ...current, [key]: changeEvent.target.value }));
+  };
 
   const save = async (submitEvent) => {
     submitEvent.preventDefault();
 
-    if (!form.title.trim()) {
+    const finalParsed = read();
+    const finalForm = taskFormFromNatural(form, finalParsed, manualFields.current);
+    const title = (finalParsed ? finalParsed.title : form.title).trim();
+    if (!title) {
       setError('A title is needed.');
 
       return;
     }
 
+    if (title.length > 1024 || finalForm.notes.length > 8192) {
+      setError('Keep the task title within 1,024 characters and notes within 8,192 characters.');
+      return;
+    }
     setBusy(true);
     setError('');
 
     try {
       const payload = {
-        title: (parsed?.title || form.title).trim(),
-        notes: form.notes,
+        title,
+        notes: finalForm.notes,
+        status: finalForm.status,
         // Google Tasks wants a date at midnight UTC.
-        due: form.due ? `${form.due}T00:00:00.000Z` : '',
+        due: finalForm.due ? `${finalForm.due}T00:00:00.000Z` : '',
       };
 
       const saved = isEditing
@@ -116,6 +127,7 @@ const TaskDialog = ({ task, listId, onClose, onSaved, onDeleted }) => {
     <Dialog
       title={isEditing ? 'Edit task' : 'New task'}
       onClose={onClose}
+      actions={<NaturalHelp kind="task" editing={isEditing} />}
       footer={
         <>
           {isEditing && (

@@ -39,6 +39,7 @@ function ModalTopBar({
 
   const getSubSectionLabel = (subSection, sectionName) => {
     if (!subSection || !sectionName) return subSection;
+    if (sectionName === 'background' && subSection === 'fallback') return uiText('fallback_source');
 
     // Sections translate by passing the label as the key, so a missing key comes back unchanged.
     const translationKey = `modals.main.settings.sections.${sectionName}.${subSection}.title`;

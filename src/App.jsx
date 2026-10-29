@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import Background from 'features/background/Background';
 import Widgets from 'features/misc/views/Widgets';
 import Scratch from 'features/scratch/Scratch';
+import FocusRuntime from 'features/focus/FocusRuntime';
 import Modals from 'features/misc/modals/Modals';
 import { applySignature } from 'features/misc/signature';
 import { loadSettings } from 'utils/settings';
@@ -64,6 +65,7 @@ const App = () => {
 
   return (
     <TranslationProvider initialLanguage={languagecode}>
+      <FocusRuntime />
       {showBackground && <Background />}
       <ToastContainer
         position="top-center"

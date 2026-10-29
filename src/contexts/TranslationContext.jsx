@@ -31,6 +31,7 @@ export function TranslationProvider({ children }) {
         document.title = name;
       }
       localStorage.removeItem('currentWeather');
+      EventBus.emit('refresh', 'clock');
       EventBus.emit('refresh', 'weather');
     } catch (error) {
       console.error('The language could not be loaded:', error);

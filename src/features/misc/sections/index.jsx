@@ -5,4 +5,5 @@ export * from './Changelog';
 export * from './Experimental';
 export * from './Language';
 export * from './Misc';
+export * from './Floats';
 export * from './Overview';

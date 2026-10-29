@@ -1,0 +1,314 @@
+@use 'scss/variables' as *;
+
+.airQualityWidget {
+  @extend %widgetCard;
+
+  min-width: 0;
+}
+
+.airHero {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.airGlyph {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  opacity: 0.9;
+}
+
+.airReading {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.airReading strong {
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.airReading small {
+  font-size: 9px;
+  opacity: 0.8;
+}
+
+.airIdentity {
+  flex: 1;
+  min-width: 0;
+}
+
+.airBand {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.airBand::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--air-band, currentcolor);
+  margin-inline-end: 5px;
+  vertical-align: middle;
+}
+
+.airBand-0 {
+  --air-band: #7bc69d;
+}
+
+.airBand-1 {
+  --air-band: #d5ce87;
+}
+
+.airBand-2 {
+  --air-band: #e2b57b;
+}
+
+.airBand-3 {
+  --air-band: #e3928b;
+}
+
+.airBand-4 {
+  --air-band: #bf97d1;
+}
+
+.airBand-5 {
+  --air-band: #d295b7;
+}
+
+.airLocation {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 3px;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.airScale {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.airScale span {
+  flex: 1;
+  height: 4px;
+  border-radius: 8px;
+  background: color-mix(in srgb, currentcolor 15%, transparent);
+}
+
+.airScale span.active {
+  background: var(--air-band, currentcolor);
+}
+
+.airScaleLabel {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+.airTrend {
+  margin: 12px 0 0;
+}
+
+.airTrend figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 11px;
+}
+
+.airTrend figcaption span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.airTrend figcaption svg {
+  width: 15px;
+  height: 15px;
+}
+
+.airTrend figcaption strong {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.airTrend > svg {
+  display: block;
+  width: 100%;
+  height: 52px;
+  margin-top: 6px;
+  overflow: visible;
+}
+
+.airTrendBaseline {
+  fill: none;
+  stroke: currentcolor;
+  opacity: 0.15;
+}
+
+.airTrendLine {
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.airTrendAxis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  opacity: 0.85;
+  font-variant-numeric: tabular-nums;
+}
+
+.airForecastMissing {
+  font-size: 12px;
+  margin: 14px 0;
+  opacity: 0.85;
+}
+
+.airMeasurementGroup {
+  margin-top: 12px;
+}
+
+.airMeasurementGroup h3 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.airMeasurementGroup h3 svg {
+  width: 16px;
+  height: 16px;
+}
+
+.airMeasurementGroup h3 small {
+  margin-inline-start: auto;
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+.airMeasurements {
+  margin: 0;
+}
+
+.airMeasurements > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-block: 5px;
+}
+
+.airMeasurements dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 12px;
+}
+
+.airMeasurements dt svg {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  opacity: 0.85;
+}
+
+.airMeasurements dd {
+  margin: 0;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.airExposure {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.airExposure span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.airExposure svg {
+  width: 18px;
+  height: 18px;
+}
+
+.airExposure strong {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.airPollen {
+  margin-top: 10px;
+}
+
+.airPollen summary {
+  cursor: pointer;
+  font-size: 12px;
+  padding-block: 6px;
+}
+
+.airPollen summary svg {
+  width: 16px;
+  height: 16px;
+  margin-inline-end: 6px;
+  vertical-align: middle;
+}
+
+.airPollen p {
+  font-size: 10px;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+.airDepth-basic {
+  padding: 10px 14px 14px;
+  min-height: 68px;
+}
+
+.airLocationSearch {
+  display: grid;
+  gap: 8px;
+  width: 300px;
+  max-width: 100%;
+}
+
+.airLocationSearch .text-field-container {
+  width: 100%;
+}
+
+.airLocationSearch button {
+  white-space: normal;
+}

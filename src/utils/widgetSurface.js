@@ -5,6 +5,10 @@
  */
 
 const SURFACE_SETTINGS = {
+  bookmarks: 'surfaceBookmarks',
+  habits: 'surfaceHabits',
+  airquality: 'surfaceAirQuality',
+  github: 'surfaceGithub',
   weather: 'surfaceWeather',
   quicklinks: 'surfaceQuicklinks',
   background: 'surfaceBackground',
@@ -12,6 +16,8 @@ const SURFACE_SETTINGS = {
   calendar: 'surfaceCalendar',
   tasks: 'surfaceTasks',
   rss: 'surfaceRss',
+  portfolio: 'surfacePortfolio',
+  countdown: 'surfaceCountdown',
 };
 
 function getSurface(setting) {

@@ -1,4 +1,5 @@
 import { getOfflineImage } from './offlineImage';
+import webcams from './webcams.json';
 
 /** Default live channels; the saved list below allows editing and removal. */
 export const LIVE_CHANNELS = [
@@ -212,6 +213,7 @@ export const LIVE_CHANNELS = [
     maxHeight: 1080,
     url: 'https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8',
   },
+  ...webcams,
 ];
 
 export const LIVE_CHANNEL_ANY = 'any';
@@ -242,11 +244,28 @@ export function readChannels() {
 
   if (!Array.isArray(stored)) return LIVE_CHANNELS;
 
-  return stored.filter(wellFormed);
+  const channels = stored.filter(wellFormed);
+  if (localStorage.getItem('liveWebcamCatalogVersion') === '1') return channels;
+
+  // An empty list is deliberate. Existing custom channels and edits stay in place.
+  const ids = new Set(channels.map(({ id }) => id));
+  const urls = new Set(channels.map(({ url }) => url.toLowerCase()));
+  const added = channels.length
+    ? webcams.filter(({ id, url }) => !ids.has(id) && !urls.has(url.toLowerCase()))
+    : [];
+  const migrated = [...channels, ...added];
+  try {
+    if (added.length) localStorage.setItem(STORE_KEY, JSON.stringify(migrated));
+    localStorage.setItem('liveWebcamCatalogVersion', '1');
+  } catch {
+    return channels;
+  }
+  return migrated;
 }
 
 export function saveChannels(channels) {
   localStorage.setItem(STORE_KEY, JSON.stringify(channels));
+  localStorage.setItem('liveWebcamCatalogVersion', '1');
 }
 
 /**

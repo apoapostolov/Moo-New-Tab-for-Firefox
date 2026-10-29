@@ -12,6 +12,7 @@ import {
 } from '@dnd-kit/core';
 
 import variables from 'config/variables';
+import { overviewRows } from './overviewLayout';
 import WidgetPreview from './overview_skeletons/WidgetPreview';
 import {
   WIDGETS,
@@ -25,6 +26,7 @@ import {
   groupByZone,
   placementFromGroups,
   isWidgetEnabled,
+  setWidgetEnabled,
   isFullWidth,
 } from 'utils/widgets';
 
@@ -44,24 +46,6 @@ const widgetLabel = (id) => {
   const widget = WIDGETS.find((item) => item.id === id);
 
   return widget ? widget.label() : id;
-};
-
-/**
- * A column is read as rows: the rails hold one card per row, the middle column holds
- * two once a pair has been made. A second card only joins the row above it, so a pair
- * can never become a row of three.
- */
-const toRows = (ids, secondLane) => {
-  const rows = [];
-
-  ids.forEach((id) => {
-    const last = rows[rows.length - 1];
-
-    if (secondLane.includes(id) && last && last.length === 1) last.push(id);
-    else rows.push([id]);
-  });
-
-  return rows;
 };
 
 /** Rows back to a flat order and the middle column's second lane. */
@@ -241,7 +225,7 @@ const sameTarget = (a, b) => {
   return a.zone === b.zone && a.overId === b.overId && a.side === b.side && a.index === b.index;
 };
 
-const Card = ({ id, enabled, onToggle }) => {
+const Card = ({ id, enabled, onToggle, onMove }) => {
   useTranslationVersion();
   const { attributes, listeners, setNodeRef } = useDraggable({ id });
 
@@ -252,8 +236,15 @@ const Card = ({ id, enabled, onToggle }) => {
         className="dragHandle"
         {...attributes}
         {...listeners}
-        tabIndex={-1}
-        aria-label={`Drag ${widgetLabel(id)}`}
+        aria-describedby={undefined}
+        aria-label={uiText('drag_named', { name: widgetLabel(id) })}
+        aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Shift+ArrowLeft Shift+ArrowRight"
+        onKeyDown={(event) => {
+          if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+          event.preventDefault();
+          event.stopPropagation();
+          onMove(id, event.key, event.shiftKey);
+        }}
       >
         <MdOutlineDragIndicator />
       </button>
@@ -283,7 +274,7 @@ const Slot = ({ label, wide }) => (
  */
 const Gap = () => <div className="dropGap" />;
 
-const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide }) => {
+const Zone = ({ zone, rows, onToggle, onMove, isEnabled, activeId, slotOpen, slotWide }) => {
   useTranslationVersion();
   // Only the middle column needs lines between rows: on a rail the halves of a card
   // already mean before and after.
@@ -300,11 +291,14 @@ const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide })
           </span>
         ) : null}
 
-        {rows.map((row) => {
+        {rows.map((row, index) => {
           const key = row.find((id) => id !== SLOT) || `slot-${zone}`;
+          const wide = (items) => items.every((id) => (id === SLOT ? slotWide : isFullWidth(id)));
+          const divider = zone === 'center' && index > 0 && wide(rows[index - 1]) && !wide(row);
 
           return (
             <Fragment key={key}>
+              {divider && <hr className="zoneSectionDivider" />}
               {gaps ? <Gap /> : null}
 
               <div className={`zoneRow${row.length === 1 ? ' isSingle' : ''}`}>
@@ -317,6 +311,7 @@ const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide })
                       id={id}
                       enabled={isEnabled(id)}
                       onToggle={onToggle}
+                      onMove={onMove}
                       dragging={id === activeId}
                     />
                   ),
@@ -332,10 +327,12 @@ const Zone = ({ zone, rows, onToggle, isEnabled, activeId, slotOpen, slotWide })
   );
 };
 
-const Overview = () => {
+const OverviewLayout = ({ profile }) => {
   useTranslationVersion();
-  const [groups, setGroups] = useState(() => groupByZone(readOrder(), readPlacement()));
-  const [secondLane, setSecondLane] = useState(readSecondLane);
+  const [groups, setGroups] = useState(() =>
+    groupByZone(readOrder(profile), readPlacement(profile)),
+  );
+  const [secondLane, setSecondLane] = useState(() => readSecondLane(profile));
   const [activeId, setActiveId] = useState(null);
   const [activeWidth, setActiveWidth] = useState(null);
   const [target, setTarget] = useState(null);
@@ -348,13 +345,13 @@ const Overview = () => {
 
   const rowsFor = useCallback(
     (zone, insert) => {
-      const base = toRows(groups[zone], secondLane)
+      const base = overviewRows(groups[zone], secondLane, zone)
         .map((row) => row.filter((id) => id !== activeId))
         .filter((row) => row.length > 0);
 
       if (!target || target.zone !== zone) return base;
 
-      return placeRows({
+      const placed = placeRows({
         zone,
         rows: base,
         insert,
@@ -363,6 +360,10 @@ const Overview = () => {
         index: target.index,
         insertWide: isFullWidth(activeId),
       });
+      if (zone !== 'center') return placed;
+      const wide = (row) =>
+        row.every((id) => (id === insert ? isFullWidth(activeId) : isFullWidth(id)));
+      return [...placed.filter(wide), ...placed.filter((row) => !wide(row))];
     },
     [groups, secondLane, activeId, target],
   );
@@ -428,23 +429,68 @@ const Overview = () => {
 
     if (!widget) return;
 
-    const current = isWidgetEnabled(id);
+    const current = isWidgetEnabled(id, profile);
 
-    localStorage.setItem(widget.setting, String(!current));
+    setWidgetEnabled(id, !current, profile);
     variables.stats.postEvent('setting', 'Widget toggle');
     EventBus.emit('refresh', 'widgets');
     // Checkbox state lives in localStorage, so the list is re-read rather than tracked twice.
     setGroups((previous) => ({ ...previous }));
   };
 
+  const moveWithKeys = (id, key, shift) => {
+    const zone = findZone(id);
+    if (!zone || activeId) return;
+    if (
+      shift &&
+      zone === 'center' &&
+      !isFullWidth(id) &&
+      ['ArrowLeft', 'ArrowRight'].includes(key)
+    ) {
+      setSecondLane((current) =>
+        key === 'ArrowRight'
+          ? [...new Set([...current, id])]
+          : current.filter((item) => item !== id),
+      );
+    } else if (['ArrowLeft', 'ArrowRight'].includes(key)) {
+      const destination = ZONES[ZONES.indexOf(zone) + (key === 'ArrowLeft' ? -1 : 1)];
+      if (!destination) return;
+      setGroups((current) => ({
+        ...current,
+        [zone]: current[zone].filter((item) => item !== id),
+        [destination]: [...current[destination], id],
+      }));
+      setSecondLane((current) => current.filter((item) => item !== id));
+    } else {
+      setGroups((current) => {
+        const items = [...current[zone]];
+        const peers = items.filter(
+          (item) => zone !== 'center' || isFullWidth(item) === isFullWidth(id),
+        );
+        const other = peers[peers.indexOf(id) + (key === 'ArrowUp' ? -1 : 1)];
+        if (!other) return current;
+        const from = items.indexOf(id);
+        const to = items.indexOf(other);
+        [items[from], items[to]] = [items[to], items[from]];
+        return { ...current, [zone]: items };
+      });
+    }
+    globalThis.requestAnimationFrame(() =>
+      document.querySelector(`[data-widget-id="${id}"] .dragHandle`)?.focus(),
+    );
+  };
+
   // Persists on every change: order, the zone each widget sits in, and the middle lane.
   useEffect(() => {
-    saveOrder([...groups.left, ...groups.center, ...groups.right]);
-    savePlacement(placementFromGroups(groups));
-    saveSecondLane(secondLane.filter((id) => groups.center.includes(id) && !isFullWidth(id)));
+    saveOrder([...groups.left, ...groups.center, ...groups.right], profile);
+    savePlacement(placementFromGroups(groups), profile);
+    saveSecondLane(
+      secondLane.filter((id) => groups.center.includes(id) && !isFullWidth(id)),
+      profile,
+    );
     variables.stats.postEvent('setting', 'Widget placement');
     EventBus.emit('refresh', 'widgets');
-  }, [groups, secondLane]);
+  }, [groups, secondLane, profile]);
 
   const previewItem = (id) => <WidgetPreview id={id} label={widgetLabel(id)} />;
 
@@ -457,7 +503,7 @@ const Overview = () => {
 
   const previewItems = (zone) =>
     groups[zone]
-      .filter((id) => isWidgetEnabled(id))
+      .filter((id) => isWidgetEnabled(id, profile))
       .map((id) => ({ id, node: previewItem(id) }))
       .filter(({ node }) => node !== null);
 
@@ -509,83 +555,6 @@ const Overview = () => {
 
   return (
     <>
-      <span className="mainTitle">
-        {variables.getMessage('modals.main.marketplace.product.overview')}
-      </span>
-
-      <details className="widgetMoveControls">
-        <summary>{uiText('move_widgets_with_buttons_453b33')}</summary>
-        {ZONES.flatMap((zone) =>
-          groups[zone].map((id, index) => (
-            <div key={id} className="widgetMoveRow">
-              <span>{widgetLabel(id)}</span>
-              <select
-                aria-label={uiText('place_widget', { widget: widgetLabel(id) })}
-                value={zone}
-                onChange={(event) => {
-                  const destination = event.target.value;
-                  setGroups((current) => ({
-                    ...current,
-                    [zone]: current[zone].filter((item) => item !== id),
-                    [destination]: [...current[destination], id],
-                  }));
-                  setSecondLane((current) => current.filter((item) => item !== id));
-                }}
-              >
-                {ZONES.map((value) => (
-                  <option key={value} value={value}>
-                    {zoneTitle(value)}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                aria-label={uiText('move_widget_up', { widget: widgetLabel(id) })}
-                disabled={index === 0}
-                onClick={() =>
-                  setGroups((current) => {
-                    const items = [...current[zone]];
-                    [items[index - 1], items[index]] = [items[index], items[index - 1]];
-                    return { ...current, [zone]: items };
-                  })
-                }
-              >
-                ↑
-              </button>
-              <button
-                type="button"
-                aria-label={uiText('move_widget_down', { widget: widgetLabel(id) })}
-                disabled={index === groups[zone].length - 1}
-                onClick={() =>
-                  setGroups((current) => {
-                    const items = [...current[zone]];
-                    [items[index + 1], items[index]] = [items[index], items[index + 1]];
-                    return { ...current, [zone]: items };
-                  })
-                }
-              >
-                ↓
-              </button>
-              {zone === 'center' && !isFullWidth(id) && (
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={secondLane.includes(id)}
-                    onChange={(event) =>
-                      setSecondLane((current) =>
-                        event.target.checked
-                          ? [...current, id]
-                          : current.filter((item) => item !== id),
-                      )
-                    }
-                  />
-                  {uiText('second_column_7620f0')}
-                </label>
-              )}
-            </div>
-          )),
-        )}
-      </details>
       <DndContext
         sensors={sensors}
         onDragStart={({ active }) => {
@@ -605,7 +574,8 @@ const Overview = () => {
               zone="left"
               rows={columns.left}
               onToggle={toggleEnabled}
-              isEnabled={isWidgetEnabled}
+              onMove={moveWithKeys}
+              isEnabled={(id) => isWidgetEnabled(id, profile)}
               activeId={activeId}
               slotOpen={target?.zone === 'left' && target.overId === null}
               slotWide={slotWide}
@@ -628,7 +598,8 @@ const Overview = () => {
               zone="right"
               rows={columns.right}
               onToggle={toggleEnabled}
-              isEnabled={isWidgetEnabled}
+              onMove={moveWithKeys}
+              isEnabled={(id) => isWidgetEnabled(id, profile)}
               activeId={activeId}
               slotOpen={target?.zone === 'right' && target.overId === null}
               slotWide={slotWide}
@@ -640,7 +611,8 @@ const Overview = () => {
               zone="center"
               rows={columns.center}
               onToggle={toggleEnabled}
-              isEnabled={isWidgetEnabled}
+              onMove={moveWithKeys}
+              isEnabled={(id) => isWidgetEnabled(id, profile)}
               activeId={activeId}
               slotOpen={target?.zone === 'center' && target.overId === null}
               slotWide={slotWide}
@@ -662,6 +634,34 @@ const Overview = () => {
           ) : null}
         </DragOverlay>
       </DndContext>
+    </>
+  );
+};
+
+const Overview = () => {
+  useTranslationVersion();
+  const [profile, setProfile] = useState('standard');
+  return (
+    <>
+      <div className="overviewHeader">
+        <span className="mainTitle">
+          {variables.getMessage('modals.main.marketplace.product.overview')}
+        </span>
+        <div className="overviewProfile" role="group" aria-label={uiText('workspace_layout')}>
+          {['standard', 'focus'].map((value) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={profile === value}
+              onClick={() => setProfile(value)}
+            >
+              {uiText(value === 'focus' ? 'workspace_focus' : 'workspace_standard')}
+            </button>
+          ))}
+        </div>
+      </div>
+      <p className="overviewFocusHint">{uiText('workspace_layout_hint')}</p>
+      <OverviewLayout key={profile} profile={profile} />
     </>
   );
 };

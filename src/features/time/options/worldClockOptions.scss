@@ -1,0 +1,92 @@
+@use 'scss/variables' as *;
+
+.worldClockOptionRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 36px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  @include themed {
+    color: t($color);
+  }
+}
+
+.worldClockOptionName,
+.worldClockOptionZone {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  text-align: left;
+}
+
+.worldClockOptionZone {
+  opacity: 0.7;
+}
+
+.worldClockOptionForm {
+  width: 100%;
+  min-width: 0;
+
+  .text-field-container {
+    min-width: 0;
+    width: 100%;
+  }
+
+  [role='alert'] {
+    margin: 10px 0 0;
+    font-size: 13px;
+  }
+}
+
+.worldClockOptionRow .worldClockOptionGlyph {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  box-shadow: none;
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: rgb(127 127 127 / 12%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.worldClockOptionForm .worldClockOptionGlyph {
+  align-self: end;
+  margin-bottom: 10px;
+}
+
+@media (pointer: coarse) {
+  .worldClockOptionRow {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 44px;
+  }
+
+  .worldClockOptionRow .worldClockOptionGlyph {
+    width: 44px;
+    height: 44px;
+  }
+
+  .worldClockOptionForm .worldClockOptionGlyph {
+    margin-bottom: 6px;
+  }
+}

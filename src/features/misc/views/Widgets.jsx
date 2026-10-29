@@ -18,6 +18,7 @@ import {
 } from 'utils/widgets';
 
 import EventBus from 'utils/eventbus';
+import useFocusWorkspace from 'features/focus/useFocusWorkspace';
 import useCompactLayout from 'utils/useCompactLayout';
 
 // Lazy loaded because the weather icon module is large enough to delay first paint.
@@ -28,6 +29,12 @@ const GoogleCalendar = lazy(() => import('../../google/GoogleCalendar'));
 const GoogleTasks = lazy(() => import('../../google/GoogleTasks'));
 const PhotoInfoWidget = lazy(() => import('../../background/components/PhotoInfoWidget'));
 const Rss = lazy(() => import('../../rss/Rss'));
+const Countdown = lazy(() => import('../../countdown/Countdown'));
+const Portfolio = lazy(() => import('../../portfolio/Portfolio'));
+const Habits = lazy(() => import('../../habits/Habits'));
+const AirQuality = lazy(() => import('../../airquality/AirQuality'));
+const Bookmarks = lazy(() => import('../../bookmarks/Bookmarks'));
+const GitHub = lazy(() => import('../../github/GitHub'));
 
 /**
  * A rail each side and the middle column; Overview decides which. The middle splits in two only
@@ -38,15 +45,21 @@ const Widgets = () => {
   useTranslationVersion();
   const compact = useCompactLayout();
   const online = localStorage.getItem('offlineMode') !== 'true';
-  const [layout, setLayout] = useState(() => ({
-    order: readOrder(),
-    placement: readPlacement(),
-    lane: readSecondLane(),
-  }));
-
-  const enabled = (id) => isWidgetEnabled(id);
+  const focused = useFocusWorkspace();
+  const profile = focused ? 'focus' : 'standard';
+  const [, refresh] = useState(0);
+  const layout = {
+    order: readOrder(profile),
+    placement: readPlacement(profile),
+    lane: readSecondLane(profile),
+  };
+  const enabled = (id) => isWidgetEnabled(id, profile);
 
   const widgets = {
+    bookmarks: enabled('bookmarks') ? <Bookmarks /> : null,
+    habits: enabled('habits') ? <Habits /> : null,
+    airquality: enabled('airquality') ? <AirQuality /> : null,
+    github: enabled('github') ? <GitHub /> : null,
     time: enabled('time') && <Clock />,
     date: enabled('date') && <Date />,
     quicklinks: enabled('quicklinks') && online ? <QuickLinks /> : null,
@@ -58,6 +71,8 @@ const Widgets = () => {
     tasks: enabled('tasks') ? <GoogleTasks /> : null,
     photoinfo: enabled('photoinfo') ? <PhotoInfoWidget /> : null,
     rss: enabled('rss') ? <Rss /> : null,
+    countdown: enabled('countdown') ? <Countdown /> : null,
+    portfolio: enabled('portfolio') ? <Portfolio /> : null,
   };
   const basicLayout =
     widgets.weather &&
@@ -68,19 +83,12 @@ const Widgets = () => {
     );
 
   useEffect(() => {
-    const handleRefresh = (data) => {
-      if (data === 'widgets') {
-        setLayout({
-          order: readOrder(),
-          placement: readPlacement(),
-          lane: readSecondLane(),
-        });
-      }
-    };
-
+    const handleRefresh = () => refresh((value) => value + 1);
     EventBus.on('refresh', handleRefresh);
+    window.addEventListener('storage', handleRefresh);
     return () => {
       EventBus.off('refresh', handleRefresh);
+      window.removeEventListener('storage', handleRefresh);
     };
   }, []);
 

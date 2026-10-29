@@ -18,6 +18,7 @@ import EventBus from 'utils/eventbus';
 
 import { fetchMixkitVideo } from './api/mixkit';
 import { getOfflineImage } from './api/offlineImage';
+import { getFallbackBackground, backgroundStamp } from './api/backgroundLoader';
 
 /* Clips tried after the first one fails. Three Mixkit clips that will not play are enough to
  * conclude the catalogue is not the problem, and an image beats a black page. */
@@ -32,7 +33,6 @@ export default function Background() {
   const filterStyle = useBackgroundFilters();
   const overlayFilterStyle = useBackgroundOverlayFilters();
 
-  useBackgroundRenderer(backgroundData);
   useBackgroundEvents(backgroundData, refreshBackground);
   useCinemaMode(backgroundData.video);
   useEffect(() => () => setCurrentPhoto({ photoInfo: null, api: '', url: '' }), []);
@@ -54,9 +54,11 @@ export default function Background() {
    */
   const failedClips = useRef([]);
   const produced = useRef(new Set());
+  const activeUrl = useRef('');
 
   useEffect(() => {
     const url = backgroundData.url;
+    activeUrl.current = url;
 
     if (!url || produced.current.has(url)) return;
 
@@ -65,6 +67,7 @@ export default function Background() {
 
   const handleVideoFail = useCallback(async () => {
     const { url, currentAPI } = backgroundData;
+    const stamp = backgroundStamp();
 
     if (!url) return;
 
@@ -75,21 +78,49 @@ export default function Background() {
     if (currentAPI === 'mixkit' && failedClips.current.length <= MIXKIT_RETRIES) {
       const next = await fetchMixkitVideo(failedClips.current);
 
+      if (stamp !== backgroundStamp() || activeUrl.current !== url) return;
       if (next?.url) {
         produced.current.add(next.url);
         // Keep the stored record in step with the page: a reload should restore the clip that
         // played, not the one that did not.
         localStorage.setItem('currentBackground', JSON.stringify(next));
-        updateBackground(next);
+        updateBackground({
+          ...next,
+          sourceRole: backgroundData.sourceRole,
+          sourceSelection: backgroundData.sourceSelection,
+        });
 
         return;
       }
     }
 
-    // Every other source brings one clip per ask, and a source that ran out of answers leaves
-    // the page black. The bundled image is the honest floor.
-    updateBackground({ ...getOfflineImage('api'), video: false, hls: false, live: false });
+    // A failed provider uses the configured fallback, then a bundled image if that fails too.
+    const fallback =
+      backgroundData.sourceRole === 'fallback'
+        ? {
+            ...getOfflineImage('api'),
+            sourceRole: 'fallback',
+            sourceSelection: backgroundData.sourceSelection,
+          }
+        : await getFallbackBackground(localStorage.getItem('backgroundType'));
+    if (stamp === backgroundStamp() && activeUrl.current === url) updateBackground(fallback);
   }, [backgroundData, updateBackground]);
+
+  const handleImageFail = useCallback(async () => {
+    const stamp = backgroundStamp();
+    if (backgroundData.photoInfo?.offline) return;
+    const data =
+      backgroundData.sourceRole === 'fallback'
+        ? {
+            ...getOfflineImage('api'),
+            sourceRole: 'fallback',
+            sourceSelection: backgroundData.sourceSelection,
+          }
+        : await getFallbackBackground(localStorage.getItem('backgroundType'));
+    if (stamp === backgroundStamp() && activeUrl.current === backgroundData.url)
+      updateBackground(data);
+  }, [backgroundData, updateBackground]);
+  useBackgroundRenderer(backgroundData, handleImageFail);
 
   const autoChangeTimerRef = useRef(null);
   const prevSettingsRef = useRef({ enabled: null, mins: null });
@@ -148,6 +179,18 @@ export default function Background() {
         <BackgroundImage />
       )}
       <div id="backgroundFilterOverlay" style={overlayFilterStyle} />
+      {backgroundData.video &&
+        backgroundData.sourceCredit?.url &&
+        localStorage.getItem('background') !== 'false' && (
+          <a
+            className="backgroundSourceCredit"
+            href={backgroundData.sourceCredit.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {backgroundData.sourceCredit.text}
+          </a>
+        )}
     </>
   );
 }

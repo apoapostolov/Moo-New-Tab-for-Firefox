@@ -1,0 +1,160 @@
+@use 'scss/variables' as *;
+
+.countdownCard {
+  @extend %widgetCard;
+
+  .widgetHeader {
+    justify-content: space-between;
+  }
+}
+
+.countdownLabel {
+  @extend %widgetLabel;
+}
+
+.countdownIcon {
+  display: inline-grid;
+  place-items: center;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 5px;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(128 128 128 / 18%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+  }
+}
+
+.countdownItem {
+  position: relative;
+  padding: 18px 0 10px;
+
+  + .countdownItem {
+    border-top: 1px solid rgb(128 128 128 / 25%);
+  }
+}
+
+.countdownReadout {
+  display: grid;
+  gap: 5px;
+  overflow-wrap: anywhere;
+}
+
+.countdownTitle {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.countdownValue {
+  font-size: 25px;
+  line-height: 1.3;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdownProgress {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 6px 0;
+
+  progress {
+    display: block;
+    width: 100%;
+    height: 6px;
+    border: 0;
+    border-radius: 99px;
+    overflow: hidden;
+    accent-color: currentcolor;
+    color: inherit;
+    background: color-mix(in srgb, currentcolor 13%, transparent);
+  }
+
+  progress::-webkit-progress-bar {
+    background: color-mix(in srgb, currentcolor 13%, transparent);
+  }
+
+  progress::-webkit-progress-value {
+    border-radius: inherit;
+    background: currentcolor;
+  }
+
+  progress::-moz-progress-bar {
+    border-radius: inherit;
+    background: currentcolor;
+  }
+
+  progress:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 3px;
+  }
+}
+
+.countdownProgressOnly {
+  min-height: 28px;
+
+  &:hover .countdownProgressPill,
+  &:focus-within .countdownProgressPill {
+    opacity: 1;
+  }
+}
+
+.countdownProgressPill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: calc(100% - 16px);
+  box-sizing: border-box;
+  padding: 3px 8px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+
+  &.isOverFill {
+    background: rgb(0 0 0 / 55%);
+    backdrop-filter: blur(6px);
+  }
+}
+
+.light .glassSurface .countdownProgressPill.isOverFill {
+  background: rgb(255 255 255 / 65%);
+}
+
+.countdownEmpty {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.countdownItemActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.countdownMarkdown {
+  margin-top: 12px;
+  max-height: 240px;
+  overflow: auto;
+}

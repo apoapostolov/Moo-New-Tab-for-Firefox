@@ -1,0 +1,332 @@
+@use 'scss/variables' as *;
+
+.scratchNote.scratchChecklistNote:not(.scratchConfiguring) {
+  box-sizing: border-box;
+  width: min(300px, calc(100vw - 40px));
+
+  .scratchNoteMenu {
+    top: 44px;
+  }
+}
+
+.scratchNoteControls {
+  display: contents;
+}
+
+.scratchChecklistHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  margin: 0 0 8px;
+
+  .scratchNoteMenuToggle,
+  .scratchNoteLock,
+  .scratchNoteClose {
+    position: static;
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.scratchChecklistTitle {
+  flex: 1;
+  min-width: 0;
+  min-height: 28px;
+  padding: 4px 0;
+  border: 0;
+  color: inherit;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: grab;
+  touch-action: none;
+}
+
+.scratchNote.locked .scratchChecklistTitle {
+  cursor: pointer;
+  touch-action: auto;
+}
+
+.scratchChecklistItems {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 280px;
+  margin: 0;
+  padding: 0 2px;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  list-style: none;
+}
+
+.scratchChecklistRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  margin-left: var(--entry-indent);
+  border-radius: 6px;
+
+  &.moving {
+    z-index: 2;
+    background: rgb(30 30 34 / 95%);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
+  }
+
+  &.completed .scratchChecklistText {
+    text-decoration: line-through;
+    opacity: 0.55;
+  }
+}
+
+.scratchChecklistGrip,
+.scratchChecklistRemove,
+.scratchChecklistTool {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 20px;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  font-size: 16px;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.55;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+    background: rgb(128 128 128 / 16%);
+  }
+
+  &:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+}
+
+.scratchChecklistGrip {
+  width: 16px;
+  touch-action: none;
+  cursor: grab;
+}
+
+.scratchChecklistRow .scratchChecklistCheck {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin: 0 2px 0 0;
+  padding: 0;
+  accent-color: var(--signature-strong);
+}
+
+.scratchChecklistText {
+  flex: 1;
+  min-width: 0;
+  min-height: 28px;
+  padding: 4px 0;
+  border: 0;
+  font: inherit;
+  line-height: 1.4;
+  text-align: left;
+  color: inherit;
+  background: none;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  cursor: text;
+}
+
+.scratchChecklistMarkdown {
+  strong {
+    font-weight: 700;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  code {
+    padding: 1px 3px;
+    border-radius: 3px;
+    background: rgb(128 128 128 / 18%);
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+}
+
+.scratchChecklistMarkdownHeading {
+  font-weight: 700;
+
+  &[data-level='1'] {
+    font-size: 1.35em;
+  }
+
+  &[data-level='2'] {
+    font-size: 1.2em;
+  }
+
+  &[data-level='3'] {
+    font-size: 1.1em;
+  }
+}
+
+.scratchChecklistMarkdownQuote {
+  display: inline-block;
+  padding-left: 7px;
+  border-left: 2px solid rgb(128 128 128 / 50%);
+  font-style: italic;
+}
+
+.scratchChecklistMarkdownRule {
+  display: block;
+  border-top: 1px solid rgb(128 128 128 / 40%);
+  margin-block: 6px;
+}
+
+.scratchChecklistMarkdownList > span {
+  display: block;
+}
+
+.scratchChecklistText .scratchChecklistMarkdownParagraph {
+  display: block;
+}
+
+.scratchChecklistForm .scratchChecklistEntry {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  height: 32px;
+  padding: 5px 6px;
+  border-radius: 6px;
+}
+
+.scratchChecklistForm .scratchChecklistRow.moving {
+  @include themed {
+    color: t($color);
+    background: t($modal-sidebarActive);
+  }
+}
+
+.scratchChecklistTools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  > span {
+    flex: 1;
+  }
+}
+
+.scratchChecklistAdd {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.scratchChecklistInlineAdd {
+  display: grid;
+  flex: 0 0 24px;
+  place-items: center;
+  width: 24px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 18px;
+  color: inherit;
+  background: none;
+  opacity: 0.7;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+    background: rgb(128 128 128 / 16%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+}
+
+.scratchChecklistForm .scratchChecklistHint {
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.4;
+  opacity: 0.65;
+}
+
+.scratchChecklistProgress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+
+  progress {
+    flex: 1;
+    width: 100%;
+    height: 5px;
+    border: 0;
+    border-radius: 99px;
+    overflow: hidden;
+    accent-color: currentcolor;
+    color: inherit;
+    background: color-mix(in srgb, currentcolor 13%, transparent);
+  }
+
+  progress::-webkit-progress-bar {
+    background: color-mix(in srgb, currentcolor 13%, transparent);
+  }
+
+  progress::-webkit-progress-value {
+    border-radius: inherit;
+    background: currentcolor;
+  }
+
+  progress::-moz-progress-bar {
+    border-radius: inherit;
+    background: currentcolor;
+  }
+
+  span {
+    flex: 0 0 auto;
+    min-width: 4ch;
+    text-align: right;
+  }
+}
+
+.scratchChecklistHeader button:focus-visible,
+.scratchChecklist button:focus-visible,
+.scratchChecklist input:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scratchChecklistRow {
+    transition: none !important;
+  }
+}

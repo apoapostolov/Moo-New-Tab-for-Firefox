@@ -91,9 +91,11 @@
 }
 
 .navbarButtonOptions {
-  display: flex;
-  flex-flow: row;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
 
   .navbarButtonOption {
     .subtitle {
@@ -116,11 +118,13 @@
     }
 
     cursor: pointer;
-    width: 70px !important;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
     border: none;
     outline: none;
     margin-top: 0 !important;
-    height: 70px;
+    min-height: 70px;
     padding: 5px;
     display: flex;
     flex-flow: column;

@@ -8,22 +8,15 @@ import { isBrandIcon } from 'utils/brandIcons';
 
 import './quicklinks.scss';
 
-// Unparsable stored data falls back to an empty list instead of throwing.
-const readQuicklinks = () => {
-  try {
-    const raw = localStorage.getItem('quicklinks');
-    if (!raw) return [];
-    const data = JSON.parse(raw);
-    return Array.isArray(data) ? data : [];
-  } catch (e) {
-    console.warn('Failed to parse quicklinks from localStorage. Resetting to []', e);
-    return [];
-  }
-};
+import useFocusWorkspace from 'features/focus/useFocusWorkspace';
+import { readQuicklinks, quicklinksStorageKey } from './options/utils/quicklinksUtils';
 
 const QuickLinks = memo(() => {
   useTranslationVersion();
-  const [items, setItems] = useState(readQuicklinks());
+  const focused = useFocusWorkspace();
+  const storageKey = quicklinksStorageKey(focused);
+  const [, redraw] = useState(0);
+  const items = readQuicklinks(storageKey);
   const [forceUpdate, setForceUpdate] = useState(0); // Used to force complete re-render
   const quicklinksContainer = useRef(null);
 
@@ -45,28 +38,20 @@ const QuickLinks = memo(() => {
   useEffect(() => {
     const handleRefresh = (data) => {
       if (data === 'quicklinks') {
-        if (localStorage.getItem('quicklinksenabled') === 'false') {
-          if (quicklinksContainer.current) {
-            quicklinksContainer.current.style.display = 'none';
-          }
-          return;
-        }
-
-        if (quicklinksContainer.current) {
-          quicklinksContainer.current.style.display = 'flex';
-        }
-
-        setItems(readQuicklinks());
+        redraw((value) => value + 1);
         setForceUpdate(Date.now());
       }
     };
 
     EventBus.on('refresh', handleRefresh);
+    const syncStorage = () => redraw((value) => value + 1);
+    window.addEventListener('storage', syncStorage);
 
     setZoom(quicklinksContainer.current);
 
     return () => {
       EventBus.off('refresh', handleRefresh);
+      window.removeEventListener('storage', syncStorage);
     };
   }, [setZoom]);
 

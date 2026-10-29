@@ -2,18 +2,11 @@ import { useCallback, useEffect, useRef } from 'react';
 import { getBackgroundData, backgroundStamp } from '../api/backgroundLoader';
 
 export function useBackgroundLoader(updateBackground, resetBackground) {
-  const isLoadingRef = useRef(false);
-  const pendingRef = useRef(false);
+  const generation = useRef(0);
   const mountedRef = useRef(false);
-  const loadRef = useRef(null);
 
   const loadBackground = useCallback(async () => {
-    if (isLoadingRef.current) {
-      pendingRef.current = true;
-      return;
-    }
-    isLoadingRef.current = true;
-
+    const revision = ++generation.current;
     const stamp = backgroundStamp();
     try {
       // The welcome tab reuses the image stored for it instead of fetching one.
@@ -21,23 +14,23 @@ export function useBackgroundLoader(updateBackground, resetBackground) {
       if (welcomeTab) {
         const welcomeImage = localStorage.getItem('welcomeImage');
         if (welcomeImage) {
-          if (mountedRef.current && !pendingRef.current) updateBackground(JSON.parse(welcomeImage));
+          if (mountedRef.current && revision === generation.current)
+            updateBackground(JSON.parse(welcomeImage));
           return;
         }
       }
 
       const data = await getBackgroundData();
-      if (data && stamp === backgroundStamp() && mountedRef.current && !pendingRef.current) {
+      if (
+        data &&
+        stamp === backgroundStamp() &&
+        mountedRef.current &&
+        revision === generation.current
+      ) {
         updateBackground(data);
       }
     } catch (error) {
       console.error('Failed to load background:', error);
-    } finally {
-      isLoadingRef.current = false;
-      if (pendingRef.current && mountedRef.current) {
-        pendingRef.current = false;
-        loadRef.current();
-      }
     }
   }, [updateBackground]);
 
@@ -48,7 +41,6 @@ export function useBackgroundLoader(updateBackground, resetBackground) {
 
   useEffect(() => {
     mountedRef.current = true;
-    loadRef.current = loadBackground;
     const changeMode = localStorage.getItem('backgroundchange');
     const hasStartTime = localStorage.getItem('backgroundStartTime');
 
@@ -59,7 +51,7 @@ export function useBackgroundLoader(updateBackground, resetBackground) {
     loadBackground();
     return () => {
       mountedRef.current = false;
-      pendingRef.current = false;
+      generation.current += 1;
     };
   }, [loadBackground]);
 

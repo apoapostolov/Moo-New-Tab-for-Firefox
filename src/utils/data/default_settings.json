@@ -332,6 +332,34 @@
     "value": "1"
   },
   {
+    "name": "weatherProvider",
+    "value": "mue"
+  },
+  {
+    "name": "portfolioEnabled",
+    "value": "false"
+  },
+  {
+    "name": "portfolioProvider",
+    "value": "finnhub"
+  },
+  {
+    "name": "portfolioCurrency",
+    "value": "USD"
+  },
+  {
+    "name": "portfolioHoldings",
+    "value": "[]"
+  },
+  {
+    "name": "weatherModel",
+    "value": "best_match"
+  },
+  {
+    "name": "weatherSinoptikUrl",
+    "value": ""
+  },
+  {
     "name": "widgetStyle",
     "value": "new"
   },
@@ -386,5 +414,385 @@
   {
     "name": "aiAskService",
     "value": "googleSearch"
+  },
+  {
+    "name": "worldClocks",
+    "value": "[]"
+  },
+  {
+    "name": "worldClockLayout",
+    "value": "row"
+  },
+  {
+    "name": "focusEnabled",
+    "value": false
+  },
+  {
+    "name": "focusMode",
+    "value": "focus"
+  },
+  {
+    "name": "focusFallbackBackground",
+    "value": false
+  },
+  {
+    "name": "pomodoroWork",
+    "value": 25
+  },
+  {
+    "name": "pomodoroBreak",
+    "value": 5
+  },
+  {
+    "name": "pomodoroLongBreak",
+    "value": 15
+  },
+  {
+    "name": "pomodoroRounds",
+    "value": 4
+  },
+  {
+    "name": "fallbackBackgroundType",
+    "value": "none"
+  },
+  {
+    "name": "fallbackBackgroundColour",
+    "value": "#20242c"
+  },
+  {
+    "name": "percentageFallbackBackground",
+    "value": false
+  },
+  {
+    "name": "countdownEnabled",
+    "value": false
+  },
+  {
+    "name": "countdowns",
+    "value": "[]"
+  },
+  {
+    "name": "surfaceCountdown",
+    "value": "classic"
+  },
+  {
+    "name": "habitsEnabled",
+    "value": false
+  },
+  {
+    "name": "surfaceHabits",
+    "value": "classic"
+  },
+  {
+    "name": "habitsData",
+    "value": "[]"
+  },
+  {
+    "name": "habitsTimeZone",
+    "value": "local"
+  },
+  {
+    "name": "habitsDayStart",
+    "value": "00:00"
+  },
+  {
+    "name": "habitsWeekStart",
+    "value": 1
+  },
+  {
+    "name": "habitsShowCompleted",
+    "value": true
+  },
+  {
+    "name": "habitsShowHistory",
+    "value": true
+  },
+  {
+    "name": "habitsShowStreak",
+    "value": true
+  },
+  {
+    "name": "habitsSort",
+    "value": "manual"
+  },
+  {
+    "name": "habitsLimit",
+    "value": 8
+  },
+  {
+    "name": "airQualityEnabled",
+    "value": false
+  },
+  {
+    "name": "surfaceAirQuality",
+    "value": "classic"
+  },
+  {
+    "name": "airQualityLocationMode",
+    "value": "weather"
+  },
+  {
+    "name": "airQualityLocation",
+    "value": ""
+  },
+  {
+    "name": "airQualityLatitude",
+    "value": ""
+  },
+  {
+    "name": "airQualityLongitude",
+    "value": ""
+  },
+  {
+    "name": "airQualityScale",
+    "value": "european"
+  },
+  {
+    "name": "airQualityDomain",
+    "value": "auto"
+  },
+  {
+    "name": "airQualityRefresh",
+    "value": 30
+  },
+  {
+    "name": "airQualityShowPollutants",
+    "value": true
+  },
+  {
+    "name": "airQualityPollutants",
+    "value": "pm2_5,pm10,nitrogen_dioxide,ozone"
+  },
+  {
+    "name": "airQualityShowUV",
+    "value": true
+  },
+  {
+    "name": "airQualityShowPollen",
+    "value": false
+  },
+  {
+    "name": "airQualityShowForecast",
+    "value": true
+  },
+  {
+    "name": "githubEnabled",
+    "value": false
+  },
+  {
+    "name": "surfaceGithub",
+    "value": "classic"
+  },
+  {
+    "name": "githubToken",
+    "value": ""
+  },
+  {
+    "name": "githubUsername",
+    "value": ""
+  },
+  {
+    "name": "githubRepositories",
+    "value": ""
+  },
+  {
+    "name": "githubOrganization",
+    "value": ""
+  },
+  {
+    "name": "githubExtraQuery",
+    "value": ""
+  },
+  {
+    "name": "githubState",
+    "value": "open"
+  },
+  {
+    "name": "githubSort",
+    "value": "updated"
+  },
+  {
+    "name": "githubLimit",
+    "value": 6
+  },
+  {
+    "name": "githubRefresh",
+    "value": 15
+  },
+  {
+    "name": "githubIncludeDrafts",
+    "value": false
+  },
+  {
+    "name": "githubActionsBranch",
+    "value": ""
+  },
+  {
+    "name": "githubActionsStatus",
+    "value": "failure"
+  },
+  {
+    "name": "githubShowReviews",
+    "value": true
+  },
+  {
+    "name": "githubShowPulls",
+    "value": true
+  },
+  {
+    "name": "githubShowIssues",
+    "value": true
+  },
+  {
+    "name": "githubShowActions",
+    "value": true
+  },
+  {
+    "name": "githubShowUpdated",
+    "value": true
+  },
+  {
+    "name": "airQualityDetailLevel",
+    "value": "basic"
+  },
+  {
+    "name": "bookmarksEnabled",
+    "value": false
+  },
+  {
+    "name": "surfaceBookmarks",
+    "value": "classic"
+  },
+  {
+    "name": "bookmarksMode",
+    "value": "mixed"
+  },
+  {
+    "name": "bookmarksLimit",
+    "value": 5
+  },
+  {
+    "name": "bookmarksRefresh",
+    "value": 30
+  },
+  {
+    "name": "bookmarksRotation",
+    "value": "daily"
+  },
+  {
+    "name": "bookmarksMinAge",
+    "value": 30
+  },
+  {
+    "name": "bookmarksRepeatDays",
+    "value": 30
+  },
+  {
+    "name": "bookmarksDomainLimit",
+    "value": 2
+  },
+  {
+    "name": "bookmarksMinMinutes",
+    "value": 0
+  },
+  {
+    "name": "bookmarksHideOpened",
+    "value": false
+  },
+  {
+    "name": "bookmarksBalance",
+    "value": true
+  },
+  {
+    "name": "bookmarksThumbnails",
+    "value": true
+  },
+  {
+    "name": "bookmarksOpenReader",
+    "value": true
+  },
+  {
+    "name": "bookmarksBrowserEnabled",
+    "value": true
+  },
+  {
+    "name": "bookmarksBrowserFolder",
+    "value": ""
+  },
+  {
+    "name": "bookmarksBrowserNested",
+    "value": true
+  },
+  {
+    "name": "bookmarksBrowserQuery",
+    "value": ""
+  },
+  {
+    "name": "bookmarksRaindropEnabled",
+    "value": true
+  },
+  {
+    "name": "bookmarksRaindropToken",
+    "value": ""
+  },
+  {
+    "name": "bookmarksRaindropCollection",
+    "value": "0"
+  },
+  {
+    "name": "bookmarksRaindropNested",
+    "value": true
+  },
+  {
+    "name": "bookmarksRaindropQuery",
+    "value": ""
+  },
+  {
+    "name": "bookmarksReadwiseEnabled",
+    "value": true
+  },
+  {
+    "name": "bookmarksReadwiseToken",
+    "value": ""
+  },
+  {
+    "name": "bookmarksReadwiseView",
+    "value": "reader"
+  },
+  {
+    "name": "bookmarksReadwiseLocation",
+    "value": "queue"
+  },
+  {
+    "name": "bookmarksReadwiseCategory",
+    "value": "all"
+  },
+  {
+    "name": "bookmarksReadwiseTag",
+    "value": ""
+  },
+  {
+    "name": "bookmarksLinkTarget",
+    "value": "_self"
+  },
+  {
+    "name": "quicklinksSeparateFocus",
+    "value": "false"
+  },
+  {
+    "name": "focusQuicklinks",
+    "value": "[]"
+  },
+  {
+    "name": "focusWidgetVisibility",
+    "value": "{}"
+  },
+  {
+    "name": "focusWidgetOrder",
+    "value": "[]"
+  },
+  {
+    "name": "focusWidgetPlacement",
+    "value": "{}"
   }
 ]

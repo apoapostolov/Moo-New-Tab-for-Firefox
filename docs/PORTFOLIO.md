@@ -1,0 +1,11 @@
+# Portfolio widget
+
+Click a saved holding's symbol to edit it. Each row has a square delete control at the right; the three data columns share the remaining width equally.
+
+Enable Portfolio in Settings → Portfolio, choose Finnhub or Twelve Data, and add that provider's API key. Add a stock symbol, the number of shares and, if known, the average purchase price per share in the stock's own currency. Twelve Data also accepts an optional four-character exchange MIC to distinguish listings. Finnhub does not use the MIC field; use the symbol format supported by Finnhub instead.
+
+Moo shows the portfolio value and the eight largest holdings by current value. Totals include every saved holding. Daily change compares each quote with its previous close. When every holding has an average cost, the card also shows the difference between the current price and that cost. Both figures use the current exchange rate; they do not include historical foreign-exchange gains, dividends, fees or tax.
+
+The display currency can be selected from 31 currencies. Moo fetches reference rates from Frankfurter, caches them locally and attempts to refresh them after a day. If the refresh fails, it can use the last cached rates. The card gives the rate date. Bulgarian lev is derived using the fixed conversion of 1.95583 lev per euro after Bulgaria adopted the euro. If a quote's currency or a required rate is unavailable, Moo does not present an incomplete sum as the full portfolio. British pence quotes are converted as one hundredth of a pound. A line appears only after Moo has recorded at least two complete valuations for the same holdings and display currency; it is not reconstructed historical performance.
+
+Quotes can be delayed and access varies by provider, market and account plan. Each provider offers accounts with free access subject to its current terms and limits; confirm that your plan permits display in Moo. Twelve Data describes its Basic plan as internal non-display use, so a display-licensed plan may be needed. Moo stores the API keys locally, sends the symbols and key to the selected provider, and excludes keys and quote history from backups. Holdings are included in backups, with no eight-stock limit. The widget is off by default; quote results are cached for one hour, with a shorter cache for failures. The refresh button makes a new request.

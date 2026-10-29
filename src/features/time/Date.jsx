@@ -116,7 +116,7 @@ const DateWidget = () => {
   useTranslationVersion();
   const [, redraw] = useState(0);
   const { date, weekNumber } = readDateDisplay();
-  const display = localStorage.getItem('date') === 'false' ? 'none' : 'block';
+  const display = 'block';
   const fontSize = `${Number(localStorage.getItem('zoomDate') || 100) / 100}em`;
   useEffect(() => {
     const refresh = (category) => {

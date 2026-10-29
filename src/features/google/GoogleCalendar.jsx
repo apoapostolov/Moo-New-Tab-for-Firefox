@@ -18,6 +18,10 @@ import {
 import { getCalendarSettings, refreshMs } from './settings';
 import ConnectPrompt, { describeError } from './components/ConnectPrompt';
 import EventDialog from './components/EventDialog';
+import EventPreview from './components/EventPreview';
+import useItemPreview from 'features/widgetKit/useItemPreview';
+import { calendarEventStatus } from './eventDetails';
+import { clearEventDetailsCache } from './services/calendar';
 
 import './google.scss';
 
@@ -49,6 +53,24 @@ const shortNotes = (value) => {
 const GoogleCalendar = () => {
   useTranslationVersion();
   const { auth, loading, error, connectAccount } = useGoogleAuth();
+  const account = auth ? `${auth.email}:${auth.connectedAt}` : '';
+  const accountRef = useRef(account);
+  accountRef.current = account;
+  const [loadedAccount, setLoadedAccount] = useState('');
+  const calendarAccount = useRef('');
+  const preview = useItemPreview(account, '.googleCalendarWidget', '.gwCalendarRow');
+  const hoverIntent = useRef(null);
+  useEffect(() => () => clearTimeout(hoverIntent.current), [account]);
+  const openPreview = (event, anchor, immediate = false) => {
+    clearTimeout(hoverIntent.current);
+    const trigger = anchor.matches('.gwCalendarRow') ? anchor.querySelector('.gwItem') : anchor;
+    if (immediate || preview.active) preview.open(eventKey(event), trigger);
+    else hoverIntent.current = setTimeout(() => preview.open(eventKey(event), trigger), 280);
+  };
+  const leavePreview = () => {
+    clearTimeout(hoverIntent.current);
+    preview.leave();
+  };
   const owner = useRef(requestOwner());
   const listOwner = useRef(requestOwner());
   useEffect(
@@ -64,6 +86,16 @@ const GoogleCalendar = () => {
   const [fetchError, setFetchError] = useState('');
   const [editing, setEditing] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [now, setNow] = useState(Date.now);
+  useEffect(() => {
+    const update = () => setNow(Date.now());
+    const timer = setInterval(update, 15000);
+    document.addEventListener('visibilitychange', update);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener('visibilitychange', update);
+    };
+  }, []);
   // Nothing is drawn until there is something to draw: an empty card that fills in later
   // reads as broken.
   const [ready, setReady] = useState(false);
@@ -71,12 +103,24 @@ const GoogleCalendar = () => {
 
   const load = useCallback(async () => {
     const request = owner.current.start();
+    const currentAccount = accountRef.current;
     const stamp = settingsStamp(/^(google|offlineMode)/);
-    const valid = () => request.current() && stamp === settingsStamp(/^(google|offlineMode)/);
+    const valid = () =>
+      request.current() &&
+      currentAccount === accountRef.current &&
+      stamp === settingsStamp(/^(google|offlineMode)/);
     const current = getCalendarSettings();
     setSettings(current);
     setBusy(true);
     setFetchError('');
+    if (calendarAccount.current !== currentAccount) {
+      calendarAccount.current = currentAccount;
+      calendarsRef.current = [];
+      setEvents([]);
+      setCalendars([]);
+      setEditing(null);
+      clearEventDetailsCache();
+    }
 
     try {
       const list = calendarsRef.current.length
@@ -103,6 +147,7 @@ const GoogleCalendar = () => {
       if (valid()) {
         setBusy(false);
         setReady(true);
+        setLoadedAccount(currentAccount);
       }
     }
   }, []);
@@ -149,10 +194,12 @@ const GoogleCalendar = () => {
   );
 
   const onSaved = useCallback(() => {
+    clearEventDetailsCache();
     load();
   }, [load]);
   const onDeleted = useCallback(
     (id, calendarId) => {
+      clearEventDetailsCache();
       setEvents((current) => current.filter((event) => eventKey(event) !== `${calendarId}:${id}`));
       load();
     },
@@ -166,7 +213,14 @@ const GoogleCalendar = () => {
     );
   }
 
-  if (!ready) return null;
+  if (!ready || loadedAccount !== account) return null;
+  const previewEvent =
+    preview.active && visible.find((event) => eventKey(event) === preview.active.id);
+  const editEvent = (event) => {
+    clearTimeout(hoverIntent.current);
+    preview.close();
+    setEditing(event);
+  };
 
   const byDay = visible.reduce((groups, event) => {
     const key = (event.allDay ? calendarDate(event.start) : new Date(event.start)).toDateString();
@@ -178,8 +232,19 @@ const GoogleCalendar = () => {
   }, {});
 
   const item = (event) => (
-    <li key={eventKey(event)}>
-      <button type="button" className="gwItem" onClick={() => setEditing(event)}>
+    <li
+      key={eventKey(event)}
+      className="gwCalendarRow"
+      onMouseEnter={(hoverEvent) => openPreview(event, hoverEvent.currentTarget)}
+      onMouseLeave={leavePreview}
+    >
+      <button
+        type="button"
+        className="gwItem"
+        onClick={() => editEvent(event)}
+        onFocus={(focusEvent) => openPreview(event, focusEvent.currentTarget, true)}
+        onBlur={leavePreview}
+      >
         <span className="gwItemTop">
           <span className="gwItemTitle">
             {multiCalendar && (
@@ -191,8 +256,15 @@ const GoogleCalendar = () => {
             {event.title}
           </span>
           <span className="gwItemMeta">
-            {settings.groupByDay ? '' : `${event.day} · `}
-            {timeLabel(event, settings.use24Hour)}
+            {calendarEventStatus(event, now) && (
+              <span className="gwEventStatus">
+                {uiText(`calendar_event_${calendarEventStatus(event, now)}`)}
+              </span>
+            )}
+            <span>
+              {settings.groupByDay ? '' : `${event.day} · `}
+              {timeLabel(event, settings.use24Hour)}
+            </span>
           </span>
         </span>
         {settings.showLocation && event.location && (
@@ -206,14 +278,14 @@ const GoogleCalendar = () => {
   );
 
   return (
-    <WidgetCard widget="calendar" className="googleWidget" aria-busy={busy}>
+    <WidgetCard widget="calendar" className="googleWidget googleCalendarWidget" aria-busy={busy}>
       <WidgetHeader className="gwHead">
         <span className="gwLabel">{uiText('calendar_adab50')}</span>
         <button
           type="button"
           className="gwIconButton"
           disabled={!calendars.some(canEditCalendar)}
-          onClick={() => setEditing({})}
+          onClick={() => editEvent({})}
           aria-label={uiText('new_event_2ef379')}
           title={uiText('new_event_2ef379')}
         >
@@ -238,6 +310,18 @@ const GoogleCalendar = () => {
         ))
       ) : (
         <ul className="gwList">{visible.map(item)}</ul>
+      )}
+
+      {previewEvent && !editing && (
+        <EventPreview
+          key={`${account}:${eventKey(previewEvent)}`}
+          event={previewEvent}
+          preview={preview}
+          account={account}
+          viewer={{ email: auth.email, name: auth.name }}
+          use24Hour={settings.use24Hour}
+          onEdit={editEvent}
+        />
       )}
 
       {editing && (

@@ -11,6 +11,8 @@ export const API_BACKGROUND_TYPES = [
   'api_live',
   'api_pixabay',
   'api_pexels',
+  'api_nasa',
+  'api_commons',
 ];
 
 export function isApiBackgroundType(type) {
@@ -24,6 +26,8 @@ export function getApiForBackgroundType(type) {
   if (type === 'api_live') return 'live';
   if (type === 'api_pixabay') return 'pixabay';
   if (type === 'api_pexels') return 'pexels';
+  if (type === 'api_nasa') return 'nasa';
+  if (type === 'api_commons') return 'commons';
   // Unsplash answers every remaining case.
   return 'unsplash';
 }
@@ -54,6 +58,8 @@ export function getBackgroundOptionItems(marketplaceEnabled) {
       value: 'api_mixkit',
       text: variables.getMessage('modals.main.settings.sections.background.type.mixkit'),
     },
+    { value: 'api_nasa', text: 'NASA' },
+    { value: 'api_commons', text: 'Wikimedia Commons' },
     {
       value: 'api_live',
       text: variables.getMessage('modals.main.settings.sections.background.type.live'),

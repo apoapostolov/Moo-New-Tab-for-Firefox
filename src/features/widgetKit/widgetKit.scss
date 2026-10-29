@@ -1,0 +1,209 @@
+@use 'scss/variables' as *;
+
+.wkCard {
+  min-width: 0;
+}
+
+.wkIcon {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  min-height: 28px;
+  color: inherit;
+  border-radius: 6px;
+}
+
+.wkIcon:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
+}
+
+.wkEmpty {
+  padding: 12px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.wkEmpty p,
+.wkNotice {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.wkNotice {
+  opacity: 0.85;
+}
+
+.wkUpdated,
+.wkSource {
+  display: block;
+  margin-top: 10px;
+  font-size: 10.5px;
+  opacity: 0.7;
+  text-align: left;
+}
+
+.wkSource a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.light .wkCard.glassSurface {
+  .gwLabel,
+  .wkUpdated,
+  .wkSource,
+  .wkNotice,
+  .habitName small,
+  .airMain small,
+  .wkMetricGrid dt,
+  .wkMetricGrid dd small {
+    opacity: 0.9;
+  }
+}
+
+.wkSettingInput {
+  width: min(300px, 100%);
+}
+
+.wkSettingInput textarea {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.wkSettingInput p {
+  font-size: 12px;
+}
+
+.wkMetricGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 14px 0 0;
+}
+
+.wkMetricGrid div {
+  min-width: 0;
+}
+
+.wkMetricGrid dt {
+  font-size: 10.5px;
+  opacity: 0.7;
+}
+
+.wkMetricGrid dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.wkManageList {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+
+.wkManageRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  min-width: 0;
+}
+
+.wkManageTitle {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.wkManageTitle small {
+  display: block;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.wkManageActions {
+  display: flex;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.wkArmed {
+  color: #ff9d9d;
+  background: rgb(150 30 30 / 78%);
+}
+
+.wkChecks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.wkChecks label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wkChecks input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--signature-strong);
+}
+
+.gwForm .wkChecks {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  font-size: 11px;
+
+  label {
+    flex-direction: row;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+}
+
+.wkTabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.wkTabList button {
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 7px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.wkTabList button[aria-selected='true'] {
+  background: rgb(128 128 128 / 24%);
+}
+
+.wkTabList button:focus-visible {
+  outline: 2px solid currentcolor;
+}
+
+@media (pointer: coarse) {
+  .wkIcon {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .wkManageRow {
+    flex-wrap: wrap;
+  }
+
+  .wkManageActions {
+    margin-inline-start: auto;
+  }
+}

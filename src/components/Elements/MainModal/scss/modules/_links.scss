@@ -1,3 +1,5 @@
+@use 'scss/variables' as *;
+
 .resetLink {
   color: var(--modal-link);
   cursor: pointer;
@@ -21,5 +23,26 @@
 
   &:hover {
     opacity: 0.8;
+  }
+}
+
+.Modal .settingsTabs .modalTabContent :is(a, .modalLink, .resetLink, .request-storage-link) {
+  font-weight: 700;
+  text-decoration: none;
+
+  @include themed {
+    color: t($color);
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline-color: currentcolor;
+  }
+
+  > span {
+    color: inherit;
   }
 }

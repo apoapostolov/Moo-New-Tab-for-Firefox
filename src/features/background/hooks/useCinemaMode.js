@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import EventBus from 'utils/eventbus';
+import { MULTICLICK_WINDOW, MULTICLICK_SLOP } from 'utils/pageGestures';
 
 const HIDDEN_CLASS = 'uiHidden';
 const SETTING = 'cinemaMode';
 
 // Count taps across nearby elements, independently of native click counts.
 const TAPS = 3;
-const TAP_WINDOW = 700; // ms between presses — slower than the system's double-click gap
-const TAP_SLOP = 36; // px a hand may wander between presses and still mean the same run
+const TAP_WINDOW = MULTICLICK_WINDOW; // ms between presses — slower than the system's double-click gap
+const TAP_SLOP = MULTICLICK_SLOP; // px a hand may wander between presses and still mean the same run
 const RESTORE_DELAY = 300; // ms the page ignores presses for, so the reaching press cannot undo itself
 
 /** Triple press hides the UI over video; one press or Escape restores it. Enabled by default. */

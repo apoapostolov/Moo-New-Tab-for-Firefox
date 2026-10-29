@@ -5,7 +5,7 @@ import { getBackgroundFilterStyle, getBackgroundOverlayStyle } from '../api/back
 
 const TRANSITION_DURATION = 1200; // milliseconds
 
-export function useBackgroundRenderer(backgroundData) {
+export function useBackgroundRenderer(backgroundData, onFail) {
   const blobRef = useRef(null);
   const abortControllerRef = useRef(null);
 
@@ -29,6 +29,11 @@ export function useBackgroundRenderer(backgroundData) {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (!hasTransition || prefersReducedMotion) {
+          image = new Image();
+          image.onerror = () => {
+            if (!controller.signal.aborted) onFail?.();
+          };
+          image.src = backgroundData.url;
           element.style.background = `url(${backgroundData.url})`;
           document.querySelector('.photoInformation')?.style.setProperty('display', 'flex');
           return;
@@ -72,7 +77,10 @@ export function useBackgroundRenderer(backgroundData) {
         image = new Image();
         await new Promise((resolve) => {
           image.onload = resolve;
-          image.onerror = resolve;
+          image.onerror = () => {
+            if (!controller.signal.aborted) onFail?.();
+            resolve();
+          };
           controller.signal.addEventListener('abort', resolve, { once: true });
           image.src = finalUrl;
         });
@@ -131,7 +139,13 @@ export function useBackgroundRenderer(backgroundData) {
         overlay.remove();
       }
     };
-  }, [backgroundData.url, backgroundData.style, backgroundData.video, backgroundData.photoInfo]);
+  }, [
+    backgroundData.url,
+    backgroundData.style,
+    backgroundData.video,
+    backgroundData.photoInfo,
+    onFail,
+  ]);
 }
 
 /** Legacy `filter` styles: a video cannot carry a backdrop-filter overlay. */

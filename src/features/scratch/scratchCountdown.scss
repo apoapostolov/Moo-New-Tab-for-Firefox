@@ -1,0 +1,199 @@
+@use 'scss/variables' as *;
+
+.scratchNoteMenuToggle {
+  position: absolute;
+  top: 3px;
+  right: 49px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(255 255 255 / 15%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentcolor;
+  }
+}
+
+.scratchNoteMenu {
+  position: absolute;
+  top: 30px;
+  right: 8px;
+  z-index: 2;
+  display: grid;
+  min-width: 170px;
+  padding: 5px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 10px;
+  background: #242830;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 25%);
+  cursor: default;
+
+  button,
+  .scratchNoteMenuCheck {
+    border: 0;
+    border-radius: 6px;
+    padding: 12px;
+    font: inherit;
+    color: #fff;
+    text-align: left;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background: rgb(255 255 255 / 15%);
+    }
+  }
+}
+
+.scratchNoteMenuCheck {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  input {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    accent-color: var(--signature-strong);
+  }
+}
+
+.scratchNote.scratchConfiguring {
+  box-sizing: border-box;
+  width: min(320px, calc(100vw - 40px));
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+  padding: 12px 14px 14px;
+  text-align: left;
+  text-shadow: none;
+  cursor: default;
+
+  @include themed {
+    color: t($color);
+    background: t($modal-background);
+  }
+
+  &,
+  * {
+    box-sizing: border-box;
+  }
+
+  .scratchNoteClose,
+  .scratchNoteLock,
+  .scratchNoteMenuToggle {
+    color: inherit;
+  }
+}
+
+.scratchCountdownForm {
+  .scratchCountdownHeading {
+    padding-right: 64px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  label {
+    line-height: 1.3;
+  }
+
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+    line-height: 1.4;
+    color-scheme: inherit;
+  }
+
+  select {
+    width: 100%;
+    height: 36px;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  textarea {
+    min-height: 56px;
+    max-height: 160px;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--signature-strong);
+    outline-offset: 2px;
+  }
+
+  .gwError {
+    margin: 0;
+    font-size: 12px;
+  }
+}
+
+.scratchCountdownOptions {
+  align-items: flex-end;
+
+  label:first-child {
+    flex: 0.85;
+  }
+
+  label:last-child {
+    flex: 1.4;
+  }
+}
+
+.scratchCountdownActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.dark .scratchCountdownForm {
+  color-scheme: dark;
+}
+
+.light .scratchCountdownForm {
+  color-scheme: light;
+
+  .gwError {
+    color: #a02622;
+  }
+}
+
+.scratchNote .countdownReadout {
+  margin: 12px 0;
+  padding-right: 10px;
+}
+
+.scratchNote.bare .scratchNoteMenuToggle,
+.scratchNote.bare .scratchNoteLock,
+.scratchNote.bare .scratchChecklistInlineAdd {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scratchNote:focus-within .scratchNoteMenuToggle,
+.scratchNote:focus-within .scratchNoteLock,
+.scratchNote:focus-within .scratchChecklistInlineAdd {
+  opacity: 1;
+  pointer-events: auto;
+}

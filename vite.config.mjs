@@ -65,6 +65,10 @@ const prepareBuilds = () => ({
         path.resolve(__dirname, './manifest/background.js'),
         path.resolve(firefoxBuildPath, 'background.js'),
       );
+      fs.copyFileSync(
+        path.resolve(__dirname, './manifest/calendar-alerts.js'),
+        path.resolve(firefoxBuildPath, 'calendar-alerts.js'),
+      );
 
       // Copy dist (bundled app)
       fs.cpSync(path.resolve(__dirname, './dist'), firefoxBuildPath, { recursive: true });

@@ -1,0 +1,33 @@
+.moreSettings.backgroundProviderCard {
+  flex-wrap: wrap;
+  gap: 18px 24px;
+
+  .left {
+    flex: 1 1 250px;
+    min-width: 0;
+    gap: 16px;
+
+    > svg {
+      flex-shrink: 0;
+    }
+  }
+
+  .content {
+    min-width: 0;
+  }
+
+  .action {
+    flex: 0 1 300px;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+.moreSettings.staticSettings {
+  cursor: default;
+}
+
+.fallbackProviderCard .subtitle {
+  max-width: 28ch;
+  line-height: 1.4;
+}

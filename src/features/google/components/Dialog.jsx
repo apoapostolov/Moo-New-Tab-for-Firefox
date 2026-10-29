@@ -9,7 +9,7 @@ import { createPortal } from 'react-dom';
  * a filtered ancestor becomes the containing block.
  */
 
-const Dialog = ({ title, onClose, children, footer }) => {
+const Dialog = ({ title, onClose, children, footer, actions }) => {
   useTranslationVersion();
   const panel = useRef(null);
 
@@ -23,6 +23,9 @@ const Dialog = ({ title, onClose, children, footer }) => {
       // browser that refuses it.
       if (typeof node.showModal === 'function') node.showModal();
       else node.setAttribute('open', '');
+      node
+        .querySelector('.gwDialogBody input:not(:disabled), .gwDialogBody textarea:not(:disabled)')
+        ?.focus();
     }
 
     return () => {
@@ -57,6 +60,7 @@ const Dialog = ({ title, onClose, children, footer }) => {
     >
       <header className="gwDialogHead">
         <h3>{title}</h3>
+        {actions}
         <button
           type="button"
           className="gwIconButton"

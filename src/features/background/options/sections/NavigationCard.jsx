@@ -1,26 +1,34 @@
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 
-const NavigationCard = ({ icon: Icon, title, subtitle, onClick, action }) => {
+const NavigationCard = ({ icon: Icon, title, subtitle, onClick, action, className = '' }) => {
   useTranslationVersion();
   return (
     <div
-      className="moreSettings"
-      onClick={(event) => {
-        if (!event.target.closest('.action')) onClick();
-      }}
+      className={`moreSettings ${className}${onClick ? '' : ' staticSettings'}`}
+      onClick={
+        onClick
+          ? (event) => {
+              if (!event.target.closest('.action')) onClick();
+            }
+          : undefined
+      }
     >
       <div
         className="left"
-        role="button"
-        tabIndex={0}
-        aria-label={title}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            onClick();
-          }
-        }}
+        role={onClick ? 'button' : undefined}
+        tabIndex={onClick ? 0 : undefined}
+        aria-label={onClick ? title : undefined}
+        onKeyDown={
+          onClick
+            ? (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onClick();
+                }
+              }
+            : undefined
+        }
       >
         <Icon />
         <div className="content">

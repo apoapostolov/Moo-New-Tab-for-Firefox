@@ -4,10 +4,18 @@ import variables from 'config/variables';
 import { useState, memo } from 'react';
 import { useT } from 'contexts';
 
-import { MdAssignment, MdCropFree, MdRefresh, MdChecklist, MdOutlineApps } from 'react-icons/md';
+import {
+  // MdAssignment,
+  MdCropFree,
+  MdRefresh,
+  // MdChecklist,
+  MdOutlineApps,
+  MdCenterFocusStrong,
+} from 'react-icons/md';
 
 import { Checkbox, Dropdown } from 'components/Form';
 import EventBus from 'utils/eventbus';
+import { saveFocusSession } from 'features/focus/focusStore';
 
 import { Row, Content, Action, Group } from 'components/Layout/Settings/Item';
 import { Header } from 'components/Layout/Settings';
@@ -53,6 +61,8 @@ function NavbarOptions() {
           setShowRefreshOptions(!showRefreshOptions);
         } else if (settingName === 'appsEnabled') {
           setAppsEnabled(!appsEnabled);
+        } else if (settingName === 'focusEnabled' && !isDisabled) {
+          saveFocusSession(null);
         }
 
         setIsDisabled(!isDisabled);
@@ -67,7 +77,9 @@ function NavbarOptions() {
 
       return (
         <button
+          type="button"
           onClick={handleClick}
+          aria-pressed={!isDisabled}
           className={`navbarButtonOption ${isDisabled === true ? 'disabled' : ''}`}
         >
           {icon}
@@ -78,10 +90,16 @@ function NavbarOptions() {
 
     const buttons = [
       {
+        icon: <MdCenterFocusStrong />,
+        settingName: 'focusEnabled',
+        messageKey: 'ui.focus_title',
+      },
+      {
         icon: <MdCropFree />,
         settingName: 'view',
         messageKey: 'modals.main.settings.sections.background.buttons.view',
       },
+      /* Notes and To-do are parked until their redesign.
       {
         icon: <MdAssignment />,
         settingName: 'notesEnabled',
@@ -92,6 +110,7 @@ function NavbarOptions() {
         settingName: 'todoEnabled',
         messageKey: 'widgets.navbar.todo.title',
       },
+      */
       {
         icon: <MdRefresh />,
         settingName: 'refresh',

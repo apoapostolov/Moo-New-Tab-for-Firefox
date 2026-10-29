@@ -12,6 +12,12 @@ import { BackgroundOptions } from 'features/background';
 import { WeatherOptions } from 'features/weather';
 import { GoogleOptions } from 'features/google';
 import { RssOptions } from 'features/rss';
+import FocusOptions from 'features/focus/FocusOptions';
+import PortfolioOptions from 'features/portfolio/PortfolioOptions';
+import HabitOptions from 'features/habits/HabitOptions';
+import AirQualityOptions from 'features/airquality/AirQualityOptions';
+import BookmarkOptions from 'features/bookmarks/BookmarkOptions';
+import GitHubOptions from 'features/github/GitHubOptions';
 import { Stats } from 'features/stats';
 import {
   About,
@@ -21,48 +27,59 @@ import {
   ExperimentalOptions,
   LanguageOptions,
   MiscOptions,
+  FloatsOptions,
   Overview,
 } from '../sections';
 
 const sections = [
+  // Core page setup and everyday essentials.
   { label: 'modals.main.marketplace.product.overview', name: 'order', component: Overview },
-  {
-    label: 'modals.main.settings.sections.appearance.navbar.title',
-    name: 'navbar',
-    component: NavbarOptions,
-  },
-  { label: 'modals.main.settings.sections.time.title', name: 'time', component: TimeOptions },
-  {
-    label: 'modals.main.settings.sections.quicklinks.title',
-    name: 'quicklinks',
-    component: QuickLinksOptions,
-  },
   {
     label: 'modals.main.settings.sections.background.title',
     name: 'background',
     component: BackgroundOptions,
   },
   {
+    label: 'modals.main.settings.sections.appearance.title',
+    name: 'appearance',
+    component: AppearanceOptions,
+  },
+  { label: 'modals.main.settings.sections.time.title', name: 'time', component: TimeOptions },
+  {
     label: 'modals.main.settings.sections.weather.title',
     name: 'weather',
     component: WeatherOptions,
   },
-  { label: 'modals.main.settings.sections.rss.title', name: 'rss', component: RssOptions },
+  {
+    label: 'modals.main.settings.sections.quicklinks.title',
+    name: 'quicklinks',
+    component: QuickLinksOptions,
+  },
+  {
+    label: 'modals.main.settings.sections.appearance.navbar.title',
+    name: 'navbar',
+    component: NavbarOptions,
+  },
+  // Optional widgets and productivity tools.
+  { label: 'ui.focus_title', name: 'focus', component: FocusOptions },
+  { label: 'ui.habits_title', name: 'habits', component: HabitOptions },
+  { label: 'ui.air_title', name: 'airquality', component: AirQualityOptions },
   {
     label: 'modals.main.settings.sections.google.title',
     name: 'google',
     component: GoogleOptions,
   },
+  { label: 'modals.main.settings.sections.floats.title', name: 'floats', component: FloatsOptions },
+  { label: 'modals.main.settings.sections.rss.title', name: 'rss', component: RssOptions },
+  { label: 'ui.bookmarks_title', name: 'bookmarks', component: BookmarkOptions },
+  { label: 'ui.portfolio_title', name: 'portfolio', component: PortfolioOptions },
+  { label: 'ui.github_title', name: 'github', component: GitHubOptions },
   {
     label: 'modals.main.settings.sections.misc.title',
     name: 'misc',
     component: MiscOptions,
   },
-  {
-    label: 'modals.main.settings.sections.appearance.title',
-    name: 'appearance',
-    component: AppearanceOptions,
-  },
+  // Language, advanced controls and reference screens.
   {
     label: 'modals.main.settings.sections.language.title',
     name: 'language',
@@ -73,12 +90,12 @@ const sections = [
     name: 'advanced',
     component: AdvancedOptions,
   },
-  { label: 'modals.main.settings.sections.stats.title', name: 'stats', component: Stats },
   {
     label: 'modals.main.settings.sections.experimental.title',
     name: 'experimental',
     component: ExperimentalOptions,
   },
+  { label: 'modals.main.settings.sections.stats.title', name: 'stats', component: Stats },
   {
     label: 'modals.main.settings.sections.changelog.title',
     name: 'changelog',

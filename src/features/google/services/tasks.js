@@ -31,10 +31,13 @@ export const listTasks = async (listId, { showCompleted = false, signal } = {}) 
   return items.filter((task) => !task.deleted).map(toTask);
 };
 
-export const createTask = async (listId, { title, notes = '', due = '' }) => {
+export const createTask = async (
+  listId,
+  { title, notes = '', due = '', status = 'needsAction' },
+) => {
   const task = await googleFetch(`/tasks/v1/lists/${encodeURIComponent(listId)}/tasks`, {
     method: 'POST',
-    body: JSON.stringify({ title, notes, ...(due ? { due } : {}) }),
+    body: JSON.stringify({ title, notes, status, ...(due ? { due } : {}) }),
   });
 
   return toTask(task);

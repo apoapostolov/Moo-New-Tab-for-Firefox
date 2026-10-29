@@ -1,5 +1,7 @@
 import { fetchWithTimeout as fetch, settingsStamp, online } from 'utils/requests';
 import variables from 'config/variables';
+import { getOpenMeteo, getOpenWeather, getWeatherApi, getVisualCrossing, getSinoptik, weatherSettings, WEATHER_KEY_NAMES } from './providers';
+import { uiText } from 'lib/translations';
 
 const convertTemperature = (temp, format) => {
   if (format === 'celsius') {
@@ -40,28 +42,49 @@ const getLocalizedTempSymbol = (format) => {
 const inFlight = new Map();
 export const getWeather = async (location) => {
   const tempFormat = localStorage.getItem('tempformat') || 'celsius';
-  const key = JSON.stringify([location, tempFormat, localStorage.getItem('language') || 'en_GB']);
+  const provider = localStorage.getItem('weatherProvider') || 'mue';
+  const model = localStorage.getItem('weatherModel') || 'best_match';
+  const apiKey = localStorage.getItem(WEATHER_KEY_NAMES[provider] || '') || '';
+  const sinoptikUrl = localStorage.getItem('weatherSinoptikUrl') || '';
+  const key = JSON.stringify([location, tempFormat, localStorage.getItem('language') || 'en_GB', ...(provider === 'mue' ? [] : [provider, model, ...(provider === 'sinoptik' ? [sinoptikUrl] : [])])]);
   let cached;
   try {
     cached = JSON.parse(localStorage.getItem('currentWeather'));
   } catch {
     /* Ignore a damaged cache. */
   }
+  if (provider === 'sinoptik' && !sinoptikUrl) return { location: uiText('weather_sinoptik_url_missing'), done: true };
+  if (WEATHER_KEY_NAMES[provider] && !apiKey)
+    return { location: uiText('weather_api_key_missing'), done: true };
   if (cached?.key === key && Date.now() - cached.cachedAt < 300000) return cached.data;
-  if (!location || localStorage.getItem('offlineMode') === 'true') return { done: true };
-  if (inFlight.has(key)) return inFlight.get(key);
-  const request = fetchWeather(location, tempFormat, key);
-  inFlight.set(key, request);
+  if ((!location && provider !== 'sinoptik') || localStorage.getItem('offlineMode') === 'true') return { done: true };
+  const requestKey = `${key}:${apiKey}`;
+  if (inFlight.has(requestKey)) return inFlight.get(requestKey);
+  const request = fetchWeather(location, tempFormat, key, provider, model, apiKey, sinoptikUrl);
+  inFlight.set(requestKey, request);
   try {
     return await request;
   } finally {
-    inFlight.delete(key);
+    inFlight.delete(requestKey);
   }
 };
 
-const fetchWeather = async (location, tempFormat, key) => {
-  const stamp = settingsStamp(/^(location|tempformat|language|offlineMode)$/);
+const fetchWeather = async (location, tempFormat, key, provider, model, apiKey, sinoptikUrl) => {
+  const stamp = settingsStamp(weatherSettings);
   try {
+    if (provider !== 'mue') {
+      const result = provider === 'openmeteo' ? await getOpenMeteo(location, tempFormat, model)
+        : provider === 'openweather' ? await getOpenWeather(location, tempFormat, apiKey)
+          : provider === 'weatherapi' ? await getWeatherApi(location, tempFormat, apiKey)
+            : provider === 'visualcrossing' ? await getVisualCrossing(location, tempFormat, apiKey)
+            : provider === 'sinoptik' ? await getSinoptik(sinoptikUrl, tempFormat)
+            : null;
+      if (!result) throw new Error('Unknown weather provider');
+      const cacheable = { ...result, provider, temp_text: getLocalizedTempSymbol(tempFormat), done: true };
+      if (!online() || stamp !== settingsStamp(weatherSettings)) return null;
+      localStorage.setItem('currentWeather', JSON.stringify({ key, data: cacheable, cachedAt: Date.now() }));
+      return cacheable;
+    }
     const response = await fetch(
       variables.constants.API_URL + `/weather?city=${encodeURIComponent(location)}`,
     );
@@ -100,15 +123,15 @@ const fetchWeather = async (location, tempFormat, key) => {
       },
       done: true,
     };
-    if (!online() || stamp !== settingsStamp(/^(location|tempformat|language|offlineMode)$/))
+    if (!online() || stamp !== settingsStamp(weatherSettings))
       return null;
     localStorage.setItem(
       'currentWeather',
       JSON.stringify({ key, data: cacheable, cachedAt: Date.now() }),
     );
     return cacheable;
-  } catch (error) {
-    console.error('Fetch Error: ', error);
+  } catch {
+    console.error('Weather request failed.');
     return {
       location: variables.getMessage('widgets.weather.fetch_error'),
       done: true,

@@ -9,23 +9,21 @@ import EventBus from 'utils/eventbus';
 
 import '../scss/_colourpicker.scss';
 
-const ColourOptions = () => {
+const ColourOptions = ({ setting = 'customBackgroundColour', category = 'background' }) => {
   useTranslationVersion();
-  const [colour, setColour] = useState(
-    localStorage.getItem('customBackgroundColour') || 'rgba(0, 0, 0, 100)',
-  );
+  const [colour, setColour] = useState(localStorage.getItem(setting) || 'rgba(0, 0, 0, 100)');
 
   const changeColour = (output) => {
     setColour(output);
-    localStorage.setItem('customBackgroundColour', output);
-    EventBus.emit('refresh', 'background');
+    localStorage.setItem(setting, output);
+    EventBus.emit('refresh', category);
   };
 
   const resetColour = () => {
     setColour('rgba(0, 0, 0, 0)');
-    localStorage.setItem('customBackgroundColour', 'rgba(0, 0, 0, 100)');
+    localStorage.setItem(setting, 'rgba(0, 0, 0, 100)');
     toast(variables.getMessage('toasts.reset'));
-    EventBus.emit('refresh', 'background');
+    EventBus.emit('refresh', category);
   };
 
   return (

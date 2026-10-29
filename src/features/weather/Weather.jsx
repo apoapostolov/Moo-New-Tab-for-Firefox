@@ -15,6 +15,7 @@ import EventBus from 'utils/eventbus';
 import { updateHash } from 'utils/deepLinking';
 
 import { getWeather } from './api/getWeather.js';
+import { weatherSettings, WEATHER_ATTRIBUTION } from './api/providers';
 
 import './weather.scss';
 
@@ -62,7 +63,7 @@ const WeatherWidget = memo(({ compact = false }) => {
   }, []);
 
   useEffect(() => {
-    if (!location) {
+    if (!location && localStorage.getItem('weatherProvider') !== 'sinoptik') {
       autoFindLocation();
     }
     const geo = geoOwner.current;
@@ -70,11 +71,11 @@ const WeatherWidget = memo(({ compact = false }) => {
   }, [location, autoFindLocation]);
   const updateWeather = useCallback(async () => {
     const request = owner.current.start();
-    const stamp = settingsStamp(/^(location|tempformat|language|offlineMode)$/);
+    const stamp = settingsStamp(weatherSettings);
     const data = await getWeather(location);
     if (
       !request.current() ||
-      stamp !== settingsStamp(/^(location|tempformat|language|offlineMode)$/)
+      stamp !== settingsStamp(weatherSettings)
     )
       return;
     if (data) {
@@ -114,6 +115,7 @@ const WeatherWidget = memo(({ compact = false }) => {
   }, [updateWeather]);
 
   const weatherType = compact ? 1 : localStorage.getItem('weatherType') || 1;
+  const source = WEATHER_ATTRIBUTION[weatherData.provider];
 
   if (done === false) {
     return <WeatherSkeleton weatherType={weatherType} />;
@@ -121,9 +123,9 @@ const WeatherWidget = memo(({ compact = false }) => {
 
   if (!weatherData.weather) {
     return (
-      <div className={`weather ${getSurface('weather')}`}>
-        {location ? (
-          <span className="loc">{location}</span>
+      <div className={`weather weatherNotice ${getSurface('weather')}`}>
+        {location || weatherData.location ? (
+          <span className="loc">{weatherData.location || location}</span>
         ) : (
           <button
             type="button"
@@ -146,7 +148,8 @@ const WeatherWidget = memo(({ compact = false }) => {
         <WeatherIcon name={weatherData.icon} />
         <span>{`${formatNumber(weatherData.weather.temp)}${weatherData.temp_text}`}</span>
         <span className="weatherCompactDesc">{weatherData.weather.description}</span>
-        <span className="loc">{location}</span>
+        <span className="loc">{weatherData.displayLocation || location}</span>
+        {source && <a className="weatherAttribution" href={source.url} target="_blank" rel="noopener noreferrer">{source.name}</a>}
       </div>
     );
   }
@@ -173,14 +176,15 @@ const WeatherWidget = memo(({ compact = false }) => {
                 amount: `${formatNumber(weatherData.weather.feels_like)}${weatherData.temp_text}`,
               })}
             </span>
-            <span className="loc">{location}</span>
+            <span className="loc">{weatherData.displayLocation || location}</span>
           </div>
         )}
       </div>
-      {weatherType >= 3 && <Forecast location={location} />}
+      {weatherType >= 3 && <Forecast location={location} providedDays={weatherData.forecast} />}
       {Number(weatherType) === 4 && (
         <Expanded state={weatherData} weatherType={weatherType} variables={variables} />
       )}
+      {source && <a className="weatherAttribution" href={source.url} target="_blank" rel="noopener noreferrer">{source.name}</a>}
     </div>
   );
 });

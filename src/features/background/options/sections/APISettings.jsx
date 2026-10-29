@@ -179,6 +179,26 @@ const APISettings = ({ backgroundAPI, backgroundCategories, unsplashTopics }) =>
     return keyedVideoSource(backgroundAPI);
   }
 
+  if (backgroundAPI === 'nasa' || backgroundAPI === 'commons') {
+    return (
+      <Row final={true}>
+        <Content title={backgroundAPI === 'nasa' ? 'NASA' : 'Wikimedia Commons'} />
+        <Action>
+          <Text
+            title={variables.getMessage('modals.main.settings.sections.background.coverr.search')}
+            subtitle={variables.getMessage(
+              'modals.main.settings.sections.background.coverr.search_subtitle',
+            )}
+            placeholder={backgroundAPI === 'nasa' ? 'Earth from space' : 'landscape'}
+            name={`${backgroundAPI}Query`}
+            category="backgroundrefresh"
+            onChange={clearPrefetch}
+          />
+        </Action>
+      </Row>
+    );
+  }
+
   if (backgroundAPI === 'live') {
     // The list is the profile's, so a renamed channel reads under its new name here.
     const channels = readChannels();

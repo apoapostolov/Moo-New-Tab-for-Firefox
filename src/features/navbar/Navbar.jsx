@@ -4,12 +4,15 @@ import { useT } from 'contexts';
 
 import { MdSettings } from 'react-icons/md';
 
-import { Notes, Todo, Apps, Refresh, Maximise } from './components';
+import { Apps, Refresh, Maximise } from './components';
+// Notes and To-do are parked until their redesign.
+// import { Notes, Todo } from './components';
 import { Tooltip } from 'components/Elements';
 
 import EventBus from 'utils/eventbus';
 
 import './scss/index.scss';
+import FocusButton from 'features/focus/FocusButton';
 
 const Navbar = ({ openModal }) => {
   useTranslationVersion();
@@ -27,8 +30,9 @@ const Navbar = ({ openModal }) => {
   const [zoomFontSize, setZoomFontSize] = useState(getZoomFontSize());
   const [navbarHover, setNavbarHover] = useState(localStorage.getItem('navbarHover') === 'true');
   const [viewEnabled, setViewEnabled] = useState(localStorage.getItem('view') === 'true');
-  const [notesEnabled, setNotesEnabled] = useState(localStorage.getItem('notesEnabled') === 'true');
-  const [todoEnabled, setTodoEnabled] = useState(localStorage.getItem('todoEnabled') === 'true');
+  // const [notesEnabled, setNotesEnabled] = useState(localStorage.getItem('notesEnabled') === 'true');
+  // const [todoEnabled, setTodoEnabled] = useState(localStorage.getItem('todoEnabled') === 'true');
+  const [focusEnabled, setFocusEnabled] = useState(localStorage.getItem('focusEnabled') === 'true');
   const [appsEnabled, setAppsEnabled] = useState(localStorage.getItem('appsEnabled') === 'true');
 
   useEffect(() => {
@@ -38,8 +42,9 @@ const Navbar = ({ openModal }) => {
         setRefreshOption(localStorage.getItem('refreshOption'));
         setNavbarHover(localStorage.getItem('navbarHover') === 'true');
         setViewEnabled(localStorage.getItem('view') === 'true');
-        setNotesEnabled(localStorage.getItem('notesEnabled') === 'true');
-        setTodoEnabled(localStorage.getItem('todoEnabled') === 'true');
+        // setNotesEnabled(localStorage.getItem('notesEnabled') === 'true');
+        // setTodoEnabled(localStorage.getItem('todoEnabled') === 'true');
+        setFocusEnabled(localStorage.getItem('focusEnabled') === 'true');
         setAppsEnabled(localStorage.getItem('appsEnabled') === 'true');
         setZoomFontSize(getZoomFontSize());
       }
@@ -55,10 +60,11 @@ const Navbar = ({ openModal }) => {
 
   const navbar = (
     <div className="navbar-container">
-      <div className={classList}>
+      <div className={`${classList}${focusEnabled ? ' focusNavbar' : ''}`}>
         {viewEnabled && backgroundEnabled ? <Maximise fontSize={zoomFontSize} /> : null}
-        {notesEnabled && <Notes fontSize={zoomFontSize} />}
-        {todoEnabled && <Todo fontSize={zoomFontSize} />}
+        {focusEnabled && <FocusButton fontSize={zoomFontSize} />}
+        {/* {notesEnabled && <Notes fontSize={zoomFontSize} />}
+        {todoEnabled && <Todo fontSize={zoomFontSize} />} */}
         {appsEnabled && <Apps fontSize={zoomFontSize} />}
 
         {refreshEnabled !== 'false' && <Refresh fontSize={zoomFontSize} />}

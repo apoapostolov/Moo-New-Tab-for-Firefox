@@ -1,3 +1,4 @@
+import { clearBookmarkCache } from '../../features/bookmarks/bookmarkCache';
 import { flushDrafts } from '../durableWriter';
 import defaults from '../data/default_settings.json';
 import {
@@ -36,6 +37,7 @@ export function changeProfile(makeSettings, backgrounds, scratchImages) {
     await beginProfileChange(previous, backgrounds, scratchImages);
     try {
       writeStorage({ ...next, profileRevision: `${Date.now()}-${Math.random()}` });
+      await clearBookmarkCache();
       await finishProfileChange();
     } catch (error) {
       try {
@@ -50,6 +52,7 @@ export function changeProfile(makeSettings, backgrounds, scratchImages) {
 }
 const personal = new Set([
   'quicklinks',
+  'focusQuicklinks',
   'applinks',
   'todo',
   'notes',
@@ -57,6 +60,10 @@ const personal = new Set([
   'scratchImagesData',
   'scratchTopZ',
   'rssFeeds',
+  'portfolioHoldings',
+  'habitsData',
+  'countdowns',
+  'worldClocks',
   'liveChannels',
   'favourite',
 ]);

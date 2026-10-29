@@ -1,5 +1,7 @@
 import { fetchWithTimeout as fetch, settingsStamp, withLock, online } from 'utils/requests';
 import variables from 'config/variables';
+import { desiredBackgroundSource } from '../fallback';
+import { getApiForBackgroundType } from '../options/optionTypes/getBackgroundOptionItems';
 import { supportsAVIF } from './avifSupport';
 import { getOfflineImage } from './offlineImage';
 import { randomColourStyleBuilder } from './randomColour';
@@ -8,12 +10,14 @@ import { fetchCoverrVideo } from './coverr';
 import { fetchMixkitVideo } from './mixkit';
 import { fetchPixabayVideo } from './pixabay';
 import { fetchPexelsVideo } from './pexels';
+import { fetchNasaVideo, fetchCommonsVideo } from './publicVideo';
 import { getLiveBackground } from './live';
 import { getAllBackgroundsWithMetadata } from 'utils/customBackgroundDB';
 
 export const backgroundStamp = () =>
+  desiredBackgroundSource() +
   settingsStamp(
-    /^(background(Type|API|Exclude)|api|unsplash|pixabayKey|pexelsKey|videoQuality|offlineMode|favourite|liveChannel)/,
+    /^(background(Type|API|Exclude)|api|unsplash|pixabayKey|pexelsKey|nasaQuery|commonsQuery|coverrQuery|mixkitQuery|videoQuality|offlineMode|favourite|liveChannel|fallbackBackground|percentageFallbackBackground|focusFallbackBackground)/,
   );
 const parseJSON = (key, fallback = null) => {
   const item = localStorage.getItem(key);
@@ -29,8 +33,8 @@ const parseJSON = (key, fallback = null) => {
 };
 
 /** Null when no usable image comes back, so callers fall back to the offline image. */
-export async function fetchAPIImageData(excludedPun = null) {
-  const api = localStorage.getItem('backgroundAPI') || 'unsplash';
+export async function fetchAPIImageData(excludedPun = null, apiOverride = null) {
+  const api = apiOverride || localStorage.getItem('backgroundAPI') || 'unsplash';
   const quality = localStorage.getItem('apiQuality') || 'high';
   const categories = parseJSON('apiCategories', localStorage.getItem('apiCategories'));
   const excludes = [...parseJSON('backgroundExclude', []), ...(excludedPun ? [excludedPun] : [])];
@@ -111,11 +115,11 @@ export async function fetchAPIImageData(excludedPun = null) {
   }
 }
 
-export async function getBackgroundData() {
+async function getProviderBackground(type, fallback = false) {
   const isOffline = localStorage.getItem('offlineMode') === 'true';
 
   // A favourite overrides whatever source is configured.
-  const fav = parseJSON('favourite');
+  const fav = fallback ? null : parseJSON('favourite');
   if (fav) {
     if (fav.type === 'random_colour' || fav.type === 'random_gradient') {
       return { type: 'colour', style: `background:${fav.url}` };
@@ -123,13 +127,15 @@ export async function getBackgroundData() {
     return { url: fav.url, video: videoCheck(fav.url), photoInfo: { ...fav, url: fav.url } };
   }
 
-  const type = localStorage.getItem('backgroundType');
-
   switch (type) {
     case 'api':
     case 'api_mue':
     case 'api_unsplash':
-      return getAPIBackground(isOffline);
+      return fallback
+        ? isOffline
+          ? getOfflineImage('api')
+          : fetchAPIImageData(null, getApiForBackgroundType(type))
+        : getAPIBackground(isOffline);
 
     case 'api_coverr':
       return getVideoBackground(isOffline, 'coverr', fetchCoverrVideo);
@@ -143,11 +149,22 @@ export async function getBackgroundData() {
     case 'api_pexels':
       return getVideoBackground(isOffline, 'pexels', fetchPexelsVideo);
 
+    case 'api_nasa':
+      return getVideoBackground(isOffline, 'nasa', fetchNasaVideo);
+
+    case 'api_commons':
+      return getVideoBackground(isOffline, 'commons', fetchCommonsVideo);
+
     case 'api_live':
       return getLiveBackground(isOffline);
 
     case 'colour':
-      return getColourBackground();
+      return fallback
+        ? {
+            type: 'colour',
+            style: `background: ${localStorage.getItem('fallbackBackgroundColour') || '#20242c'}`,
+          }
+        : getColourBackground();
 
     case 'random_colour':
     case 'random_gradient':
@@ -162,6 +179,37 @@ export async function getBackgroundData() {
     default:
       return null;
   }
+}
+
+export async function getFallbackBackground(failedType) {
+  const type = localStorage.getItem('fallbackBackgroundType');
+  let data;
+  if (type && type !== 'none' && type !== failedType) {
+    try {
+      data = await getProviderBackground(type, true);
+    } catch {
+      /* Bundled image is the final fallback. */
+    }
+  }
+  return {
+    ...(data?.url || data?.style ? data : getOfflineImage('api')),
+    sourceRole: 'fallback',
+    sourceSelection: desiredBackgroundSource(),
+  };
+}
+
+export async function getBackgroundData() {
+  const selection = desiredBackgroundSource();
+  if (selection !== 'primary') return getFallbackBackground();
+  const type = localStorage.getItem('backgroundType');
+  let data;
+  try {
+    data = await getProviderBackground(type);
+  } catch {
+    /* Recover using the configured fallback. */
+  }
+  if ((!data?.url && !data?.style) || data?.photoInfo?.offline) return getFallbackBackground(type);
+  return { ...data, sourceRole: 'primary', sourceSelection: selection };
 }
 
 function getColourBackground() {

@@ -1,6 +1,6 @@
-export const readQuicklinks = () => {
+export const readQuicklinks = (storageKey = 'quicklinks') => {
   try {
-    const raw = localStorage.getItem('quicklinks');
+    const raw = localStorage.getItem(storageKey);
     if (!raw) return [];
     const data = JSON.parse(raw);
     return Array.isArray(data) ? data : [];
@@ -9,3 +9,8 @@ export const readQuicklinks = () => {
     return [];
   }
 };
+
+export const quicklinksStorageKey = (focused) =>
+  focused && localStorage.getItem('quicklinksSeparateFocus') === 'true'
+    ? 'focusQuicklinks'
+    : 'quicklinks';
