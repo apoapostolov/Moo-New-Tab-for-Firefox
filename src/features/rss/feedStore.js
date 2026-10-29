@@ -12,6 +12,7 @@ const CACHE_KEY = 'rssItems';
 const COUNT_KEY = 'rssItemCount';
 const REFRESH_KEY = 'rssRefreshMinutes';
 const FULL_ARTICLE_KEY = 'rssFullArticle';
+const SOURCE_KEY = 'rssSource';
 
 const DEFAULT_COUNT = 3;
 // A dozen headlines is the most the card is asked to carry, so an older profile that
@@ -31,17 +32,68 @@ const readJSON = (key, fallback) => {
   }
 };
 
-/** Feeds as configured: `[{ url, title }]`. A title is only a label the page shows. */
+/** Feeds as configured: `[{ url, title, folder }]`. A title is only a label the page shows. */
 export function readFeeds() {
   const stored = readJSON(FEEDS_KEY, []);
 
   return Array.isArray(stored)
-    ? stored.filter((feed) => feed && typeof feed.url === 'string' && feed.url)
+    ? stored
+        .filter((feed) => feed && typeof feed.url === 'string' && feed.url)
+        .map((feed) => ({
+          url: feed.url,
+          title: String(feed.title || '').trim() || feedTitle(feed.url),
+          ...(feed.folder ? { folder: String(feed.folder) } : {}),
+        }))
     : [];
 }
 
 export function saveFeeds(feeds) {
   localStorage.setItem(FEEDS_KEY, JSON.stringify(feeds));
+}
+
+/**
+ * An import joins the list rather than replacing it: an address that is already there
+ * keeps the title it has, and an entry with no usable address is counted, not kept.
+ */
+export function mergeFeeds(existing, incoming) {
+  const feeds = Array.isArray(existing) ? [...existing] : [];
+  const seen = new Set(feeds.map((feed) => feed.url));
+  let added = 0;
+  let duplicates = 0;
+  let invalid = 0;
+
+  for (const feed of Array.isArray(incoming) ? incoming : []) {
+    const url = normaliseUrl(feed?.url);
+
+    if (!url) {
+      invalid += 1;
+      continue;
+    }
+
+    if (seen.has(url)) {
+      duplicates += 1;
+      continue;
+    }
+
+    seen.add(url);
+    feeds.push({
+      url,
+      title: String(feed.title || '').trim() || feedTitle(url),
+      ...(feed.folder ? { folder: String(feed.folder) } : {}),
+    });
+    added += 1;
+  }
+
+  return { feeds, added, duplicates, invalid };
+}
+
+/** Which list the card draws: the feeds added here, or the account in Settings. */
+export function readSource() {
+  return localStorage.getItem(SOURCE_KEY) === 'feedly' ? 'feedly' : 'feeds';
+}
+
+export function saveSource(source) {
+  localStorage.setItem(SOURCE_KEY, source === 'feedly' ? 'feedly' : 'feeds');
 }
 
 /** `example.com/feed` is accepted as `https://example.com/feed`; anything else is null. */
@@ -69,6 +121,9 @@ export function feedTitle(url) {
     return url;
   }
 }
+
+/** The separator an imported folder path is stored and written with. */
+export const SEPARATOR = ' / ';
 
 export function readCount() {
   const stored = Number(localStorage.getItem(COUNT_KEY));

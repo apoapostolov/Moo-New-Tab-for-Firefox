@@ -1,22 +1,37 @@
+import 'components/Form/Settings/Text/Text.scss';
 import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useEffect, useState } from 'react';
-import { MdAdd, MdDeleteOutline } from 'react-icons/md';
+import { MdAdd, MdCheck, MdDeleteOutline, MdDownload, MdUpload } from 'react-icons/md';
 
 import { Header, Row, Content, Action, Group } from 'components/Layout/Settings';
-import { Checkbox, Dropdown } from 'components/Form/Settings';
+import { Checkbox, Dropdown, FileUpload, Text } from 'components/Form/Settings';
+import { Button } from 'components/Elements';
 import WidgetSurface from 'components/Form/Settings/WidgetSurface/WidgetSurface';
 import EventBus from 'utils/eventbus';
+import { saveFile } from 'utils/saveFile';
 
 import {
   feedAccess,
   feedTitle,
   forgetItems,
   grantAccess,
+  mergeFeeds,
   normaliseUrl,
   readFeeds,
   saveFeeds,
 } from '../feedStore';
+import { buildOpml, opmlFilename, parseOpml } from '../opml';
+import {
+  budgetState,
+  feedlyAccess,
+  forgetFeedly,
+  grantFeedlyAccess,
+  readFeedlyToken,
+  verifyFeedly,
+} from '../feedly';
+
+const OPML_INPUT = 'rss-opml-input';
 
 // The card lists what the profile asks for, one at a time up to a dozen.
 const COUNTS = Array.from({ length: 12 }, (_, index) => String(index + 1));
@@ -40,6 +55,7 @@ const seedDefaults = () => {
     rssItemCount: '3',
     rssRefreshMinutes: '30',
     rssArticleTtl: '168',
+    rssSource: 'feeds',
   };
 
   for (const [key, value] of Object.entries(defaults)) {
@@ -66,6 +82,9 @@ const RssOptions = () => {
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
   const [access, setAccess] = useState({});
+  const [feedly, setFeedly] = useState({ status: '', access: 'unknown', busy: false });
+  const [transfer, setTransfer] = useState({ status: '', reading: false });
+  const [hasToken, setHasToken] = useState(Boolean(readFeedlyToken()));
 
   useEffect(() => {
     let live = true;
@@ -121,9 +140,140 @@ const RssOptions = () => {
 
   const remove = (url) => commit(feeds.filter((feed) => feed.url !== url));
 
+  /**
+   * The Feedly side of these settings. A token belongs to one account and Feedly allows
+   * 50 calls a day on it, so the page reports both what the token is and what is left.
+   */
+  useEffect(() => {
+    let live = true;
+
+    feedlyAccess().then((state) => {
+      if (live) setFeedly((previous) => ({ ...previous, access: state }));
+    });
+
+    return () => {
+      live = false;
+    };
+  }, []);
+
+  const checkFeedly = async () => {
+    setFeedly((previous) => ({ ...previous, busy: true, status: '' }));
+
+    // Asked here rather than on load: the browser only grants a host from a click.
+    const access = (await feedlyAccess()) === 'missing' ? await grantFeedlyAccess() : true;
+
+    if (!access) {
+      setFeedly({
+        busy: false,
+        access: 'missing',
+        status: 'Moo needs permission to reach Feedly before it can check the token.',
+      });
+
+      return;
+    }
+
+    try {
+      const profile = await verifyFeedly();
+
+      setFeedly({
+        busy: false,
+        access: 'granted',
+        status: `Connected as ${profile.email || profile.givenName || profile.id}${
+          profile.plan ? `, on the ${profile.plan} plan` : ''
+        }.`,
+      });
+
+      // Only a first connection needs the card to go and fetch: a re-check would spend two
+      // calls to redraw a list the cache already holds.
+      if (!localStorage.getItem('feedlyItems')) EventBus.emit('refresh', 'rss');
+    } catch (failure) {
+      setFeedly((previous) => ({ ...previous, busy: false, status: failure.message }));
+    }
+  };
+
+  const disconnectFeedly = () => {
+    forgetFeedly();
+    setHasToken(false);
+    setFeedly((previous) => ({ ...previous, status: 'Token removed.' }));
+    EventBus.emit('refresh', 'rss');
+  };
+
+  /**
+   * A file the reader exported becomes feeds in this profile. Nothing is fetched here, so
+   * every new host shows the same Allow button a hand-added feed shows.
+   */
+  const importOpml = async (text) => {
+    const parsed = parseOpml(text);
+
+    if (parsed.error === 'not_opml') {
+      setTransfer({ reading: false, status: 'That file is not an OPML document.' });
+
+      return;
+    }
+
+    if (!parsed.feeds.length) {
+      setTransfer({ reading: false, status: 'That file has no feeds in it.' });
+
+      return;
+    }
+
+    const merged = mergeFeeds(feeds, parsed.feeds);
+
+    saveFeeds(merged.feeds);
+    setFeeds(merged.feeds);
+    forgetItems();
+    EventBus.emit('refresh', 'rss');
+
+    const parts = [`${merged.added} ${merged.added === 1 ? 'feed' : 'feeds'} added`];
+
+    if (merged.duplicates) parts.push(`${merged.duplicates} already here`);
+    if (merged.invalid) parts.push(`${merged.invalid} without an address`);
+    if (parsed.skipped) parts.push(`${parsed.skipped} repeated in the file`);
+
+    setTransfer({ reading: false, status: `${parts.join(', ')}.` });
+  };
+
+  const exportOpml = () => {
+    saveFile(buildOpml(feeds), opmlFilename(), 'text/x-opml');
+    setTransfer({ reading: false, status: `Saved ${feeds.length} feeds as OPML.` });
+  };
+
+  const budget = budgetState();
+  const calls = budget
+    ? `${budget.used} of ${budget.limit} calls used${
+        budget.used
+          ? `, ${Math.floor(budget.resetInMinutes / 60)}h ${budget.resetInMinutes % 60}m until they reset`
+          : ''
+      }.`
+    : 'No calls made yet.';
+
   return (
     <>
       <Header title={uiText('rss_fcae0f')} />
+
+      <Group>
+        <Section
+          title={uiText('source_6da13a')}
+          subtitle={uiText('where_the_card_s_headlines_come_from_both_lis_dfbae5')}
+        />
+
+        <Row>
+          <Content
+            title={uiText('headlines_from_af57a5')}
+            subtitle={uiText('the_feeds_added_below_or_a_feedly_account_a2b02e')}
+          />
+          <Action>
+            <Dropdown
+              name="rssSource"
+              category="rss"
+              items={[
+                { value: 'feeds', text: uiText('your_feeds_2807e6') },
+                { value: 'feedly', text: uiText('a_feedly_account_9ab3eb') },
+              ]}
+            />
+          </Action>
+        </Row>
+      </Group>
 
       <Group>
         <Section
@@ -133,7 +283,10 @@ const RssOptions = () => {
 
         {feeds.map((feed) => (
           <Row key={feed.url} className="rssFeedRow">
-            <Content title={feed.title || feedTitle(feed.url)} subtitle={feed.url} />
+            <Content
+              title={feed.title || feedTitle(feed.url)}
+              subtitle={feed.folder ? `${feed.folder} · ${feed.url}` : feed.url}
+            />
             <Action>
               {access[feed.url] === 'missing' ? (
                 <button className="rssOptionButton" type="button" onClick={() => allow(feed.url)}>
@@ -164,7 +317,7 @@ const RssOptions = () => {
         <Row>
           <div className="rssFeedField">
             <input
-              className="rssOptionInput"
+              className="text-field-input rssOptionInput"
               type="url"
               value={draft}
               placeholder={uiText('example_com_feed_xml_098287')}
@@ -194,6 +347,132 @@ const RssOptions = () => {
             <Content subtitle={error} />
           </Row>
         ) : null}
+      </Group>
+
+      <Group>
+        <Section
+          title={uiText('feedly_68002a')}
+          subtitle={uiText('a_personal_access_token_from_feedly_com_v3_au_766f03')}
+        />
+
+        <Row>
+          <div className="rssFeedField">
+            <Text
+              name="feedlyToken"
+              title={uiText('access_token_f69d5c')}
+              placeholder={uiText('the_token_feedly_shows_after_you_authorise_c11506')}
+              default=""
+              category="feedly"
+              onChange={(value) => setHasToken(Boolean(String(value).trim()))}
+            />
+          </div>
+        </Row>
+
+        <Row>
+          <div className="rssFeedField">
+            <Text
+              name="feedlyRefreshToken"
+              title={uiText('refresh_token_63c0a5')}
+              placeholder={uiText('optional_feedly_shows_one_beside_the_token_2fb7bb')}
+              default=""
+              category="feedly"
+            />
+          </div>
+        </Row>
+
+        <Row>
+          <Content
+            title={uiText('connection_6512ee')}
+            subtitle={
+              feedly.status ||
+              uiText('feedly_answers_with_the_account_the_token_bel_e793c8')
+            }
+          />
+          <Action>
+            {/* The action column is a column: a labelled check beside its own glyph needs a row. */}
+            <div className="rssActionRow">
+              <Button
+                type="settings"
+                icon={<MdCheck />}
+                label={feedly.busy ? uiText('checking_820d60') : uiText('check_token_e74cda')}
+                disabled={feedly.busy || !hasToken}
+                onClick={checkFeedly}
+              />
+              {hasToken ? (
+                <button
+                  className="rssOptionIcon"
+                  type="button"
+                  aria-label={uiText('forget_03d5d8')}
+                  title={uiText('forget_03d5d8')}
+                  onClick={disconnectFeedly}
+                >
+                  <MdDeleteOutline />
+                </button>
+              ) : null}
+            </div>
+          </Action>
+        </Row>
+
+        <Row>
+          <Content title={uiText('calls_today_848b7f')} subtitle={calls} />
+        </Row>
+      </Group>
+
+      <Group>
+        <Section
+          title={uiText('opml_ad3e0f')}
+          subtitle={uiText('the_subscription_file_every_feed_reader_can_e_a50a40')}
+        />
+
+        <Row>
+          <Content
+            title={uiText('import_d6fbc9')}
+            subtitle={uiText('a_feed_already_in_the_list_is_skipped_and_a_n_8ca89c')}
+          />
+          <Action>
+            <Button
+              type="settings"
+              icon={<MdUpload />}
+              label={transfer.reading ? 'Reading…' : uiText('choose_file_eb7eb7')}
+              disabled={transfer.reading}
+              onClick={() => document.getElementById(OPML_INPUT)?.click()}
+            />
+          </Action>
+        </Row>
+
+        <Row>
+          <Content
+            title={uiText('export_f3e4fa')}
+            subtitle={`Writes ${
+              feeds.length === 1 ? '1 feed' : `${feeds.length} feeds`
+            }, with the folders they were imported under, as OPML.`}
+          />
+          <Action>
+            <Button
+              type="settings"
+              icon={<MdDownload />}
+              label={uiText('save_file_bedc84')}
+              disabled={!feeds.length}
+              onClick={exportOpml}
+            />
+          </Action>
+        </Row>
+
+        {transfer.status ? (
+          <Row>
+            <Content subtitle={transfer.status} />
+          </Row>
+        ) : null}
+
+        <FileUpload
+          id={OPML_INPUT}
+          type="settings"
+          accept=".opml,.xml,text/xml,application/xml,text/x-opml"
+          loadFunction={async (text) => {
+            setTransfer({ reading: true, status: '' });
+            await importOpml(text);
+          }}
+        />
       </Group>
 
       <Group>

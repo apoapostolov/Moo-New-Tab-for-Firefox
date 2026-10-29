@@ -21,6 +21,26 @@
   @extend %widgetLabel;
 }
 
+/* The label and its count travel together, so the refresh stays at the card's edge. */
+.rssHeadLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+}
+
+/* The unread total is a count beside the label, not a second label: small, tabular, and
+ * dimmer than the word it follows. */
+.rssUnread {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 14%);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
 .rssRefresh {
   display: inline-flex;
   align-items: center;
@@ -339,20 +359,20 @@
   }
 }
 
+.rssActionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .rssOptionInput {
   flex: 1;
-  min-width: 0;
-  padding: 9px 12px;
-  border: 1px solid rgb(255 255 255 / 16%);
-  border-radius: 8px;
-  background: rgb(0 0 0 / 22%);
-  color: inherit;
-  font: inherit;
-  font-size: 13px;
+}
 
-  &::placeholder {
-    opacity: 0.5;
-  }
+/* A token is longer than any of these rows is wide, so the field takes the row. */
+.rssFeedField .text-field-container {
+  flex: 1;
+  min-width: 0;
 }
 
 .rssOptionButton {

@@ -8,8 +8,9 @@ import { MdRefresh } from 'react-icons/md';
 import WidgetCard, { WidgetHeader } from 'components/Elements/WidgetCard/WidgetCard';
 import EventBus from 'utils/eventbus';
 
-import { loadItems, readCount, readFullArticle, readRefresh } from './feedStore';
-import { fetchArticle } from './extractArticle';
+import { loadItems, readCount, readFullArticle, readRefresh, readSource } from './feedStore';
+import { loadFeedly, markFeedlyRead } from './feedly';
+import { extractArticle, fetchArticle } from './extractArticle';
 import { cachedImages, pruneArticles, readArticle, storeArticle } from './articleCache';
 
 import './rss.scss';
@@ -39,7 +40,15 @@ const relative = (stamp) => {
 /** Merged headlines with a hover reader; full articles are prefetched when enabled. */
 const Rss = () => {
   useTranslationVersion();
-  const [feeds, setFeeds] = useState({ items: [], errors: [], loading: true });
+  const [feeds, setFeeds] = useState({
+    items: [],
+    errors: [],
+    source: readSource(),
+    unread: null,
+    note: '',
+    needsToken: false,
+    loading: true,
+  });
   const [open, setOpen] = useState(null);
   const [article, setArticle] = useState({ status: 'idle' });
   const [tick, setTick] = useState(0);
@@ -54,15 +63,37 @@ const Rss = () => {
 
   const load = useCallback(async (force = false) => {
     const request = owner.current.start();
-    setFeeds((previous) => ({ ...previous, loading: previous.items.length === 0 }));
+    const source = readSource();
+    setFeeds((previous) => ({ ...previous, source, loading: previous.items.length === 0 }));
 
     try {
+      if (source === 'feedly') {
+        const result = await loadFeedly({ force, signal: request.signal, count: readCount() });
+        if (!request.current()) return;
+
+        setFeeds({
+          items: result.items.slice(0, readCount()),
+          errors: [],
+          source,
+          unread: result.unread,
+          note: result.note || '',
+          needsToken: Boolean(result.needsToken),
+          loading: false,
+        });
+
+        return;
+      }
+
       const result = await loadItems({ force, signal: request.signal });
       if (!request.current()) return;
 
       setFeeds({
         items: result.items.slice(0, readCount()),
         errors: result.errors,
+        source,
+        unread: null,
+        note: '',
+        needsToken: false,
         loading: false,
       });
     } catch (error) {
@@ -108,7 +139,7 @@ const Rss = () => {
   // goes, and anything past its age goes with it. It waits for that list: the first
   // render has none, and a prune against it would empty the cache on every visit.
   useEffect(() => {
-    if (feeds.loading || !feeds.items.length) return;
+    if (feeds.source !== 'feeds' || feeds.loading || !feeds.items.length) return;
 
     const links = feeds.items.map((item) => item.link).filter(Boolean);
 
@@ -122,7 +153,7 @@ const Rss = () => {
    * the pointer is rarely faster than the second story.
    */
   useEffect(() => {
-    if (!readFullArticle()) return undefined;
+    if (!readFullArticle() || feeds.source !== 'feeds') return undefined;
 
     const items = feeds.items;
     let stopped = false;
@@ -149,7 +180,7 @@ const Rss = () => {
       stopped = true;
       controller.abort();
     };
-  }, [feeds.items]);
+  }, [feeds.items, feeds.source]);
 
   const thumbs = (() => {
     const links = feeds.items.map((item) => item.link).filter(Boolean);
@@ -183,6 +214,21 @@ const Rss = () => {
     clearTimeout(articleTimer.current);
     articleRequest.current?.abort();
     setOpen({ item, element });
+
+    // A Feedly entry arrives with its own words, so the panel opens with nothing to wait
+    // for: the same block reader the fetched pages go through, run on the feed's HTML.
+    if (item.content) {
+      const built = extractArticle(item.content, item.link);
+      const blocks = built.blocks.length
+        ? built.blocks
+        : item.excerpt
+          ? [{ tag: 'p', text: item.excerpt }]
+          : [];
+
+      setArticle({ status: 'ready', article: { ...built, image: built.image || item.image || null, blocks } });
+
+      return;
+    }
 
     // Kept already: there is nothing to wait for, so nothing is shown waiting.
     const kept = item.link ? readArticle(item.link) : null;
@@ -252,8 +298,40 @@ const Rss = () => {
     };
   }, [open, article.status, article.article, tick]);
 
+  /**
+   * Opening a story is the action that changes the account, and the only one: a hover
+   * reads, a click marks read, which is what Feedly's terms ask for.
+   */
+  const openItem = (item) => {
+    window.open(item.link, '_blank', 'noopener,noreferrer');
+
+    if (!item.entryId) return;
+
+    setFeeds((previous) => ({
+      ...previous,
+      items: previous.items.filter((row) => row.entryId !== item.entryId),
+      unread: Number.isFinite(previous.unread)
+        ? Math.max(0, previous.unread - 1)
+        : previous.unread,
+    }));
+
+    markFeedlyRead([item.entryId]);
+  };
+
   const failed = feeds.errors.filter((error) => error.url);
   const blocks = article.status === 'ready' ? article.article.blocks : null;
+  const unread =
+    feeds.source === 'feedly' && Number.isFinite(feeds.unread)
+      ? feeds.unread > 999
+        ? '999+'
+        : String(feeds.unread)
+      : null;
+  const empty =
+    feeds.source === 'feedly'
+      ? feeds.needsToken
+        ? uiText('add_a_feedly_token_in_settings_under_feeds_d79793')
+        : feeds.note || uiText('nothing_unread_in_feedly_78c437')
+      : uiText('no_headlines_yet_add_feeds_in_settings_under_2306de');
 
   const reader =
     open &&
@@ -325,7 +403,10 @@ const Rss = () => {
       aria-label={uiText('rss_headlines_a9cbd7')}
     >
       <WidgetHeader className="rssHead">
-        <span className="rssLabel">{uiText('reading_cffa2a')}</span>
+        <span className="rssHeadLabel">
+          <span className="rssLabel">{uiText('reading_cffa2a')}</span>
+          {unread ? <span className="rssUnread">{unread}</span> : null}
+        </span>
         <button
           className="rssRefresh"
           type="button"
@@ -339,7 +420,13 @@ const Rss = () => {
       {feeds.loading ? <p className="rssNote">{uiText('fetching_headlines_1f9878')}</p> : null}
 
       {!feeds.loading && !feeds.items.length ? (
-        <p className="rssNote">{uiText('no_headlines_yet_add_feeds_in_settings_under_2306de')}</p>
+        <p
+          className={`rssNote${
+            feeds.source === 'feedly' && (feeds.needsToken || feeds.note) ? ' rssNote-warn' : ''
+          }`}
+        >
+          {empty}
+        </p>
       ) : null}
 
       <ul className="rssList" onMouseLeave={hide}>
@@ -351,7 +438,7 @@ const Rss = () => {
               onMouseEnter={(event) => show(item, event.currentTarget)}
               onFocus={(event) => show(item, event.currentTarget)}
               onBlur={hide}
-              onClick={() => window.open(item.link, '_blank', 'noopener,noreferrer')}
+              onClick={() => openItem(item)}
             >
               {thumbs[item.link] ? (
                 <img
@@ -367,13 +454,19 @@ const Rss = () => {
               {/* Source and age share the line above the headline, so the age is placed
                   before the headline in the grid rather than after it: written after, the
                   headline spanning both columns pushed it onto a line of its own. */}
-              <span className="rssSource">{item.source.title}</span>
+              <span className="rssSource">
+                {item.source.title || (feeds.source === 'feedly' ? uiText('feedly_68002a') : '')}
+              </span>
               <span className="rssAge">{relative(item.date)}</span>
               <span className="rssItemTitle">{item.title}</span>
             </button>
           </li>
         ))}
       </ul>
+
+      {feeds.note && feeds.items.length ? (
+        <p className="rssNote rssNote-warn">{feeds.note}</p>
+      ) : null}
 
       {failed.length ? (
         <p
