@@ -142,6 +142,8 @@ const shift = (now, amount, unit) => {
   return date;
 };
 const PREFIX = '(?:\\b(?:on|by|due(?:\\s+on)?|starting(?:\\s+on)?|beginning(?:\\s+on)?|from)\\s+)?';
+const END_OF =
+  '(?:\\b(?:on|by|due(?:\\s+on)?|at|before|until|till)\\s+)?\\b(?:the\\s+)?end\\s+of\\s+(?:the\\s+)?';
 
 /** Date matches retain their spans so invalid explicit dates cannot become a partial date. */
 export function readNaturalDate(text, now = new Date(), ranges = true) {
@@ -228,18 +230,56 @@ export function readNaturalDate(text, now = new Date(), ranges = true) {
     nextWeekday(now, WEEKDAYS[m[2].toLowerCase()], m[1].toLowerCase() === 'next'),
   );
   collect(`${PREFIX}\\bnext\\s+(week|month|year)\\b`, (m) => shift(now, 1, m[1].toLowerCase()));
-  collect(`${PREFIX}\\b(?:the\\s+)?end\\s+of\\s+(?:the\\s+|this\\s+)?(week|month|year)\\b`, (m) =>
-    m[1].toLowerCase() === 'week'
-      ? nextWeekday(now, 5)
-      : m[1].toLowerCase() === 'month'
-        ? new Date(now.getFullYear(), now.getMonth() + 1, 0)
-        : new Date(now.getFullYear(), 11, 31),
-  );
+  const endOf = (date) => ({ date, endDate: null, endOfDay: true, periodEnd: true });
+  collect(`${END_OF}(?:(this|next)\\s+)?(day|week|month|year)\\b`, (m) => {
+    const next = m[1]?.toLowerCase() === 'next';
+    const period = m[2].toLowerCase();
+    const date =
+      period === 'day'
+        ? addDays(now, next ? 1 : 0)
+        : period === 'week'
+          ? addDays(nextWeekday(now, 5), next ? 7 : 0)
+          : period === 'month'
+            ? new Date(now.getFullYear(), now.getMonth() + (next ? 2 : 1), 0)
+            : new Date(now.getFullYear() + (next ? 1 : 0), 11, 31);
+    return endOf(date);
+  });
+  collect(`${END_OF}(${MONTH})(?:\\s+(\\d{4}))?\\b`, (m) => {
+    const month = MONTHS[m[1].toLowerCase()];
+    const year = m[2] ? Number(m[2]) : now.getFullYear();
+    for (let offset = 0; offset < (m[2] ? 1 : 2); offset++) {
+      const last = new Date(year + offset, month + 1, 0);
+      const date = validDate(last.getFullYear(), month, last.getDate());
+      if (date && (m[2] || date >= midnight(now))) return endOf(date);
+    }
+    return null;
+  });
+  collect(`${END_OF}(?:year\\s+)?(\\d{4})\\b`, (m) => {
+    const date = validDate(+m[1], 11, 31);
+    return date ? endOf(date) : null;
+  });
   collect(`${PREFIX}\\b(${DAY})\\b`, (m) => nextWeekday(now, WEEKDAYS[m[1].toLowerCase()]));
   const overlaps = (a, b) => a.index < b.index + b.length && b.index < a.index + a.length;
   const valid = candidates
+    .map((candidate) => {
+      // Extend the matched span as well as the date: "end of Friday" leaves no title debris.
+      const prefix = text.slice(0, candidate.index).match(new RegExp(`${END_OF}$`, 'i'));
+      return prefix
+        ? {
+            ...candidate,
+            index: prefix.index,
+            length: candidate.length + candidate.index - prefix.index,
+            endOfDay: true,
+          }
+        : candidate;
+    })
     .filter((c) => !invalid.some((i) => overlaps(c, i)))
-    .sort((a, b) => a.index - b.index || b.length - a.length);
+    .sort(
+      (a, b) =>
+        a.index - b.index ||
+        b.length - a.length ||
+        Number(Boolean(b.periodEnd)) - Number(Boolean(a.periodEnd)),
+    );
   const first = valid[0];
   if (!first) return null;
   if (ranges && !first.endDate) {

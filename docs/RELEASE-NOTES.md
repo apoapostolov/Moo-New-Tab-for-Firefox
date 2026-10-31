@@ -8,7 +8,7 @@ Bookmarks combines local browser bookmarks, Raindrop, Readwise Reader and Daily 
 
 GitHub uses status glyphs and compact count tabs, with full issue/PR descriptions and developer details in a hover preview. The header keeps only reload.
 
-Floats brings Floating Notes, Floating Lists, Floating Images and Floating Countdowns together in Settings, including the Countdown widget controls. Misc keeps Triple click to hide the UI. Padlocks keep Floating Notes, Lists, Countdowns and Images fixed above unlocked floating content. Saved content and preferences carry over.
+Floats brings Floating Notes, Floating Lists, Floating Images and Floating Countdowns together in Settings, including the Countdown widget controls. Misc keeps Triple click to hide the UI. Padlocks keep Floating Notes, Lists, Countdowns and Images fixed above unlocked floating content. Saved content and preferences carry over. Countdown titles can be edited directly on click without changing their dates or notes.
 
 Habits uses the standard widget width with two-click daily confirmations, milestone progress rings and earned streak badges. Full names, details, monthly history and an Edit glyph appear in the hover panel; today's completion bar stays above the table.
 

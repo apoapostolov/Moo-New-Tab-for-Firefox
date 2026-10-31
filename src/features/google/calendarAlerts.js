@@ -2,7 +2,7 @@ const MAX_MINUTES = 40320;
 export function validEventReminders(value) {
   return Boolean(value && typeof value.useDefault === 'boolean' && (value.useDefault ||
     (Array.isArray(value.overrides) && value.overrides.length <= 5 && value.overrides.every(item =>
-      ['popup','email'].includes(item.method) && typeof item.minutes === 'number' && Number.isInteger(item.minutes) && item.minutes >= 0 && item.minutes <= MAX_MINUTES))));
+      item && ['popup','email'].includes(item.method) && typeof item.minutes === 'number' && Number.isInteger(item.minutes) && item.minutes >= 0 && item.minutes <= MAX_MINUTES))));
 }
 export function eventReminders(value) {
   if (!validEventReminders(value)) throw new Error('Choose up to five alerts, from 0 to 40,320 minutes before the event.');

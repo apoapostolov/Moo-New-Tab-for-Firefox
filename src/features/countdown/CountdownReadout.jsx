@@ -1,10 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import { uiText } from 'lib/translations';
-import Markdown, { checklistLabel as markdownLabel } from 'features/scratch/Markdown';
+import { checklistLabel as markdownLabel } from 'features/scratch/Markdown';
+import CountdownTitle from './CountdownTitle';
 import { countdownDelay, countdownProgress, countdownText } from './countdownStore';
 
-export default function CountdownReadout({ value }) {
+export default function CountdownReadout({ value, onTitleChange, onTitleFocus, angle }) {
   const { language } = useTranslationVersion();
   const locale = language.replaceAll('_', '-');
   const [now, setNow] = useState(Date.now);
@@ -48,11 +49,12 @@ export default function CountdownReadout({ value }) {
   }, [value.target, value.interval, value.format]);
   return (
     <div className="countdownReadout">
-      {value.title.trim() && (
-        <div className="countdownTitle scratchNoteBody">
-          <Markdown text={value.title} />
-        </div>
-      )}
+      <CountdownTitle
+        title={value.title}
+        onChange={onTitleChange}
+        onFocus={onTitleFocus}
+        angle={angle}
+      />
       {style !== 'progress' && (
         <time className="countdownValue" dateTime={value.target} title={deadline}>
           {text}

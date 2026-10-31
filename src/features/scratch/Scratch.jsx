@@ -8,7 +8,7 @@ import { uiText } from 'lib/translations';
 import { useTranslationVersion } from 'contexts/TranslationContext';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { MdAdd, MdLock, MdLockOpen } from 'react-icons/md';
-import useScrollThumb from 'utils/useScrollThumb';
+import NoteEditor from './NoteEditor';
 
 import EventBus from 'utils/eventbus';
 import { deferScratchGesture } from 'utils/pageGestures';
@@ -196,31 +196,6 @@ const WIDGET_FADE = 1000;
 const SCRATCH_ENTRANCE = WIDGET_FADE + 120; // a beat after the page settles
 const SCRATCH_STAGGER = 60; // between one note and the next
 const SCRATCH_WINDOW = 1600; // how long after arriving the entrance still counts
-
-function NoteEditor({ text, readOnly, onChange, onBlur, angle }) {
-  const input = useRef(null);
-  useScrollThumb(input, true, false, angle);
-  useLayoutEffect(() => {
-    const element = input.current;
-    element.style.height = 'auto';
-    element.style.height = `${element.scrollHeight}px`;
-  }, [text]);
-  return (
-    <textarea
-      ref={input}
-      className="scratchNoteInput"
-      readOnly={readOnly}
-      value={text}
-      placeholder={uiText('write_here_markdown_supported_e2bd9d')}
-      autoFocus
-      onChange={(event) => onChange(event.target.value)}
-      onBlur={onBlur}
-      onKeyDown={(event) => {
-        if (event.key === 'Escape') event.currentTarget.blur();
-      }}
-    />
-  );
-}
 
 const Scratch = () => {
   useTranslationVersion();
@@ -1274,7 +1249,31 @@ const Scratch = () => {
                   </section>
                 ) : (
                   <>
-                    {type === 'countdown' && <CountdownReadout value={note.countdown} />}
+                    {type === 'countdown' && (
+                      <CountdownReadout
+                        value={note.countdown}
+                        angle={angle}
+                        onTitleFocus={() => {
+                          setEditingId(null);
+                          setFocused(note.id);
+                        }}
+                        onTitleChange={
+                          notesProblem
+                            ? undefined
+                            : (title) =>
+                                setNotes((current) =>
+                                  current.map((item) =>
+                                    item.id === note.id && noteType(item) === 'countdown'
+                                      ? rememberNoteType(item, 'countdown', {
+                                          ...item.countdown,
+                                          title,
+                                        })
+                                      : item,
+                                  ),
+                                )
+                        }
+                      />
+                    )}
                     {editing ? (
                       <NoteEditor
                         angle={angle}

@@ -57,7 +57,25 @@ export default function Countdown() {
       ) : (
         state.items.map((item) => (
           <article className="countdownItem" key={item.id}>
-            <CountdownReadout value={item} />
+            <CountdownReadout
+              value={item}
+              onTitleChange={(title) => {
+                try {
+                  const latest = readCountdownState();
+                  if (latest.damaged) throw new Error(uiText('countdown_damaged'));
+                  if (!latest.items.some((entry) => entry.id === item.id))
+                    throw new Error(uiText('countdown_removed_elsewhere'));
+                  commit(
+                    latest.items.map((entry) =>
+                      entry.id === item.id ? { ...entry, title } : entry,
+                    ),
+                  );
+                  setError('');
+                } catch (error) {
+                  setError(error.message);
+                }
+              }}
+            />
             {item.text && (
               <div className="scratchNoteBody countdownMarkdown">
                 <Markdown text={item.text} />

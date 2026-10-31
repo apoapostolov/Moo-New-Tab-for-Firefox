@@ -9,6 +9,7 @@ Only title edits activate recognition on an existing record. Opening and saving 
 | Detail | Examples |
 | --- | --- |
 | Day | tomorrow; next Friday; in two business days; 12 November 2027; 2027-11-12 |
+| End of a period | end of tomorrow; end of Friday; end of February 2028; end of next month; end of year |
 | Numeric date | 12/11/2027 means 12 November; dotted dates need on or by |
 | Time | at 9:30; at nine o’clock; quarter to five in the afternoon; noon |
 | Time range | from 9 to 5pm; between 9am and 11am; at 11pm until 1am |
@@ -21,7 +22,7 @@ Only title edits activate recognition on an existing record. Opening and saving 
 | Repeat boundary | for six occurrences; until 31 Dec 2027. Choose one boundary. |
 | New-event calendar | calendar: "Work" matches a supplied writable calendar name |
 
-Fields can precede or follow the title. Semicolons delimit explicit notes, location and calendar fields; quotes protect literal text from interpretation. A date alone creates an all-day event. Clock-only new events use today; clock-only edits retain the selected day. Morning, afternoon and evening with a date use 09:00, 15:00 and 19:00 when no clock is given. Times use the browser’s local timezone. Overnight ranges advance the end to the following day; explicit multi-day ends retain their date. Invalid dates and clocks are left as text instead of being rolled into another date.
+Fields can precede or follow the title. Semicolons delimit explicit notes, location and calendar fields; quotes protect literal text from interpretation. A date alone creates an all-day event. Clock-only new events use today; clock-only edits retain the selected day. Morning, afternoon and evening with a date use 09:00, 15:00 and 19:00 when no clock is given. Times use the browser’s local timezone. An end-of-period phrase consumes the whole clause and defaults to 23:59, unless an explicit clock is supplied. Months use their actual last day, including leap years; a named month without a year selects its current or upcoming month end. End of year means 31 December. Overnight ranges advance the end to the following day; explicit multi-day ends retain their date. Invalid dates and clocks are left as text instead of being rolled into another date.
 
 For example: Tomorrow from 9 to 10:30, planning at the office; notes: Bring the figures. Another: Design review every other week on Monday and Thursday at 4pm for six occurrences. Timed repeat rules include the local timezone for expansion across daylight-saving changes. All-day repeat endings use a date; timed endings include the final local day. Repeat rules and calendar changes are interpreted for new events only. Use Google Calendar to change an existing recurring series.
 
@@ -29,7 +30,7 @@ For example: Tomorrow from 9 to 10:30, planning at the office; notes: Bring the 
 
 Task phrases cover the title, due day, notes and a status set with status: done or status: open. For example: Please remind me to send the invoice by the day after tomorrow; notes: Keep a copy; status: done. Notes can also be set with description.
 
-Clock times and unsupported repeat clauses remain in task titles. The Tasks API stores only the scheduled day and exposes no recurrence field. Task titles and notes are checked against its 1,024 and 8,192 character limits. Selecting a task list and the separate Complete/Reopen actions retain their existing behavior.
+Clock times and unsupported repeat clauses remain in task titles. End-of-period phrases also set the due day and leave no “end of” text in the title. The Tasks API stores only the scheduled day and exposes no recurrence field. Task titles and notes are checked against its 1,024 and 8,192 character limits. Selecting a task list and the separate Complete/Reopen actions retain their existing behavior.
 
 This is a bounded English interpreter. It does not create guests, reminders, conferencing, attachments or timezone overrides from sentences. These are available through the full Google Calendar interface. It does not guess vague quantities such as a few.
 

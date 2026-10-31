@@ -12,7 +12,8 @@ export default function useCalendarAlerts(auth) {
   const [fired,setFired]=useState({}),[error,setError]=useState('');
   const {language}=useTranslationVersion();
   const account=auth?`${auth.email}:${auth.connectedAt}`:'';
-  const authRef=useRef(account);authRef.current=account;
+  const authRef=useRef(account);
+  useEffect(()=>{authRef.current=account;},[account]);
   useEffect(()=>{
     const changed=(changes,area)=>{if(area==='local'&&changes[CALENDAR_ALERT_STATE]){const state=changes[CALENDAR_ALERT_STATE].newValue;setFired(state?.account===authRef.current?state.fired||{}:{});}};
     const storage=globalThis.browser?.storage;
@@ -32,7 +33,7 @@ export default function useCalendarAlerts(auth) {
         if(disposed||signal.aborted||account!==authRef.current||stamp!==settingsStamp(/^(google|offlineMode|profileRevision)/))return;
         await calendarAlertMessage({type:'moo-calendar-alert-sync',account,updated,events:scheduledCalendarEvents(events,{locale:language.replaceAll('_','-'),use24Hour:settings.use24Hour,startsLabel:uiText('starts_fc612a'),allDayLabel:uiText('all_day_114574')})});
         if(!disposed)setError('');
-      }catch(e){if(!disposed&&!signal.aborted)setError(uiText('calendar_alert_sync_error'));}
+      }catch{if(!disposed&&!signal.aborted)setError(uiText('calendar_alert_sync_error'));}
     };
     const refresh=category=>{if(!category||['google','calendar'].includes(category))load();};
     const storage=event=>{if(event.key&&/^(google|offlineMode|profileRevision)/.test(event.key))load();};

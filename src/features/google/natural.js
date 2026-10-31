@@ -396,6 +396,7 @@ export function parseNatural(
     }
     if (startBound?.time) r.time = startBound.time;
     if (endBound?.time) r.endTime = endBound.time;
+    if (date?.endOfDay && !r.time) r.time = { hours: 23, minutes: 59 };
     r.location ||=
       ((r.date || r.time || r.repeat || r.durationMinutes || /@/.test(state.work)) &&
         take(state, /(?:\bat\s+|@)([^,;\uE000]+?)(?=\s{2,}|[,;]|$)/i, (m) => {

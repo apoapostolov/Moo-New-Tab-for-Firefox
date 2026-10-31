@@ -145,7 +145,7 @@ const Rss = () => {
 
     pruneArticles(new Set(links));
     setStored((value) => value + 1);
-  }, [feeds.items, feeds.loading]);
+  }, [feeds.items, feeds.loading, feeds.source]);
 
   /**
    * Reading the articles while the page stands. One after another rather than all at

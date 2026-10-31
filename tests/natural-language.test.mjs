@@ -9,6 +9,23 @@ const stamp = (d) =>
   d &&
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
+test('end-of phrases remove the complete clause in Calendar and Tasks', () => {
+  for (const [phrase, day] of [
+    ['Finish by end of tomorrow', '2026-10-30'],
+    ['Finish at the end of February 2028', '2028-02-29'],
+    ['Finish end of year', '2026-12-31'],
+  ]) {
+    const event = parse(phrase);
+    assert.equal(event.title, 'Finish');
+    assert.equal(stamp(event.date), day);
+    assert.deepEqual(event.time, { hours: 23, minutes: 59 });
+    const task = parse(phrase, 'task');
+    assert.equal(task.title, 'Finish');
+    assert.equal(stamp(task.date), day);
+    assert.equal(task.time, null);
+  }
+});
+
 test('calendar clauses can appear before or after the title without absorbing other fields', () => {
   for (const text of [
     'Tomorrow from 9 to 10:30, planning at the office; notes: Bring the Q4 figures',
