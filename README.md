@@ -52,6 +52,27 @@ The [v1.0.0 download](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/re
 
 Temporary installation ends when the browser restarts. Normal permanent installation in Firefox requires a Mozilla-signed XPI; renaming the ZIP does not sign it. See the [release process](docs/RELEASE_PROCESS.md) for signing and distribution. Installed Firefox/Zen and real Google account workflows still need verification; the [audit record](docs/REFACTOR-PROGRESS.md) lists the checks performed so far.
 
+## Developer installation for agents
+
+Use Node 22 and Bun 1.3.1. Clone this repository, install its dependencies and build the extension:
+
+```sh
+git clone https://github.com/apoapostolov/Moo-New-Tab-for-Firefox.git
+cd Moo-New-Tab-for-Firefox
+bun install --frozen-lockfile
+bun run build
+bun run validate:firefox
+```
+
+1. Open Firefox or Zen and go to `about:debugging#/runtime/this-firefox`.
+2. Choose **Load Temporary Add-on** and select `build/firefox/manifest.json` from the checkout.
+3. Open a new tab and confirm that Moo loads. Change a harmless setting, then open another new tab to verify that it persists.
+4. After editing source code, run `bun run build` and `bun run validate:firefox`, choose **Reload** on Moo's card in `about:debugging`, then open a fresh new tab to check the change.
+
+This developer installation requires no Mozilla Add-ons account or store submission and works with the unsigned build. It lasts until Firefox or Zen restarts; repeat the load step after a restart. Normal permanent installation in standard Firefox requires Mozilla signing. An unsigned XPI can be installed permanently only in a browser build configured to permit unsigned add-ons. [Mozilla's temporary installation guide](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/).
+
+Agents should use a separate test profile, preserve any existing Moo data and report the browser version, build path, validator result and observed new-tab behavior. Use the installed extension for permission and Google sign-in checks; `bun run dev` provides a web preview for layout work. Never commit account credentials or browser profiles.
+
 ## Development
 
 Use Bun 1.3.1 and Node 22:
