@@ -2,7 +2,7 @@
   <img src="assets/icon.png" alt="Moo icon" width="96" />
 </p>
 
-<h1 align="center">Moo</h1>
+<h1 align="center">Moo for Firefox</h1>
 
 <p align="center">Check your plans, leave notes and look things up from a new tab.</p>
 
@@ -14,7 +14,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-BSD--3--Clause-555" alt="License: BSD-3-Clause" /></a>
 </p>
 
-Moo is a personal fork of [Mue](https://github.com/mue/mue) for Firefox and Zen. It gives you somewhere to check the next appointment, leave a reminder and look something up whenever you open a tab. You choose what stays on the page and where it sits.
+Moo is a customizable new tab page for Firefox and Zen. It gives you somewhere to check the next appointment, leave a reminder and look something up whenever you open a tab. You choose what stays on the page and where it sits.
 
 <p align="center">
   <img src="assets/moo-newtab.gif" alt="Moo with an alpine clouds video background, clock, weather, mail, calendar and tasks" width="800" />
@@ -44,13 +44,12 @@ Settings, notes, habit progress and uploaded pictures are stored in your browser
 
 ## Installation
 
-The [v1.0.0 download](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/releases/tag/v1.0.0) is an **unsigned development build** for temporary installation:
+Download [Moo 1.0.0 for Firefox](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/releases/tag/v1.0.0) and extract `firefox-1.0.0.zip`. Install it from the files without using the Mozilla Add-ons store:
 
-1. Download `firefox-1.0.0.zip` and extract it.
-2. In Firefox or Zen, open `about:debugging` → **This Firefox** → **Load Temporary Add-on**.
-3. Select the extracted `manifest.json`, then open a new tab.
+1. In Firefox or Zen, open `about:debugging` → **This Firefox** → **Load Temporary Add-on**.
+2. Select the extracted `manifest.json`, then open a new tab.
 
-Temporary installation ends when the browser restarts. Normal permanent installation in Firefox requires a Mozilla-signed XPI; renaming the ZIP does not sign it. See the [release process](docs/RELEASE_PROCESS.md) for signing and distribution. Installed Firefox/Zen and real Google account workflows still need verification; the [audit record](docs/REFACTOR-PROGRESS.md) lists the checks performed so far.
+The release archives are unsigned, so this installation lasts until the browser restarts. Standard Firefox requires Mozilla signing for permanent installation; the [release process](docs/RELEASE_PROCESS.md) explains the available distribution methods. The developer instructions below also cover building from source and reloading changes.
 
 ## Developer installation for agents
 
@@ -91,14 +90,12 @@ bun run build
 node scripts/validateFirefox.cjs
 ```
 
-The default build writes `build/firefox/` and `build/firefox-<version>.zip`. For temporary installation from source, load `build/firefox/manifest.json` through `about:debugging`. `bun run build:all` also produces `build/chrome/` and `build/chrome-<version>.zip`; load the Chrome directory through `chrome://extensions` with Developer mode enabled.
-
-The Chrome project uses the same structure, application code, hero and preview assets. Improvements in either repository must be carried to the other. See [Firefox and Chrome development](docs/CROSS-BROWSER.md) for the parity check, migration command and Chrome Google widgets setup.
+The build writes `build/firefox/` and `build/firefox-<version>.zip`. Load `build/firefox/manifest.json` through `about:debugging` as described above. See [Contributing](CONTRIBUTING.md) for the development workflow and [Memory testing](docs/MEMORY-TESTING.md) for repeatable background stress tests.
 
 [Changelog](CHANGELOG.md) · [Report a bug or request a feature](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/issues) · [Translation guide](docs/TRANSLATING.md)
 
 ## Credits and licence
 
-Moo builds on [Mue](https://github.com/mue/mue) by The Mue Authors under the [BSD-3-Clause licence](LICENSE). The original copyright notices and attribution are preserved. Moo is a personal fork and is not affiliated with or endorsed by Mue.
+Moo builds on [Mue](https://github.com/mue/mue) by The Mue Authors under the [BSD-3-Clause licence](LICENSE). The original copyright notices and attribution are preserved. Moo is not affiliated with or endorsed by Mue.
 
 Stock images and video come from Unsplash, Pexels, Pixabay, Coverr and Mixkit. The [preview credits](assets/previews/README.md) identify the footage used in the README. Live channels were found through the [iptv-org index](https://github.com/iptv-org/iptv); each stream remains the property of its broadcaster. Illustrations retained from Mue are from [unDraw](https://undraw.co).
