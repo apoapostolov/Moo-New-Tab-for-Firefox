@@ -70,7 +70,9 @@ bun run build
 node scripts/validateFirefox.cjs
 ```
 
-The build writes `build/firefox/` and `build/firefox-<version>.zip`. For temporary installation from source, load `build/firefox/manifest.json` through `about:debugging`.
+The default build writes `build/firefox/` and `build/firefox-<version>.zip`. For temporary installation from source, load `build/firefox/manifest.json` through `about:debugging`. `bun run build:all` also produces `build/chrome/` and `build/chrome-<version>.zip`; load the Chrome directory through `chrome://extensions` with Developer mode enabled.
+
+The Chrome project uses the same structure, application code, hero and preview assets. Improvements in either repository must be carried to the other. See [Firefox and Chrome development](docs/CROSS-BROWSER.md) for the parity check, migration command and Chrome Google widgets setup.
 
 [Changelog](CHANGELOG.md) · [Report a bug or request a feature](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/issues) · [Translation guide](docs/TRANSLATING.md)
 

@@ -1,6 +1,6 @@
 # Firefox release process
 
-Moo produces one Firefox Manifest V3 package. Firefox and Zen are the supported targets. The retained Safari project, Marketplace assets and upstream attribution are historical material; current CI does not build or submit them.
+This repository defaults to the Firefox Manifest V3 package for Firefox and Zen. `bun run build:all` also builds Chrome from the same source; CI validates both packages. The Firefox release workflow publishes only Firefox. The retained Safari project, Marketplace assets and upstream attribution are historical material; current CI does not build or submit them.
 
 1. Start from a reviewed checkout and run `bun install --frozen-lockfile`, `bun run test`, `bun run lint`, `bun run build` and `node scripts/validateFirefox.cjs`.
 2. Test `build/firefox/manifest.json` through `about:debugging` in Firefox and Zen. Check startup, restart persistence, permissions, Google account changes, feeds, uploaded pictures, narrow splits and keyboard workflows. The localhost preview does not provide the extension APIs.
