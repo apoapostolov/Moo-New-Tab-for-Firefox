@@ -1,4 +1,4 @@
-Moo 1.0.2 for Firefox is a prerelease for testing the Widget layout, Navbar and Weather changes.
+Moo 1.0.2 for Firefox updates Widget layout, Navbar styling and Weather settings.
 
 - Widget layout: use all four corners and the centre. Side cards and drop placeholders fill their Overview containers, and the lower side containers align with the preview bottom. Upper-right widgets appear above Focus and Settings; the buttons follow the stack as its height changes. Drag targets remain stable, and a drag without a destination preserves placement.
 - Navbar: choose Classic or Glass button styling in Settings → Navbar. The choice applies immediately and survives reloads and backups.
