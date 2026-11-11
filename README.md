@@ -44,11 +44,11 @@ Moo opens directly in English with the time, Search/Ask Bar, basic weather in th
 - Backgrounds: use local pictures, stock photos, video clips or live channels. Some sources need a free API key. While a video is playing, triple-click the page to hide the widgets; triple-click again or press Escape to return.
 - Backups: export your setup under Settings → Advanced, including uploaded pictures if you choose. Imports show a preview before applying, and sign-in credentials stay out of the backup.
 
-Settings, notes, habit progress and uploaded pictures are stored in your browser. Weather, Air Quality, GitHub, Bookmarks, backgrounds, feeds and connected Google widgets contact their respective services; [Data and connections](docs/PRIVACY.md) explains what goes where.
+Settings, notes, habit progress and uploaded pictures are stored in your browser. Weather, Air Quality, GitHub, Bookmarks, backgrounds, feeds, Knowledge, Subscriptions and connected Google widgets contact their respective services; [Data and connections](docs/PRIVACY.md) explains what goes where.
 
 ## Installation
 
-Download [Moo 1.0.1 for Firefox](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/releases/tag/v1.0.1) and extract `firefox-1.0.1.zip`. Install it from the files without using the Mozilla Add-ons store:
+Download [Moo 1.0.3 for Firefox](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/releases/tag/v1.0.3) and extract `firefox-1.0.3.zip`. Install it from the files without using the Mozilla Add-ons store:
 
 1. In Firefox or Zen, open `about:debugging` → **This Firefox** → **Load Temporary Add-on**.
 2. Select the extracted `manifest.json`, then open a new tab.
