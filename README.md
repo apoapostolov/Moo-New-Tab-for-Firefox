@@ -55,6 +55,8 @@ Download [Moo 1.0.3 for Firefox](https://github.com/apoapostolov/Moo-New-Tab-for
 
 The release archives are unsigned, so this installation lasts until the browser restarts. Standard Firefox requires Mozilla signing for permanent installation; the [release process](docs/RELEASE_PROCESS.md) explains the available distribution methods. The developer instructions below also cover building from source and reloading changes.
 
+To test the Widget layout fixes, download the [1.0.4 prerelease for Firefox](https://github.com/apoapostolov/Moo-New-Tab-for-Firefox/releases/tag/v1.0.4) and use the same installation steps with `firefox-1.0.4.zip`.
+
 ## Developer installation for agents
 
 Use Node 22 and Bun 1.3.1. Clone this repository, install its dependencies and build the extension:
